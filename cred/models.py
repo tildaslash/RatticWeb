@@ -10,6 +10,6 @@ class Cred(models.Model):
 	group = models.ForeignKey(Group)	
 
 class CredAdmin(admin.ModelAdmin):
-	list_display = ('title', 'username')
+	list_display = ('title', 'username', 'group')
 
 admin.site.register(Cred, CredAdmin)
