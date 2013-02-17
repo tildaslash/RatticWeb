@@ -2,7 +2,7 @@
 <tr><th>Title</th><th>User</th><th>Group</th></tr>
 {% for c in credlist %}
 <tr>
-  <td><a href="/cred/details/{{ c.id }}/">{{ c.title }}</a></td>
+  <td><a href="/cred/detail/{{ c.id }}/">{{ c.title }}</a></td>
   <td>{{ c.username }}</td>
   <td>{{ c.group.name }}</td>
 </tr>
