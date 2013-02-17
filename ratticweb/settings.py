@@ -152,9 +152,11 @@ LOGGING = {
     }
 }
 
+LOGIN_REDIRECT_URL = "/cred/list"
+LOGIN_URL = "/account/login"
+
 try:
   from local_settings import *
 except:
   pass
 
-LOGIN_REDIRECT_URL = "/cred/list"
