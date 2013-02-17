@@ -13,5 +13,5 @@ urlpatterns = patterns('staff.views',
     url(r'^userdelete/(?P<object_id>\d+)/$', 'delete_object', {'model': User, 'template_name': 'staff_userdel.html', 'post_delete_redirect': '/staff/'}),
 ) + patterns('',
     # Class based views
-    url(r'^useredit/(?P<pk>\d+)/$', UpdateView.as_view(model=User, template_name='staff_useredit.html', success_url="/staff/")),
+    url(r'^useredit/(?P<pk>\d+)/$', staff_member_required(UpdateView.as_view(model=User, template_name='staff_useredit.html', success_url="/staff/"))),
 )
