@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 
 def home(request):
     if request.user.is_authenticated():
-        return redirect('cred.views.list')
+        return redirect('/cred/list')
     else:
-        return redirect('account.views.login')
+        return redirect('/account/login')
 

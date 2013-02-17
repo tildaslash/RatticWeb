@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'ratticweb.views.home', name='home'),
     url(r'^account/', include('account.urls')),
+    url(r'^cred/', include('cred.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
