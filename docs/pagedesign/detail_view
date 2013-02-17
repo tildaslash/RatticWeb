@@ -1,0 +1,18 @@
+Detail_view
+========
+
+Mandatory
+-------
+* Show the password to the user
+* Link back to list_view
+
+Optional
+-------
+* Show only on mouse over
+* Copy to clipboard
+
+Later
+-------
+* Link to edit
+* Link to delete
+

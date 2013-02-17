@@ -1,0 +1,14 @@
+Login
+========
+
+Mandatory
+-------
+* Login form
+* On successful login redirect to list_view
+* On failed login show error
+
+
+Optional
+-------
+* Password reset
+

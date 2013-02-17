@@ -1,0 +1,12 @@
+Homepage
+========
+
+Mandatory
+-------
+* Redirect to login if logged out
+* Redirect to list_view if logged in
+
+Optional
+-------
+
+

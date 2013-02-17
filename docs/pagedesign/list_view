@@ -1,0 +1,19 @@
+List_view
+========
+
+Mandatory
+-------
+* List of all the password available to the user
+* Available passwords are determined by group membership
+
+Optional
+-------
+* A list of groups you are a member of
+* Search for password
+* Passwords are sorted by group
+
+Later
+-------
+* Change password link
+* Add password link
+
