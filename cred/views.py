@@ -47,3 +47,13 @@ def edit(request, cred_id):
     return render(request, 'cred_edit.html', {'form': form, 'action':
         '/cred/edit/' + cred_id + '/'})
 
+@login_required
+def delete(request, cred_id):
+    cred = get_object_or_404(Cred, pk=cred_id)
+    # Check user has perms
+    if cred.group not in request.user.groups.all():
+        raise Http404
+    if request.method == 'POST':
+        cred.delete()
+        return HttpResponseRedirect('/cred/list')
+    return render(request, 'cred_delete.html',{'action':'/cred/delete/' + cred_id + '/'})
