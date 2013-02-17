@@ -1,10 +1,12 @@
 <table>
-<tr><th>Title</th><th>User</th><th>Group</th></tr>
+  <tr><th>Title</th><th>User</th><th>Group</th><th>Edit</th></tr>
 {% for c in credlist %}
 <tr>
   <td><a href="/cred/detail/{{ c.id }}/">{{ c.title }}</a></td>
   <td>{{ c.username }}</td>
   <td>{{ c.group.name }}</td>
+  <td><a href="/cred/edit/{{ c.id }}/">Edit</a></td>
 </tr>
 {% endfor %}
 </table>
+<a href="/cred/add/">Add new</a>
