@@ -1,13 +1,16 @@
 <h1>Staff Manage</h1>
 <table>
-  <tr><th>Username</th><th>email</th></tr>
+  <tr><th>Username</th><th>email</th><th>Edit</th><th>Delete</th></tr>
 {% for u in userlist %}
 <tr>
   <td><a href="/staff/userdetail/{{ u.id }}/">{{ u.username }}</a></td>
   <td>{{ u.email }}</td>
+  <td><a href="/staff/useredit/{{ u.id }}/">Edit</a></td>
+  <td><a href="/staff/userdelete/{{ u.id }}/">Delete</a></td>
 </tr>
 {% endfor %}
 </table>
+<a href="/staff/useradd/">Add User</a>
 <table>
   <tr><th>group name</th></tr>
 {% for g in grouplist %}

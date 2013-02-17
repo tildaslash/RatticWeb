@@ -9,3 +9,8 @@ def home(request):
     userlist = User.objects.all() 
     grouplist = Group.objects.all()
     return render(request, 'staff_home.html', {'userlist': userlist, 'grouplist': grouplist})
+
+@staff_member_required
+def userdetail(request, uid):
+    user = get_object_or_404(User, pk=uid)
+    return render(request, 'staff_userdetail.html', {'user' : user})
