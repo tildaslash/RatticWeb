@@ -1,0 +1,19 @@
+<h1>Staff Manage</h1>
+<table>
+  <tr><th>Username</th><th>email</th></tr>
+{% for u in userlist %}
+<tr>
+  <td><a href="/staff/userdetail/{{ u.id }}/">{{ u.username }}</a></td>
+  <td>{{ u.email }}</td>
+</tr>
+{% endfor %}
+</table>
+<table>
+  <tr><th>group name</th></tr>
+{% for g in grouplist %}
+<tr>
+  <td><a href="/staff/groupdetail/{{ g.id }}/">{{ g.name }}</a></td>
+</tr>
+{% endfor %}
+</table>
+<a href="/account/logout/">Logout</a>

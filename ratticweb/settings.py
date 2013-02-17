@@ -121,6 +121,7 @@ INSTALLED_APPS = (
     'cred',
     'ratticweb',
     'account',
+    'staff',
 )
 
 # A sample logging configuration. The only tangible logging
