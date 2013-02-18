@@ -8,3 +8,10 @@ If you decide to use RatticWeb seperately from its other components (which don't
 * The filesystem in which the database is stored should be protected with encryption.
 * The access logs should be protected.
 * The machine which servers RatticWeb should be protected from access.
+
+Requirements:
+* <a href="http://pypi.python.org/pypi/Django/1.4.3">Django 1.4.3</a>
+* <a href=="http://south.readthedocs.org/en/0.7.6/">Django South </a>
+
+Support:
+If you have any requests or generaly support tweet <a href="@twitter.com/ratticdb">@RatticDB</a>
