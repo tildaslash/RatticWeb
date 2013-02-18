@@ -4,6 +4,7 @@ from django.contrib.auth.models import User, Group
 from django.forms import ModelForm
 
 class Cred(models.Model):
+    METADATA = ('description', 'group')
     title = models.CharField(max_length=64)
     username = models.CharField(max_length=250, blank=True, null=True)
     password = models.CharField(max_length=250)

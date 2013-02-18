@@ -41,8 +41,14 @@ def edit(request, cred_id):
     if request.method == 'POST':
         form = CredForm(request.POST, instance=cred)
         if form.is_valid():
-            # TODO: Detect metadata changes
-            CredAudit(audittype=CredAudit.CREDCHANGE, cred=cred, user=request.user).save()
+            # Assume metedata change
+            chgtype = CredAudit.CREDMETACHANGE
+            # Unless something thats not metadata changes
+            for c in form.changed_data:
+                if c not in Cred.METADATA:
+                    chgtype = CredAudit.CREDCHANGE
+            # Create audit log
+            CredAudit(audittype=chgtype, cred=cred, user=request.user).save()
             form.save()
             return HttpResponseRedirect('/cred/list')
     else:
