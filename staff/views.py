@@ -33,3 +33,20 @@ class NewUser(FormView):
         user.save()
         return super(NewUser, self).form_valid(form)
 
+class UpdateUser(UpdateView):
+    model = User
+    form_class = UserForm
+    template_name = 'staff_useredit.html'
+    success_url = '/staff/'
+
+    # Staff access only
+    @method_decorator(staff_member_required)
+    def dispatch(self, *args, **kwargs):
+        return super(UpdateUser, self).dispatch(*args, **kwargs)
+
+    # Create the user, set password to newpass
+    def form_valid(self, form):
+        if form.cleaned_data['newpass'] is not None:
+            form.instance.set_password(form.cleaned_data['newpass'])
+        return super(UpdateUser, self).form_valid(form)
+

@@ -4,8 +4,8 @@ from django import forms
 
 class UserForm(forms.ModelForm):
     # We want two password input boxes
-    newpass = forms.CharField(widget=forms.PasswordInput, max_length=32, min_length=8)
-    confirmpass = forms.CharField(widget=forms.PasswordInput, max_length=32, min_length=8)
+    newpass = forms.CharField(widget=forms.PasswordInput, required=False, max_length=32, min_length=8)
+    confirmpass = forms.CharField(widget=forms.PasswordInput, required=False, max_length=32, min_length=8)
 
     # Define our model
     class Meta:
@@ -13,14 +13,14 @@ class UserForm(forms.ModelForm):
         fields = ('username', 'email', 'is_staff', 'groups')
 
     def __init__(self, *args, **kwargs):
-        super(NewUserForm, self).__init__(*args, **kwargs)
+        super(UserForm, self).__init__(*args, **kwargs)
         # Use checkboxes for groups
         self.fields["groups"].widget = forms.CheckboxSelectMultiple()
         self.fields["groups"].queryset = Group.objects.all()
 
     def clean(self):
         # Check the passwords given match
-        cleaned_data = super(NewUserForm, self).clean()
+        cleaned_data = super(UserForm, self).clean()
         newpass = cleaned_data.get("newpass")
         confirmpass = cleaned_data.get("confirmpass")
 
