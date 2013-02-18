@@ -21,10 +21,12 @@ class NewUser(FormView):
     template_name = 'staff_useredit.html'
     success_url = '/staff/'
 
+    # Staff access only
     @method_decorator(staff_member_required)
     def dispatch(self, *args, **kwargs):
         return super(NewUser, self).dispatch(*args, **kwargs)
 
+    # Create the user, set password to newpass
     def form_valid(self, form):
         user = form.save()
         user.set_password(form.cleaned_data['newpass'])
