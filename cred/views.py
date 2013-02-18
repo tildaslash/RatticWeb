@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
-from models import Cred, CredForm
+from models import Cred, CredForm, CredAudit
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 
@@ -12,6 +12,7 @@ def list(request):
 @login_required
 def detail(request, cred_id):
     cred = get_object_or_404(Cred, pk=cred_id)
+    CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
     # Check user has perms
     if cred.group not in request.user.groups.all():
         raise Http404
@@ -23,6 +24,7 @@ def add(request):
         form = CredForm(request.POST)
         if form.is_valid():
             form.save()
+            CredAudit(audittype=CredAudit.CREDADD, cred=form.instance, user=request.user).save()
             return HttpResponseRedirect('/cred/list')
     else:
         form = CredForm()
@@ -39,6 +41,8 @@ def edit(request, cred_id):
     if request.method == 'POST':
         form = CredForm(request.POST, instance=cred)
         if form.is_valid():
+            # TODO: Detect metadata changes
+            CredAudit(audittype=CredAudit.CREDCHANGE, cred=cred, user=request.user).save()
             form.save()
             return HttpResponseRedirect('/cred/list')
     else:
