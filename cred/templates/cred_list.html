@@ -1,3 +1,6 @@
+{% extends "base.html" %}
+
+{% block content %}
 <table>
   <tr><th>Title</th><th>User</th><th>Group</th><th>Edit</th><th>Delete</th></tr>
 {% for c in credlist %}
@@ -12,3 +15,5 @@
 </table>
 <a href="/cred/add/">Add new</a>
 <a href="/account/logout/">Logout</a>
+{% endblock %}
+

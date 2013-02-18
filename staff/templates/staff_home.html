@@ -1,3 +1,6 @@
+{% extends "base.html" %}
+
+{% block content %}
 <h1>Staff Manage</h1>
 <table>
   <tr><th>Username</th><th>email</th><th>Edit</th><th>Delete</th></tr>
@@ -20,3 +23,5 @@
 {% endfor %}
 </table>
 <a href="/account/logout/">Logout</a>
+{% endblock %}
+

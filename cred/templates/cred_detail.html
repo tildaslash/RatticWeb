@@ -1,3 +1,6 @@
+{% extends "base.html" %}
+
+{% block content %}
 <ul>
     <li>title: {{ cred.title }}</li>
     <li>group: {{ cred.group.name }}</li>
@@ -8,3 +11,4 @@
 {{ cred.description }}
 </pre>
 <a href="/cred/edit/{{ cred.id }}/">Edit</a>
+{% endblock %}
