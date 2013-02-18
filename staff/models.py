@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User, Group
 from django import forms
 
-class NewUserForm(forms.ModelForm):
+class UserForm(forms.ModelForm):
     # We want two password input boxes
     newpass = forms.CharField(widget=forms.PasswordInput, max_length=32, min_length=8)
     confirmpass = forms.CharField(widget=forms.PasswordInput, max_length=32, min_length=8)

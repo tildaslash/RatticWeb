@@ -17,7 +17,7 @@ def userdetail(request, uid):
     return render(request, 'staff_userdetail.html', {'user' : user})
 
 class NewUser(FormView):
-    form_class = NewUserForm
+    form_class = UserForm
     template_name = 'staff_useredit.html'
     success_url = '/staff/'
 
@@ -32,5 +32,4 @@ class NewUser(FormView):
         user.set_password(form.cleaned_data['newpass'])
         user.save()
         return super(NewUser, self).form_valid(form)
-
 
