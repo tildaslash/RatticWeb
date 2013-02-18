@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib import admin
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import User, Group
 from django.forms import ModelForm
 
 class Cred(models.Model):
@@ -20,4 +20,25 @@ class CredForm(ModelForm):
 class CredAdmin(admin.ModelAdmin):
     list_display = ('title', 'username', 'group')
 
+class CredAudit(models.Model):
+    CREDADD = 'A'
+    CREDCHANGE = 'C'
+    CREDMETACHANGE = 'M'
+    CREDVIEW = 'V'
+    CREDAUDITCHOICES = (
+        (CREDADD, 'Credential Added'),
+        (CREDCHANGE, 'Credential Change'),
+        (CREDMETACHANGE, 'Credential Metadata change'),
+        (CREDVIEW, 'Credential View'),
+    )
+
+    audittype = models.CharField(max_length=1, choices=CREDAUDITCHOICES)
+    cred = models.ForeignKey(Cred, related_name='logs')
+    user = models.ForeignKey(User, related_name='credlogs')
+    time = models.DateTimeField(auto_now_add=True)
+
+class CredAuditAdmin(admin.ModelAdmin):
+    list_display = ('audittype', 'user', 'cred', 'time')
+
+admin.site.register(CredAudit, CredAuditAdmin)
 admin.site.register(Cred, CredAdmin)
