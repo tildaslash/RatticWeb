@@ -19,9 +19,14 @@
 {% for g in grouplist %}
 <tr>
   <td><a href="/staff/groupdetail/{{ g.id }}/">{{ g.name }}</a></td>
+  <td><a href="/staff/groupedit/{{ g.id }}/">Edit</a></td>
+  <td><a href="/staff/groupedit/{{ g.id }}/">Delete</a></td>
 </tr>
 {% endfor %}
 </table>
+<a href="/staff/groupadd/">Add Group</a>
+<table>
+<br>
 <a href="/account/logout/">Logout</a>
 {% endblock %}
 
