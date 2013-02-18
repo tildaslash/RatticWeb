@@ -11,11 +11,19 @@ def home(request):
     grouplist = Group.objects.all()
     return render(request, 'staff_home.html', {'userlist': userlist, 'grouplist': grouplist})
 
+# user detail
 @staff_member_required
 def userdetail(request, uid):
     user = get_object_or_404(User, pk=uid)
     return render(request, 'staff_userdetail.html', {'user' : user})
 
+# group detail
+@staff_member_required
+def groupdetail(request, gid):
+    group = get_object_or_404(Group, pk=gid)
+    return render(request, 'staff_groupdetail.html', {'group' : group})
+
+# New User
 class NewUser(FormView):
     form_class = UserForm
     template_name = 'staff_useredit.html'
@@ -33,6 +41,7 @@ class NewUser(FormView):
         user.save()
         return super(NewUser, self).form_valid(form)
 
+# Edit Users 
 class UpdateUser(UpdateView):
     model = User
     form_class = UserForm
