@@ -1,0 +1,5 @@
+<ul>
+    <li>username: {{ user.username }}</li>
+    <li>email: {{ user.email }}</li>
+    <li>grouplist: {% for group in user.groups.all %}{{ group.name }}, {% endfor %}</li>
+</ul>
