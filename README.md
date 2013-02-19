@@ -7,7 +7,7 @@ If you decide to use RatticWeb seperately from its other components (which don't
 * The webpage should be served over HTTPS only, apart from a redirect for normal HTTP.
 * The filesystem in which the database is stored should be protected with encryption.
 * The access logs should be protected.
-* The machine which servers RatticWeb should be protected from access.
+* The machine which server RatticWeb should be protected from access.
 * Tools like <a href=="http://www.ossec.net/">OSSEC</a> are your friend.
 
 Requirements:
