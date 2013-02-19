@@ -3,6 +3,13 @@ from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from django.forms import ModelForm
 
+class Category(models.Model):
+    name = models.CharField(max_length=64)
+    parent = models.ForeignKey('Category', related_name='child', null=True, blank=True)
+
+    def __unicode__(self):
+        return self.name
+
 class Cred(models.Model):
     METADATA = ('description', 'group')
     title = models.CharField(max_length=64)
@@ -10,6 +17,7 @@ class Cred(models.Model):
     password = models.CharField(max_length=250)
     description = models.TextField(blank=True, null=True)
     group = models.ForeignKey(Group)
+    category = models.ForeignKey(Category, blank=True, null=True, default=None)
 
     def __unicode__(self):
         return self.title
@@ -43,3 +51,4 @@ class CredAuditAdmin(admin.ModelAdmin):
 
 admin.site.register(CredAudit, CredAuditAdmin)
 admin.site.register(Cred, CredAdmin)
+admin.site.register(Category)

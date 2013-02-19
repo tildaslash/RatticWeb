@@ -3,12 +3,13 @@
 {% block content %}
 <h1>Passwords</h1>
 <table class="table table-striped table-bordered table-condensed">
-  <tr><th>Title</th><th>User</th><th>Group</th><th>Edit</th><th>Delete</th></tr>
+  <tr><th>Title</th><th>User</th><th>Group</th><th>Category</th><th>Edit</th><th>Delete</th></tr>
 {% for c in credlist %}
 <tr>
   <td><a href="/cred/detail/{{ c.id }}/">{{ c.title }}</a></td>
   <td>{{ c.username }}</td>
   <td>{{ c.group.name }}</td>
+  <td>{{ c.category.name }}</td>
   <td><a href="/cred/edit/{{ c.id }}/">Edit</a></td>
   <td><a href="/cred/delete/{{ c.id }}/">Delete</a></td>
 </tr>
