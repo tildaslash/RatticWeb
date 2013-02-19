@@ -1,9 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form action="" method="post">{% csrf_token %}
-	{{ form.as_p }}
-	<input type="submit" value="Submit" />
+<form class="form-horizontal" action="" method="post">{% csrf_token %}
+    {% for field in form %}
+        <div class="control-group">
+            {{ field.errors }}
+            <label class="control-label" for="{{ field.html_name }}">{{ field.label }}</label>
+            <div class="controls">
+                {{ field }}
+            </div>
+        </div>
+    {% endfor %}
+    <div class="controls">
+        <input class="btn-primary" type="submit" value="Submit" />
+    </div>
 </form>
 {% endblock %}
 
