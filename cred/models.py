@@ -15,7 +15,7 @@ class CatForm(ModelForm):
         model = Category
 
 class Cred(models.Model):
-    METADATA = ('description', 'group')
+    METADATA = ('description', 'group', 'category')
     title = models.CharField(max_length=64)
     username = models.CharField(max_length=250, blank=True, null=True)
     password = models.CharField(max_length=250)
