@@ -4,10 +4,10 @@ RatticWeb
 RatticWeb is the website part of the Rattic password management solution.
 
 If you decide to use RatticWeb seperately from its other components (which don't exist yet) you should take the following into account:
-* The webpage should be served over HTTPS only, apart from a redirect for normal HTTP.
+* The webpage should be served over HTTPS only, apart from a redirect from normal HTTP.
 * The filesystem in which the database is stored should be protected with encryption.
 * The access logs should be protected.
-* The machine which server RatticWeb should be protected from access.
+* The machine which serves RatticWeb should be protected from access.
 * Tools like <a href=="http://www.ossec.net/">OSSEC</a> are your friend.
 
 Requirements:
