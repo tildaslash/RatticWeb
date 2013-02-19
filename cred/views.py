@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
-from models import Cred, CredForm, CredAudit
+from models import Cred, CredForm, CredAudit, CatForm, Category
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 
@@ -68,3 +68,38 @@ def delete(request, cred_id):
         cred.delete()
         return HttpResponseRedirect('/cred/list')
     return render(request, 'cred_delete.html',{'action':'/cred/delete/' + cred_id + '/'})
+
+
+# Categories 
+@login_required
+def catadd(request):
+    if request.method == 'POST':
+        form = CatForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/cred/list')
+    else:
+        form = CatForm()
+
+    return render(request, 'cred_catedit.html', {'form': form,})
+
+@login_required
+def catedit(request, cat_id):
+    cat = get_object_or_404(Category, pk=cat_id)
+    if request.method == 'POST':
+        form = CatForm(request.POST, instance=cat)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/cred/list')
+    else:
+        form = CatForm(instance=cat)
+
+    return render(request, 'cred_catedit.html', {'form': form,})
+
+@login_required
+def catdelete(request, cat_id):
+    cat = get_object_or_404(Category, pk=cat_id)
+    if request.method == 'POST':
+        cat.delete()
+        return HttpResponseRedirect('/cred/list')
+    return render(request, 'cred_catdelete.html',{})

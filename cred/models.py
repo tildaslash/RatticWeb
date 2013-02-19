@@ -9,6 +9,10 @@ class Category(models.Model):
 
     def __unicode__(self):
         return self.name
+        
+class CatForm(ModelForm):
+    class Meta:
+        model = Category
 
 class Cred(models.Model):
     METADATA = ('description', 'group')
