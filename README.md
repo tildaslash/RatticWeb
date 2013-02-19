@@ -11,7 +11,7 @@ If you decide to use RatticWeb seperately from its other components (which don't
 
 Requirements:
 * <a href="http://pypi.python.org/pypi/Django/1.4.3">Django 1.4.3</a>
-* <a href=="http://south.readthedocs.org/en/0.7.6/">Django South </a>
+* <a href="http://south.readthedocs.org/en/0.7.6/">Django South</a>
 
 Support:
-If you have any requests or generaly support tweet <a href="@twitter.com/ratticdb">@RatticDB</a>
+If you have any requests or generally support tweet <a href="http://twitter.com/ratticdb">@RatticDB</a>
