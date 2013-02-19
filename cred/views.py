@@ -16,7 +16,7 @@ def detail(request, cred_id):
     # Check user has perms
     if cred.group not in request.user.groups.all():
         raise Http404
-    return render(request, 'cred_detail.html', {'cred' : cred})
+    return render(request, 'cred_detail.html', {'cred' : cred, 'showaudit': request.user.is_staff})
 
 @login_required
 def add(request):
