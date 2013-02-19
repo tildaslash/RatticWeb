@@ -14,7 +14,7 @@
 <table>
 <tr><th>Action</th><th>User</th><th>When</th></tr>
 {% for audit in cred.logs.all %}
-  <tr><td>{{ audit.get_audittype_display }}</td><td>{{ audit.user.name }}</td><td>{{ audit.time }}</td></tr>
+  <tr><td>{{ audit.get_audittype_display }}</td><td>{{ audit.user.username }}</td><td>{{ audit.time }}</td></tr>
 {% endfor %}
 </table>
 <a href="/cred/edit/{{ cred.id }}/">Edit</a>
