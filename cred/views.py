@@ -53,6 +53,7 @@ def edit(request, cred_id):
             return HttpResponseRedirect('/cred/list')
     else:
         form = CredForm(instance=cred)
+    	CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
 
     return render(request, 'cred_edit.html', {'form': form, 'action':
         '/cred/edit/' + cred_id + '/'})
