@@ -69,6 +69,8 @@ STATICFILES_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+#TEMPLATE_CONTEXT_PROCESSORS = ('ratticweb.context_processors.base_template_reqs',)
+
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
