@@ -21,9 +21,12 @@
     </div>
      <div class="row-fluid">
           <div class="span2">
+               <h4>Categories</h4>
                {% for cat in allcategories %}
-               <p>{{ cat.name }}</p>
+               <p><a href="/cred/catlist/{{ cat.id }}/">{{ cat.name }}</a></p>
                {% endfor %}
+               <h4>Other</h4>
+               <p><a href="/staff/">Staff Management</a></p>
           </div>
           <div class="span10">
               {% block content %}{% endblock %}
