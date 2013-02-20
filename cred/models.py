@@ -5,11 +5,10 @@ from django.forms import ModelForm
 
 class Category(models.Model):
     name = models.CharField(max_length=64)
-    parent = models.ForeignKey('Category', related_name='child', null=True, blank=True)
 
     def __unicode__(self):
         return self.name
-        
+
 class CatForm(ModelForm):
     class Meta:
         model = Category
