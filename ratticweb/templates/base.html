@@ -21,7 +21,9 @@
     </div>
      <div class="row-fluid">
           <div class="span2">
-               <p>Stuff goes here</p>
+               {% for cat in allcategories %}
+               <p>{{ cat.name }}</p>
+               {% endfor %}
           </div>
           <div class="span10">
               {% block content %}{% endblock %}

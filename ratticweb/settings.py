@@ -69,7 +69,20 @@ STATICFILES_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
-#TEMPLATE_CONTEXT_PROCESSORS = ('ratticweb.context_processors.base_template_reqs',)
+# A tuple of callables that are used to populate the context in
+# RequestContext. These callables take a request object as their
+# argument and return a dictionary of items to be merged into
+# the context.
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.core.context_processors.tz",
+    "django.contrib.messages.context_processors.messages",
+    'ratticweb.context_processors.base_template_reqs',
+)
 
 # List of finder classes that know how to find static files in
 # various locations.
