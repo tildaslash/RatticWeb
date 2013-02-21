@@ -14,7 +14,7 @@
             <a class="brand" href="/">RatticDB</a>
             <ul class="nav">
                 <li class="active"><a href="/">Passwords</a></li>
-                <li><a href="/staff/">Staff Management</a></li>
+                {% if user.is_staff %}<li><a href="/staff/">Staff Management</a></li>{% endif %}
                 <li><a href="#">Link</a></li>
             </ul>
         </div>
