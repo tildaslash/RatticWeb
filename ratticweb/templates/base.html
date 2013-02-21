@@ -22,7 +22,6 @@ function search() {
             <ul class="nav">
                 <li class="active"><a href="/">Passwords</a></li>
                 {% if user.is_staff %}<li><a href="/staff/">Staff Management</a></li>{% endif %}
-                <li><a href="#">Link</a></li>
             </ul>
             <form id="search" onsubmit="return search()" class="navbar-search pull-right">
                  <input type="text" name="box" class="search-query" placeholder="Search">
