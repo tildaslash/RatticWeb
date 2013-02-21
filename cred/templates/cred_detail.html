@@ -3,7 +3,7 @@
 {% block content %}
 <table class="table table-striped table-bordered table-condensed">
 <tr><th>Title</th><td>{{ cred.title }}</td></tr>
-<tr><th>Group</th><td>{{ cred.group.name }}</td></tr>
+<tr><th>Group</th><td><a href="/staff/groupdetail/{{ cred.group.id}}/">{{ cred.group.name }}</a></td></tr>
 <tr><th>Username</th><td>{{ cred.username }}</td></tr>
 <tr><th>Password</th><td>{{ cred.password }}</td></tr>
 </table>

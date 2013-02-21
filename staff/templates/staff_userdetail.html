@@ -4,7 +4,7 @@
 <table class="table table-striped table-bordered table-condensed">
 <tr><th>Username</th><td>{{ user.username }}</td></tr>
 <tr><th>Email</th><td>{{ user.email }}</td></tr>
-<tr><th>Groups</th><td>{{ user.groups.all|join:", " }}</td></tr>
+<tr><th>Groups</th><td>{% for g in user.groups.all %}<a href="/staff/groupdetail/{{ g.id }}/">{{ g.name }}</a>, {% endfor %}</td></tr>
 </table>
 <a class="btn" href="/staff/">Back</a>
 {% endblock %}
