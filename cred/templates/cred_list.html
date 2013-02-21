@@ -9,7 +9,7 @@
   <td><a href="/cred/detail/{{ c.id }}/">{{ c.title }}</a></td>
   <td>{{ c.username }}</td>
   <td>{{ c.group.name }}</td>
-  <td>{{ c.category.name }}</td>
+  <td><a href="/cred/list-by-cat/{{ c.category.id }}/">{{ c.category.name }}</a></td>
   <td><a href="/cred/edit/{{ c.id }}/">Edit</a></td>
   <td><a href="/cred/delete/{{ c.id }}/">Delete</a></td>
 </tr>
