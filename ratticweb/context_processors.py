@@ -1,6 +1,6 @@
-from cred.models import Category
+from cred.models import Tag
 
 def base_template_reqs(request):
-    return {'allcategories': Category.objects.all()}
+    return {'alltags': Tag.objects.all()}
 
 

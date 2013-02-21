@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
-from models import Cred, CredForm, CredAudit, CatForm, Category
+from models import Cred, CredForm, CredAudit, TagForm, Tag
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 
@@ -10,10 +10,10 @@ def list(request):
     return render(request, 'cred_list.html', {'credlist': cred})
 
 @login_required
-def list_by_category(request, cat_id):
-    category = get_object_or_404(Category, pk=cat_id)
-    cred = Cred.objects.for_user(request.user).filter(category=category)
-    return render(request, 'cred_list.html', {'credlist': cred, 'category': category})
+def list_by_tag(request, tag_id):
+    tag = get_object_or_404(Tag, pk=tag_id)
+    cred = Cred.objects.for_user(request.user).filter(category=tag)
+    return render(request, 'cred_list.html', {'credlist': cred, 'tag': tag})
 
 @login_required
 def list_by_search(request, search):
@@ -64,7 +64,7 @@ def edit(request, cred_id):
             return HttpResponseRedirect('/cred/list')
     else:
         form = CredForm(request.user, instance=cred)
-    	CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
+        CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
 
     return render(request, 'cred_edit.html', {'form': form, 'action':
         '/cred/edit/' + cred_id + '/'})
@@ -83,34 +83,35 @@ def delete(request, cred_id):
 
 # Categories 
 @login_required
-def catadd(request):
+def tagadd(request):
     if request.method == 'POST':
-        form = CatForm(request.POST)
+        form = TagForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/cred/list')
     else:
-        form = CatForm()
+        form = TagForm()
 
-    return render(request, 'cred_catedit.html', {'form': form,})
+    return render(request, 'cred_tagedit.html', {'form': form,})
 
 @login_required
-def catedit(request, cat_id):
-    cat = get_object_or_404(Category, pk=cat_id)
+def tagedit(request, tag_id):
+    tag = get_object_or_404(Tag, pk=tag_id)
     if request.method == 'POST':
-        form = CatForm(request.POST, instance=cat)
+        form = TagForm(request.POST, instance=tag)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/cred/list')
     else:
-        form = CatForm(instance=cat)
+        form = TagForm(instance=tag)
 
-    return render(request, 'cred_catedit.html', {'form': form,})
+    return render(request, 'cred_tagedit.html', {'form': form,})
 
 @login_required
-def catdelete(request, cat_id):
-    cat = get_object_or_404(Category, pk=cat_id)
+def tagdelete(request, tag_id):
+    tag = get_object_or_404(Tag, pk=tag_id)
     if request.method == 'POST':
-        cat.delete()
+        tag.delete()
         return HttpResponseRedirect('/cred/list')
-    return render(request, 'cred_catdelete.html',{})
+    return render(request, 'cred_tagdelete.html',{})
+

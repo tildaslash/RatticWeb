@@ -30,9 +30,9 @@ function search() {
     </div>
      <div class="row-fluid">
           <div class="span2">
-               <h4>Categories</h4>
-               {% for cat in allcategories %}
-               <p><a href="/cred/list-by-cat/{{ cat.id }}/">{{ cat.name }}</a></p>
+               <h4>Tags</h4>
+               {% for tag in alltags %}
+               <p><a href="/cred/list-by-tag/{{ tag.id }}/">{{ tag.name }}</a></p>
                {% endfor %}
           </div>
           <div class="span10">
