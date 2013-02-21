@@ -6,13 +6,13 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def list(request):
-    cred = Cred.objects.filter(group__in=request.user.groups.all())
+    cred = Cred.objects.for_user(request.user)
     return render(request, 'cred_list.html', {'credlist': cred})
 
 @login_required
 def list_by_category(request, cat_id):
     category = get_object_or_404(Category, pk=cat_id)
-    cred = Cred.objects.filter(category=category).filter(group__in=request.user.groups.all())
+    cred = Cred.objects.for_user(request.user).filter(category=category)
     return render(request, 'cred_list.html', {'credlist': cred, 'category': category})
 
 @login_required

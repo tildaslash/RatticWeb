@@ -13,8 +13,14 @@ class CatForm(ModelForm):
     class Meta:
         model = Category
 
+class CredManager(models.Manager):
+    def for_user(self, user):
+        return super(CredManager, self).get_query_set().filter(group__in=user.groups.all())
+
 class Cred(models.Model):
     METADATA = ('description', 'group', 'category')
+    objects = CredManager()
+
     title = models.CharField(max_length=64)
     username = models.CharField(max_length=250, blank=True, null=True)
     password = models.CharField(max_length=250)
