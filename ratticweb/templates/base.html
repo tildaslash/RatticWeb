@@ -13,8 +13,8 @@
         <div class="navbar-inner">
             <a class="brand" href="/">RatticDB</a>
             <ul class="nav">
-                <li class="active"><a href="/">Home</a></li>
-                <li><a href="#">Link</a></li>
+                <li class="active"><a href="/">Passwords</a></li>
+                <li><a href="/staff/">Staff Management</a></li>
                 <li><a href="#">Link</a></li>
             </ul>
         </div>
@@ -25,8 +25,6 @@
                {% for cat in allcategories %}
                <p><a href="/cred/list-by-cat/{{ cat.id }}/">{{ cat.name }}</a></p>
                {% endfor %}
-               <h4>Other</h4>
-               <p><a href="/staff/">Staff Management</a></p>
           </div>
           <div class="span10">
               {% block content %}{% endblock %}
