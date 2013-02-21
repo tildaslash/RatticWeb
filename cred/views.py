@@ -10,6 +10,12 @@ def list(request):
     return render(request, 'cred_list.html', {'credlist': cred})
 
 @login_required
+def list_by_category(request, cat_id):
+    category = get_object_or_404(Category, pk=cat_id)
+    cred = Cred.objects.filter(category=category).filter(group__in=request.user.groups.all())
+    return render(request, 'cred_list.html', {'credlist': cred, 'category': category})
+
+@login_required
 def detail(request, cred_id):
     cred = get_object_or_404(Cred, pk=cred_id)
     CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
