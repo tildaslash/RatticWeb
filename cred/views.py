@@ -27,13 +27,13 @@ def detail(request, cred_id):
 @login_required
 def add(request):
     if request.method == 'POST':
-        form = CredForm(request.POST)
+        form = CredForm(request.user, request.POST)
         if form.is_valid():
             form.save()
             CredAudit(audittype=CredAudit.CREDADD, cred=form.instance, user=request.user).save()
             return HttpResponseRedirect('/cred/list')
     else:
-        form = CredForm()
+        form = CredForm(request.user)
 
     return render(request, 'cred_edit.html', {'form': form, 'action':
         '/cred/add/'})
@@ -45,7 +45,7 @@ def edit(request, cred_id):
     if cred.group not in request.user.groups.all():
         raise Http404
     if request.method == 'POST':
-        form = CredForm(request.POST, instance=cred)
+        form = CredForm(request.user, request.POST, instance=cred)
         if form.is_valid():
             # Assume metedata change
             chgtype = CredAudit.CREDMETACHANGE
@@ -58,7 +58,7 @@ def edit(request, cred_id):
             form.save()
             return HttpResponseRedirect('/cred/list')
     else:
-        form = CredForm(instance=cred)
+        form = CredForm(request.user, instance=cred)
     	CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
 
     return render(request, 'cred_edit.html', {'form': form, 'action':

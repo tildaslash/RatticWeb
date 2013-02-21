@@ -32,6 +32,10 @@ class Cred(models.Model):
         return self.title
 
 class CredForm(ModelForm):
+    def __init__(self,requser,*args,**kwargs):
+        super (CredForm,self ).__init__(*args,**kwargs) # populates the post
+        self.fields['group'].queryset = Group.objects.filter(user=requser)
+
     class Meta:
         model = Cred
 
