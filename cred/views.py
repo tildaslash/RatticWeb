@@ -16,6 +16,11 @@ def list_by_category(request, cat_id):
     return render(request, 'cred_list.html', {'credlist': cred, 'category': category})
 
 @login_required
+def list_by_search(request, search):
+    cred = Cred.objects.for_user(request.user).filter(title__contains=search)
+    return render(request, 'cred_list.html', {'credlist': cred,})
+
+@login_required
 def detail(request, cred_id):
     cred = get_object_or_404(Cred, pk=cred_id)
     CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()

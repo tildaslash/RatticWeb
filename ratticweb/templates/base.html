@@ -6,6 +6,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet" media="screen">
+<script>
+function search() {
+    var searchstr = document.forms["search"]["box"].value
+    window.location = "/cred/list-by-search/" + searchstr + "/";
+    return false;
+}
+</script>
 </head>
 <body>
 <div class="container-fluid">
@@ -17,6 +24,9 @@
                 {% if user.is_staff %}<li><a href="/staff/">Staff Management</a></li>{% endif %}
                 <li><a href="#">Link</a></li>
             </ul>
+            <form id="search" onsubmit="return search()" class="navbar-search pull-right">
+                 <input type="text" name="box" class="search-query" placeholder="Search">
+            </form>
         </div>
     </div>
      <div class="row-fluid">
