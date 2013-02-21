@@ -16,3 +16,15 @@ Requirements:
 
 Support:
 If you have any requests or generally support tweet <a href="http://twitter.com/ratticdb">@RatticDB</a>
+
+Dev Setup:
+* Checkout the code
+* ```mkdir db```
+* ```./manage.py syncdb```
+* ```./manage.py migrate```
+* ```./manage.py runserver```
+* Profit!
+
+
+
+
