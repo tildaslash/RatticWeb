@@ -119,10 +119,16 @@ def tagdelete(request, tag_id):
     return render(request, 'cred_tagdelete.html',{})
 
 @login_required
+def viewqueue(request):
+    cred = Cred.objects.for_user(request.user)
+    queue = CredChangeQ.objects.filter(cred__in=cred)
+    return render(request, 'cred_queue.html', {'queue': queue})
+
+@login_required
 def addtoqueue(request, cred_id):
     cred = get_object_or_404(Cred, pk=cred_id)
     CredChangeQ(cred=cred).save()
     # Check user has perms
     if cred.group not in request.user.groups.all():
         raise Http404
-    return HttpResponseRedirect('/cred/list')
+    return HttpResponseRedirect('/cred/viewqueue')
