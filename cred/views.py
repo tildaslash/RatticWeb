@@ -78,7 +78,7 @@ def delete(request, cred_id):
     if request.method == 'POST':
         cred.delete()
         return HttpResponseRedirect('/cred/list')
-    return render(request, 'cred_delete.html',{'action':'/cred/delete/' + cred_id + '/'})
+    return render(request, 'cred_detail.html',{'cred' : cred, 'action':'/cred/delete/' + cred_id + '/', 'delete':True})
 
 
 # Categories 

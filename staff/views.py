@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
@@ -22,6 +23,15 @@ def userdetail(request, uid):
 def groupdetail(request, gid):
     group = get_object_or_404(Group, pk=gid)
     return render(request, 'staff_groupdetail.html', {'group' : group})
+
+# group delete
+@staff_member_required
+def groupdelete(request, gid):
+    group = get_object_or_404(Group, pk=gid)
+    if request.method == 'POST':
+        group.delete()
+        return HttpResponseRedirect('/staff/')
+    return render(request, 'staff_groupdetail.html', {'group' : group, 'delete':True})
 
 # New User
 class NewUser(FormView):
