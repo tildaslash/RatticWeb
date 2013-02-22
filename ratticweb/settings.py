@@ -18,8 +18,8 @@ MANAGERS = ADMINS
 #EMAIL_HOST_PASSWORD = ''
 
 # Dev Mail Opts
-#EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-#EMAIL_FILE_PATH = '/tmp/rattic-messages' 
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = '/tmp/rattic-messages' 
 
 DATABASES = {
     'default': {

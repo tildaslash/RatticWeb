@@ -45,7 +45,8 @@ function search() {
                    <form class="form-inline" method="post" action="/account/login/">{% csrf_token %}
                       <label for="id_username">Username</label><input class="parent-sized" id="id_username" type="text" name="username" maxlength="30" />
                       <label for="id_password">Password</label><input class="parent-sized" type="password" name="password" id="id_password" />
-                   <input type="submit" value="login" />
+                   <input type="submit" class="btn" value="login"/>
+                   <p><a href="/account/reset">Forgotten password?</a></p>
                    <input type="hidden" name="next" value="" />
                    </form>
                {% endif %}
