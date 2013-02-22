@@ -33,6 +33,15 @@ def groupdelete(request, gid):
         return HttpResponseRedirect('/staff/')
     return render(request, 'staff_groupdetail.html', {'group' : group, 'delete':True})
 
+# User delete
+@staff_member_required
+def userdelete(request, uid):
+    user = get_object_or_404(User, pk=uid)
+    if request.method == 'POST':
+        user.delete()
+        return HttpResponseRedirect('/staff/')
+    return render(request, 'staff_userdetail.html', {'user' : user, 'delete':True})
+
 # New User
 class NewUser(FormView):
     form_class = UserForm
