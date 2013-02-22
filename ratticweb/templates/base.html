@@ -6,6 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet" media="screen">
+  <link href="{% static "rattic/css/base.css" %}" rel="stylesheet" media="screen">
 <script>
 function search() {
     var searchstr = document.forms["search"]["box"].value
@@ -30,10 +31,24 @@ function search() {
     </div>
      <div class="row-fluid">
           <div class="span2">
-               <h4>Tags</h4>
-               {% for tag in alltags %}
-               <p><a href="/cred/list-by-tag/{{ tag.id }}/">{{ tag.name }}</a></p>
-               {% endfor %}
+                {% if user.is_authenticated %}
+                    <h4>You</h4>
+                        <p>Welcome {{ user.username|title }}.<p>
+                        <a class="btn disabled" href="#">Profile</a>
+                        <a class="btn btn-danger" href="/account/logout/">Logout</a>
+                    <h4>Tags</h4>
+                    {% for tag in alltags %}
+                        <p><a href="/cred/list-by-tag/{{ tag.id }}/">{{ tag.name }}</a></p>
+                    {% endfor %}
+               {% else %}
+                   <h4>Login</h4>
+                   <form class="form-inline" method="post" action="/account/login/">{% csrf_token %}
+                      <label for="id_username">Username</label><input class="parent-sized" id="id_username" type="text" name="username" maxlength="30" />
+                      <label for="id_password">Password</label><input class="parent-sized" type="password" name="password" id="id_password" />
+                   <input type="submit" value="login" />
+                   <input type="hidden" name="next" value="" />
+                   </form>
+               {% endif %}
           </div>
           <div class="span10">
               {% block content %}{% endblock %}
