@@ -18,7 +18,7 @@ class CredManager(models.Manager):
         return super(CredManager, self).get_query_set().filter(group__in=user.groups.all())
 
 class Cred(models.Model):
-    METADATA = ('description', 'group', 'category')
+    METADATA = ('description', 'group', 'tags')
     objects = CredManager()
 
     title = models.CharField(max_length=64)
@@ -26,7 +26,7 @@ class Cred(models.Model):
     password = models.CharField(max_length=250)
     description = models.TextField(blank=True, null=True)
     group = models.ForeignKey(Group)
-    category = models.ForeignKey(Tag, blank=True, null=True, default=None)
+    tags = models.ManyToManyField(Tag, related_name='child_creds', blank=True, null=True, default=None)
 
     def __unicode__(self):
         return self.title

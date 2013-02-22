@@ -12,7 +12,7 @@ def list(request):
 @login_required
 def list_by_tag(request, tag_id):
     tag = get_object_or_404(Tag, pk=tag_id)
-    cred = Cred.objects.for_user(request.user).filter(category=tag)
+    cred = Cred.objects.for_user(request.user).filter(tags=tag)
     return render(request, 'cred_list.html', {'credlist': cred, 'tag': tag})
 
 @login_required
