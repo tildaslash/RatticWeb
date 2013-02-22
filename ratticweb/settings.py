@@ -9,6 +9,18 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+# SMTP Mail Opts
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_HOST = 'localhost'
+#EMAIL_PORT = 
+#EMAIL_USE_TLS = True
+#EMAIL_HOST_USER = 'root'
+#EMAIL_HOST_PASSWORD = ''
+
+# Dev Mail Opts
+#EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+#EMAIL_FILE_PATH = '/tmp/rattic-messages' 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -24,7 +36,7 @@ DATABASES = {
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Australia/Melbourne'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
