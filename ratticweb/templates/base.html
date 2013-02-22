@@ -38,7 +38,7 @@ function search() {
                         <a class="btn btn-danger" href="/account/logout/">Logout</a>
                     <h4>Tags</h4>
                     {% for tag in alltags %}
-                        <p><a href="/cred/list-by-tag/{{ tag.id }}/">{{ tag.name }}</a></p>
+                        <p><a href="/cred/tagdelete/{{ tag.id }}/"><i class="icon-minus"></i> </a><a href="/cred/list-by-tag/{{ tag.id }}/">{{ tag.name }}</a></p>
                     {% endfor %}
                {% else %}
                    <h4>Login</h4>
