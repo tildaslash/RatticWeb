@@ -11,6 +11,7 @@ If you decide to use RatticWeb seperately from its other components (which don't
 * Tools like <a href=="http://www.ossec.net/">OSSEC</a> are your friend.
 
 Requirements:
+* <a href="https://pypi.python.org/pypi/pip">pip</a> (don't need, but useful)
 * <a href="http://pypi.python.org/pypi/Django/1.4.3">Django 1.4.3</a>
 * <a href="http://south.readthedocs.org/en/0.7.6/">Django South</a>
 
@@ -18,6 +19,7 @@ Support:
 If you have any requests or generally support tweet <a href="http://twitter.com/ratticdb">@RatticDB</a>
 
 Dev Setup:
+* Install requirements, if you need help seek out pydocs and your OS documentation. 
 * Checkout the code
 * ```mkdir db```
 * ```./manage.py syncdb```
