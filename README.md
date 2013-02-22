@@ -1,7 +1,7 @@
 RatticWeb
 =========
 
-RatticWeb is the website part of the Rattic password management solution.
+RatticWeb is the website part of the Rattic password management solution, which allows you to easily manage your users and passwords.
 
 If you decide to use RatticWeb seperately from its other components (which don't exist yet) you should take the following into account:
 * The webpage should be served over HTTPS only, apart from a redirect from normal HTTP.
@@ -15,8 +15,8 @@ Requirements:
 * <a href="http://pypi.python.org/pypi/Django/1.4.3">Django 1.4.3</a>
 * <a href="http://south.readthedocs.org/en/0.7.6/">Django South</a>
 
-Support:
-If you have any requests or generally support tweet <a href="http://twitter.com/ratticdb">@RatticDB</a>
+Support and Known Issues:
+* Through <a href="twitter.com/RatticDB">twitter</a> or<a href="https://github.com/tildaslash/RatticWeb/issues?state=open">Github Issues</a>
 
 Dev Setup:
 * Install requirements, if you need help seek out pydocs and your OS documentation. 
@@ -26,7 +26,6 @@ Dev Setup:
 * ```./manage.py migrate```
 * ```./manage.py runserver```
 * Profit!
-
 
 
 
