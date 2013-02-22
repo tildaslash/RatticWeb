@@ -62,6 +62,14 @@ class CredAudit(models.Model):
 class CredAuditAdmin(admin.ModelAdmin):
     list_display = ('audittype', 'user', 'cred', 'time')
 
+class CredChangeQ(models.Model):
+    cred = models.ForeignKey(Cred)
+    time = models.DateTimeField(auto_now_add=True)
+
+class CredChangeQAdmin(admin.ModelAdmin):
+    list_display = ('cred', 'time')
+
 admin.site.register(CredAudit, CredAuditAdmin)
 admin.site.register(Cred, CredAdmin)
 admin.site.register(Tag)
+admin.site.register(CredChangeQ, CredChangeQAdmin)

@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
-from models import Cred, CredForm, CredAudit, TagForm, Tag
+from models import Cred, CredForm, CredAudit, TagForm, Tag, CredChangeQ
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 
@@ -58,6 +58,9 @@ def edit(request, cred_id):
             for c in form.changed_data:
                 if c not in Cred.METADATA:
                     chgtype = CredAudit.CREDCHANGE
+            # Clear pre-existing change queue items
+            if chgtype == CredAudit.CREDCHANGE:
+                CredChangeQ.objects.filter(cred=cred).delete()
             # Create audit log
             CredAudit(audittype=chgtype, cred=cred, user=request.user).save()
             form.save()
@@ -115,3 +118,11 @@ def tagdelete(request, tag_id):
         return HttpResponseRedirect('/cred/list')
     return render(request, 'cred_tagdelete.html',{})
 
+@login_required
+def addtoqueue(request, cred_id):
+    cred = get_object_or_404(Cred, pk=cred_id)
+    CredChangeQ(cred=cred).save()
+    # Check user has perms
+    if cred.group not in request.user.groups.all():
+        raise Http404
+    return HttpResponseRedirect('/cred/list')
