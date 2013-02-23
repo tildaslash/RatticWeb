@@ -17,41 +17,10 @@ function search() {
 </head>
 <body>
 <div class="container-fluid">
-    <div class="navbar">
-        <div class="navbar-inner">
-            <a class="brand" href="/">RatticDB</a>
-            <ul class="nav">
-                <li><a href="/">Passwords</a></li>
-		{% if user.is_authenticated %}<li><a href="/cred/viewqueue/">Change Queue{% if changeqcount > 0 %} <span class="badge">{{ changeqcount }}</span>{% endif %}</a></li>{% endif %}
-                {% if user.is_staff %}<li><a href="/staff/">Staff Management</a></li>{% endif %}
-            </ul>
-            <form id="search" onsubmit="return search()" class="navbar-search pull-right">
-                 <input type="text" name="box" class="search-query" placeholder="Search">
-            </form>
-        </div>
-    </div>
+     {% include "navbar.html" %}
      <div class="row-fluid">
           <div class="span2">
-                {% if user.is_authenticated %}
-                    <h4>You</h4>
-                        <p>Welcome {{ user.username|title }}.<p>
-                        <a class="btn disabled" href="#">Profile</a>
-                        <a class="btn btn-danger" href="/account/logout/">Logout</a>
-                    <h4>Tags</h4>
-                    {% for tag in alltags %}
-                        <p><a href="/cred/tagdelete/{{ tag.id }}/"><i class="icon-minus"></i> </a><a href="/cred/list-by-tag/{{ tag.id }}/">{{ tag.name }}</a></p>
-                    {% endfor %}
-                    <a class="btn" href="/cred/tagadd/"><i class="icon-plus"></i> Add Tag</a>
-               {% else %}
-                   <h4>Login</h4>
-                   <form class="form-inline" method="post" action="/account/login/">{% csrf_token %}
-                      <label for="id_username">Username</label><input class="parent-sized" id="id_username" type="text" name="username" maxlength="30" />
-                      <label for="id_password">Password</label><input class="parent-sized" type="password" name="password" id="id_password" />
-                   <input type="submit" class="btn" value="login"/>
-                   <p><a href="/account/reset">Forgotten password?</a></p>
-                   <input type="hidden" name="next" value="" />
-                   </form>
-               {% endif %}
+              {% include "sidebar.html" %}
           </div>
           <div class="span10">
               {% block content %}{% endblock %}

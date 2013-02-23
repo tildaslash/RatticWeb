@@ -13,13 +13,15 @@ def list(request):
 def list_by_tag(request, tag_id):
     tag = get_object_or_404(Tag, pk=tag_id)
     cred = Cred.objects.for_user(request.user).filter(tags=tag)
-    return render(request, 'cred_list.html', {'credlist': cred, 'tag': tag})
+    title = 'Passwords for tag: ' + tag.name
+    return render(request, 'cred_list.html', {'credlist': cred, 'tag': tag, 'credtitle': title})
 
 @login_required
 def list_by_search(request, search):
     cred = Cred.objects.for_user(request.user).filter(title__contains=search)
     tag = Tag.objects.filter(name__contains=search)
-    return render(request, 'cred_list.html', {'credlist': cred, 'tag':tag, 'showtaglist':True})
+    title = 'Passwords for search: ' + search
+    return render(request, 'cred_list.html', {'credlist': cred, 'tag':tag, 'showtaglist':True, 'credtitle': title})
 
 @login_required
 def detail(request, cred_id):
