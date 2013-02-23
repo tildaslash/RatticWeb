@@ -15,6 +15,12 @@
 </tr>
 {% endfor %}
 </table>
+{% if showtaglist %}
+<h1>Matched Tags</h1>
+<ul>
+{% for t in tag %}<li><a href="/cred/list-by-tag/{{ t.id }}">{{ t.name }}</a></li>{% endfor %}
+</ul>
+{% endif %}
 <a class="btn" href="/cred/add/">Add New Password</a>
 <a class="btn" href="/cred/tagadd/">Add New Tag</a>
 {% endblock %}
