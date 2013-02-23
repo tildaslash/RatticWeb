@@ -62,8 +62,17 @@ class CredAudit(models.Model):
 class CredAuditAdmin(admin.ModelAdmin):
     list_display = ('audittype', 'user', 'cred', 'time')
 
+class CredChangeQManager(models.Manager):
+    def add_to_changeq(self, cred):
+        return self.get_or_create(cred=cred)
+
+    def for_user(self, user):
+        return self.filter(cred__group__in=user.groups.all())
+
 class CredChangeQ(models.Model):
-    cred = models.ForeignKey(Cred)
+    objects = CredChangeQManager()
+
+    cred = models.ForeignKey(Cred, unique=True)
     time = models.DateTimeField(auto_now_add=True)
 
 class CredChangeQAdmin(admin.ModelAdmin):

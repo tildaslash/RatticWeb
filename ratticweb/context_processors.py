@@ -1,8 +1,11 @@
 from cred.models import Tag, CredChangeQ
 
 def base_template_reqs(request):
-    return {'alltags': Tag.objects.all(),
-            'changeqcount': CredChangeQ.objects.all().count(),
-           }
+    cntx = {'alltags': Tag.objects.all(),}
+
+    if request.user.is_authenticated():
+        cntx['qcount'] = CredChangeQ.objects.for_user(request.user).count()
+
+    return cntx
 
 
