@@ -16,7 +16,7 @@ Requirements:
 * <a href="http://south.readthedocs.org/en/0.7.6/">Django South</a>
 
 Support and Known Issues:
-* Through <a href="twitter.com/RatticDB">twitter</a> or<a href="https://github.com/tildaslash/RatticWeb/issues?state=open">Github Issues</a>
+* Through <a href="http://twitter.com/RatticDB">twitter</a> or <a href="https://github.com/tildaslash/RatticWeb/issues?state=open">Github Issues</a>
 
 Dev Setup:
 * Install requirements, if you need help seek out pydocs and your OS documentation. 
