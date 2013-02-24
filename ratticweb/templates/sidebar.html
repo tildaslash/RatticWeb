@@ -1,7 +1,7 @@
 {% if user.is_authenticated %}
      <h4>You</h4>
          <p>Welcome {{ user.username|title }}.<p>
-         <a class="btn disabled" href="#">Profile</a>
+         <a class="btn disabled" href="/account/profile">Profile</a>
          <a class="btn btn-danger" href="/account/logout/">Logout</a>
      <h4>Tags</h4>
      {% for tag in alltags %}
