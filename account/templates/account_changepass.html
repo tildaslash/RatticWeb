@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Setting New password{% endblock %}
+
+{% block content %}
+<p>Please enter your new password twice.<br />
+   So we can verify you typed it in correctly.</p>
+<form class="form-horizontal" action="" method="post">
+{% csrf_token %}
+   {% for field in form %}
+        <div class="control-group">
+            {{ field.errors }}
+            <label class="control-label" for="{{ field.html_name }}">{{ field.label }}</label>
+            <div class="controls">
+                {{ field }}
+            </div>
+        </div>
+    {% endfor %}
+    <div class="controls">
+        <input class="btn btn-primary" type="submit" value="Change Password" />
+    </div>
+</form>
+{% endblock %}
