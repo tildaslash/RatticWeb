@@ -2,9 +2,9 @@
     <div class="navbar-inner">
         <a class="brand" href="/">RatticDB</a>
         <ul class="nav">
-            <li><a href="/cred/list/">Passwords</a></li>
-            {% if user.is_authenticated %}<li><a href="/cred/viewqueue/">Change Queue{% if changeqcount > 0 %} <span class="badge">{{ changeqcount }}</span>{% endif %}</a></li>{% endif %}
-            {% if user.is_staff %}<li><a href="/staff/">Staff Management</a></li>{% endif %}
+          <li {% if pageurl == "/cred/list/" %}class="active"{% endif %}><a href="/cred/list/">Passwords</a></li>
+            {% if user.is_authenticated %}<li {% if pageurl == "/cred/viewqueue/" %}class="active"{% endif %}><a href="/cred/viewqueue/">Change Queue{% if changeqcount > 0 %} <span class="badge">{{ changeqcount }}</span>{% endif %}</a></li>{% endif %}
+            {% if user.is_staff %}<li {% if pageurl == "/staff/" %}class="active"{% endif %}><a href="/staff/">Staff Management</a></li>{% endif %}
         </ul>
         <form id="search" onsubmit="return credsearch()" class="navbar-search pull-right">
              <input type="text" name="box" class="search-query" placeholder="Search">
