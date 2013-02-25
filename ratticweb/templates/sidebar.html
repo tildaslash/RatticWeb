@@ -1,20 +1,22 @@
+{% load future %}
+
 {% if user.is_authenticated %}
      <h4>You</h4>
          <p>Welcome {{ user.username|title }}.<p>
-         <a class="btn" href="/account/profile">Profile</a>
-         <a class="btn btn-danger" href="/account/logout/">Logout</a>
+         <a class="btn" href="{% url "account.views.profile" %}">Profile</a>
+         <a class="btn btn-danger" href="{% url "django.contrib.auth.views.logout" %}">Logout</a>
      <h4>Tags</h4>
      {% for tag in alltags %}
-         <p><a href="/cred/tagdelete/{{ tag.id }}/"><i class="icon-minus"></i> </a><a href="/cred/list-by-tag/{{ tag.id }}/">{{ tag.name }}</a></p>
+     <p><a href="{% url "cred.views.tagdelete" tag.id %}"><i class="icon-minus"></i> </a><a href="{% url "cred.views.list_by_tag" tag.id %}">{{ tag.name }}</a></p>
      {% endfor %}
-     <a class="btn" href="/cred/tagadd/"><i class="icon-plus"></i> Add Tag</a>
+     <a class="btn" href="{% url "cred.views.tagadd" %}"><i class="icon-plus"></i> Add Tag</a>
 {% else %}
     <h4>Login</h4>
-    <form class="form-inline" method="post" action="/account/login/">{% csrf_token %}
+    <form class="form-inline" method="post" action="{% url "django.contrib.auth.views.login" %}">{% csrf_token %}
        <label for="id_username">Username</label><input class="parent-sized" id="id_username" type="text" name="username" maxlength="30" />
        <label for="id_password">Password</label><input class="parent-sized" type="password" name="password" id="id_password" />
     <input type="submit" class="btn" value="login"/>
-    <p><a href="/account/reset">Forgotten password?</a></p>
+    <p><a href="{% url "django.contrib.auth.views.password_reset" %}">Forgotten password?</a></p>
     <input type="hidden" name="next" value="" />
     </form>
 {% endif %}
