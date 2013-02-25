@@ -5,6 +5,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User, Group
 from models import UserForm
+from cred.models import CredAudit
 
 @staff_member_required
 def home(request):
@@ -41,6 +42,13 @@ def userdelete(request, uid):
         user.delete()
         return HttpResponseRedirect('/staff/')
     return render(request, 'staff_userdetail.html', {'user' : user, 'delete':True})
+
+# Credential view
+@staff_member_required
+def audit_by_cred(request, cred_id):
+    logs = CredAudit.objects.filter(cred__id=cred_id).order_by('time')
+
+    return render(request, 'staff_audit.html', { 'logs': logs })
 
 # New User
 class NewUser(FormView):

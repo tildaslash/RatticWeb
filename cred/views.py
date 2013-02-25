@@ -26,19 +26,27 @@ def list_by_search(request, search):
 @login_required
 def detail(request, cred_id):
     cred = get_object_or_404(Cred, pk=cred_id)
+
     CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
+
     # Check user has perms
     if cred.group not in request.user.groups.all():
         raise Http404
+
     lastchange = CredAudit.objects.filter(
             cred=cred,
             audittype__in=[CredAudit.CREDCHANGE, CredAudit.CREDADD],
             ).latest()
 
+    if request.user.is_staff:
+        credlogs = cred.logs.order_by('time')[:5]
+    else:
+        credlogs = None
+
     return render(request, 'cred_detail.html', {
         'cred' : cred,
-        'showaudit': request.user.is_staff,
-        'lastchange': lastchange
+        'credlogs': credlogs,
+        'lastchange': lastchange,
         })
 
 @login_required

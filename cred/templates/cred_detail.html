@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load future %}
+
 {% block content %}
 {% if delete %}
 <div class="alert alert-error">Deleting this password will delete all audit logs for this password</div>
@@ -22,13 +24,14 @@
     <a class="btn btn-primary" href="/">Back</a>
     <a class="btn" href="/cred/edit/{{ cred.id }}/">Edit</a>
     <a class="btn" href="/cred/addtoqueue/{{ cred.id }}/">Add to Change Queue</a>
-    {% if showaudit %}
+    {% if credlogs %}
         <h2>Audit Logs</h2>
         <table class="table table-striped table-bordered table-condensed">
         <tr><th>Action</th><th>User</th><th>When</th></tr>
-        {% for audit in cred.logs.all %}
+        {% for audit in credlogs %}
           <tr><td>{{ audit.get_audittype_display }}</td><td>{{ audit.user.username }}</td><td>{{ audit.time }}</td></tr>
         {% endfor %}
+	<tr><td colspan="3"><a href="{% url "staff.views.audit_by_cred" cred.id %}">More logs...</a></td></tr>
         </table>
     {% endif %}
 {% endif %}

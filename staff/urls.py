@@ -12,6 +12,7 @@ urlpatterns = patterns('staff.views',
     url(r'^groupdetail/(?P<gid>\d+)/$','groupdetail'),
     url(r'^groupdelete/(?P<gid>\d+)/$','groupdelete'),
     url(r'^userdelete/(?P<uid>\d+)/$','userdelete'),
+    url(r'^audit-by-cred/(?P<cred_id>\d+)/$','audit_by_cred'),
 ) + patterns('',
     # Class based views
     url(r'^groupadd/$', staff_member_required(CreateView.as_view(model=Group, form_class=GroupForm, template_name='staff_groupedit.html',  success_url='/staff/'))),
