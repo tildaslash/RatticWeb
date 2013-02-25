@@ -59,6 +59,9 @@ class CredAudit(models.Model):
     user = models.ForeignKey(User, related_name='credlogs')
     time = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        get_latest_by = 'time'
+
 class CredAuditAdmin(admin.ModelAdmin):
     list_display = ('audittype', 'user', 'cred', 'time')
 
