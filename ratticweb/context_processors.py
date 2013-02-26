@@ -1,8 +1,9 @@
 from cred.models import Tag, CredChangeQ
+from django.db.models import Count
 
 def base_template_reqs(request):
     cntx = {
-        'alltags': Tag.objects.all(),
+        'alltags': Tag.objects.annotate(num_creds=Count('child_creds')).order_by('-num_creds')[:5],
         'pageurl': request.path,
     }
 
