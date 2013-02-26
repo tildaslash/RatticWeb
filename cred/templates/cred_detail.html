@@ -9,7 +9,7 @@
 <tr><th>Title</th><td>{{ cred.title }}</td></tr>
 <tr><th>Group</th><td><a href="/staff/groupdetail/{{ cred.group.id}}/">{{ cred.group.name }}</a></td></tr>
 <tr><th>Username</th><td>{{ cred.username }}</td></tr>
-<tr><th>Password</th><td>{{ cred.password }}</td></tr>
+<tr><th>Password</th><td><span id="password">{{ cred.password }}</span></td></tr>
 <tr><th>Last Change</th><td>{{ lastchange.time }}</td></tr>
 </table>
 <strong>Description:</strong>
