@@ -17,6 +17,11 @@ def list_by_tag(request, tag_id):
     return render(request, 'cred_list.html', {'credlist': cred, 'tag': tag, 'credtitle': title})
 
 @login_required
+def tags(request):
+    tags = Tag.objects.all()
+    return render(request, 'cred_tags.html', {'tags': tags})
+
+@login_required
 def list_by_search(request, search):
     cred = Cred.objects.for_user(request.user).filter(title__contains=search)
     tag = Tag.objects.filter(name__contains=search)

@@ -5,7 +5,7 @@
          <p>Welcome {{ user.username|title }}.<p>
          <a class="btn" href="{% url "account.views.profile" %}">Profile</a>
          <a class="btn btn-danger" href="{% url "django.contrib.auth.views.logout" %}">Logout</a>
-     <h4>Tags</h4>
+     <h4><a href="{% url "cred.views.tags"  %}">Tags</a></h4>
      {% for tag in alltags %}
      <p><a href="{% url "cred.views.tagdelete" tag.id %}"><i class="icon-minus"></i> </a><a href="{% url "cred.views.list_by_tag" tag.id %}">{{ tag.name }}</a></p>
      {% endfor %}
