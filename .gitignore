@@ -1,3 +1,4 @@
 db/ratticdb
 *.pyc
 *.swp
+ratticweb/local_settings.py
