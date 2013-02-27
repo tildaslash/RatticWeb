@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.contrib.admin.views.decorators import staff_member_required
@@ -17,7 +18,9 @@ def home(request):
 @staff_member_required
 def userdetail(request, uid):
     user = get_object_or_404(User, pk=uid)
-    return render(request, 'staff_userdetail.html', {'user' : user})
+    credlogs = CredAudit.objects.filter(user=user, cred__group__in=request.user.groups.all())[:5]
+    morelink = reverse('staff.views.audit_by_user', args=(user.id,))
+    return render(request, 'staff_userdetail.html', {'user' : user, 'credlogs':credlogs, 'morelink':morelink})
 
 # group detail
 @staff_member_required
@@ -47,6 +50,12 @@ def userdelete(request, uid):
 @staff_member_required
 def audit_by_cred(request, cred_id):
     logs = CredAudit.objects.filter(cred__id=cred_id).order_by('time')
+
+    return render(request, 'staff_audit.html', { 'logs': logs })
+
+@staff_member_required
+def audit_by_user(request, user_id):
+    logs = CredAudit.objects.filter(user__id=user_id).order_by('time')
 
     return render(request, 'staff_audit.html', { 'logs': logs })
 

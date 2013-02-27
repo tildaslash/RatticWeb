@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from models import Cred, CredForm, CredAudit, TagForm, Tag, CredChangeQ
 from django.http import Http404
@@ -45,13 +46,16 @@ def detail(request, cred_id):
 
     if request.user.is_staff:
         credlogs = cred.logs.order_by('time')[:5]
+        morelink = reverse('staff.views.audit_by_cred', args=(cred.id,))
     else:
         credlogs = None
+        morelink = None
 
     return render(request, 'cred_detail.html', {
         'cred' : cred,
         'credlogs': credlogs,
         'lastchange': lastchange,
+        'morelink': morelink
         })
 
 @login_required
