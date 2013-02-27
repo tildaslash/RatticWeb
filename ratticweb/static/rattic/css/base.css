@@ -1,3 +1,9 @@
 .parent-sized {
   width: 100%;
 }
+
+div.copybutton {
+  position: relative;
+  display: inline;
+}
+
