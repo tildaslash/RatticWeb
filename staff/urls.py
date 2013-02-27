@@ -16,8 +16,24 @@ urlpatterns = patterns('staff.views',
     url(r'^audit-by-user/(?P<user_id>\d+)/$','audit_by_user'),
 ) + patterns('',
     # Class based views
-    url(r'^groupadd/$', staff_member_required(CreateView.as_view(model=Group, form_class=GroupForm, template_name='staff_groupedit.html',  success_url='/staff/'))),
-    url(r'^groupedit/(?P<pk>\d+)/$', staff_member_required(UpdateView.as_view(model=Group, form_class=GroupForm, template_name='staff_groupedit.html',  success_url='/staff/'))),
+    url(r'^groupadd/$', staff_member_required(
+        CreateView.as_view(
+            model=Group,
+            form_class=GroupForm,
+            template_name='staff_groupedit.html',
+            success_url='/staff/'
+            )
+        )
+    ),
+    url(r'^groupedit/(?P<pk>\d+)/$', staff_member_required(
+        UpdateView.as_view(
+            model=Group, 
+            form_class=GroupForm, 
+            template_name='staff_groupedit.html', 
+            success_url='/staff/'
+            )
+        )
+    ),
 ) + patterns('',
     # Custom class based views
     url(r'^useradd/$', NewUser.as_view()),
