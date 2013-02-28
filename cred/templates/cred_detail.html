@@ -9,7 +9,7 @@
 <tr><th>Title</th><td>{{ cred.title }}</td></tr>
 <tr><th>Group</th><td><a href="/staff/groupdetail/{{ cred.group.id}}/">{{ cred.group.name }}</a></td></tr>
 <tr><th>Username</th><td>{{ cred.username }}</td></tr>
-<tr><th>Password</th><td><span id="password">{{ cred.password }}</span> <a id="hidepass" onclick="hidepass()" class="btn btn-mini">Hide Password</a> <a id="showpass" onclick="showpass()" class="btn btn-mini">Show Password</a> <div class="copybutton"><a id="toclipboard" class="btn btn-mini">Copy</a> <a id="clearclip" class="btn btn-mini">Clear Clipboard</a></div></td></tr>
+<tr><th>Password</th><td><span id="password">{{ cred.password }}</span> <a id="hidepass" onclick="hidepass()" class="btn btn-mini"><i class="icon-eye-close"></i> Hide</a> <a id="showpass" onclick="showpass()" class="btn btn-mini"><i class="icon-eye-open"></i> Show</a> <div class="copybutton"><a id="toclipboard" class="btn btn-mini">Copy</a> <a id="clearclip" class="btn btn-mini">Clear Clipboard</a></div></td></tr>
 <tr><th>Last Change</th><td>{{ lastchange.time }}</td></tr>
 </table>
 <strong>Description:</strong>
