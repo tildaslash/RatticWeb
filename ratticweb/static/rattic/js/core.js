@@ -8,7 +8,10 @@ $(document).ready(function(){
 
     $('a#toclipboard').zclip({
         path:'/static/zclip/1.1.1/ZeroClipboard.swf',
-        copy:$('span#password').text()
+        copy:$('span#password').text(),
+        afterCopy:function(){
+            alert("Copied to clipboard. Remember to remove it when done.");
+        }
     });
 
 });
