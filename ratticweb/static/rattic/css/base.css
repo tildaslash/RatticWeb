@@ -7,3 +7,11 @@ div.copybutton {
   display: inline;
 }
 
+span#password {
+  display: none;
+}
+
+a#hidepass {
+  display: none;
+}
+
