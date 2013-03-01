@@ -4,7 +4,7 @@ from tastypie.resources import ModelResource
 from tastypie.authorization import Authorization
 from tastypie.exceptions import Unauthorized
 from tastypie import fields
-from cred.models import Cred, Tag
+from cred.models import Cred, Tag, CredAudit
 
 ## Auth 
 
@@ -16,6 +16,7 @@ class RatticAuthorization(Authorization):
     def read_detail(self, object_list, bundle):
         # In auth groups? if not computer says no 
         if bundle.obj.group in bundle.request.user.groups.all():
+        	CredAudit(audittype=CredAudit.CREDVIEW, cred=bundle.obj, user=bundle.request.user).save()
         	return True
         else:
         	raise Unauthorized("Not yet implemented.")
@@ -56,3 +57,7 @@ class CredResource(ModelResource):
         authentication = SessionAuthentication()
         authorization = RatticAuthorization()
 
+    def dehydrate(self, bundle):
+    	if self.get_resource_uri(bundle) != bundle.request.path:
+    		del bundle.data['password']
+    	return bundle
