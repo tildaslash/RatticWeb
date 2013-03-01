@@ -6,6 +6,7 @@
 <tr><th>Username</th><td>{{ user.username }}</td></tr>
 <tr><th>Email</th><td>{{ user.email }}</td></tr>
 <tr><th>Groups</th><td>{% for g in user.groups.all %}{{ g.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td></tr>
+<tr><th>API Key</th><td>{{ apikey.key }}</td></tr>
 </table>
 <a class="btn btn-primary" href="/account/changepass">Change password</a>
 {% endblock %}

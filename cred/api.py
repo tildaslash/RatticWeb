@@ -1,13 +1,15 @@
 from django.db import models
-from tastypie.authentication import SessionAuthentication
+from django.contrib.auth.models import User
+
+from tastypie import fields
+from tastypie.authentication import SessionAuthentication, MultiAuthentication, ApiKeyAuthentication
 from tastypie.resources import ModelResource
 from tastypie.authorization import Authorization
 from tastypie.exceptions import Unauthorized
-from tastypie import fields
+
 from cred.models import Cred, Tag, CredAudit
 
 ## Auth
-
 class RatticAuthorization(Authorization):
     def read_list(self, object_list, bundle):
         # This assumes a ``QuerySet`` from ``ModelResource``.
@@ -46,7 +48,7 @@ class TagResource(ModelResource):
     class Meta:
         queryset = Tag.objects.all()
         resource_name = 'tag'
-        authentication = SessionAuthentication()
+        authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
         authorization  = RatticAuthorization()
 
 class CredResource(ModelResource):
@@ -54,7 +56,7 @@ class CredResource(ModelResource):
     class Meta:
         queryset = Cred.objects.all()
         resource_name = 'cred'
-        authentication = SessionAuthentication()
+        authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
         authorization = RatticAuthorization()
 
     def dehydrate(self, bundle):
