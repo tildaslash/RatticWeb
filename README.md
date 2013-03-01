@@ -14,6 +14,7 @@ Requirements:
 * <a href="https://pypi.python.org/pypi/pip">pip</a> (don't need, but useful)
 * <a href="http://pypi.python.org/pypi/Django/1.4.3">Django 1.4.3</a>
 * <a href="http://south.readthedocs.org/en/0.7.6/">Django South</a>
+* <a href="http://tastypieapi.org/">Django Tastypie</a>
 
 Support and Known Issues:
 * Through <a href="http://twitter.com/RatticDB">twitter</a> or <a href="https://github.com/tildaslash/RatticWeb/issues?state=open">Github Issues</a>
