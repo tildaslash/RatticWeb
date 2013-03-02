@@ -2,10 +2,30 @@
 
 <h2>Audit Logs</h2>
 <table class="table table-striped table-bordered table-condensed">
-<tr><th>Action</th><th>User</th><th>When</th></tr>
+<thead>
+<tr>
+    <th>Action</th>
+    {% if type == 'user' %}
+         <th>User</th>
+    {% else %}
+         <th>Credential</th>
+    {% endif %}
+    <th>When</th>
+</tr>
+</thead>
+<tbody>
 {% for audit in credlogs %}
-  <tr><td>{{ audit.get_audittype_display }}</td><td>{{ audit.user.username }}</td><td>{{ audit.time }}</td></tr>
+<tr>
+    <td>{{ audit.get_audittype_display }}</td>
+    {% if type == 'user' %}
+        <td><a href="{% url "staff.views.userdetail" audit.user.id %}">{{ audit.user.username }}</a></td>
+    {% else %}
+    <td><a href="{% url "cred.views.detail" audit.cred.id %}">{{ audit.cred.title }}</a></td>
+    {% endif %}
+    <td>{{ audit.time }}</td>
+</tr>
 {% endfor %}
+</tbody>
 <tr><td colspan="3"><a href="{{ morelink }}">More logs...</a></td></tr>
 </table>
 

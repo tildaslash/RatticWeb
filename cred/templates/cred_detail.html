@@ -25,7 +25,7 @@
     <a class="btn" href="/cred/edit/{{ cred.id }}/">Edit</a>
     <a class="btn" href="/cred/addtoqueue/{{ cred.id }}/">Add to Change Queue</a>
     {% if credlogs %}
-        {% include "credaudit_list.html" %}
+        {% include "credaudit_list.html" with type='user' %}
     {% endif %}
 {% endif %}
 {% endblock %}
