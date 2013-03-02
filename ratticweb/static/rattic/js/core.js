@@ -36,3 +36,8 @@ function hidepass(){
     $('a#hidepass').css('display', 'none')
 }
 
+function copycheckbox(allname, name){
+    var checkval = $('input[name="' + allname + '"]').is(':checked');
+    $('input[name="' + name + '"]').prop('checked', checkval);
+}
+
