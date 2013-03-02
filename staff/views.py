@@ -137,6 +137,20 @@ class UpdateUser(UpdateView):
     def form_valid(self, form):
         if form.cleaned_data['newpass'] is not None:
             form.instance.set_password(form.cleaned_data['newpass'])
+        # If user is having groups removed we want change advice for those
+        # groups
+        if form.instance.is_active and 'groups' in form.changed_data:
+            # Get a list of the missing groups
+            missing_groups = []
+            for g in form.instance.groups.all():
+                if g not in form.cleaned_data['groups']:
+                    missing_groups.append('group=' + str(g.id))
+
+            # The user may have just added groups
+            if len(missing_groups) > 0:
+                self.success_url = reverse('staff.views.change_advice_by_user',
+                    args=(form.instance.id,)) + '?' + '&'.join(missing_groups)
+        # If user is becoming inactive we want to redirect to change advice
         if 'is_active' in form.changed_data and not form.instance.is_active:
             self.success_url = reverse('staff.views.change_advice_by_user', args=(form.instance.id,))
         return super(UpdateUser, self).form_valid(form)
