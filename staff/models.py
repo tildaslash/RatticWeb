@@ -33,6 +33,6 @@ class UserForm(forms.ModelForm):
         return cleaned_data
 
 class GroupForm(forms.ModelForm):
-    class Meta: 
+    class Meta:
         model = Group
         fields = ('name',)

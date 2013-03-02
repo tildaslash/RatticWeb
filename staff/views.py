@@ -5,12 +5,13 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormVi
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User, Group
+from django.db.models import Q
 from models import UserForm
-from cred.models import CredAudit
+from cred.models import CredAudit, Cred
 
 @staff_member_required
 def home(request):
-    userlist = User.objects.all() 
+    userlist = User.objects.all()
     grouplist = Group.objects.all()
     return render(request, 'staff_home.html', {'userlist': userlist, 'grouplist': grouplist})
 
@@ -59,6 +60,45 @@ def audit_by_user(request, user_id):
 
     return render(request, 'staff_audit.html', { 'logs': logs })
 
+@staff_member_required
+def change_advice_by_user_and_group(request, user_id, group_id):
+    user = get_object_or_404(User, pk=user_id)
+
+    # If we were given a group, use that, otherwise use all the users groups
+    if group_id is not None:
+        group = get_object_or_404(Group, pk=group_id)
+        groups = (group,)
+    else:
+        groups = user.groups.all()
+
+    logs = CredAudit.objects.filter(
+            # Get a list of changes done
+            Q(cred__group__in=groups, audittype=CredAudit.CREDCHANGE) |
+            # Combined with a list of view from this user
+            Q(cred__group__in=groups, audittype=CredAudit.CREDVIEW, user=user)
+            ).order_by('time')
+
+    # Go through each entry in time order
+    tochange = []
+    for l in logs:
+        # If this user viewed the password then change it
+        if l.audittype == CredAudit.CREDVIEW:
+            tochange.append(l.cred.id)
+        # If there was a change done not by this user, dont change it
+        if l.audittype == CredAudit.CREDCHANGE and l.user != user:
+            if l.cred.id in tochange:
+                tochange.remove(l.cred.id)
+
+    # Fetch the list of credentials to change from the DB for the view
+    creds = Cred.objects.filter(id__in=tochange)
+
+    return render(request, 'staff_changeadvice.html', { 'creds': creds,
+        'user':user })
+
+@staff_member_required
+def change_advice_by_user(request, user_id):
+    return change_advice_by_user_and_group(request, user_id, None)
+
 # New User
 class NewUser(FormView):
     form_class = UserForm
@@ -77,7 +117,7 @@ class NewUser(FormView):
         user.save()
         return super(NewUser, self).form_valid(form)
 
-# Edit Users 
+# Edit Users
 class UpdateUser(UpdateView):
     model = User
     form_class = UserForm
@@ -89,9 +129,11 @@ class UpdateUser(UpdateView):
     def dispatch(self, *args, **kwargs):
         return super(UpdateUser, self).dispatch(*args, **kwargs)
 
-    # Create the user, set password to newpass
+    # If the password changed, set password to newpass
     def form_valid(self, form):
         if form.cleaned_data['newpass'] is not None:
             form.instance.set_password(form.cleaned_data['newpass'])
+        if not form.instance.is_active:
+            self.success_url = reverse('staff.views.change_advice_by_user', args=(form.instance.id,))
         return super(UpdateUser, self).form_valid(form)
 

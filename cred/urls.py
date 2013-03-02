@@ -14,4 +14,5 @@ urlpatterns = patterns('cred.views',
     url(r'^tagedit/(?P<tag_id>\d+)/$', 'tagedit'),
     url(r'^tagdelete/(?P<tag_id>\d+)/$', 'tagdelete'),
     url(r'^addtoqueue/(?P<cred_id>\d+)/$', 'addtoqueue'),
+    url(r'^bulkaddtoqueue/$', 'bulkaddtoqueue'),
 )

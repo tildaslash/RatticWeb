@@ -159,5 +159,16 @@ def addtoqueue(request, cred_id):
     if cred.group not in request.user.groups.all():
         raise Http404
     CredChangeQ.objects.add_to_changeq(cred)
-    return HttpResponseRedirect('/cred/viewqueue')
+    return HttpResponseRedirect('/cred/viewqueue/')
+
+@login_required
+def bulkaddtoqueue(request):
+    tochange = Cred.objects.filter(id__in=request.POST.getlist('tochange'))
+    usergroups = request.user.groups.all()
+    for c in tochange:
+        # Staff have access to add bulk, so change advice can be used
+        if request.user.is_staff or (cred.group not in usergroups):
+            CredChangeQ.objects.add_to_changeq(c)
+
+    return HttpResponseRedirect('/cred/viewqueue/')
 
