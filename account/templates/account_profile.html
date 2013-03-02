@@ -8,6 +8,7 @@
 <tr><th>Groups</th><td>{% for g in user.groups.all %}{{ g.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td></tr>
 <tr><th>API Key</th><td>{{ apikey.key }}</td></tr>
 </table>
-<a class="btn btn-primary" href="/account/changepass">Change password</a>
+<a class="btn btn-primary" href="/account/changepass/">Change password</a>
+<a class="btn" href="/account/newapikey/">Reset API Key</a>
 {% endblock %}
 

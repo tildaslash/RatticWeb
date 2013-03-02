@@ -14,3 +14,13 @@ def profile(request):
         'apikey': api_key,
     })
 
+def newapikey(request):
+    try:
+        api_key = ApiKey.objects.get(user=request.user)
+        api_key.delete()
+        api_key = ApiKey.objects.create(user=request.user)
+    except ObjectDoesNotExist:
+        api_key = ApiKey.objects.create(user=request.user)
+
+    return HttpResponseRedirect('/account/profile/')
+

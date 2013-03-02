@@ -1,8 +1,9 @@
 from django.conf.urls import patterns, include, url
-from views import profile
+from views import profile, newapikey
 
 urlpatterns = patterns('',
     url(r'^profile/$', profile, {}),
+    url(r'^newapikey/$', newapikey, {}),
 
     url(r'^login/$', 'django.contrib.auth.views.login', {
         'template_name': 'account_login.html'}),
