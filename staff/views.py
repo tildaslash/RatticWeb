@@ -21,7 +21,7 @@ def userdetail(request, uid):
     user = get_object_or_404(User, pk=uid)
     credlogs = CredAudit.objects.filter(user=user, cred__group__in=request.user.groups.all())[:5]
     morelink = reverse('staff.views.audit_by_user', args=(user.id,))
-    return render(request, 'staff_userdetail.html', {'user' : user, 'credlogs':credlogs, 'morelink':morelink})
+    return render(request, 'staff_userdetail.html', {'viewuser' : user, 'credlogs':credlogs, 'morelink':morelink})
 
 # group detail
 @staff_member_required
@@ -93,7 +93,7 @@ def change_advice_by_user_and_group(request, user_id, group_id):
     creds = Cred.objects.filter(id__in=tochange)
 
     return render(request, 'staff_changeadvice.html', { 'creds': creds,
-        'user':user })
+        'viewuser':user })
 
 @staff_member_required
 def change_advice_by_user(request, user_id):
@@ -133,7 +133,7 @@ class UpdateUser(UpdateView):
     def form_valid(self, form):
         if form.cleaned_data['newpass'] is not None:
             form.instance.set_password(form.cleaned_data['newpass'])
-        if not form.instance.is_active:
+        if 'is_active' in form.changed_data and not form.instance.is_active:
             self.success_url = reverse('staff.views.change_advice_by_user', args=(form.instance.id,))
         return super(UpdateUser, self).form_valid(form)
 

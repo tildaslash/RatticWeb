@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Changes for user: {{ user.username }}</h2>
+<h2>Changes for user: {{ viewuser.username }}</h2>
 <p>We noticed that you are disabling a user account. To help you RatticDB has analysed the auditlogs to see what passwords the user knows. We recommend that you add all these passwords to the change queue. To do this leave any passwords that need to be changed checked, then press the &quot;Add to Change Queue&quot; button.</p>
 
 <form method="POST" action="/cred/bulkaddtoqueue/">{% csrf_token %}

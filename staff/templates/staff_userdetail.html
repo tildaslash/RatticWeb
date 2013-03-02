@@ -5,12 +5,12 @@
 <div class="alert alert-error">Deleting this user will remove any associated auditlogs, maybe deactivate their account instead?</div>
 {% endif %}
 <table class="table table-striped table-bordered table-condensed">
-<tr><th>Username</th><td>{{ user.username }}</td></tr>
-<tr><th>Email</th><td>{{ user.email }}</td></tr>
-<tr><th>Groups</th><td>{% for g in user.groups.all %}<a href="/staff/groupdetail/{{ g.id }}/">{{ g.name }}</a>, {% endfor %}</td></tr>
+<tr><th>Username</th><td>{{ viewuser.username }}</td></tr>
+<tr><th>Email</th><td>{{ viewuser.email }}</td></tr>
+<tr><th>Groups</th><td>{% for g in viewuser.groups.all %}<a href="/staff/groupdetail/{{ g.id }}/">{{ g.name }}</a>, {% endfor %}</td></tr>
 </table>
 {% if delete %}
-    <form action="/staff/userdelete/{{ user.id }}/" method="post">{% csrf_token %}
+    <form action="/staff/userdelete/{{ viewuser.id }}/" method="post">{% csrf_token %}
         <input type="submit" class="btn btn-danger" value="Delete forever" />
     </form>
 {% else %}
