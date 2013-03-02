@@ -1,10 +1,7 @@
 from django.conf.urls import patterns, include, url
 from tastypie.api import Api
 from cred.api import CredResource, TagResource
-
-# Uncomment the next two lines to enable the admin:
-from django.contrib import admin
-admin.autodiscover()
+from django.conf import settings
 
 v1_api = Api(api_name='v1')
 v1_api.register(CredResource())
@@ -17,12 +14,20 @@ urlpatterns = patterns('',
     url(r'^cred/', include('cred.urls')),
     url(r'^staff/', include('staff.urls')),
 
-    # Uncomment the admin/doc line below to enable admin documentation:
-    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
-
-    # API 
+    # API
     url(r'^api/', include(v1_api.urls)),
 )
+
+if settings.DEBUG == False;
+    # Uncomment the next two lines to enable the admin:
+    from django.contrib import admin
+    admin.autodiscover()
+
+    urlpatterns += patterns('',
+        # Uncomment the admin/doc line below to enable admin documentation:
+        url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+
+        # Uncomment the next line to enable the admin:
+        url(r'^admin/', include(admin.site.urls)),
+    )
+
