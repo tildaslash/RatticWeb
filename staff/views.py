@@ -64,12 +64,16 @@ def audit_by_user(request, user_id):
 def change_advice_by_user_and_group(request, user_id, group_id):
     user = get_object_or_404(User, pk=user_id)
 
+    get_groups = request.GET.getlist('group')
+
     # If we were given a group, use that, otherwise use all the users groups
     if group_id is not None:
         group = get_object_or_404(Group, pk=group_id)
         groups = (group,)
+    elif len(get_groups) > 0:
+        groups = Group.objects.filter(id__in=get_groups)
     else:
-        groups = user.groups.all()
+        groups = Group.objects.all()
 
     logs = CredAudit.objects.filter(
             # Get a list of changes done
