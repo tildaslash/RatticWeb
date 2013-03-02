@@ -56,10 +56,12 @@ class CredResource(ModelResource):
     class Meta:
         queryset = Cred.objects.all()
         resource_name = 'cred'
+        excludes = ['username',]
         authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
         authorization = RatticAuthorization()
 
     def dehydrate(self, bundle):
+        bundle.data['username'] = bundle.obj.username
         if self.get_resource_uri(bundle) != bundle.request.path:
             del bundle.data['password']
         return bundle
