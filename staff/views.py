@@ -49,13 +49,13 @@ def userdelete(request, uid):
 # Credential view
 @staff_member_required
 def audit_by_cred(request, cred_id):
-    logs = CredAudit.objects.filter(cred__id=cred_id).order_by('time')
+    logs = CredAudit.objects.filter(cred__id=cred_id)
 
     return render(request, 'staff_audit.html', { 'logs': logs })
 
 @staff_member_required
 def audit_by_user(request, user_id):
-    logs = CredAudit.objects.filter(user__id=user_id).order_by('time')
+    logs = CredAudit.objects.filter(user__id=user_id)
 
     return render(request, 'staff_audit.html', { 'logs': logs })
 

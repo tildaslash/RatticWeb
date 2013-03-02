@@ -66,6 +66,7 @@ class CredAudit(models.Model):
 
     class Meta:
         get_latest_by = 'time'
+        ordering = ('-time',)
 
 class CredAuditAdmin(admin.ModelAdmin):
     list_display = ('audittype', 'user', 'cred', 'time')

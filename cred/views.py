@@ -45,7 +45,7 @@ def detail(request, cred_id):
             ).latest()
 
     if request.user.is_staff:
-        credlogs = cred.logs.order_by('time')[:5]
+        credlogs = cred.logs.all()[:5]
         morelink = reverse('staff.views.audit_by_cred', args=(cred.id,))
     else:
         credlogs = None
