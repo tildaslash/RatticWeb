@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
-from django.forms import ModelForm
+from django.forms import ModelForm, SelectMultiple
 
 from tastypie.models import create_api_key
 
@@ -40,6 +40,8 @@ class CredForm(ModelForm):
     def __init__(self,requser,*args,**kwargs):
         super (CredForm,self ).__init__(*args,**kwargs) # populates the post
         self.fields['group'].queryset = Group.objects.filter(user=requser)
+        self.fields['tags'].widget = SelectMultiple(attrs={'class':'chzn-select'})
+        self.fields['tags'].queryset = Tag.objects.all()
 
     class Meta:
         model = Cred

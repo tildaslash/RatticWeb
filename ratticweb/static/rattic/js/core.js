@@ -16,6 +16,7 @@ $(document).ready(function(){
         }
     });
 
+    $(".chzn-select").chosen();
 });
 
 function credsearch() {
