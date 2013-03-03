@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     url(r'^api/', include(v1_api.urls)),
 )
 
-if settings.DEBUG == False:
+if settings.DEBUG == True:
     # Uncomment the next two lines to enable the admin:
     from django.contrib import admin
     admin.autodiscover()
