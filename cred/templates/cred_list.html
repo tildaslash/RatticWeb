@@ -7,11 +7,23 @@
 
 <div class="pagination pagination-centered">
   <ul>
-    <li class="{% if not credlist.has_previous %}disabled{% endif %}"><a href="?page={{ credlist.previous_page_number }}">Prev</a></li>
+    {% if credlist.has_previous %}
+      <li><a href="?page={{ credlist.previous_page_number }}">Prev</a></li>
+    {% else %}
+      <li class="disabled"><a href="#">Prev</a></li>
+    {% endif %}
     {% for p in credlist.paginator.page_range %}
-      <li class="{% if credlist.number == p %}active{% endif %}"><a href="?page={{ p }}">{{ p }}</a></li>
+      {% if credlist.number == p %}
+        <li class="active"><a href="#">{{ p }}</a></li>
+      {% else %}
+        <li><a href="?page={{ p }}">{{ p }}</a></li>
+      {% endif %}
     {% endfor %}
-    <li class="{% if not credlist.has_next %}disabled{% endif %}"><a href="?page={{ credlist.next_page_number }}">Next</a></li>
+    {% if credlist.has_next %}
+      <li><a href="?page={{ credlist.next_page_number }}">Next</a></li>
+    {% else %}
+      <li class="disabled"><a href="#">Next</a></li>
+    {%endif %}
   </ul>
 </div>
 {% endif %}
