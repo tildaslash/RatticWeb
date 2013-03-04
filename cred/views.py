@@ -4,16 +4,33 @@ from django.http import HttpResponseRedirect
 from models import Cred, CredForm, CredAudit, TagForm, Tag, CredChangeQ
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 @login_required
 def list(request):
-    cred = Cred.objects.for_user(request.user)
+    cred_list = Cred.objects.for_user(request.user)
+    paginator = Paginator(cred_list, 10)
+    page = request.GET.get('page')
+    try:
+        cred = paginator.page(page)
+    except PageNotAnInteger:
+        cred = paginator.page(1)
+    except EmptyPage:
+        cred = paginator.page(paginator.num_pages)
     return render(request, 'cred_list.html', {'credlist': cred})
 
 @login_required
 def list_by_tag(request, tag_id):
     tag = get_object_or_404(Tag, pk=tag_id)
-    cred = Cred.objects.for_user(request.user).filter(tags=tag)
+    cred_list = Cred.objects.for_user(request.user).filter(tags=tag)
+    paginator = Paginator(cred_list, 10)
+    page = request.GET.get('page')
+    try:
+        cred = paginator.page(page)
+    except PageNotAnInteger:
+        cred = paginator.page(1)
+    except EmptyPage:
+        cred = paginator.page(paginator.num_pages)
     title = 'Passwords for tag: ' + tag.name
     return render(request, 'cred_list.html', {'credlist': cred, 'tag': tag, 'credtitle': title})
 
@@ -24,8 +41,16 @@ def tags(request):
 
 @login_required
 def list_by_search(request, search):
-    cred = Cred.objects.for_user(request.user).filter(title__contains=search)
+    cred_list = Cred.objects.for_user(request.user).filter(title__contains=search)
     tag = Tag.objects.filter(name__contains=search)
+    paginator = Paginator(cred_list, 10)
+    page = request.GET.get('page')
+    try:
+        cred = paginator.page(page)
+    except PageNotAnInteger:
+        cred = paginator.page(1)
+    except EmptyPage:
+        cred = paginator.page(paginator.num_pages)
     title = 'Passwords for search: ' + search
     return render(request, 'cred_list.html', {'credlist': cred, 'tag':tag, 'showtaglist':True, 'credtitle': title})
 

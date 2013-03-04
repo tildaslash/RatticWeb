@@ -1,10 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-
 {% if not hidecredlist %}
 <h1>{{ credtitle|default:"All Passwords" }}</h1>
 {% include "cred_table.html" with credlist=credlist only %}
+
+<div class="pagination">
+  <ul>
+    <li class="{% if not credlist.has_previous %}disabled{% endif %}"><a href="?page={{ credlist.previous_page_number }}">Prev</a></li>
+    {% for p in credlist.paginator.page_range %}
+      <li class="{% if credlist.number == p %}active{% endif %}"><a href="?page={{ p }}">{{ p }}</a></li>
+    {% endfor %}
+    <li class="{% if not credlist.has_next %}disabled{% endif %}"><a href="?page={{ credlist.next_page_number }}">Next</a></li>
+  </ul>
+</div>
 {% endif %}
 
 
