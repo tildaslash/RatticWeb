@@ -9,7 +9,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 @login_required
 def list(request):
     cred_list = Cred.objects.for_user(request.user)
-    paginator = Paginator(cred_list, 10)
+    paginator = Paginator(cred_list, request.user.profile.items_per_page)
     page = request.GET.get('page')
     try:
         cred = paginator.page(page)
@@ -23,7 +23,7 @@ def list(request):
 def list_by_tag(request, tag_id):
     tag = get_object_or_404(Tag, pk=tag_id)
     cred_list = Cred.objects.for_user(request.user).filter(tags=tag)
-    paginator = Paginator(cred_list, 10)
+    paginator = Paginator(cred_list, request.user.profile.items_per_page)
     page = request.GET.get('page')
     try:
         cred = paginator.page(page)
@@ -43,7 +43,7 @@ def tags(request):
 def list_by_search(request, search):
     cred_list = Cred.objects.for_user(request.user).filter(title__contains=search)
     tag = Tag.objects.filter(name__contains=search)
-    paginator = Paginator(cred_list, 10)
+    paginator = Paginator(cred_list, request.user.profile.items_per_page)
     page = request.GET.get('page')
     try:
         cred = paginator.page(page)
