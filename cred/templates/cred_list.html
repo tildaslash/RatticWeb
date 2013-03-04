@@ -5,7 +5,7 @@
 <h1>{{ credtitle|default:"All Passwords" }}</h1>
 {% include "cred_table.html" with credlist=credlist only %}
 
-<div class="pagination">
+<div class="pagination pagination-centered">
   <ul>
     <li class="{% if not credlist.has_previous %}disabled{% endif %}"><a href="?page={{ credlist.previous_page_number }}">Prev</a></li>
     {% for p in credlist.paginator.page_range %}
