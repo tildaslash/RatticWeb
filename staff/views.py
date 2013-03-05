@@ -78,13 +78,13 @@ def userdelete(request, uid):
 def audit_by_cred(request, cred_id):
     logs = CredAudit.objects.filter(cred__id=cred_id)
 
-    return render(request, 'staff_audit.html', { 'logs': logs })
+    return render(request, 'staff_audit.html', { 'logs': logs, 'type': 'cred' })
 
 @staff_member_required
 def audit_by_user(request, user_id):
     logs = CredAudit.objects.filter(user__id=user_id)
 
-    return render(request, 'staff_audit.html', { 'logs': logs })
+    return render(request, 'staff_audit.html', { 'logs': logs, 'type': 'user' })
 
 @staff_member_required
 def change_advice_by_user_and_group(request, user_id, group_id):
