@@ -2,7 +2,11 @@
 {% load future %}
 
 {% block content %}
-<h2>Audit Logs</h2>
+{% if type == 'cred' %}
+  <h2>Audit Logs for password &apos;{{ cred.title }}&apos;</h2>
+{% else %}
+  <h2>Audit Logs for user &apos;{{ loguser.username }}&apos;</h2>
+{% endif %}
 <table class="table table-striped table-bordered table-condensed">
 <tr>
   <th>Action</th>
