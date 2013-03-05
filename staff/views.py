@@ -135,7 +135,7 @@ class UpdateUser(UpdateView):
 
     # If the password changed, set password to newpass
     def form_valid(self, form):
-        if form.cleaned_data['newpass'] is not None:
+        if form.cleaned_data['newpass'] is not None and len(form.cleaned_data['newpass']) > 0:
             form.instance.set_password(form.cleaned_data['newpass'])
         # If user is having groups removed we want change advice for those
         # groups
