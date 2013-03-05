@@ -6,7 +6,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User, Group
 from django.db.models import Q
-from models import UserForm
+from models import UserForm, GroupForm
 from cred.models import CredAudit, Cred
 
 @staff_member_required
@@ -23,11 +23,37 @@ def userdetail(request, uid):
     morelink = reverse('staff.views.audit_by_user', args=(user.id,))
     return render(request, 'staff_userdetail.html', {'viewuser' : user, 'credlogs':credlogs, 'morelink':morelink})
 
+@staff_member_required
+def groupadd(request):
+    if request.method == 'POST':
+        form = GroupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            request.user.groups.add(form.instance)
+            return HttpResponseRedirect(reverse('staff.views.home'))
+    else:
+        form = GroupForm()
+
+    return render(request, 'staff_groupedit.html', {'form': form})
+
 # group detail
 @staff_member_required
 def groupdetail(request, gid):
     group = get_object_or_404(Group, pk=gid)
     return render(request, 'staff_groupdetail.html', {'group' : group})
+
+@staff_member_required
+def groupedit(request, gid):
+    group = get_object_or_404(Group, pk=gid)
+    if request.method == 'POST':
+        form = GroupForm(request.POST, instance=group)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('staff.views.home'))
+    else:
+        form = GroupForm(instance=group)
+
+    return render(request, 'staff_groupedit.html', {'group' : group, 'form': form})
 
 # group delete
 @staff_member_required
@@ -63,7 +89,6 @@ def audit_by_user(request, user_id):
 @staff_member_required
 def change_advice_by_user_and_group(request, user_id, group_id):
     user = get_object_or_404(User, pk=user_id)
-
     get_groups = request.GET.getlist('group')
 
     # If we were given a group, use that, otherwise use all the users groups
