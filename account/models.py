@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 class UserProfile(models.Model):
   user = models.ForeignKey(User, unique=True)
   items_per_page = models.IntegerField(default=25)
+  tags_on_sidebar = models.IntegerField(default=5)
 
   def __unicode__(self):
     return self.user.username
