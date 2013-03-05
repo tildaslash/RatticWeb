@@ -71,7 +71,7 @@ def userdelete(request, uid):
     if request.method == 'POST':
         user.delete()
         return HttpResponseRedirect('/staff/')
-    return render(request, 'staff_userdetail.html', {'user' : user, 'delete':True})
+    return render(request, 'staff_userdetail.html', {'viewuser' : user, 'delete':True})
 
 # Credential view
 @staff_member_required
