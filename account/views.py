@@ -15,7 +15,6 @@ def profile(request):
         form = UserProfileForm(request.POST, instance=request.user.profile)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('account.views.profile'))
     else:
         form = UserProfileForm(instance=request.user.profile)
 
