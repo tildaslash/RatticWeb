@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User, Group
 from django import forms
+from importloaders import keepass
 
 class UserForm(forms.ModelForm):
     # We want two password input boxes
@@ -43,4 +44,17 @@ class KeepassImportForm(forms.Form):
     file = forms.FileField()
     password = forms.CharField(max_length=50)
 
+    def clean(self):
+        cleaned_data = super(KeepassImportForm, self).clean()
+        print cleaned_data
+
+        try:
+            db = keepass(cleaned_data['file'], cleaned_data['password'])
+        except AttributeError:
+            msg = u'Could not read keepass file, check password.'
+            self._errors['file'] = self.error_class([msg])
+            del cleaned_data['file']
+            del cleaned_data['password']
+
+        return cleaned_data
 

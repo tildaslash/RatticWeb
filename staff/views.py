@@ -187,7 +187,7 @@ def import_from_keepass(request):
     if request.method == 'POST':
         form = KeepassImportForm(request.POST, request.FILES)
         if form.is_valid():
-            #handle_uploaded_file(request.FILES['file'])
+            # Put data into the session, load the confirm screen
             return HttpResponseRedirect(reverse('staff.views.home'))
     else:
         form = KeepassImportForm()

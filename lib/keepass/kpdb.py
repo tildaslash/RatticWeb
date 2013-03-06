@@ -30,21 +30,19 @@ class Database(object):
     Access a KeePass DB file of format v3
     '''
     
-    def __init__(self, filename = None, masterkey=""):
+    def __init__(self, filep = None, masterkey=""):
         self.masterkey = masterkey
-        if filename:
-            self.read(filename)
+        if filep:
+            self.read(filep)
             return
         self.header = DBHDR()
         self.groups = []
         self.entries = []
         return
 
-    def read(self,filename):
+    def read(self,filep):
         'Read in given .kdb file'
-        fp = open(filename)
-        buf = fp.read()
-        fp.close()
+        buf = filep.read()
 
         headbuf = buf[:124]
         self.header = DBHDR(headbuf)
