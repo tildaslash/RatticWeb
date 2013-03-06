@@ -18,6 +18,7 @@ urlpatterns = patterns('staff.views',
     url(r'^audit-by-user/(?P<user_id>\d+)/$','audit_by_user'),
     url(r'^change-advice-by-user/(?P<user_id>\d+)/$','change_advice_by_user'),
     url(r'^change-advice-by-user-and-group/(?P<user_id>\d+)/(?P<group_id>\d+)/$','change_advice_by_user_and_group'),
+    url(r'^keepass-import/$','import_from_keepass'),
 ) + patterns('',
     # Custom class based views
     url(r'^useradd/$', NewUser.as_view()),

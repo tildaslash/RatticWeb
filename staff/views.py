@@ -6,7 +6,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User, Group
 from django.db.models import Q
-from models import UserForm, GroupForm
+from models import UserForm, GroupForm, KeepassImportForm
 from cred.models import CredAudit, Cred
 
 @staff_member_required
@@ -181,4 +181,15 @@ class UpdateUser(UpdateView):
         if 'is_active' in form.changed_data and not form.instance.is_active:
             self.success_url = reverse('staff.views.change_advice_by_user', args=(form.instance.id,))
         return super(UpdateUser, self).form_valid(form)
+
+@staff_member_required
+def import_from_keepass(request):
+    if request.method == 'POST':
+        form = KeepassImportForm(request.POST, request.FILES)
+        if form.is_valid():
+            #handle_uploaded_file(request.FILES['file'])
+            return HttpResponseRedirect(reverse('staff.views.home'))
+    else:
+        form = KeepassImportForm()
+    return render(request, 'staff_keepassimport.html', {'form': form})
 

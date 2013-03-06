@@ -37,3 +37,10 @@ class GroupForm(forms.ModelForm):
     class Meta:
         model = Group
         fields = ('name',)
+
+
+class KeepassImportForm(forms.Form):
+    file = forms.FileField()
+    password = forms.CharField(max_length=50)
+
+
