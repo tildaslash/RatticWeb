@@ -3,6 +3,7 @@ from django.conf.urls import patterns, include, url
 urlpatterns = patterns('cred.views',
     url(r'^list/$', 'list'),
     url(r'^list-by-tag/(?P<tag_id>\d+)/$', 'list_by_tag'),
+    url(r'^list-by-group/(?P<group_id>\d+)/$', 'list_by_group'),
     url(r'^list-by-search/(?P<search>\w+)/$', 'list_by_search'),
     url(r'^detail/(?P<cred_id>\d+)/$', 'detail'),
     url(r'^edit/(?P<cred_id>\d+)/$', 'edit'),

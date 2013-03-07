@@ -5,6 +5,7 @@ from models import Cred, CredForm, CredAudit, TagForm, Tag, CredChangeQ
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.models import Group
 
 @login_required
 def list(request):
@@ -33,6 +34,23 @@ def list_by_tag(request, tag_id):
         cred = paginator.page(paginator.num_pages)
     title = 'Passwords for tag: ' + tag.name
     return render(request, 'cred_list.html', {'credlist': cred, 'tag': tag, 'credtitle': title})
+
+@login_required
+def list_by_group(request, group_id):
+    group = get_object_or_404(Group, pk=group_id)
+    if group not in request.user.groups.all():
+        raise Http404
+    cred_list = Cred.objects.for_user(request.user).filter(group=group)
+    paginator = Paginator(cred_list, request.user.profile.items_per_page)
+    page = request.GET.get('page')
+    try:
+        cred = paginator.page(page)
+    except PageNotAnInteger:
+        cred = paginator.page(1)
+    except EmptyPage:
+        cred = paginator.page(paginator.num_pages)
+    title = 'Passwords for group: ' + group.name
+    return render(request, 'cred_list.html', {'credlist': cred, 'group': group, 'credtitle': title})
 
 @login_required
 def tags(request):
