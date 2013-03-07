@@ -86,7 +86,7 @@ def detail(request, cred_id):
         lastchange = CredAudit.objects.filter(
                 cred=cred,
                 audittype__in=[CredAudit.CREDCHANGE, CredAudit.CREDADD],
-                ).latest()
+                ).latest().time
     except CredAudit.DoesNotExist:
         lastchange = "Unknown (Logs deleted)"
 
@@ -154,13 +154,22 @@ def edit(request, cred_id):
 @login_required
 def delete(request, cred_id):
     cred = get_object_or_404(Cred, pk=cred_id)
+
+    try:
+        lastchange = CredAudit.objects.filter(
+                cred=cred,
+                audittype__in=[CredAudit.CREDCHANGE, CredAudit.CREDADD],
+                ).latest().time
+    except CredAudit.DoesNotExist:
+        lastchange = "Unknown (Logs deleted)"
+
     # Check user has perms
     if cred.group not in request.user.groups.all():
         raise Http404
     if request.method == 'POST':
         cred.delete()
         return HttpResponseRedirect('/cred/list')
-    return render(request, 'cred_detail.html',{'cred' : cred, 'action':'/cred/delete/' + cred_id + '/', 'delete':True})
+    return render(request, 'cred_detail.html',{'cred' : cred, 'lastchange': lastchange, 'action':'/cred/delete/' + cred_id + '/', 'delete':True})
 
 
 # Categories 
