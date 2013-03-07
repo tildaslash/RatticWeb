@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User, Group
 from django.db.models import Q
 from models import UserForm, GroupForm, KeepassImportForm
-from cred.models import CredAudit, Cred
+from cred.models import CredAudit, Cred, Tag
 
 @staff_member_required
 def home(request):
@@ -185,11 +185,25 @@ class UpdateUser(UpdateView):
 @staff_member_required
 def import_from_keepass(request):
     if request.method == 'POST':
-        form = KeepassImportForm(request.POST, request.FILES)
+        form = KeepassImportForm(request.user, request.POST, request.FILES)
         if form.is_valid():
-            # Put data into the session, load the confirm screen
+            group = form.cleaned_data['group']
+            for e in form.cleaned_data['db']['entries']:
+                cred = Cred(
+                    title=e['title'],
+                    username=e['username'],
+                    password=e['password'],
+                    description=e['description'],
+                    group=group,
+                )
+                cred.save()
+                CredAudit(audittype=CredAudit.CREDADD, cred=cred, user=request.user).save()
+                for t in e['tags']:
+                  (tag, create) = Tag.objects.get_or_create(name=t)
+                  cred.tags.add(tag)
+
             return HttpResponseRedirect(reverse('staff.views.home'))
     else:
-        form = KeepassImportForm()
+        form = KeepassImportForm(request.user)
     return render(request, 'staff_keepassimport.html', {'form': form})
 

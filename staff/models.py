@@ -43,20 +43,29 @@ class GroupForm(forms.ModelForm):
 class KeepassImportForm(forms.Form):
     file = forms.FileField()
     password = forms.CharField(max_length=50)
+    group = forms.ModelChoiceField(queryset=Group.objects.all())
+
+    def __init__(self, requser, *args, **kwargs):
+      super (KeepassImportForm, self).__init__(*args,**kwargs)
+      self.fields['group'].queryset = Group.objects.filter(user=requser)
 
     def clean(self):
         cleaned_data = super(KeepassImportForm, self).clean()
-        print cleaned_data
 
         try:
             db = keepass(cleaned_data['file'], cleaned_data['password'])
-        except AttributeError:
+            cleaned_data['db'] = db
+        except ValueError:
             msg = u'Could not read keepass file, check password.'
             self._errors['file'] = self.error_class([msg])
             del cleaned_data['file']
             del cleaned_data['password']
-
-        cleaned_data['db'] = db
+        except IOError:
+            msg = u'Could not read keepass file, was that a valid keepass file?'
+            self._errors['file'] = self.error_class([msg])
+            del cleaned_data['file']
+            del cleaned_data['password']
+            
 
         return cleaned_data
 
