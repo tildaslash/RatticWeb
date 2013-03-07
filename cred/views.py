@@ -118,6 +118,7 @@ def add(request):
 @login_required
 def edit(request, cred_id):
     cred = get_object_or_404(Cred, pk=cred_id)
+    next = request.GET.get('next', None)
     # Check user has perms
     if cred.group not in request.user.groups.all():
         raise Http404
@@ -136,13 +137,16 @@ def edit(request, cred_id):
             # Create audit log
             CredAudit(audittype=chgtype, cred=cred, user=request.user).save()
             form.save()
-            return HttpResponseRedirect('/cred/list')
+            if next is None:
+            	return HttpResponseRedirect('/cred/list')
+            else:
+            	return HttpResponseRedirect(next)
     else:
         form = CredForm(request.user, instance=cred)
         CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
 
     return render(request, 'cred_edit.html', {'form': form, 'action':
-        '/cred/edit/' + cred_id + '/'})
+        '/cred/edit/' + cred_id + '/', 'next': next})
 
 @login_required
 def delete(request, cred_id):

@@ -7,7 +7,7 @@
 {% for q in queue %}
 <tr>
   <td><a href="/cred/detail/{{ q.cred.id }}/">{{ q.cred.title }}</a></td>
-  <td><a href="/cred/edit/{{ q.cred.id }}/">Edit</a></td>
+  <td><a href="/cred/edit/{{ q.cred.id }}/?next=/cred/viewqueue/">Edit</a></td>
 </tr>
 {% endfor %}
 </table>
