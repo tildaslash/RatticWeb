@@ -82,10 +82,13 @@ def detail(request, cred_id):
     if cred.group not in request.user.groups.all():
         raise Http404
 
-    lastchange = CredAudit.objects.filter(
-            cred=cred,
-            audittype__in=[CredAudit.CREDCHANGE, CredAudit.CREDADD],
-            ).latest()
+    try:
+        lastchange = CredAudit.objects.filter(
+                cred=cred,
+                audittype__in=[CredAudit.CREDCHANGE, CredAudit.CREDADD],
+                ).latest()
+    except CredAudit.DoesNotExist:
+        lastchange = "Unknown (Logs deleted)"
 
     if request.user.is_staff:
         credlogs = cred.logs.all()[:5]
