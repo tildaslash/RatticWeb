@@ -56,5 +56,7 @@ class KeepassImportForm(forms.Form):
             del cleaned_data['file']
             del cleaned_data['password']
 
+        cleaned_data['db'] = db
+
         return cleaned_data
 
