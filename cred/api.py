@@ -44,15 +44,7 @@ class RatticAuthorization(Authorization):
         raise Unauthorized("Not yet implemented.")
 
 
-class TagResource(ModelResource):
-    class Meta:
-        queryset = Tag.objects.all()
-        resource_name = 'tag'
-        authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
-        authorization  = RatticAuthorization()
-
 class CredResource(ModelResource):
-    tags = fields.ToManyField(TagResource, 'tags', full=True)
     class Meta:
         queryset = Cred.objects.all()
         resource_name = 'cred'
@@ -65,4 +57,12 @@ class CredResource(ModelResource):
         if self.get_resource_uri(bundle) != bundle.request.path:
             del bundle.data['password']
         return bundle
+
+class TagResource(ModelResource):
+    creds = fields.ToManyField(CredResource, 'child_creds', full=True)
+    class Meta:
+        queryset = Tag.objects.all()
+        resource_name = 'tag'
+        authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
+#        authorization  = RatticAuthorization()
 
