@@ -17,7 +17,7 @@ class RatticGroupAuthorization(Authorization):
 
     def read_detail(self, object_list, bundle):
         # In auth groups? if not computer says no
-        if bundle.obj in bundle.request.user.groups.all():
+        if bundle.request.user.is_staff or bundle.obj in bundle.request.user.groups.all():
             return True
         else:
             raise Unauthorized("You are not allowed to do that")
@@ -46,8 +46,14 @@ class RatticGroupAuthorization(Authorization):
 
 
 class GroupResource(ModelResource):
+    def obj_create(self, bundle, request=None, **kwargs):
+        val = super(GroupResource, self).obj_create(bundle)
+        bundle.request.user.groups.add(bundle.obj)
+        return val
+
     class Meta:
         queryset = Group.objects.all()
+        always_return_data = True
         resource_name = 'group'
         authentication = MultiAuthentication(ApiKeyAuthentication(), SessionAuthentication())
         authorization = RatticGroupAuthorization()

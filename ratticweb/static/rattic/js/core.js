@@ -57,16 +57,21 @@ function createGroup(name, successcallback, failurecallback) {
     })
 }
 
+function groupCreated(group) {
+    $("select#id_group").append('<option value="' + group['id'] + '">' + group['name'] + '</option>');
+    $("select#id_group").val(group['id']);
+}
+
 function createGroupModal() {
     ajax = createGroup(
         $("input#groupname").val(),
         function(){
             // This doesn't get called
             $('#addGroup').modal('hide');
+            if (ajax.status == 201) groupCreated(JSON.parse(ajax.responseText))
         },
         function(){
             $('#addGroup').modal('hide');
-            console.log(ajax)
         }
     );
 

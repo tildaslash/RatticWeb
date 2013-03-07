@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+{% include "staff_part_addgroupmodal.html" %}
+
 <h1>Keepass Import</h1>
 <p>We recommend that you import your keepass data into a seperate group, then adjust the group on each password as required.</p>
 <form enctype="multipart/form-data" class="form-horizontal" action="" method="post">{% csrf_token %}

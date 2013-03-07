@@ -1,0 +1,18 @@
+{% if user.is_staff %}
+<script>
+var attachstaffbuttons = true;
+</script>
+<div id="addGroup" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalAddGroup" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+        <h3 id="myModalLabel">Add Group</h3>
+    </div>
+    <div class="modal-body">
+        <label for="groupname">Group name:</label> <input type="text" id="groupname" />
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-inverse" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button class="btn btn-primary" id="saveGroupButton" onclick="return createGroupModal()">Create</button>
+    </div>
+</div>
+{% endif %}
