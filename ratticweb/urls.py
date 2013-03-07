@@ -1,11 +1,13 @@
 from django.conf.urls import patterns, include, url
 from tastypie.api import Api
 from cred.api import CredResource, TagResource
+from staff.api import GroupResource
 from django.conf import settings
 
 v1_api = Api(api_name='v1')
 v1_api.register(CredResource())
 v1_api.register(TagResource())
+v1_api.register(GroupResource())
 
 urlpatterns = patterns('',
     # Apps:
