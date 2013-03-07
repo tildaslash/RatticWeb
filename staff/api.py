@@ -26,7 +26,7 @@ class RatticGroupAuthorization(Authorization):
         return object_list
 
     def create_detail(self, object_list, bundle):
-        if bundle.req.user.is_staff:
+        if bundle.request.user.is_staff:
             return True
 
         raise Unauthorized("Only staff may create groups")
@@ -49,6 +49,6 @@ class GroupResource(ModelResource):
     class Meta:
         queryset = Group.objects.all()
         resource_name = 'group'
-        authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
+        authentication = MultiAuthentication(ApiKeyAuthentication(), SessionAuthentication())
         authorization = RatticGroupAuthorization()
 
