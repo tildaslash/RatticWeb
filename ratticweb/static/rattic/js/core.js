@@ -83,22 +83,6 @@ function createGroupModal() {
 
 $(document).ready(function(){
 
-    $('a#toclipboard').zclip({
-        path:'/static/zclip/1.1.1/ZeroClipboard.swf',
-        copy:$('span#password').text(),
-        afterCopy:function(){
-            alert("Copied to clipboard. Remember to remove it when done.");
-        }
-    });
-
-    $('a#clearclip').zclip({
-        path:'/static/zclip/1.1.1/ZeroClipboard.swf',
-        copy: '',
-        afterCopy:function(){
-            alert("Clipboard Cleared.");
-        }
-    });
-
     $(".chzn-select").chosen();
 
     if ((typeof attachstaffbuttons != 'undefined') && attachstaffbuttons) {
