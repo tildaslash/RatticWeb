@@ -3,6 +3,11 @@
 {% block content %}
 <h1>Staff Manage</h1>
 
+<div class="btn-group">
+  <a class="btn" href="/staff/useradd/">Add User</a>
+  <a class="btn" href="/staff/groupadd/">Add Group</a>
+  <a class="btn" href="/staff/keepass-import/">Import Keepass</a>
+</div>
 
 <h2>Users</h2>
 <table class="table table-striped table-bordered table-condensed">
@@ -28,8 +33,5 @@
 </tr>
 {% endfor %}
 </table>
-<a class="btn" href="/staff/useradd/">Add User</a>
-<a class="btn" href="/staff/groupadd/">Add Group</a>
-<a class="btn" href="/staff/keepass-import/">Import Keepass</a>
 {% endblock %}
 
