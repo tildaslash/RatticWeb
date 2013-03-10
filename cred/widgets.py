@@ -16,6 +16,6 @@ class CredImageSelect(Select):
 
     def render_image(self, choice, name, imgstyle):
         onclick = ' onclick="$(\'select#id_' + name + '\').val(' + str(choice[0]) + ')"'
-        img = '<img ' + imgstyle + onclick + ' src="' + settings.STATIC_URL + 'rattic/img/credicons/' + choice[1] + '.png" />'
+        img = '<img ' + imgstyle + onclick + ' title="' + choice[1] + '" src="' + settings.STATIC_URL + 'rattic/img/credicons/' + choice[1] + '.png" />'
         return img
 
