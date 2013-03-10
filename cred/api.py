@@ -10,18 +10,15 @@ from tastypie.exceptions import Unauthorized
 from cred.models import Cred, Tag, CredAudit
 
 ## Auth
-class RatticAuthorization(Authorization):
+class CredAuthorization(Authorization):
     def read_list(self, object_list, bundle):
         # This assumes a ``QuerySet`` from ``ModelResource``.
-        return object_list.filter(group__in=bundle.request.user.groups.all())
+        return object_list
 
     def read_detail(self, object_list, bundle):
-        # In auth groups? if not computer says no
-        if bundle.obj.group in bundle.request.user.groups.all():
-            CredAudit(audittype=CredAudit.CREDVIEW, cred=bundle.obj, user=bundle.request.user).save()
-            return True
-        else:
-            raise Unauthorized("Not yet implemented.")
+        # This audit should go somewhere else, is there a detail list function we can override?
+        CredAudit(audittype=CredAudit.CREDVIEW, cred=bundle.obj, user=bundle.request.user).save()
+        return True
 
     def create_list(self, object_list, bundle):
         # Assuming their auto-assigned to ``user``.
@@ -45,12 +42,8 @@ class RatticAuthorization(Authorization):
 
 
 class CredResource(ModelResource):
-    class Meta:
-        queryset = Cred.objects.all()
-        resource_name = 'cred'
-        excludes = ['username',]
-        authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
-        authorization = RatticAuthorization()
+    def get_object_list(self, request):
+        return super(CredResource, self).get_object_list(request).filter(group__in=request.user.groups.all())
 
     def dehydrate(self, bundle):
         bundle.data['username'] = bundle.obj.username
@@ -58,11 +51,20 @@ class CredResource(ModelResource):
             del bundle.data['password']
         return bundle
 
+    class Meta:
+        queryset = Cred.objects.all()
+        resource_name = 'cred'
+        excludes = ['username',]
+        authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
+        authorization = CredAuthorization()
+
 class TagResource(ModelResource):
-    creds = fields.ToManyField(CredResource, 'child_creds', full=True)
+    creds = fields.ToManyField(CredResource,
+                               attribute=lambda bundle: Cred.objects.for_user(bundle.request.user).filter(tags=bundle.obj),
+                               full=True,
+                               null=True)
     class Meta:
         queryset = Tag.objects.all()
         resource_name = 'tag'
         authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
-#        authorization  = RatticAuthorization()
 

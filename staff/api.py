@@ -12,18 +12,16 @@ from cred.models import Cred, Tag, CredAudit
 ## Auth
 class RatticGroupAuthorization(Authorization):
     def read_list(self, object_list, bundle):
-        # This assumes a ``QuerySet`` from ``ModelResource``.
-        return object_list.filter(id__in=bundle.request.user.groups.all())
+        return object_list
 
     def read_detail(self, object_list, bundle):
-        # In auth groups? if not computer says no
-        if bundle.request.user.is_staff or bundle.obj in bundle.request.user.groups.all():
-            return True
-        else:
-            raise Unauthorized("You are not allowed to do that")
+        return True
 
     def create_list(self, object_list, bundle):
-        return object_list
+        if bundle.request.user.is_staff:
+            return object_list
+
+        raise Unauthorized("Only staff may create groups")
 
     def create_detail(self, object_list, bundle):
         if bundle.request.user.is_staff:
@@ -50,6 +48,12 @@ class GroupResource(ModelResource):
         val = super(GroupResource, self).obj_create(bundle)
         bundle.request.user.groups.add(bundle.obj)
         return val
+
+    def get_object_list(self, request):
+        if request.user.is_staff:
+            return super(GroupResource, self).get_object_list(request)
+        else:
+            return super(GroupResource, self).get_object_list(request).filter(id__in=request.user.groups.all())
 
     class Meta:
         queryset = Group.objects.all()
