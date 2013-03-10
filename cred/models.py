@@ -89,7 +89,15 @@ class CredChangeQ(models.Model):
 class CredChangeQAdmin(admin.ModelAdmin):
     list_display = ('cred', 'time')
 
+class CredIcon(models.Model):
+    name = models.CharField(max_length=50)
+    filename = models.CharField(max_length=50)
+
+class CredIconAdmin(admin.ModelAdmin):
+    list_display = ('name', 'filename')
+
 admin.site.register(CredAudit, CredAuditAdmin)
 admin.site.register(Cred, CredAdmin)
+admin.site.register(CredIcon, CredIconAdmin)
 admin.site.register(Tag)
 admin.site.register(CredChangeQ, CredChangeQAdmin)
