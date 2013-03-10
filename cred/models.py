@@ -5,6 +5,8 @@ from django.forms import ModelForm, SelectMultiple
 
 from tastypie.models import create_api_key
 
+from widgets import ImageSelect
+
 # Every time a user is saved, make sure they have an API key.
 models.signals.post_save.connect(create_api_key, sender=User)
 
@@ -22,8 +24,18 @@ class CredManager(models.Manager):
     def for_user(self, user):
         return super(CredManager, self).get_query_set().filter(group__in=user.groups.all())
 
+class CredIcon(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    filename = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return self.name
+
+class CredIconAdmin(admin.ModelAdmin):
+    list_display = ('name', 'filename')
+
 class Cred(models.Model):
-    METADATA = ('description', 'group', 'tags')
+    METADATA = ('description', 'group', 'tags', 'icon')
     objects = CredManager()
 
     title = models.CharField(max_length=64)
@@ -32,6 +44,7 @@ class Cred(models.Model):
     description = models.TextField(blank=True, null=True)
     group = models.ForeignKey(Group)
     tags = models.ManyToManyField(Tag, related_name='child_creds', blank=True, null=True, default=None)
+    icon = models.ForeignKey(CredIcon, default=58)
 
     def __unicode__(self):
         return self.title
@@ -40,11 +53,13 @@ class CredForm(ModelForm):
     def __init__(self,requser,*args,**kwargs):
         super (CredForm,self ).__init__(*args,**kwargs) # populates the post
         self.fields['group'].queryset = Group.objects.filter(user=requser)
-        self.fields['tags'].widget = SelectMultiple(attrs={'class':'chzn-select'})
-        self.fields['tags'].queryset = Tag.objects.all()
 
     class Meta:
         model = Cred
+        widgets = {
+            'tags': SelectMultiple(attrs={'class':'chzn-select'}),
+            'icon': ImageSelect(),
+        }
 
 class CredAdmin(admin.ModelAdmin):
     list_display = ('title', 'username', 'group')
@@ -88,13 +103,6 @@ class CredChangeQ(models.Model):
 
 class CredChangeQAdmin(admin.ModelAdmin):
     list_display = ('cred', 'time')
-
-class CredIcon(models.Model):
-    name = models.CharField(max_length=50)
-    filename = models.CharField(max_length=50)
-
-class CredIconAdmin(admin.ModelAdmin):
-    list_display = ('name', 'filename')
 
 admin.site.register(CredAudit, CredAuditAdmin)
 admin.site.register(Cred, CredAdmin)
