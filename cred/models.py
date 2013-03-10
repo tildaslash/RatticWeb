@@ -5,7 +5,7 @@ from django.forms import ModelForm, SelectMultiple
 
 from tastypie.models import create_api_key
 
-from widgets import ImageSelect
+from widgets import CredImageSelect
 
 # Every time a user is saved, make sure they have an API key.
 models.signals.post_save.connect(create_api_key, sender=User)
@@ -58,7 +58,7 @@ class CredForm(ModelForm):
         model = Cred
         widgets = {
             'tags': SelectMultiple(attrs={'class':'chzn-select'}),
-            'icon': ImageSelect(),
+            'icon': CredImageSelect(),
         }
 
 class CredAdmin(admin.ModelAdmin):
