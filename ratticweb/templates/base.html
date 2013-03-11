@@ -20,9 +20,11 @@
           <div class="span2">
               {% include "sidebar.html" %}
           </div>
-          <div class="span10">
-              {% block content %}{% endblock %}
-          </div>
+          {% block self_span_content %}
+              <div class="span10">
+                  {% block content %}{% endblock %}
+              </div>
+          {% endblock %}
      </div>
 </div>
 <script src="{% static "jquery/js/jquery.min.js" %}"></script>

@@ -3,6 +3,7 @@
 {% block content %}
 {% if not hidecredlist %}
 <h1>{{ credtitle|default:"All Passwords" }}</h1>
+<p><a class="btn" href="/cred/add/">Add New</a></p>
 {% include "cred_table.html" with credlist=credlist only %}
 
 <div class="pagination pagination-centered">
@@ -33,9 +34,5 @@
 <h1>Matched Tags</h1>
 {% include "cred_taglist.html" with tags=tag only %}
 {% endif %}
-
-
-<a class="btn" href="/cred/add/">Add New Password</a>
-
 {% endblock %}
 
