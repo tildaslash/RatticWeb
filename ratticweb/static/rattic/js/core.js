@@ -21,13 +21,13 @@ function credsearch() {
 }
 
 function showpass(){
-    $('span#password').css('display', 'inline')
+    $('span#password').hide().css({visibility: "visible"}).fadeIn("slow");
     $('a#showpass').css('display', 'none')
     $('a#hidepass').css('display', 'inline-block')
 }
 
 function hidepass(){
-    $('span#password').css('display', 'none')
+    $('span#password').css('visibility', 'hidden')
     $('a#showpass').css('display', 'inline-block')
     $('a#hidepass').css('display', 'none')
 }

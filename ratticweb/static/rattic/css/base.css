@@ -8,7 +8,7 @@ div.copybutton {
 }
 
 span#password {
-  display: none;
+  visibility: hidden;
 }
 
 a#hidepass {

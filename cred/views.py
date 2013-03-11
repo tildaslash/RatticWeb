@@ -141,7 +141,7 @@ def edit(request, cred_id):
             CredAudit(audittype=chgtype, cred=cred, user=request.user).save()
             form.save()
             if next is None:
-            	return HttpResponseRedirect('/cred/list')
+            	return HttpResponseRedirect('/cred/detail/' + cred_id + '/')
             else:
             	return HttpResponseRedirect(next)
     else:
