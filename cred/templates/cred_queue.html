@@ -6,11 +6,10 @@
   <tr><th>Title</th><th>Edit</th></tr>
 {% for q in queue %}
 <tr>
-  <td><a href="/cred/detail/{{ q.cred.id }}/">{{ q.cred.title }}</a></td>
+  <td>{% include 'cred_credicon.html' with icon=q.cred.icon only %} <a href="/cred/detail/{{ q.cred.id }}/">{{ q.cred.title }}</a></td>
   <td><a href="/cred/edit/{{ q.cred.id }}/?next=/cred/viewqueue/">Edit</a></td>
 </tr>
 {% endfor %}
 </table>
-<a class="btn" href="/cred/list/">Back</a>
 {% endblock %}
 
