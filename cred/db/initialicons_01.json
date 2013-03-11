@@ -1,0 +1,1452 @@
+[
+    {
+        "pk": 1,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Calendar",
+            "xoffset": 1309,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Volume-(Off)",
+            "xoffset": 187,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Male",
+            "xoffset": 715,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Volume-(On)",
+            "xoffset": 957,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Filter",
+            "xoffset": 1232,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Tag",
+            "xoffset": 781,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Page",
+            "xoffset": 308,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Boat",
+            "xoffset": 594,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Comment",
+            "xoffset": 220,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 10,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Like",
+            "xoffset": 1133,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 11,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Pencil",
+            "xoffset": 1419,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 12,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Signpost",
+            "xoffset": 1529,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 13,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Computer",
+            "xoffset": 385,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 14,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Text",
+            "xoffset": 1375,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 15,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Photo",
+            "xoffset": 418,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 16,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Basket",
+            "xoffset": 1045,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 17,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Dropdown",
+            "xoffset": 704,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 18,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Lab",
+            "xoffset": 1276,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 19,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Drink",
+            "xoffset": 946,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 20,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "CD-(Alt)",
+            "xoffset": 990,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 21,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Loupe",
+            "xoffset": 1386,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 22,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Dashboard",
+            "xoffset": 1056,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 23,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Lock",
+            "xoffset": 1177,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 24,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Poke\u2560\u00fcball",
+            "xoffset": 495,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 25,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Cursor",
+            "xoffset": 1353,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 26,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Afro",
+            "xoffset": 286,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 27,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Projector",
+            "xoffset": 1111,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 28,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "icon-_0010_Inbox",
+            "xoffset": 1507,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 29,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Power",
+            "xoffset": 1265,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 30,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Female",
+            "xoffset": 1540,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 31,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Star",
+            "xoffset": 748,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 32,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Refresh",
+            "xoffset": 539,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 33,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Camera",
+            "xoffset": 825,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 34,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Quick-Look",
+            "xoffset": 1199,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 35,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Face-(Alt)",
+            "xoffset": 1001,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 36,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Traffic-Cone",
+            "xoffset": 451,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 37,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Phone",
+            "xoffset": 22,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 38,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Castle",
+            "xoffset": 11,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 39,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Add",
+            "xoffset": 627,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 40,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Mouse",
+            "xoffset": 484,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 41,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Wand",
+            "xoffset": 1166,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 42,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Android",
+            "xoffset": 1474,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 43,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Location-Services",
+            "xoffset": 132,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 44,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Tape",
+            "xoffset": 1067,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 45,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Lamp",
+            "xoffset": 1012,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 46,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Note",
+            "xoffset": 550,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 47,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Inbox",
+            "xoffset": 858,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 48,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Globe",
+            "xoffset": 176,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 49,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Briefcase-Medical",
+            "xoffset": 88,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 50,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Teardrop",
+            "xoffset": 1364,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 51,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Cloud",
+            "xoffset": 341,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 52,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Text-(Alt)",
+            "xoffset": 913,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 53,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Propeller",
+            "xoffset": 1551,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 54,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Microphone",
+            "xoffset": 209,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 55,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Food",
+            "xoffset": 1331,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 56,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Call",
+            "xoffset": 143,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 57,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Person",
+            "xoffset": 264,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 58,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Key",
+            "xoffset": 528,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 60,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Cross",
+            "xoffset": 396,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 61,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Reply",
+            "xoffset": 1298,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 62,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Lightbulb",
+            "xoffset": 880,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 63,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Factory",
+            "xoffset": 374,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 64,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Apple",
+            "xoffset": 1243,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 65,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Film",
+            "xoffset": 253,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 66,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Warning",
+            "xoffset": 649,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 67,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Subtract",
+            "xoffset": 33,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 68,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Facebook",
+            "xoffset": 473,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 69,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "icon-_0003_Cloud",
+            "xoffset": 924,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 70,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Right",
+            "xoffset": 1100,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 71,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Umbrella",
+            "xoffset": 1034,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 72,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Trophy",
+            "xoffset": 154,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 73,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Paperclip",
+            "xoffset": 44,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 74,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Notification",
+            "xoffset": 1122,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 75,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Maps",
+            "xoffset": 1463,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 76,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Flag",
+            "xoffset": 66,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 77,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "House",
+            "xoffset": 1397,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 78,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Hand-Cursor",
+            "xoffset": 1089,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 79,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Shuffle",
+            "xoffset": 671,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 80,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Bell",
+            "xoffset": 869,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 81,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Coathanger",
+            "xoffset": 1320,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 82,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Calculator",
+            "xoffset": 660,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 83,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Life-Ring",
+            "xoffset": 803,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 84,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Clothes",
+            "xoffset": 1221,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 85,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Down",
+            "xoffset": 1518,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 86,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Dice",
+            "xoffset": 319,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 87,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "iPod",
+            "xoffset": 1573,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 89,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Clock",
+            "xoffset": 462,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 90,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Guitar",
+            "xoffset": 1078,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 91,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Lightning",
+            "xoffset": 1562,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 92,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Stamp",
+            "xoffset": 55,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 93,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "icon-_0012_Play",
+            "xoffset": 1342,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 94,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Crop",
+            "xoffset": 770,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 95,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Wrench",
+            "xoffset": 1430,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 96,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Album",
+            "xoffset": 759,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 97,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Camera-(Alt)",
+            "xoffset": 1287,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 98,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Dislike",
+            "xoffset": 352,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 99,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Tick",
+            "xoffset": 902,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 100,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Chrome",
+            "xoffset": 99,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 101,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "icon-_0008_Key",
+            "xoffset": 968,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 102,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Direction",
+            "xoffset": 1584,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 103,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Compass",
+            "xoffset": 198,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 104,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Piggy-Bank",
+            "xoffset": 275,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 105,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Quote",
+            "xoffset": 814,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 106,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Smiley",
+            "xoffset": 616,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 107,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Binoculars",
+            "xoffset": 1144,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 108,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Remove",
+            "xoffset": 1441,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 109,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Printer-Alt",
+            "xoffset": 836,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 110,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Game",
+            "xoffset": 0,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 111,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Heart",
+            "xoffset": 242,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 112,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Briefcase",
+            "xoffset": 1496,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 113,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Bin",
+            "xoffset": 638,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 114,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "External-Link",
+            "xoffset": 726,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 116,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Hardware",
+            "xoffset": 847,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 117,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Moon",
+            "xoffset": 330,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 118,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Settings",
+            "xoffset": 561,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 119,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "TV",
+            "xoffset": 792,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 120,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Switch",
+            "xoffset": 979,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 121,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Milk",
+            "xoffset": 583,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 122,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Plane",
+            "xoffset": 1452,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 123,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Balloon",
+            "xoffset": 77,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 124,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Left",
+            "xoffset": 407,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 125,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Car",
+            "xoffset": 572,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 126,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Anchor",
+            "xoffset": 1254,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 127,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Pause",
+            "xoffset": 165,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 128,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Paper-Plane",
+            "xoffset": 231,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 129,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Gavel",
+            "xoffset": 1155,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 130,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Save",
+            "xoffset": 440,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 131,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Download",
+            "xoffset": 693,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 132,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Up",
+            "xoffset": 737,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 133,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Headphones",
+            "xoffset": 682,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 135,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Box",
+            "xoffset": 1023,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 136,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Clipboard",
+            "xoffset": 297,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 137,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Damn-Hippies",
+            "xoffset": 110,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 138,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Glasses",
+            "xoffset": 891,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 139,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Printer",
+            "xoffset": 517,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 141,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Wine",
+            "xoffset": 506,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 142,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Contrast",
+            "xoffset": 605,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 143,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Play",
+            "xoffset": 1210,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 144,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "CD",
+            "xoffset": 121,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 145,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Battery",
+            "xoffset": 1188,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 146,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Pie-Chart",
+            "xoffset": 363,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 147,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Microphone-(Alt)",
+            "xoffset": 1485,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 148,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Search",
+            "xoffset": 1408,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 149,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Email",
+            "xoffset": 935,
+            "filename": "sprite.png"
+        }
+    },
+    {
+        "pk": 150,
+        "model": "cred.credicon",
+        "fields": {
+            "yoffset": 0,
+            "name": "Plugin",
+            "xoffset": 429,
+            "filename": "sprite.png"
+        }
+    }
+]

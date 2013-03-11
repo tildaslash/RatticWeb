@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from models import Cred, CredForm, CredAudit, TagForm, Tag, CredChangeQ
+from models import Cred, CredForm, CredAudit, TagForm, Tag, CredChangeQ, CredIcon
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -149,7 +149,7 @@ def edit(request, cred_id):
         CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
 
     return render(request, 'cred_edit.html', {'form': form, 'action':
-        '/cred/edit/' + cred_id + '/', 'next': next})
+        '/cred/edit/' + cred_id + '/', 'next': next, 'icons': CredIcon.objects.all()})
 
 @login_required
 def delete(request, cred_id):

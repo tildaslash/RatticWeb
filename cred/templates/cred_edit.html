@@ -11,6 +11,13 @@
             <label class="control-label" for="{{ field.html_name }}">{{ field.label }}</label>
             <div class="controls">
                 {{ field }}
+                {% if field.html_name == 'icon' %}
+                    <div style="width: 200px">
+                        {% for icon in icons %}
+                            {% include 'cred_credicon.html' with icon=icon field=field only %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
         </div>
     {% endfor %}

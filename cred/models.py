@@ -27,6 +27,8 @@ class CredManager(models.Manager):
 class CredIcon(models.Model):
     name = models.CharField(max_length=50, unique=True)
     filename = models.CharField(max_length=50)
+    xoffset = models.IntegerField(default=0)
+    yoffset = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.name
@@ -58,7 +60,6 @@ class CredForm(ModelForm):
         model = Cred
         widgets = {
             'tags': SelectMultiple(attrs={'class':'chzn-select'}),
-            'icon': CredImageSelect(),
         }
 
 class CredAdmin(admin.ModelAdmin):

@@ -3,7 +3,7 @@
     <tr><th></th><th>Title</th><th>User</th><th>Group</th><th>Tags</th><th>Edit</th><th>Delete</th></tr>
     {% for c in credlist %}
     <tr>
-      <td><img src="{% static "rattic/img/credicons" %}/{{ c.icon.filename }}" alt="{{ c.icon.name }}" /></td>
+      <td>{% include 'cred_credicon.html' with icon=c.icon only %}</td>
       <td><a href="/cred/detail/{{ c.id }}/">{{ c.title }}</a></td>
       <td>{{ c.username }}</td>
       <td><a href="/cred/list-by-group/{{ c.group.id }}/">{{ c.group.name }}</a></td>
