@@ -48,6 +48,9 @@ class Cred(models.Model):
     tags = models.ManyToManyField(Tag, related_name='child_creds', blank=True, null=True, default=None)
     icon = models.ForeignKey(CredIcon, default=58)
 
+    def on_changeq(self):
+        return CredChangeQ.objects.filter(cred=self).exists()
+
     def __unicode__(self):
         return self.title
 
