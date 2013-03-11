@@ -4,22 +4,13 @@ from south.db import db
 from south.v2 import DataMigration
 from django.db import models
 
-from dingus import patch
-
-
-def loaddata(orm, fixture_name):
-    _get_model = lambda model_identifier: orm[model_identifier]
-
-    with patch('django.core.serializers.python._get_model', _get_model):
-        from django.core.management import call_command
-        call_command("loaddata", fixture_name)
+from ratticweb.util import load_fixture
 
 class Migration(DataMigration):
 
     def forwards(self, orm):
         "Write your forwards methods here."
-        # Note: Remember to use orm['appname.ModelName'] rather than "from appname.models..."
-        loaddata(orm, "cred/db/initialicons.json")
+        load_fixture(orm, "cred/db/initialicons.json")
 
     def backwards(self, orm):
         "Write your backwards methods here."
