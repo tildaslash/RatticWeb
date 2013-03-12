@@ -18,10 +18,6 @@ class TagForm(ModelForm):
     class Meta:
         model = Tag
 
-class CredManager(models.Manager):
-    def for_user(self, user):
-        return super(CredManager, self).get_query_set().filter(group__in=user.groups.all())
-
 class CredIcon(models.Model):
     name = models.CharField(max_length=50, unique=True)
     filename = models.CharField(max_length=50)
@@ -34,9 +30,23 @@ class CredIcon(models.Model):
 class CredIconAdmin(admin.ModelAdmin):
     list_display = ('name', 'filename')
 
+class NonTrashManager(models.Manager):
+    def for_user(self, user):
+        return self.get_query_set().filter(group__in=user.groups.all())
+
+    def get_query_set(self):
+        query_set = super(NonTrashManager, self).get_query_set()
+        return query_set.filter(is_deleted=False)
+
+class TrashManager(models.Manager):
+    def get_query_set(self):
+        query_set = super(TrashManager, self).get_query_set()
+        return query_set.filter(is_deleted=True)
+
 class Cred(models.Model):
     METADATA = ('description', 'group', 'tags', 'icon')
-    objects = CredManager()
+    objects = NonTrashManager()
+    trash = TrashManager()
 
     title = models.CharField(max_length=64)
     username = models.CharField(max_length=250, blank=True, null=True)
@@ -45,6 +55,14 @@ class Cred(models.Model):
     group = models.ForeignKey(Group)
     tags = models.ManyToManyField(Tag, related_name='child_creds', blank=True, null=True, default=None)
     icon = models.ForeignKey(CredIcon, default=58)
+    is_deleted = models.BooleanField(default=False)
+
+    def delete(self, trash=True):
+      if not self.is_deleted:
+          self.is_deleted = True
+          self.save()
+      else:
+          super(Cred, self).delete()
 
     def on_changeq(self):
         return CredChangeQ.objects.filter(cred=self).exists()
@@ -71,11 +89,13 @@ class CredAudit(models.Model):
     CREDCHANGE = 'C'
     CREDMETACHANGE = 'M'
     CREDVIEW = 'V'
+    CREDDELETE = 'D'
     CREDAUDITCHOICES = (
         (CREDADD, 'Credential Added'),
         (CREDCHANGE, 'Credential Change'),
         (CREDMETACHANGE, 'Credential Metadata change'),
         (CREDVIEW, 'Credential View'),
+        (CREDDELETE, 'Credential Deleted'),
     )
 
     audittype = models.CharField(max_length=1, choices=CREDAUDITCHOICES)

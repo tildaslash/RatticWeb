@@ -4,7 +4,7 @@
 {% block content %}
 <h1>{{ cred.title }}</h1>
 {% if delete %}
-<div class="alert alert-error">Deleting this password will delete all audit logs for this password</div>
+<div class="alert alert-error">You are about to delete this password. A staff member will be required if you want to undelete it.</div>
 {% else %}
 <p><div class="btn-group">
     <a class="btn" href="/cred/edit/{{ cred.id }}/">Edit</a>
@@ -25,7 +25,7 @@
 </pre>
 {% if delete %}
     <form action="{{ action }}" method="post">{% csrf_token %}
-        <input type="submit" class="btn btn-danger" value="Delete forever" />
+        <input type="submit" class="btn btn-danger" value="Delete" />
     </form>
 {% else %}
     {% if credlogs %}
