@@ -9,6 +9,9 @@ from django.db.models import Q
 from models import UserForm, GroupForm, KeepassImportForm
 from cred.models import CredAudit, Cred, Tag
 
+import datetime
+from django.utils.timezone import now
+
 @staff_member_required
 def home(request):
     userlist = User.objects.all()
@@ -87,6 +90,13 @@ def audit_by_user(request, user_id):
     logs = CredAudit.objects.filter(user=loguser)
 
     return render(request, 'staff_audit.html', { 'logs': logs, 'type': 'user', 'loguser': loguser })
+
+@staff_member_required
+def audit_by_days(request, days_ago):
+    delta = datetime.timedelta(days=int(days_ago))
+    logs = CredAudit.objects.filter(time__gte=now() - delta)
+
+    return render(request, 'staff_audit.html', { 'logs': logs, 'type': 'time', 'days_ago': days_ago })
 
 @staff_member_required
 def change_advice_by_user_and_group(request, user_id, group_id):

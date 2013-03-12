@@ -4,15 +4,20 @@
 {% block content %}
 {% if type == 'cred' %}
   <h2>Audit Logs for password &apos;{{ cred.title }}&apos;</h2>
-{% else %}
+{% endif %}
+{% if type == 'user' %}
   <h2>Audit Logs for user &apos;{{ loguser.username }}&apos;</h2>
+{% endif %}
+{% if type == 'time' %}
+  <h2>Audit Logs going back {{ days_ago }} days ago</h2>
 {% endif %}
 <table class="table table-striped table-bordered table-condensed">
 <tr>
   <th>Action</th>
-  {% if type == 'cred' %}
+  {% if type != 'user' %}
     <th>User</th>
-  {% else %}
+  {% endif %}
+  {% if type != 'cred' %}
     <th>Credential</th>
   {% endif %}
   <th>When</th>
@@ -20,9 +25,10 @@
 {% for audit in logs %}
   <tr>
     <td>{{ audit.get_audittype_display }}</td>
-    {% if type == 'cred' %}
+    {% if type != 'user' %}
       <td><a href="{% url 'staff.views.userdetail' audit.user.id %}">{{ audit.user.username }}</a></td>
-    {% else %}
+    {% endif %}
+    {% if type != 'cred' %}
       <td><a href="{% url 'cred.views.detail' audit.cred.id %}">{{ audit.cred.title }}</a></td>
     {% endif %}
     <td>{{ audit.time }}</td>
