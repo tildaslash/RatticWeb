@@ -8,6 +8,7 @@ from django.contrib.auth.models import User, Group
 from django.db.models import Q
 from models import UserForm, GroupForm, KeepassImportForm
 from cred.models import CredAudit, Cred, Tag
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 import datetime
 from django.utils.timezone import now
@@ -17,6 +18,20 @@ def home(request):
     userlist = User.objects.all()
     grouplist = Group.objects.all()
     return render(request, 'staff_home.html', {'userlist': userlist, 'grouplist': grouplist})
+
+@staff_member_required
+def view_trash(request):
+    cred_list = Cred.trash.all()
+    paginator = Paginator(cred_list, request.user.profile.items_per_page)
+    page = request.GET.get('page')
+    try:
+        cred = paginator.page(page)
+    except PageNotAnInteger:
+        cred = paginator.page(1)
+    except EmptyPage:
+        cred = paginator.page(paginator.num_pages)
+    # This template comes from the cred app
+    return render(request, 'cred_list.html', {'credlist': cred, 'credtitle': 'Trashcan'})
 
 # user detail
 @staff_member_required

@@ -54,7 +54,7 @@ class CredResource(ModelResource):
     class Meta:
         queryset = Cred.objects.all()
         resource_name = 'cred'
-        excludes = ['username',]
+        excludes = ['username', 'is_deleted']
         authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
         authorization = CredAuthorization()
 
