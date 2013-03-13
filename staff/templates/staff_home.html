@@ -13,7 +13,7 @@
 <table class="table table-striped table-bordered table-condensed">
   <tr><th>Username</th><th>email</th><th>Edit</th><th>Delete</th></tr>
 {% for u in userlist %}
-<tr>
+<tr {% if not u.is_active %}class="error"{% endif %}>
   <td><a href="/staff/userdetail/{{ u.id }}/">{{ u.username }}</a></td>
   <td>{{ u.email }}</td>
   <td><a href="/staff/useredit/{{ u.id }}/">Edit</a></td>
