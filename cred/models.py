@@ -77,6 +77,7 @@ class CredForm(ModelForm):
 
     class Meta:
         model = Cred
+        exclude = ('is_deleted',)
         widgets = {
             'tags': SelectMultiple(attrs={'class':'chzn-select'}),
         }
