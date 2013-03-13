@@ -49,6 +49,7 @@ class Cred(models.Model):
     trash = TrashManager()
 
     title = models.CharField(max_length=64)
+    url = models.URLField(blank=True, null=True)
     username = models.CharField(max_length=250, blank=True, null=True)
     password = models.CharField(max_length=250)
     description = models.TextField(blank=True, null=True)
