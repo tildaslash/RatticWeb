@@ -116,7 +116,7 @@ class CredChangeQManager(models.Manager):
         return self.get_or_create(cred=cred)
 
     def for_user(self, user):
-        return self.filter(cred__group__in=user.groups.all())
+        return self.filter(cred__group__in=user.groups.all()).filter(cred__is_deleted=False)
 
 class CredChangeQ(models.Model):
     objects = CredChangeQManager()
