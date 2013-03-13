@@ -116,7 +116,7 @@ def add(request):
         form = CredForm(request.user)
 
     return render(request, 'cred_edit.html', {'form': form, 'action':
-        '/cred/add/'})
+      '/cred/add/', 'icons': CredIcon.objects.all()})
 
 @login_required
 def edit(request, cred_id):
