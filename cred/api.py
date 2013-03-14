@@ -52,7 +52,7 @@ class CredResource(ModelResource):
         return bundle
 
     class Meta:
-        queryset = Cred.objects.all()
+        queryset = Cred.objects.filter(is_deleted=False, latest=None)
         resource_name = 'cred'
         excludes = ['username', 'is_deleted']
         authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
@@ -60,7 +60,7 @@ class CredResource(ModelResource):
 
 class TagResource(ModelResource):
     creds = fields.ToManyField(CredResource,
-                               attribute=lambda bundle: Cred.objects.for_user(bundle.request.user).filter(tags=bundle.obj),
+                               attribute=lambda bundle: Cred.objects.accessable(bundle.request.user).filter(tags=bundle.obj),
                                full=True,
                                null=True)
     class Meta:

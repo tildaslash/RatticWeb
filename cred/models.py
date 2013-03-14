@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from django.forms import ModelForm, SelectMultiple
@@ -30,23 +31,25 @@ class CredIcon(models.Model):
 class CredIconAdmin(admin.ModelAdmin):
     list_display = ('name', 'filename')
 
-class NonTrashManager(models.Manager):
-    def for_user(self, user):
-        return self.get_query_set().filter(group__in=user.groups.all())
+class SearchManager(models.Manager):
+    def accessable(self, user, showhistorical=False, showdeleted=False):
+        usergroups = user.groups.all()
+        qs = super(SearchManager, self).get_query_set()
 
-    def get_query_set(self):
-        query_set = super(NonTrashManager, self).get_query_set()
-        return query_set.filter(is_deleted=False)
+        if user.is_staff and not showdeleted:
+            qs = qs.filter(is_deleted=False)
 
-class TrashManager(models.Manager):
-    def get_query_set(self):
-        query_set = super(TrashManager, self).get_query_set()
-        return query_set.filter(is_deleted=True)
+        if not showhistorical:
+            qs = qs.filter(latest=None)
+
+        qs = qs.filter(Q(group__in=usergroups)
+                     | Q(latest__group__in=usergroups))
+
+        return qs
 
 class Cred(models.Model):
     METADATA = ('description', 'group', 'tags', 'icon')
-    objects = NonTrashManager()
-    trash = TrashManager()
+    objects = SearchManager()
 
     title = models.CharField(max_length=64)
     url = models.URLField(blank=True, null=True)
@@ -80,6 +83,21 @@ class Cred(models.Model):
 
     def on_changeq(self):
         return CredChangeQ.objects.filter(cred=self).exists()
+
+    def is_accessable_by(self, user):
+        # Staff can see anything
+        if user.is_staff:
+            return True
+
+        # If its the latest and in your group you can see it
+        if self.latest == None and self.group in user.groups.all():
+            return True
+
+        # If the latest is in your group you can see it
+        if self.latest != None and self.latest.group in user.groups.all():
+            return True
+
+        return False
 
     def __unicode__(self):
         return self.title
@@ -130,7 +148,7 @@ class CredChangeQManager(models.Manager):
         return self.get_or_create(cred=cred)
 
     def for_user(self, user):
-        return self.filter(cred__group__in=user.groups.all()).filter(cred__is_deleted=False)
+        return self.filter(cred__in=Cred.objects.accessable(user))
 
 class CredChangeQ(models.Model):
     objects = CredChangeQManager()

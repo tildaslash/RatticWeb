@@ -9,7 +9,7 @@ from django.contrib.auth.models import Group
 
 @login_required
 def list(request):
-    cred_list = Cred.objects.for_user(request.user).filter(latest=None)
+    cred_list = Cred.objects.accessable(request.user)
     paginator = Paginator(cred_list, request.user.profile.items_per_page)
     page = request.GET.get('page')
     try:
@@ -23,7 +23,7 @@ def list(request):
 @login_required
 def list_by_tag(request, tag_id):
     tag = get_object_or_404(Tag, pk=tag_id)
-    cred_list = Cred.objects.for_user(request.user).filter(tags=tag, latest=None)
+    cred_list = Cred.objects.accessable(request.user).filter(tags=tag)
     paginator = Paginator(cred_list, request.user.profile.items_per_page)
     page = request.GET.get('page')
     try:
@@ -40,7 +40,7 @@ def list_by_group(request, group_id):
     group = get_object_or_404(Group, pk=group_id)
     if group not in request.user.groups.all():
         raise Http404
-    cred_list = Cred.objects.for_user(request.user).filter(group=group, latest=None)
+    cred_list = Cred.objects.accessable(request.user).filter(group=group)
     paginator = Paginator(cred_list, request.user.profile.items_per_page)
     page = request.GET.get('page')
     try:
@@ -59,7 +59,7 @@ def tags(request):
 
 @login_required
 def list_by_search(request, search):
-    cred_list = Cred.objects.for_user(request.user).filter(title__contains=search, latest=None)
+    cred_list = Cred.objects.accessable(request.user).filter(title__contains=search)
     tag = Tag.objects.filter(name__icontains=search)
     paginator = Paginator(cred_list, request.user.profile.items_per_page)
     page = request.GET.get('page')
@@ -76,11 +76,11 @@ def list_by_search(request, search):
 def detail(request, cred_id):
     cred = get_object_or_404(Cred, pk=cred_id)
 
-    CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
-
     # Check user has perms
-    if cred.group not in request.user.groups.all():
+    if not cred.is_accessable_by(request.user):
         raise Http404
+
+    CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
 
     try:
         lastchange = CredAudit.objects.filter(
@@ -123,7 +123,7 @@ def edit(request, cred_id):
     cred = get_object_or_404(Cred, pk=cred_id)
     next = request.GET.get('next', None)
     # Check user has perms
-    if cred.group not in request.user.groups.all():
+    if not cred.is_accessable_by(request.user):
         raise Http404
     if request.method == 'POST':
         form = CredForm(request.user, request.POST, instance=cred)
@@ -141,9 +141,9 @@ def edit(request, cred_id):
             CredAudit(audittype=chgtype, cred=cred, user=request.user).save()
             form.save()
             if next is None:
-            	return HttpResponseRedirect('/cred/detail/' + cred_id + '/')
+                return HttpResponseRedirect('/cred/detail/' + cred_id + '/')
             else:
-            	return HttpResponseRedirect(next)
+                return HttpResponseRedirect(next)
     else:
         form = CredForm(request.user, instance=cred)
         CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
@@ -164,12 +164,15 @@ def delete(request, cred_id):
         lastchange = "Unknown (Logs deleted)"
 
     # Check user has perms
-    if cred.group not in request.user.groups.all():
+    if not cred.is_accessable_by(request.user):
         raise Http404
     if request.method == 'POST':
         CredAudit(audittype=CredAudit.CREDDELETE, cred=cred, user=request.user).save()
         cred.delete()
         return HttpResponseRedirect('/cred/list')
+
+    CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
+
     return render(request, 'cred_detail.html',{'cred' : cred, 'lastchange': lastchange, 'action':'/cred/delete/' + cred_id + '/', 'delete':True})
 
 
@@ -216,7 +219,7 @@ def viewqueue(request):
 def addtoqueue(request, cred_id):
     cred = get_object_or_404(Cred, pk=cred_id)
     # Check user has perms
-    if cred.group not in request.user.groups.all():
+    if not cred.is_accessable_by(request.user):
         raise Http404
     CredChangeQ.objects.add_to_changeq(cred)
     return HttpResponseRedirect('/cred/viewqueue/')
@@ -226,8 +229,7 @@ def bulkaddtoqueue(request):
     tochange = Cred.objects.filter(id__in=request.POST.getlist('tochange'))
     usergroups = request.user.groups.all()
     for c in tochange:
-        # Staff have access to add bulk, so change advice can be used
-        if request.user.is_staff or (cred.group not in usergroups):
+        if not cred.is_accessable_by(request.user):
             CredChangeQ.objects.add_to_changeq(c)
 
     return HttpResponseRedirect('/cred/viewqueue/')
