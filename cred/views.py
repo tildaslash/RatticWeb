@@ -167,6 +167,7 @@ def delete(request, cred_id):
     if cred.group not in request.user.groups.all():
         raise Http404
     if request.method == 'POST':
+        CredAudit(audittype=CredAudit.CREDDELETE, cred=cred, user=request.user).save()
         cred.delete()
         return HttpResponseRedirect('/cred/list')
     return render(request, 'cred_detail.html',{'cred' : cred, 'lastchange': lastchange, 'action':'/cred/delete/' + cred_id + '/', 'delete':True})
