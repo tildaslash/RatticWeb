@@ -35,4 +35,27 @@
   </tr>
 {% endfor %}
 </table>
+
+<div class="pagination pagination-centered">
+  <ul>
+    {% if logs.has_previous %}
+      <li><a href="?page={{ logs.previous_page_number }}">Prev</a></li>
+    {% else %}
+      <li class="disabled"><a href="#">Prev</a></li>
+    {% endif %}
+    {% for p in logs.paginator.page_range %}
+      {% if logs.number == p %}
+        <li class="active"><a href="#">{{ p }}</a></li>
+      {% else %}
+        <li><a href="?page={{ p }}">{{ p }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if logs.has_next %}
+      <li><a href="?page={{ logs.next_page_number }}">Next</a></li>
+    {% else %}
+      <li class="disabled"><a href="#">Next</a></li>
+    {%endif %}
+  </ul>
+</div>
+
 {% endblock %}

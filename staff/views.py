@@ -95,21 +95,51 @@ def userdelete(request, uid):
 @staff_member_required
 def audit_by_cred(request, cred_id):
     cred = get_object_or_404(Cred, pk=cred_id)
-    logs = CredAudit.objects.filter(cred=cred)
+    alllogs = CredAudit.objects.filter(cred=cred)
+
+    paginator = Paginator(alllogs, request.user.profile.items_per_page)
+    page = request.GET.get('page')
+
+    try:
+        logs = paginator.page(page)
+    except PageNotAnInteger:
+        logs = paginator.page(1)
+    except EmptyPage:
+        logs = paginator.page(paginator.num_pages)
 
     return render(request, 'staff_audit.html', { 'logs': logs, 'type': 'cred', 'cred': cred })
 
 @staff_member_required
 def audit_by_user(request, user_id):
     loguser = get_object_or_404(User, pk=user_id)
-    logs = CredAudit.objects.filter(user=loguser)
+    alllogs = CredAudit.objects.filter(user=loguser)
+
+    paginator = Paginator(alllogs, request.user.profile.items_per_page)
+    page = request.GET.get('page')
+
+    try:
+        logs = paginator.page(page)
+    except PageNotAnInteger:
+        logs = paginator.page(1)
+    except EmptyPage:
+        logs = paginator.page(paginator.num_pages)
 
     return render(request, 'staff_audit.html', { 'logs': logs, 'type': 'user', 'loguser': loguser })
 
 @staff_member_required
 def audit_by_days(request, days_ago):
     delta = datetime.timedelta(days=int(days_ago))
-    logs = CredAudit.objects.filter(time__gte=now() - delta)
+    alllogs = CredAudit.objects.filter(time__gte=now() - delta)
+
+    paginator = Paginator(alllogs, request.user.profile.items_per_page)
+    page = request.GET.get('page')
+
+    try:
+        logs = paginator.page(page)
+    except PageNotAnInteger:
+        logs = paginator.page(1)
+    except EmptyPage:
+        logs = paginator.page(paginator.num_pages)
 
     return render(request, 'staff_audit.html', { 'logs': logs, 'type': 'time', 'days_ago': days_ago })
 
