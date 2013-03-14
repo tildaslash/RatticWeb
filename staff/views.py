@@ -21,7 +21,7 @@ def home(request):
 
 @staff_member_required
 def view_trash(request):
-    cred_list = Cred.trash.all()
+    cred_list = Cred.objects.accessable(request.user, deleted=True).filter(is_deleted=True)
     paginator = Paginator(cred_list, request.user.profile.items_per_page)
     page = request.GET.get('page')
     try:
@@ -231,4 +231,31 @@ def import_from_keepass(request):
     else:
         form = KeepassImportForm(request.user)
     return render(request, 'staff_keepassimport.html', {'form': form})
+
+@staff_member_required
+def credundelete(request, cred_id):
+    cred = get_object_or_404(Cred, pk=cred_id)
+
+    try:
+        lastchange = CredAudit.objects.filter(
+                cred=cred,
+                audittype__in=[CredAudit.CREDCHANGE, CredAudit.CREDADD],
+                ).latest().time
+    except CredAudit.DoesNotExist:
+        lastchange = "Unknown (Logs deleted)"
+
+    # Check user has perms
+    if not cred.is_accessable_by(request.user):
+        raise Http404
+    if request.method == 'POST':
+        CredAudit(audittype=CredAudit.CREDADD, cred=cred, user=request.user).save()
+        cred.is_deleted = False
+        cred.save()
+        return HttpResponseRedirect('/staff/trash/')
+
+    CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
+
+    return render(request, 'cred_detail.html',{'cred' : cred, 'lastchange': lastchange, 'action':'/cred/delete/' + cred_id + '/', 'undelete':True})
+
+
 

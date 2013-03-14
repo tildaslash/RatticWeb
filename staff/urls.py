@@ -21,6 +21,7 @@ urlpatterns = patterns('staff.views',
     url(r'^change-advice-by-user/(?P<user_id>\d+)/$','change_advice_by_user'),
     url(r'^change-advice-by-user-and-group/(?P<user_id>\d+)/(?P<group_id>\d+)/$','change_advice_by_user_and_group'),
     url(r'^keepass-import/$','import_from_keepass'),
+    url(r'^credundelete/(?P<cred_id>\d+)/$','credundelete'),
 ) + patterns('',
     # Custom class based views
     url(r'^useradd/$', NewUser.as_view()),

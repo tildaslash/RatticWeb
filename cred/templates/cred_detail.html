@@ -5,13 +5,20 @@
 <h1>{{ cred.title }}</h1>
 {% if delete %}
 <div class="alert alert-error">You are about to delete this password. A staff member will be required if you want to undelete it.</div>
-{% else %}
+{% endif %}
+{% if cred.is_deleted %}
+<div class="alert alert-error">This credential has been deleted and is in the trash can. It is only visible to staff. You can alter it if you wish, its history will still be recorded. Click the undelete button to restore it. If you click the Delete Permanently button then the password, its entire history and all its audit logs will be removed.</div>
+{% endif %}
 <p><div class="btn-group">
     <a class="btn" href="/cred/edit/{{ cred.id }}/">Edit</a>
-    <a class="btn btn-danger" href="/cred/delete/{{ cred.id }}/">Delete</a>
-    <a class="btn" href="/cred/addtoqueue/{{ cred.id }}/">Add to Change Queue</a>
+    {% if not delete %}<a class="btn btn-danger" href="/cred/delete/{{ cred.id }}/">Delete</a>{% endif %}
+    {% if not cred.is_deleted %}
+        <a class="btn" href="/cred/addtoqueue/{{ cred.id }}/">Add to Change Queue</a>
+    {% endif %}
+    {% if cred.is_deleted and not undelete %}
+    <a class="btn btn-success" href="/staff/credundelete/{{ cred.id }}/">Undelete</a>
+    {% endif %}
 </div></p>
-{% endif %}
 <table class="table table-striped table-bordered table-condensed">
 <tr><th>URL</th><td><a href="{{ cred.url }}">{{ cred.url }}</a></td></tr>
 <tr><th>Username</th><td>{{ cred.username }}</td></tr>
@@ -25,10 +32,16 @@
 {{ cred.description }}
 </pre>
 {% if delete %}
-    <form action="{{ action }}" method="post">{% csrf_token %}
+    <form action="" method="post">{% csrf_token %}
         <input type="submit" class="btn btn-danger" value="Delete" />
     </form>
-{% else %}
+{% endif %}
+{% if undelete %}
+    <form action="" method="post">{% csrf_token %}
+        <input type="submit" class="btn btn-success" value="Undelete" />
+    </form>
+{% endif %}
+{% if not delete %}
     {% if credlogs %}
         {% include "credaudit_list.html" with type='user' %}
     {% endif %}

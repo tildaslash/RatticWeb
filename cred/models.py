@@ -32,14 +32,14 @@ class CredIconAdmin(admin.ModelAdmin):
     list_display = ('name', 'filename')
 
 class SearchManager(models.Manager):
-    def accessable(self, user, showhistorical=False, showdeleted=False):
+    def accessable(self, user, historical=False, deleted=False):
         usergroups = user.groups.all()
         qs = super(SearchManager, self).get_query_set()
 
-        if user.is_staff and not showdeleted:
-            qs = qs.filter(is_deleted=False)
+        if user.is_staff and not deleted:
+            qs = qs.exclude(is_deleted=True, latest=None)
 
-        if not showhistorical:
+        if not historical:
             qs = qs.filter(latest=None)
 
         qs = qs.filter(Q(group__in=usergroups)
@@ -74,7 +74,7 @@ class Cred(models.Model):
             pass
         super(Cred, self).save(*args, **kwargs)
 
-    def delete(self, trash=True):
+    def delete(self):
       if not self.is_deleted:
           self.is_deleted = True
           self.save()
