@@ -57,6 +57,19 @@ class Cred(models.Model):
     tags = models.ManyToManyField(Tag, related_name='child_creds', blank=True, null=True, default=None)
     icon = models.ForeignKey(CredIcon, default=58)
     is_deleted = models.BooleanField(default=False)
+    latest = models.ForeignKey('Cred', related_name='history', blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        try:
+            old = Cred.objects.get(id=self.id)
+            old.id = None
+            old.latest = self
+            old.save()
+        except Cred.DoesNotExist:
+            # This just means its new cred, ignore it
+            pass
+        super(Cred, self).save(*args, **kwargs)
 
     def delete(self, trash=True):
       if not self.is_deleted:
@@ -78,7 +91,7 @@ class CredForm(ModelForm):
 
     class Meta:
         model = Cred
-        exclude = ('is_deleted',)
+        exclude = ('is_deleted', 'latest')
         widgets = {
             'tags': SelectMultiple(attrs={'class':'chzn-select'}),
         }

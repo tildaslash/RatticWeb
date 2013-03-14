@@ -9,7 +9,7 @@ from django.contrib.auth.models import Group
 
 @login_required
 def list(request):
-    cred_list = Cred.objects.for_user(request.user)
+    cred_list = Cred.objects.for_user(request.user).filter(latest=None)
     paginator = Paginator(cred_list, request.user.profile.items_per_page)
     page = request.GET.get('page')
     try:
@@ -23,7 +23,7 @@ def list(request):
 @login_required
 def list_by_tag(request, tag_id):
     tag = get_object_or_404(Tag, pk=tag_id)
-    cred_list = Cred.objects.for_user(request.user).filter(tags=tag)
+    cred_list = Cred.objects.for_user(request.user).filter(tags=tag, latest=None)
     paginator = Paginator(cred_list, request.user.profile.items_per_page)
     page = request.GET.get('page')
     try:
@@ -40,7 +40,7 @@ def list_by_group(request, group_id):
     group = get_object_or_404(Group, pk=group_id)
     if group not in request.user.groups.all():
         raise Http404
-    cred_list = Cred.objects.for_user(request.user).filter(group=group)
+    cred_list = Cred.objects.for_user(request.user).filter(group=group, latest=None)
     paginator = Paginator(cred_list, request.user.profile.items_per_page)
     page = request.GET.get('page')
     try:
@@ -59,7 +59,7 @@ def tags(request):
 
 @login_required
 def list_by_search(request, search):
-    cred_list = Cred.objects.for_user(request.user).filter(title__contains=search)
+    cred_list = Cred.objects.for_user(request.user).filter(title__contains=search, latest=None)
     tag = Tag.objects.filter(name__icontains=search)
     paginator = Paginator(cred_list, request.user.profile.items_per_page)
     page = request.GET.get('page')
