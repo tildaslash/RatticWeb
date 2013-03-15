@@ -36,7 +36,7 @@ class SearchManager(models.Manager):
         usergroups = user.groups.all()
         qs = super(SearchManager, self).get_query_set()
 
-        if user.is_staff and not deleted:
+        if not user.is_staff or not deleted:
             qs = qs.exclude(is_deleted=True, latest=None)
 
         if not historical:
