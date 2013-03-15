@@ -90,11 +90,11 @@ class Cred(models.Model):
             return True
 
         # If its the latest and in your group you can see it
-        if self.latest == None and self.group in user.groups.all():
+        if not self.is_deleted and self.latest == None and self.group in user.groups.all():
             return True
 
         # If the latest is in your group you can see it
-        if self.latest != None and self.latest.group in user.groups.all():
+        if not self.is_deleted and self.latest != None and self.latest.group in user.groups.all():
             return True
 
         return False
