@@ -48,7 +48,11 @@ class SimpleTest(TestCase):
         self.assertTrue(self.c in Cred.objects.accessable(self.u))
         self.assertTrue(not self.c in Cred.objects.accessable(self.f))
 
-    def test_deleted_accessibility(self):
+    def test_deleted_access(self):
+        self.assertTrue(self.d.is_accessable_by(self.s))
+        self.assertTrue(not self.d.is_accessable_by(self.u))
+
+    def test_deleted_visibility(self):
         self.assertTrue(self.d in Cred.objects.accessable(self.s, deleted=True))
         self.assertTrue(not self.d in Cred.objects.accessable(self.u, deleted=True))
 
