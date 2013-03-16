@@ -32,6 +32,18 @@ function hidepass(){
     $('a#hidepass').css('display', 'none')
 }
 
+function togglepassinput(){
+    input = $('input#id_password');
+    button = $('button#passtoggle');
+    if (input.attr('type') == 'password') {
+        input.attr('type', 'text');
+        button.html('<i class="icon-eye-close"></i>');
+    } else {
+        input.attr('type', 'password');
+        button.html('<i class="icon-eye-open"></i>');
+    }
+}
+
 function copycheckbox(allname, name){
     var checkval = $('input[name="' + allname + '"]').is(':checked');
     $('input[name="' + name + '"]').prop('checked', checkval);

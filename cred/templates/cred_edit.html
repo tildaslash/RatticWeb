@@ -10,13 +10,20 @@
             {{ field.errors }}
             <label class="control-label" for="{{ field.html_name }}">{{ field.label }}</label>
             <div class="controls">
-                {{ field }}
                 {% if field.html_name == 'icon' %}
+                    {{ field }}
                     <div style="width: 200px">
                         {% for icon in icons %}
                             {% include 'cred_credicon.html' with icon=icon field=field only %}
                         {% endfor %}
                     </div>
+		{% elif field.html_name == 'password' %}
+		    <div class="input-append">
+			<input id="id_password" name="password" value="{{ field.value }}" maxlength="250" type="password">
+			<button class="btn" id="passtoggle" type="button" onclick="togglepassinput()"><i class="icon-eye-open"></i></button>
+                    </div>
+		{% else %}
+		    {{ field }}
                 {% endif %}
             </div>
         </div>
