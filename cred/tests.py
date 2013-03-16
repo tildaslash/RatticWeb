@@ -72,6 +72,7 @@ class CredDeleteTest(TestCase):
         c.delete()
 
         self.assertEqual(Cred.objects.get(id=c.id), c)
+        self.assertTrue(c.is_deleted)
 
         test = False
 
@@ -83,4 +84,5 @@ class CredDeleteTest(TestCase):
             test = True
 
         self.assertTrue(test)
+
 
