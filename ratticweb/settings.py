@@ -137,6 +137,13 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
+LOCAL_APPS = (
+    # Sub apps
+    'cred',
+    'account',
+    'staff',
+)
+
 INSTALLED_APPS = (
     # External apps
     'django.contrib.auth',
@@ -153,11 +160,9 @@ INSTALLED_APPS = (
     # Base app
     'ratticweb',
 
-    # Sub apps
-    'cred',
-    'account',
-    'staff',
-)
+) + LOCAL_APPS
+
+TEST_RUNNER = 'tests.runner.ExcludeAppsTestSuiteRunner'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
