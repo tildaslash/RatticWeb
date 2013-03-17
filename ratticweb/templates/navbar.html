@@ -1,7 +1,7 @@
 {% load static from staticfiles %}
 <div class="navbar">
     <div class="navbar-inner">
-        <a class="brand" href="/"><img width="16" height="16" src="{% static "rattic/img/logo.png" %}" /> RatticDB</a>
+        <a class="brand" href="/"><img class="logo" src="{% static "rattic/img/logo.png" %}" /> RatticDB</a>
         <ul class="nav">
           <li {% if pageurl == "/cred/list/" %}class="active"{% endif %}><a href="/cred/list/">Passwords</a></li>
             {% if user.is_authenticated %}<li {% if pageurl == "/cred/viewqueue/" %}class="active"{% endif %}><a href="/cred/viewqueue/">Change Queue{% if changeqcount > 0 %} <span class="badge">{{ changeqcount }}</span>{% endif %}</a></li>{% endif %}
