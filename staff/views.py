@@ -79,7 +79,7 @@ def groupdelete(request, gid):
     group = get_object_or_404(Group, pk=gid)
     if request.method == 'POST':
         group.delete()
-        return HttpResponseRedirect('/staff/')
+        return HttpResponseRedirect(reverse('views.staff.home'))
     return render(request, 'staff_groupdetail.html', {'group' : group, 'delete':True})
 
 # User delete
@@ -88,7 +88,7 @@ def userdelete(request, uid):
     user = get_object_or_404(User, pk=uid)
     if request.method == 'POST':
         user.delete()
-        return HttpResponseRedirect('/staff/')
+        return HttpResponseRedirect(reverse('views.staff.home'))
     return render(request, 'staff_userdetail.html', {'viewuser' : user, 'delete':True})
 
 # Credential view
@@ -189,7 +189,7 @@ def change_advice_by_user(request, user_id):
 class NewUser(FormView):
     form_class = UserForm
     template_name = 'staff_useredit.html'
-    success_url = '/staff/'
+    success_url = reverse('staff.views.home')
 
     # Staff access only
     @method_decorator(staff_member_required)
@@ -208,7 +208,7 @@ class UpdateUser(UpdateView):
     model = User
     form_class = UserForm
     template_name = 'staff_useredit.html'
-    success_url = '/staff/'
+    success_url = reverse('staff.views.home')
 
     # Staff access only
     @method_decorator(staff_member_required)
@@ -281,11 +281,11 @@ def credundelete(request, cred_id):
         CredAudit(audittype=CredAudit.CREDADD, cred=cred, user=request.user).save()
         cred.is_deleted = False
         cred.save()
-        return HttpResponseRedirect('/staff/trash/')
+        return HttpResponseRedirect(reverse('views.staff.view_trash'))
 
     CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
 
-    return render(request, 'cred_detail.html',{'cred' : cred, 'lastchange': lastchange, 'action':'/cred/delete/' + cred_id + '/', 'undelete':True})
+    return render(request, 'cred_detail.html',{'cred' : cred, 'lastchange': lastchange, 'action':reverse('cred.views.delete', args(cred_id)), 'undelete':True})
 
 
 
