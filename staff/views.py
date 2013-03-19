@@ -189,7 +189,7 @@ def change_advice_by_user(request, user_id):
 class NewUser(FormView):
     form_class = UserForm
     template_name = 'staff_useredit.html'
-    success_url = '/staff/'
+    success_url = reverse('home')
 
     # Staff access only
     @method_decorator(staff_member_required)
@@ -208,7 +208,7 @@ class UpdateUser(UpdateView):
     model = User
     form_class = UserForm
     template_name = 'staff_useredit.html'
-    success_url = '/staff/'
+    success_url = reverse('home')
 
     # Staff access only
     @method_decorator(staff_member_required)
