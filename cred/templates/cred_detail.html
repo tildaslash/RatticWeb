@@ -13,7 +13,7 @@
     <a class="btn" href="{% url 'cred.views.edit' cred.id %}">Edit</a>
     {% if not delete %}<a class="btn btn-danger" href="{% url 'cred.views.delete' cred.id %}/">Delete</a>{% endif %}
     {% if not cred.is_deleted %}
-        <a class="btn" href="{% url 'cred.views.addtoqueue' cred.id %}/">Add to Change Queue</a>
+        <a class="btn" href="{% url 'cred.views.addtoqueue' cred.id %}">Add to Change Queue</a>
     {% endif %}
     {% if cred.is_deleted and not undelete %}
     <a class="btn btn-success" href="{% url 'staff.views.credundelete' cred.id %}/">Undelete</a>
@@ -23,7 +23,7 @@
 <tr><th>URL</th><td><a href="{{ cred.url }}">{{ cred.url }}</a></td></tr>
 <tr><th>Username</th><td>{{ cred.username }}</td></tr>
 <tr><th>Password <a id="hidepass" onclick="hidepass()" class="btn btn-mini"><i class="icon-eye-close"></i></a> <a id="showpass" onclick="showpass()" class="btn btn-mini"><i class="icon-eye-open"></i></a></th><td><span id="password">{{ cred.password }}</span> {% include 'clippy.html' with id=cred.password only %}</td></tr>
-<tr><th>Group</th><td><a href="{% url 'cred.views.list_by_group' cred.group.id %}/">{{ cred.group.name }}</a></td></tr>
+<tr><th>Group</th><td><a href="{% url 'cred.views.list_by_group' cred.group.id %}">{{ cred.group.name }}</a></td></tr>
 <tr><th>Tags</th><td>{% for t in cred.tags.all %}<a href="{% url 'cred.views.list_by_tag' t.id %}/">{{ t.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</td></tr>
 <tr><th>Last Change</th><td>{{ lastchange }}</td></tr>
 </table>
