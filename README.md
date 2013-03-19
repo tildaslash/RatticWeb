@@ -19,6 +19,7 @@ Requirements:
 
 Support and Known Issues:
 * Through <a href="http://twitter.com/RatticDB">twitter</a> or <a href="https://github.com/tildaslash/RatticWeb/issues?state=open">Github Issues</a>
+* Apache config needs to have "WSGIPassAuthorization On" for the API keys to work  
 
 Dev Setup:
 * Install requirements, if you need help seek out pydocs and your OS documentation. 
