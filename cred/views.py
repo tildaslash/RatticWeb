@@ -149,7 +149,7 @@ def edit(request, cred_id):
         CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
 
     return render(request, 'cred_edit.html', {'form': form, 'action':
-        reverse('staff.cred.edit', args=(cred.id,)), 'next': next, 'icons': CredIcon.objects.all()})
+        reverse('cred.views.edit', args=(cred.id,)), 'next': next, 'icons': CredIcon.objects.all()})
 
 @login_required
 def delete(request, cred_id):
