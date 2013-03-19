@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.contrib.admin.views.decorators import staff_member_required
@@ -189,7 +189,7 @@ def change_advice_by_user(request, user_id):
 class NewUser(FormView):
     form_class = UserForm
     template_name = 'staff_useredit.html'
-    success_url = reverse('home')
+    success_url = reverse_lazy('staff.views.home')
 
     # Staff access only
     @method_decorator(staff_member_required)
@@ -208,7 +208,7 @@ class UpdateUser(UpdateView):
     model = User
     form_class = UserForm
     template_name = 'staff_useredit.html'
-    success_url = reverse('home')
+    success_url = reverse_lazy('staff.views.home')
 
     # Staff access only
     @method_decorator(staff_member_required)
