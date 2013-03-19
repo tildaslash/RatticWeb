@@ -4,7 +4,7 @@
 <h2>Changes for user: {{ viewuser.username }}</h2>
 <p>We noticed that you are disabling a user account, or removing groups from a user. To help you RatticDB has analysed the auditlogs to see what passwords the user knows, and no longer has access to. We recommend that you add all these passwords to the change queue. To do this press the &quot;Add to Change Queue&quot; button, if you don't want to change some of the passwords, simply uncheck them first.</p>
 
-<form method="POST" action="/cred/bulkaddtoqueue/">{% csrf_token %}
+<form method="POST" action="{% url cred.views.bulkaddtoqueue %}">{% csrf_token %}
 <table class="table table-striped table-bordered table-condensed">
 <thead>
 <tr>
@@ -19,10 +19,10 @@
 {% for c in creds %}
 <tr>
     <td><input type="checkbox" checked="true" name="tochange" value="{{ c.id }}" /></td>
-    <td><a href="/cred/detail/{{ c.id }}/">{{ c.title }}</a></td>
+    <td><a href="{% url cred.views.detail c.id %}/">{{ c.title }}</a></td>
     <td>{{ c.username }}</td>
     <td>{{ c.group.name }}</td>
-    <td>{% for t in c.tags.all %}{% if not forloop.first %}, {% endif %}<a href="/cred/list-by-tag/{{ t.id }}/">{{ t.name }}</a>{% endfor %}</td>
+    <td>{% for t in c.tags.all %}{% if not forloop.first %}, {% endif %}<a href="{% url cred.views.list_by_tag t.id %}/">{{ t.name }}</a>{% endfor %}</td>
 </tr>
 {% endfor %}
 </tbody>

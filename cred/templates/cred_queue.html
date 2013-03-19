@@ -6,8 +6,8 @@
   <tr><th>Title</th><th>Edit</th></tr>
 {% for q in queue %}
 <tr>
-  <td>{% include 'cred_credicon.html' with icon=q.cred.icon only %} <a href="/cred/detail/{{ q.cred.id }}/">{{ q.cred.title }}</a></td>
-  <td><a href="/cred/edit/{{ q.cred.id }}/?next=/cred/viewqueue/">Edit</a></td>
+  <td>{% include 'cred_credicon.html' with icon=q.cred.icon only %} <a href="{% url cred.views.detail q.cred.id %}/">{{ q.cred.title }}</a></td>
+  <td><a href="{% url cred.views.edit  q.cred.id %}/?next={% url cred.views.viewqueue %}">Edit</a></td>
 </tr>
 {% endfor %}
 </table>

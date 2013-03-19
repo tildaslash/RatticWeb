@@ -1,3 +1,3 @@
 <ul>
-{% for t in tags %}<li><a href="/cred/list-by-tag/{{ t.id }}">{{ t.name }}</a></li>{% endfor %}
+{% for t in tags %}<li><a href="{% url cred.views.list_by_tag t.id %}">{{ t.name }}</a></li>{% endfor %}
 </ul>

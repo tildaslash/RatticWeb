@@ -3,10 +3,10 @@
     <tr><th>Title</th><th>User</th><th>Group</th><th>Tags</th></tr>
     {% for c in credlist %}
     <tr {% if c.on_changeq %}class="warning" {% endif %}>
-      <td>{% include 'cred_credicon.html' with icon=c.icon only %} <a href="/cred/detail/{{ c.id }}/">{{ c.title }}</a></td>
+      <td>{% include 'cred_credicon.html' with icon=c.icon only %} <a href="{% url cred.views.detail  c.id %}">{{ c.title }}</a></td>
       <td>{{ c.username }}</td>
-      <td><a href="/cred/list-by-group/{{ c.group.id }}/">{{ c.group.name }}</a></td>
-      <td>{% for t in c.tags.all %}{% if not forloop.first %}, {% endif %}<a href="/cred/list-by-tag/{{ t.id }}/">{{ t.name }}</a>{% endfor %}</td>
+      <td><a href="{% url cred.views.list_by_group c.group.id %}">{{ c.group.name }}</a></td>
+      <td>{% for t in c.tags.all %}{% if not forloop.first %}, {% endif %}<a href="{% url cred.views.list_by_tag t.id %}">{{ t.name }}</a>{% endfor %}</td>
     </tr>
 {% endfor %}
 </table>
