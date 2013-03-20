@@ -18,7 +18,7 @@
 <tr {% if not u.is_active %}class="error"{% endif %}>
   <td><a href="{% url staff.views.userdetail u.id %}">{{ u.username }}</a></td>
   <td>{{ u.email }}</td>
-  <td><a href="{% url user_edit u.id %}/">Edit</a></td>
+  <td><a href="{% url user_edit u.id %}">Edit</a></td>
   <td><a href="{% url staff.views.userdelete u.id %}">Delete</a></td>
 </tr>
 {% endfor %}
