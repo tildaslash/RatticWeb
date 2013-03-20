@@ -4,7 +4,7 @@
 <h1>Staff Manage</h1>
 
 <div class="btn-group">
-  <a class="btn" href="/staff/useradd/">Add User</a>
+  <a class="btn" href="{% url user_add %}">Add User</a>
   <a class="btn" href="{% url staff.views.groupadd %}">Add Group</a>
   <a class="btn" href="{% url staff.views.import_from_keepass %}">Import Keepass</a>
   <a class="btn" href="{% url staff.views.view_trash %}">View Trash</a>
@@ -18,7 +18,7 @@
 <tr {% if not u.is_active %}class="error"{% endif %}>
   <td><a href="{% url staff.views.userdetail u.id %}">{{ u.username }}</a></td>
   <td>{{ u.email }}</td>
-  <td><a href="/staff/useredit/{{ u.id }}/">Edit</a></td>
+  <td><a href="{% url user_edit u.id %}/">Edit</a></td>
   <td><a href="{% url staff.views.userdelete u.id %}">Delete</a></td>
 </tr>
 {% endfor %}
