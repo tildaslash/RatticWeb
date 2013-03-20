@@ -24,6 +24,6 @@ urlpatterns = patterns('staff.views',
     url(r'^credundelete/(?P<cred_id>\d+)/$','credundelete'),
 ) + patterns('',
     # Custom class based views
-    url(r'^useradd/$', NewUser.as_view()),
-    url(r'^useredit/(?P<pk>\d+)/$', UpdateUser.as_view()),
+    url(r'^useradd/$', NewUser.as_view(), name="user_add"),
+    url(r'^useredit/(?P<pk>\d+)/$', UpdateUser.as_view(), name="user_edit"),
 )

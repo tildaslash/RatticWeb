@@ -111,12 +111,12 @@ def add(request):
         if form.is_valid():
             form.save()
             CredAudit(audittype=CredAudit.CREDADD, cred=form.instance, user=request.user).save()
-            return HttpResponseRedirect('/cred/list')
+            return HttpResponseRedirect(reverse('cred.views.list'))
     else:
         form = CredForm(request.user)
 
     return render(request, 'cred_edit.html', {'form': form, 'action':
-      '/cred/add/', 'icons': CredIcon.objects.all()})
+      reverse('cred.views.add'), 'icons': CredIcon.objects.all()})
 
 @login_required
 def edit(request, cred_id):
@@ -141,7 +141,7 @@ def edit(request, cred_id):
             CredAudit(audittype=chgtype, cred=cred, user=request.user).save()
             form.save()
             if next is None:
-                return HttpResponseRedirect('/cred/detail/' + cred_id + '/')
+                return HttpResponseRedirect(reverse('cred.views.detail', args=(cred_id)))
             else:
                 return HttpResponseRedirect(next)
     else:
@@ -149,7 +149,7 @@ def edit(request, cred_id):
         CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
 
     return render(request, 'cred_edit.html', {'form': form, 'action':
-        '/cred/edit/' + cred_id + '/', 'next': next, 'icons': CredIcon.objects.all()})
+        reverse('cred.views.edit', args=(cred.id,)), 'next': next, 'icons': CredIcon.objects.all()})
 
 @login_required
 def delete(request, cred_id):
@@ -169,11 +169,11 @@ def delete(request, cred_id):
     if request.method == 'POST':
         CredAudit(audittype=CredAudit.CREDDELETE, cred=cred, user=request.user).save()
         cred.delete()
-        return HttpResponseRedirect('/cred/list')
+        return HttpResponseRedirect(reverse('cred.views.list'))
 
     CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
 
-    return render(request, 'cred_detail.html',{'cred' : cred, 'lastchange': lastchange, 'action':'/cred/delete/' + cred_id + '/', 'delete':True})
+    return render(request, 'cred_detail.html',{'cred' : cred, 'lastchange': lastchange, 'action':reverse('cred.views.delete', args=(cred_id)), 'delete':True})
 
 
 # Categories 
@@ -183,7 +183,7 @@ def tagadd(request):
         form = TagForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/cred/list')
+            return HttpResponseRedirect(reverse('cred.views.list'))
     else:
         form = TagForm()
 
@@ -196,7 +196,7 @@ def tagedit(request, tag_id):
         form = TagForm(request.POST, instance=tag)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/cred/list')
+            return HttpResponseRedirect(reverse('cred.views.list'))
     else:
         form = TagForm(instance=tag)
 
@@ -207,7 +207,7 @@ def tagdelete(request, tag_id):
     tag = get_object_or_404(Tag, pk=tag_id)
     if request.method == 'POST':
         tag.delete()
-        return HttpResponseRedirect('/cred/list')
+        return HttpResponseRedirect(reverse('cred.views.list'))
     return render(request, 'cred_tagdelete.html',{})
 
 @login_required
@@ -222,7 +222,7 @@ def addtoqueue(request, cred_id):
     if not cred.is_accessable_by(request.user):
         raise Http404
     CredChangeQ.objects.add_to_changeq(cred)
-    return HttpResponseRedirect('/cred/viewqueue/')
+    return HttpResponseRedirect(reverse('cred.views.viewqueue'))
 
 @login_required
 def bulkaddtoqueue(request):
@@ -232,5 +232,5 @@ def bulkaddtoqueue(request):
         if not cred.is_accessable_by(request.user):
             CredChangeQ.objects.add_to_changeq(c)
 
-    return HttpResponseRedirect('/cred/viewqueue/')
+    return HttpResponseRedirect(reverse('cred.views.viewqueue'))
 

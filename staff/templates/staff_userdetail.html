@@ -7,14 +7,14 @@
 <table class="table table-striped table-bordered table-condensed">
 <tr><th>Username</th><td>{{ viewuser.username }}</td></tr>
 <tr><th>Email</th><td>{{ viewuser.email }}</td></tr>
-<tr><th>Groups</th><td>{% for g in viewuser.groups.all %}<a href="/staff/groupdetail/{{ g.id }}/">{{ g.name }}</a>, {% endfor %}</td></tr>
+<tr><th>Groups</th><td>{% for g in viewuser.groups.all %}<a href="{% url staff.views.groupdetail g.id %}/">{{ g.name }}</a>, {% endfor %}</td></tr>
 </table>
 {% if delete %}
-    <form action="/staff/userdelete/{{ viewuser.id }}/" method="post">{% csrf_token %}
+    <form action="{% url staff.views.userdelete viewuser.id %}" method="post">{% csrf_token %}
         <input type="submit" class="btn btn-danger" value="Delete forever" />
     </form>
 {% else %}
-<a class="btn" href="/staff/">Back</a>
+<a class="btn" href="{% url staff.views.home %}">Back</a>
 {% include "credaudit_list.html" with type='cred' %}
 {% endif %}
 {% endblock %}

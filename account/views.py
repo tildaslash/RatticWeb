@@ -32,5 +32,5 @@ def newapikey(request):
     except ObjectDoesNotExist:
         api_key = ApiKey.objects.create(user=request.user)
 
-    return HttpResponseRedirect('/account/profile/')
+    return HttpResponseRedirect(reverse('account.views.profile'))
 
