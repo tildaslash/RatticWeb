@@ -80,7 +80,7 @@ def detail(request, cred_id):
     if not cred.is_accessable_by(request.user):
         raise Http404
 
-    CredAudit(audittype=CredAudit.CREDPASSVIEW, cred=cred, user=request.user).save()
+    CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
 
     try:
         lastchange = CredAudit.objects.filter(

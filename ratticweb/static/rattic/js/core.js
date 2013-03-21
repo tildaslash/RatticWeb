@@ -21,9 +21,17 @@ function credsearch() {
 }
 
 function showpass(){
-    $('span#password').hide().css({visibility: "visible"}).fadeIn("slow");
-    $('a#showpass').css('display', 'none')
-    $('a#hidepass').css('display', 'inline-block')
+    if ( typeof showpass.password == 'undefined' ) {
+        getCred(credId, function(data){
+            showpass.password = data['password'];
+            showpass()
+        }, function(){});
+    } else {
+        $('span#password').html(showpass.password);
+        $('span#password').hide().css({visibility: "visible"}).fadeIn("slow");
+        $('a#showpass').css('display', 'none')
+        $('a#hidepass').css('display', 'inline-block')
+    }
 }
 
 function hidepass(){
@@ -69,9 +77,9 @@ function createGroup(name, successcallback, failurecallback) {
     })
 }
 
-function getUser(id, successcallback, failurecallback) {
+function getCred(id, successcallback, failurecallback) {
     return $.ajax({
-        url: '/api/v1/user/' + id + '/',
+        url: '/api/v1/cred/' + id + '/',
         type: 'GET',
         contentType: 'application/json',
         beforeSend: function(jqXHR, settings) {
