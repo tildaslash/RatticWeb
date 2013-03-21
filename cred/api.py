@@ -17,7 +17,7 @@ class CredAuthorization(Authorization):
 
     def read_detail(self, object_list, bundle):
         # This audit should go somewhere else, is there a detail list function we can override?
-        CredAudit(audittype=CredAudit.CREDVIEW, cred=bundle.obj, user=bundle.request.user).save()
+        CredAudit(audittype=CredAudit.CREDPASSVIEW, cred=bundle.obj, user=bundle.request.user).save()
         return True
 
     def create_list(self, object_list, bundle):

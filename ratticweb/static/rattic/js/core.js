@@ -69,6 +69,19 @@ function createGroup(name, successcallback, failurecallback) {
     })
 }
 
+function getUser(id, successcallback, failurecallback) {
+    return $.ajax({
+        url: '/api/v1/user/' + id + '/',
+        type: 'GET',
+        contentType: 'application/json',
+        beforeSend: function(jqXHR, settings) {
+           jqXHR.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+        },
+        success: successcallback,
+        error: failurecallback,
+    })
+}
+
 function groupCreated(group) {
     $("select#id_group").append('<option value="' + group['id'] + '">' + group['name'] + '</option>');
     $("select#id_group").val(group['id']);
@@ -78,7 +91,6 @@ function createGroupModal() {
     ajax = createGroup(
         $("input#groupname").val(),
         function(){
-            // This doesn't get called
             $('#addGroup').modal('hide');
             if (ajax.status == 201) groupCreated(JSON.parse(ajax.responseText))
         },

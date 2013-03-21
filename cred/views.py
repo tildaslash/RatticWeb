@@ -80,7 +80,7 @@ def detail(request, cred_id):
     if not cred.is_accessable_by(request.user):
         raise Http404
 
-    CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
+    CredAudit(audittype=CredAudit.CREDPASSVIEW, cred=cred, user=request.user).save()
 
     try:
         lastchange = CredAudit.objects.filter(
@@ -146,7 +146,7 @@ def edit(request, cred_id):
                 return HttpResponseRedirect(next)
     else:
         form = CredForm(request.user, instance=cred)
-        CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
+        CredAudit(audittype=CredAudit.CREDPASSVIEW, cred=cred, user=request.user).save()
 
     return render(request, 'cred_edit.html', {'form': form, 'action':
         reverse('cred.views.edit', args=(cred.id,)), 'next': next, 'icons': CredIcon.objects.all()})
@@ -222,6 +222,7 @@ def addtoqueue(request, cred_id):
     if not cred.is_accessable_by(request.user):
         raise Http404
     CredChangeQ.objects.add_to_changeq(cred)
+    CredAudit(audittype=CredAudit.CREDSCHEDCHANGE, cred=cred, user=request.user).save()
     return HttpResponseRedirect(reverse('cred.views.viewqueue'))
 
 @login_required
@@ -230,6 +231,7 @@ def bulkaddtoqueue(request):
     usergroups = request.user.groups.all()
     for c in tochange:
         if not cred.is_accessable_by(request.user):
+            CredAudit(audittype=CredAudit.CREDSCHEDCHANGE, cred=cred, user=request.user).save()
             CredChangeQ.objects.add_to_changeq(c)
 
     return HttpResponseRedirect(reverse('cred.views.viewqueue'))
