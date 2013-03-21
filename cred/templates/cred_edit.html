@@ -11,11 +11,22 @@
             <label class="control-label" for="{{ field.html_name }}">{{ field.label }}</label>
             <div class="controls">
                 {% if field.html_name == 'icon' %}
-                    {{ field }}
-                    <div style="width: 200px">
-                        {% for icon in icons %}
-                            {% include 'cred_credicon.html' with icon=icon field=field only %}
-                        {% endfor %}
+                    {{ field }}<a href="#logoModal" role="button" class="btn" data-toggle="modal">Chooser</a>
+                    <div id='logoModal' class="modal hide fade">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h3>Icons</h3>
+                            </div>
+                        <div class="modal-body">
+                            <div style="width: 540px">
+                                {% for icon in icons %}
+                                    {% include 'cred_credicon.html' with icon=icon field=field only %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                        </div>
                     </div>
 		{% elif field.html_name == 'password' %}
 		    <div class="input-append">
