@@ -19,10 +19,10 @@
 {% for c in creds %}
 <tr>
     <td><input type="checkbox" checked="true" name="tochange" value="{{ c.id }}" /></td>
-    <td><a href="{% url cred.views.detail c.id %}/">{{ c.title }}</a></td>
+    <td><a href="{% url cred.views.detail c.id %}">{{ c.title }}</a></td>
     <td>{{ c.username }}</td>
     <td>{{ c.group.name }}</td>
-    <td>{% for t in c.tags.all %}{% if not forloop.first %}, {% endif %}<a href="{% url cred.views.list_by_tag t.id %}/">{{ t.name }}</a>{% endfor %}</td>
+    <td>{% for t in c.tags.all %}{% if not forloop.first %}, {% endif %}<a href="{% url cred.views.list_by_tag t.id %}">{{ t.name }}</a>{% endfor %}</td>
 </tr>
 {% endfor %}
 </tbody>
