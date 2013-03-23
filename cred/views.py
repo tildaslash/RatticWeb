@@ -173,7 +173,7 @@ def delete(request, cred_id):
 
     CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
 
-    return render(request, 'cred_detail.html',{'cred' : cred, 'lastchange': lastchange, 'action':reverse('cred.views.delete', args=(cred_id)), 'delete':True})
+    return render(request, 'cred_detail.html',{'cred' : cred, 'lastchange': lastchange, 'action':reverse('cred.views.delete', args=(cred_id,)), 'delete':True})
 
 
 # Categories 
