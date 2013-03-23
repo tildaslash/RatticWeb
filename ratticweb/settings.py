@@ -196,6 +196,8 @@ LOGGING = {
 LOGIN_REDIRECT_URL = "/cred/list/"
 LOGIN_URL = "/account/login/"
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 try:
   from local_settings import *
 except:
