@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 # Django settings for ratticweb project.
 
 DEBUG = True
@@ -120,6 +122,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'account.middleware.StrictAuthentication',
+    'account.middleware.PasswordExpirer',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
     # Uncomment the next line for simple clickjacking protection:
@@ -197,6 +200,7 @@ LOGIN_REDIRECT_URL = "/cred/list/"
 LOGIN_URL = "/account/login/"
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+PASSWORD_EXPIRY = timedelta(days=10)
 
 try:
   from local_settings import *

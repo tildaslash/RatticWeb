@@ -5,12 +5,13 @@ from django.contrib.auth.models import User
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from datetime import datetime
+from django.utils.timezone import now
 
 class UserProfile(models.Model):
   user = models.ForeignKey(User, unique=True)
   items_per_page = models.IntegerField(default=25)
   tags_on_sidebar = models.IntegerField(default=5)
-  password_changed = models.DateTimeField(default=datetime.now)
+  password_changed = models.DateTimeField(default=now)
 
   def __unicode__(self):
     return self.user.username
@@ -31,7 +32,7 @@ def user_save_handler(sender, instance, **kwargs):
         return
     if olduser.password != instance.password:
         p = instance.profile
-        p.password_changed = datetime.now()
+        p.password_changed = now()
         p.save()
 
 admin.site.register(UserProfile)
