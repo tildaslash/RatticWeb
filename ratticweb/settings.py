@@ -142,6 +142,7 @@ TEMPLATE_DIRS = (
 
 LOCAL_APPS = (
     # Sub apps
+    'ratticweb',
     'cred',
     'account',
     'staff',
@@ -159,10 +160,6 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'south',
     'tastypie',
-
-    # Base app
-    'ratticweb',
-
 ) + LOCAL_APPS
 
 TEST_RUNNER = 'tests.runner.ExcludeAppsTestSuiteRunner'
