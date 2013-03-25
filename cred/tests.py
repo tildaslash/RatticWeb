@@ -129,20 +129,20 @@ class CredHistoryTest(TestCase):
         ourgroup = Group(name='testgroup')
         ourgroup.save()
 
-        unorm = User(username='norm', email='norm@example.com')
-        unorm.set_password('password')
-        unorm.save()
-        unorm.groups.add(ourgroup)
-        unorm.save()
+        self.unorm = User(username='norm', email='norm@example.com')
+        self.unorm.set_password('password')
+        self.unorm.save()
+        self.unorm.groups.add(ourgroup)
+        self.unorm.save()
 
-        ustaff = User(username='staff', email='steph@example.com')
-        ustaff.set_password('password')
-        ustaff.save()
+        self.ustaff = User(username='staff', email='steph@example.com')
+        self.ustaff.set_password('password')
+        self.ustaff.save()
 
         self.norm = Client()
         self.norm.login(username='norm', password='password')
         self.staff = Client()
-        self.norm.login(username='staff', password='password')
+        self.staff.login(username='staff', password='password')
 
         self.cred = Cred(title='secret', password='s3cr3t', group=ourgroup)
         self.cred.save()
@@ -151,6 +151,11 @@ class CredHistoryTest(TestCase):
         resp = self.norm.get(reverse('cred.views.list'))
         self.assertEqual(resp.status_code, 200)
         credlist = resp.context['credlist'].object_list
-        print credlist
         self.assertTrue(self.cred in credlist)
+
+    def test_list_staff(self):
+        resp = self.staff.get(reverse('cred.views.list'))
+        self.assertEqual(resp.status_code, 200)
+        credlist = resp.context['credlist'].object_list
+        self.assertTrue(self.cred not in credlist)
 
