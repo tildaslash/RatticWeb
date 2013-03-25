@@ -1,16 +1,38 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
-"""
-
 from django.test import TestCase
+from django.test import Client
+from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
+from tastypie.models import ApiKey
+
+class AccountViewTests(TestCase):
+    username = 'testinguser'
+    password = 'testpass'
+    testtags = 7
+    testitems = 43
+
+    def setUp(self):
+        self.client = Client()
+        self.u = User(username=self.username, email='you@example.com')
+        self.u.set_password(self.password)
+        self.u.save()
+        profile = self.u.profile
+        profile.items_per_page = self.testitems
+        profile.tags_on_sidebar = self.testtags
+        profile.save()
+        self.client.login(username=self.username, password=self.password)
+
+    def test_profile_page(self):
+        response = self.client.get(reverse('account.views.profile'))
+        self.assertEqual(response.status_code, 200)
+        user = response.context['user']
+        self.assertEqual(user.profile.items_per_page, self.testitems)
+        self.assertEqual(user.profile.tags_on_sidebar, self.testtags)
+
+    def test_newapikey_page(self):
+        old = ApiKey.objects.get(user=self.u)
+        response = self.client.get(reverse('account.views.newapikey'), follow=True)
+        self.assertEqual(response.status_code, 200)
+        new = ApiKey.objects.get(user=self.u)
+        self.assertNotEqual(old.key, new.key)
 
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
