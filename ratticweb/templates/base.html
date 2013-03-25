@@ -14,18 +14,26 @@
   <link href="{% static "favicon.ico" %}" rel="shortcut icon">
 </head>
 <body>
-<div class="container-fluid">
-     {% include "navbar.html" %}
-     <div class="row-fluid">
-          <div class="span2">
-              {% include "sidebar.html" %}
-          </div>
-          {% block self_span_content %}
-              <div class="span10">
-                  {% block content %}{% endblock %}
+<div id="wrap">
+    <div class="container-fluid">
+         {% include "navbar.html" %}
+         <div class="row-fluid">
+              <div class="span2">
+                  {% include "sidebar.html" %}
               </div>
-          {% endblock %}
-     </div>
+              {% block self_span_content %}
+                  <div class="span10">
+                      {% block content %}{% endblock %}
+                  </div>
+              {% endblock %}
+         </div>
+         <div id="push"></div>
+    </div>
+</div>
+<div id="footer">
+  <div class="container-fluid">
+    <p class="muted credit">Password management powered by <a href="http://rattic.org/">RatticDB</a>, built by <a href="https://twitter.com/smarthall">@smarthall</a> and <a href="https://twitter.com/zemmiph0bia">@zemmiph0bia</a>. | <a href="https://github.com/tildaslash/RatticWeb/issues/new">Report an issue</a> | <a href="https://twitter.com/RatticDB">Contact Us</a></p>
+  </div>
 </div>
 <script src="{% static "jquery/js/jquery.min.js" %}"></script>
 <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
