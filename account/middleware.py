@@ -14,6 +14,9 @@ class PasswordExpirer:
         if not settings.PASSWORD_EXPIRY:
             return
 
+        if not request.user.is_authenticated():
+            return
+
         changepassurl = reverse('django.contrib.auth.views.password_change')
         if request.method != 'GET' or request.path == changepassurl:
             return
