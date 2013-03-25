@@ -79,7 +79,7 @@ def groupdelete(request, gid):
     group = get_object_or_404(Group, pk=gid)
     if request.method == 'POST':
         group.delete()
-        return HttpResponseRedirect(reverse('views.staff.home'))
+        return HttpResponseRedirect(reverse('staff.views.home'))
     return render(request, 'staff_groupdetail.html', {'group' : group, 'delete':True})
 
 # User delete
@@ -88,7 +88,7 @@ def userdelete(request, uid):
     user = get_object_or_404(User, pk=uid)
     if request.method == 'POST':
         user.delete()
-        return HttpResponseRedirect(reverse('views.staff.home'))
+        return HttpResponseRedirect(reverse('staff.views.home'))
     return render(request, 'staff_userdetail.html', {'viewuser' : user, 'delete':True})
 
 # Credential view

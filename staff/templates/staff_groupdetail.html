@@ -6,7 +6,7 @@
 {% endif %}
 <table class="table table-striped table-bordered table-condensed">
 <tr><th>Name</th><td>{{ group.name }}</td></tr>
-<tr><th>Users</th><td>{% for u in group.user_set.all %}<a href="{% staff.views.userdetail u.id %}">{{ u.username }}</a>, {% endfor %}</td></tr>
+<tr><th>Users</th><td>{% for u in group.user_set.all %}<a href="{% url staff.views.userdetail u.id %}">{{ u.username }}</a>, {% endfor %}</td></tr>
 <tr><th>Passwords</th><td>{% for c in group.cred_set.all %}<a href="{% url cred.views.detail c.id %}">{{ c.title }}</a>, {% endfor %}</td></tr>
 </table>
 {% if delete %}
