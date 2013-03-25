@@ -5,9 +5,10 @@ when you run "manage.py test".
 Replace this with more appropriate tests for your application.
 """
 
-from django.test import TestCase
+from django.test import TestCase, Client
 from models import Cred
 from django.contrib.auth.models import User, Group
+from django.core.urlresolvers import reverse
 
 class CredAccessTest(TestCase):
     def setUp(self):
@@ -123,5 +124,28 @@ class CredHistoryTest(TestCase):
 
         self.assertEqual(oldid, newid)
 
+class CredHistoryTest(TestCase):
+    def setUp(self):
+        ourgroup = Group(name='testgroup')
+        ourgroup.save()
 
+        unorm = User(username='norm', email='norm@example.com')
+        unorm.set_password('password')
+        unorm.save()
+        unorm.groups.add(ourgroup)
 
+        ustaff = User(username='staff', email='steph@example.com')
+        ustaff.set_password('password')
+        ustaff.save()
+
+        self.norm = Client()
+        self.norm.login(username='norm', password='password')
+        self.staff = Client()
+        self.norm.login(username='staff', password='password')
+
+        self.cred = Cred(title='secret', password='s3cr3t', group=ourgroup)
+        self.cred.save()
+
+    def test_list_normal(self):
+        resp = self.norm.get(reverse('cred.views.list'))
+        self.assertEqual(resp.status_code, 200)
