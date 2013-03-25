@@ -133,6 +133,7 @@ class CredHistoryTest(TestCase):
         unorm.set_password('password')
         unorm.save()
         unorm.groups.add(ourgroup)
+        unorm.save()
 
         ustaff = User(username='staff', email='steph@example.com')
         ustaff.set_password('password')
@@ -149,3 +150,7 @@ class CredHistoryTest(TestCase):
     def test_list_normal(self):
         resp = self.norm.get(reverse('cred.views.list'))
         self.assertEqual(resp.status_code, 200)
+        credlist = resp.context['credlist'].object_list
+        print credlist
+        self.assertTrue(self.cred in credlist)
+
