@@ -252,3 +252,18 @@ class CredHistoryTest(TestCase):
         resp = self.nobody.get(reverse('cred.views.detail', args=(self.tagcred.id,)))
         self.assertEqual(resp.status_code, 404)
 
+    def test_add_normal(self):
+        resp = self.norm.get(reverse('cred.views.add'))
+        self.assertEqual(resp.status_code, 200)
+        form = resp.context['form']
+        self.assertTrue(not form.is_valid())
+        resp = self.norm.post(reverse('cred.views.add'), {
+            'title': 'New Credential',
+            'password': 'A password',
+            'group': self.group.id,
+            'icon': 58,
+        }, follow=True)
+        self.assertEqual(resp.status_code, 200)
+        newcred = Cred.objects.get(title='New Credential')
+        self.assertEqual(newcred.password, 'A password')
+
