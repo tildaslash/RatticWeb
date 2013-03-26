@@ -2,3 +2,4 @@ db/*
 *.pyc
 *.swp
 ratticweb/local_settings.py
+.coverage
