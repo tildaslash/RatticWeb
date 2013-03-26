@@ -59,7 +59,7 @@ def tags(request):
 
 @login_required
 def list_by_search(request, search):
-    cred_list = Cred.objects.accessable(request.user).filter(title__contains=search)
+    cred_list = Cred.objects.accessable(request.user).filter(title__icontains=search)
     tag = Tag.objects.filter(name__icontains=search)
     paginator = Paginator(cred_list, request.user.profile.items_per_page)
     page = request.GET.get('page')
