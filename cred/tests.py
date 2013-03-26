@@ -261,7 +261,7 @@ class CredHistoryTest(TestCase):
             'title': 'New Credential',
             'password': 'A password',
             'group': self.group.id,
-            'icon': 58,
+            'icon': form['icon'].value(),
         }, follow=True)
         self.assertEqual(resp.status_code, 200)
         newcred = Cred.objects.get(title='New Credential')
