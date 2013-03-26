@@ -6,7 +6,7 @@ Replace this with more appropriate tests for your application.
 """
 
 from django.test import TestCase, Client
-from models import Cred
+from models import Cred, Tag
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 
@@ -126,26 +126,44 @@ class CredHistoryTest(TestCase):
 
 class CredHistoryTest(TestCase):
     def setUp(self):
-        ourgroup = Group(name='testgroup')
-        ourgroup.save()
+        self.group = Group(name='testgroup')
+        self.group.save()
+
+        self.othergroup = Group(name='othergroup')
+        self.othergroup.save()
+
+        self.tag = Tag(name='tag')
+        self.tag.save()
 
         self.unorm = User(username='norm', email='norm@example.com')
         self.unorm.set_password('password')
         self.unorm.save()
-        self.unorm.groups.add(ourgroup)
+        self.unorm.groups.add(self.group)
         self.unorm.save()
 
-        self.ustaff = User(username='staff', email='steph@example.com')
+        self.ustaff = User(username='staff', email='steph@example.com', is_staff=True)
         self.ustaff.set_password('password')
         self.ustaff.save()
+        self.ustaff.groups.add(self.othergroup)
+        self.ustaff.save()
+
+        self.nobody = User(username='nobody', email='nobody@example.com')
+        self.nobody.set_password('password')
+        self.nobody.save()
 
         self.norm = Client()
         self.norm.login(username='norm', password='password')
         self.staff = Client()
         self.staff.login(username='staff', password='password')
+        self.nobody = Client()
+        self.nobody.login(username='nobody', password='password')
 
-        self.cred = Cred(title='secret', password='s3cr3t', group=ourgroup)
+        self.cred = Cred(title='secret', password='s3cr3t', group=self.group)
         self.cred.save()
+        self.tagcred = Cred(title='tagged', password='t4gg3d', group=self.group)
+        self.tagcred.save()
+        self.tagcred.tags.add(self.tag)
+        self.tagcred.save()
 
     def test_list_normal(self):
         resp = self.norm.get(reverse('cred.views.list'))
@@ -158,4 +176,79 @@ class CredHistoryTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         credlist = resp.context['credlist'].object_list
         self.assertTrue(self.cred not in credlist)
+
+    def test_list_by_tag_normal(self):
+        resp = self.norm.get(reverse('cred.views.list_by_tag', args=(self.tag.id,)))
+        self.assertEqual(resp.status_code, 200)
+        credlist = resp.context['credlist'].object_list
+        self.assertTrue(self.cred not in credlist)
+        self.assertTrue(self.tagcred in credlist)
+
+    def test_list_by_tag_staff(self):
+        resp = self.staff.get(reverse('cred.views.list_by_tag', args=(self.tag.id,)))
+        self.assertEqual(resp.status_code, 200)
+        credlist = resp.context['credlist'].object_list
+        self.assertTrue(self.cred not in credlist)
+        self.assertTrue(self.tagcred not in credlist)
+
+    def test_list_by_group_normal(self):
+        resp = self.norm.get(reverse('cred.views.list_by_group', args=(self.group.id,)))
+        self.assertEqual(resp.status_code, 200)
+        credlist = resp.context['credlist'].object_list
+        self.assertTrue(self.cred in credlist)
+        self.assertTrue(self.tagcred in credlist)
+
+    def test_list_by_group_staff(self):
+        resp = self.staff.get(reverse('cred.views.list_by_group', args=(self.othergroup.id,)))
+        self.assertEqual(resp.status_code, 200)
+        credlist = resp.context['credlist'].object_list
+        self.assertTrue(self.cred not in credlist)
+        self.assertTrue(self.tagcred not in credlist)
+
+    def test_list_by_group_nobody(self):
+        resp = self.nobody.get(reverse('cred.views.list_by_group', args=(self.othergroup.id,)))
+        self.assertEqual(resp.status_code, 404)
+
+    def test_tags_normal(self):
+        resp = self.norm.get(reverse('cred.views.tags'))
+        self.assertEqual(resp.status_code, 200)
+        taglist = resp.context['tags']
+        self.assertTrue(self.tag in taglist)
+        self.assertEqual(len(taglist), 1)
+
+    def test_list_by_search_normal(self):
+        resp = self.norm.get(reverse('cred.views.list_by_search', args=('tag',)))
+        self.assertEqual(resp.status_code, 200)
+        taglist = resp.context['tag']
+        credlist = resp.context['credlist'].object_list
+        self.assertTrue(self.tag in taglist)
+        self.assertEqual(len(taglist), 1)
+        self.assertTrue(self.tagcred in credlist)
+        self.assertTrue(self.cred not in credlist)
+
+    def test_detail_normal(self):
+        resp = self.norm.get(reverse('cred.views.detail', args=(self.cred.id,)))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.context['cred'].id, self.cred.id)
+        self.assertEqual(resp.context['credlogs'], None)
+        resp = self.norm.get(reverse('cred.views.detail', args=(self.tagcred.id,)))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.context['cred'].id, self.tagcred.id)
+        self.assertEqual(resp.context['credlogs'], None)
+
+    def test_detail_staff(self):
+        resp = self.staff.get(reverse('cred.views.detail', args=(self.cred.id,)))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.context['cred'].id, self.cred.id)
+        self.assertNotEqual(resp.context['credlogs'], None)
+        resp = self.staff.get(reverse('cred.views.detail', args=(self.tagcred.id,)))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.context['cred'].id, self.tagcred.id)
+        self.assertNotEqual(resp.context['credlogs'], None)
+
+    def test_detail_nobody(self):
+        resp = self.nobody.get(reverse('cred.views.detail', args=(self.cred.id,)))
+        self.assertEqual(resp.status_code, 404)
+        resp = self.nobody.get(reverse('cred.views.detail', args=(self.tagcred.id,)))
+        self.assertEqual(resp.status_code, 404)
 
