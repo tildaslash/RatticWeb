@@ -9,6 +9,7 @@ from django.test import TestCase, Client
 from models import Cred, Tag
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
+from django.test.utils import override_settings
 
 class CredAccessTest(TestCase):
     def setUp(self):
@@ -124,7 +125,7 @@ class CredHistoryTest(TestCase):
 
         self.assertEqual(oldid, newid)
 
-class CredHistoryTest(TestCase):
+class CredViewTests(TestCase):
     def setUp(self):
         self.group = Group(name='testgroup')
         self.group.save()
@@ -266,4 +267,11 @@ class CredHistoryTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         newcred = Cred.objects.get(title='New Credential')
         self.assertEqual(newcred.password, 'A password')
+
+    def test_edit_normal(self):
+        resp = self.norm.get(reverse('cred.views.edit', args=(self.cred.id,)))
+        self.assertEqual(resp.status_code, 200)
+        form = resp.context['form']
+
+CredViewTests = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(CredViewTests)
 
