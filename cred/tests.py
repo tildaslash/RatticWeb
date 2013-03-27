@@ -272,6 +272,42 @@ class CredViewTests(TestCase):
         resp = self.norm.get(reverse('cred.views.edit', args=(self.cred.id,)))
         self.assertEqual(resp.status_code, 200)
         form = resp.context['form']
+        post = {}
+        for i in form:
+            if i.value() is not None:
+                post[i.name] = i.value()
+        post['title'] = 'New Title'
+        resp = self.norm.post(reverse('cred.views.edit', args=(self.cred.id,)), post, follow=True)
+        self.assertEqual(resp.status_code, 200)
+        newcred = Cred.objects.get(id=self.cred.id)
+        self.assertEqual(newcred.title, 'New Title')
+
+    def test_edit_nobody(self):
+        resp = self.nobody.get(reverse('cred.views.edit', args=(self.cred.id,)))
+        self.assertEqual(resp.status_code, 404)
+
+    def test_delete_norm(self):
+        resp = self.norm.get(reverse('cred.views.delete', args=(self.cred.id,)))
+        self.assertEqual(resp.status_code, 200)
+        resp = self.norm.post(reverse('cred.views.delete', args=(self.cred.id,)))
+        delcred = Cred.objects.get(id=self.cred.id)
+        self.assertTrue(delcred.is_deleted)
+
+    def test_delete_staff(self):
+        resp = self.staff.get(reverse('cred.views.delete', args=(self.cred.id,)))
+        self.assertEqual(resp.status_code, 200)
+        resp = self.staff.post(reverse('cred.views.delete', args=(self.cred.id,)), follow=True)
+        self.assertEqual(resp.status_code, 200)
+        delcred = Cred.objects.get(id=self.cred.id)
+        self.assertTrue(delcred.is_deleted)
+
+    def test_delete_nobody(self):
+        resp = self.nobody.get(reverse('cred.views.delete', args=(self.cred.id,)))
+        self.assertEqual(resp.status_code, 404)
+        resp = self.nobody.post(reverse('cred.views.delete', args=(self.cred.id,)), follow=True)
+        self.assertEqual(resp.status_code, 404)
+        delcred = Cred.objects.get(id=self.cred.id)
+        self.assertFalse(delcred.is_deleted)
 
 CredViewTests = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(CredViewTests)
 
