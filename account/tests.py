@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.test import Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.core.management import call_command
 from tastypie.models import ApiKey
 
 class AccountViewTests(TestCase):
@@ -35,4 +36,12 @@ class AccountViewTests(TestCase):
         new = ApiKey.objects.get(user=self.u)
         self.assertNotEqual(old.key, new.key)
 
+class AccountViewTests(TestCase):
+    def test_command_demosetup(self):
+        args=[]
+        opts={}
+        call_command('demosetup', *args, **opts)
+        u = User.objects.get(username='admin')
+        self.assertTrue(u.check_password('rattic'))
+        self.assertTrue(u.is_staff)
 
