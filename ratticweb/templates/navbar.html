@@ -19,7 +19,7 @@
 	    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Navigation <b class="caret"></b></a>
 	    <ul class="dropdown-menu" role="menu">
               <li><a href="{{ cred_views_list }}">Passwords</a></li>
-              {% if user.is_authenticated %}<li><a href="{{ cred_views_viewqueue }}">Change Queue</a></li>{% endif %}
+	      {% if user.is_authenticated %}<li><a href="{{ cred_views_viewqueue }}">Change Queue{% if changeqcount > 0 %} <span class="badge">{{ changeqcount }}</span>{% endif %}</a></li>{% endif %}
               {% if user.is_staff %}<li><a href="{{ staff_views_home }}">Staff Management</a></li>{% endif %}
 	      {% if helplinks %}<li><a href="{{ help_views_home }}">Help</a></li>{% endif %}
 	    </ul>
