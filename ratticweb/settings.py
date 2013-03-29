@@ -146,6 +146,7 @@ LOCAL_APPS = (
     'cred',
     'account',
     'staff',
+    'help',
 )
 
 INSTALLED_APPS = (
@@ -198,6 +199,8 @@ LOGIN_URL = "/account/login/"
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 PASSWORD_EXPIRY = timedelta(days=10)
+
+HELP_SYSTEM_FILES = False
 
 try:
   from local_settings import *

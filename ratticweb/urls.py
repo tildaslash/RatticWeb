@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r'^account/', include('account.urls')),
     url(r'^cred/', include('cred.urls')),
     url(r'^staff/', include('staff.urls')),
+    url(r'^help/', include('help.urls')),
 
     # API
     url(r'^api/', include(v1_api.urls)),

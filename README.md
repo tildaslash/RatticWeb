@@ -30,5 +30,7 @@ Dev Setup:
 * ```./manage.py runserver```
 * Profit!
 
-
+If you want to edit the help files:
+* Clone the wiki files from ```git@github.com:tildaslash/RatticWeb.wiki.git```
+* Add a file called ```ratticweb/local_settings.py``` that sets the ```HELP_SYSTEM_FILES``` variable to the location of the checked out wiki.
 
