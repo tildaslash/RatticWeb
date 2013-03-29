@@ -10,7 +10,7 @@
           <li {% if pageurl == cred_views_list %}class="active"{% endif %}><a href="{{ cred_views_list }}">Passwords</a></li>
             {% if user.is_authenticated %}<li {% if pageurl == cred_views_viewqueue %}class="active"{% endif %}><a href="{{ cred_views_viewqueue }}">Change Queue{% if changeqcount > 0 %} <span class="badge">{{ changeqcount }}</span>{% endif %}</a></li>{% endif %}
             {% if user.is_staff %}<li {% if pageurl == staff_views_home %}class="active"{% endif %}><a href="{{ staff_views_home }}">Staff Management</a></li>{% endif %}
-	    <li {% if pageurl == help_views_home %}class="active"{% endif %}><a href="{{ help_views_home }}">Help</a></li>
+	    {% if helplinks %}<li {% if pageurl == help_views_home %}class="active"{% endif %}><a href="{{ help_views_home }}">Help</a></li>{% endif %}
         </ul>
         <form id="search" onsubmit="return credsearch()" class="navbar-search pull-right">
              <input type="text" name="box" class="search-query" placeholder="Search">
