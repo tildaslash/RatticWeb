@@ -12,9 +12,6 @@ def help_markdown(request, page):
     filename = os.path.join(settings.HELP_SYSTEM_FILES, page + '.md')
     return render(request, 'help_markdown.html', {'file': filename})
 
-def help_linkhelper(request, oldpage, newpage):
-    return HttpResponseRedirect(reverse('help.views.help_markdown', args=(newpage,)))
-
 def help_home(request):
     return help_markdown(request, 'Home')
 
