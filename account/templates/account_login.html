@@ -1,11 +1,27 @@
 {% extends "base.html" %}
+{% load future %}
 
 {% block content %}
 {% if form.errors %}
 <div class="alert alert-error">Your username and password didn't match. Please try again.</div>
 {% endif %}
-<div class="pagination-centered">
+<div class="pagination-centered hidden-phone">
     <h1>Welcome to Rattic</h1>
     <p>It does passwords.</p> 
 </div>
+<form class="form-horizontal visible-phone" action="" method="post">{% csrf_token %}
+    {% for field in form %}
+        <div class="control-group">
+            {{ field.errors }}
+            <label class="control-label" for="{{ field.html_name }}">{{ field.label }}</label>
+            <div class="controls">
+                {{ field }}
+            </div>
+        </div>
+    {% endfor %}
+    <div class="controls">
+        <input class="btn-primary" type="submit" value="Submit" />
+    </div>
+    <p><a href="{% url "django.contrib.auth.views.password_reset" %}">Forgotten password?</a></p>
+</form>
 {% endblock %}
