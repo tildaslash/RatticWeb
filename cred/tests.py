@@ -1,12 +1,5 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
-"""
-
 from django.test import TestCase, Client
-from models import Cred, Tag
+from models import Cred, Tag, CredChangeQ
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.test.utils import override_settings
@@ -165,6 +158,8 @@ class CredViewTests(TestCase):
         self.tagcred.save()
         self.tagcred.tags.add(self.tag)
         self.tagcred.save()
+
+        CredChangeQ.objects.add_to_changeq(self.cred)
 
     def test_list_normal(self):
         resp = self.norm.get(reverse('cred.views.list'))
@@ -344,7 +339,22 @@ class CredViewTests(TestCase):
 	with self.assertRaises(Tag.DoesNotExist):
             deltag = Tag.objects.get(id=self.tag.id)
 
+    def test_viewqueue_normal(self):
+        resp = self.norm.get(reverse('cred.views.viewqueue'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(len(resp.context['queue']), 1)
+        self.assertEqual(resp.context['queue'][0].cred.id, self.cred.id)
 
+    def test_viewqueue_nobody(self):
+        resp = self.nobody.get(reverse('cred.views.viewqueue'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(len(resp.context['queue']), 0)
+
+    def test_addtoqueuestaff(self):
+        resp = self.staff.get(reverse('cred.views.addtoqueue',
+            args=(self.tagcred.id,)), follow=True)
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(self.tagcred.on_changeq())
 
 CredViewTests = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(CredViewTests)
 
