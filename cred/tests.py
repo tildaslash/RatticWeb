@@ -309,5 +309,18 @@ class CredViewTests(TestCase):
         delcred = Cred.objects.get(id=self.cred.id)
         self.assertFalse(delcred.is_deleted)
 
+    def test_tagadd_normal(self):
+        resp = self.norm.get(reverse('cred.views.tagadd'))
+        self.assertEqual(resp.status_code, 200)
+        form = resp.context['form']
+        post = {}
+        for i in form:
+            if i.value() is not None:
+                post[i.name] = i.value()
+        post['name'] = 'New Tag'
+        resp = self.norm.post(reverse('cred.views.tagadd'), post, follow=True)
+        self.assertEqual(resp.status_code, 200)
+        newcred = Tag.objects.get(name='New Tag')
+
 CredViewTests = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(CredViewTests)
 
