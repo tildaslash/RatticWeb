@@ -2,17 +2,20 @@ language: python
 python:
   - "2.6"
   - "2.7"
+services: mysql
 env:
-  - DJANGO=1.4
-  - DJANGO=1.4.5
+  - DJANGO=1.4.5 DB=sqllite
+  - DJANGO=1.4.5 DB=mysql
 install:
+  - pip install -q mysql-python --use-mirrors
   - pip install -q Django==$DJANGO --use-mirrors
-  - pip install pep8 --use-mirrors
-  - pip install https://github.com/dcramer/pyflakes/tarball/master
   - pip install -q South==0.7.5 --use-mirrors
   - pip install -q django-tastypie==0.9.12 --use-mirrors
   - pip install -q pycrypto==2.6 --use-mirrors
   - pip install -q markdown==2.1.1 --use-mirrors
+before_script:
+  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'create database IF NOT EXISTS test_rattic;'; fi"
+  - sh -c "if [ '$DB' = 'mysql' ]; then cp docs/travis/ ratticweb/; fi"
 script:
   - python manage.py test
 
