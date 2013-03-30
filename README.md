@@ -1,6 +1,8 @@
 RatticWeb
 =========
 
+Build Status: [![Build Status](https://travis-ci.org/tildaslash/RatticWeb.png?branch=master)](https://travis-ci.org/tildaslash/RatticWeb)
+
 RatticWeb is the website part of the Rattic password management solution, which allows you to easily manage your users and passwords.
 
 If you decide to use RatticWeb seperately from its other components (which don't exist yet) you should take the following into account:
