@@ -29,7 +29,6 @@ Dev Setup:
 * ```./manage.py syncdb```
 * ```./manage.py migrate```
 * ```./manage.py runserver```
-* Profit!
 
 If you want to edit the help files:
 * Clone the wiki files from ```git@github.com:tildaslash/RatticWeb.wiki.git```
