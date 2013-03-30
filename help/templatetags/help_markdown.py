@@ -11,6 +11,7 @@ def markdown_file(filename):
                 extensions=[
                     'fenced_code',
                     'nl2br',
+                    'headerid',
                     'wikilinks(base_url=/help/)'
                     ],
                 safe_mode='escape',
