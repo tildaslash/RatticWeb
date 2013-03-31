@@ -196,6 +196,39 @@ class StaffViewTests(TestCase):
         self.assertEqual(newuser.email, 'newemail@example.com')
         self.assertTrue(newuser.check_password('differentpass'))
 
+    def test_import_from_keepass(self):
+        gp = Group(name='KeepassImportTest')
+        gp.save()
+        self.ustaff.groups.add(gp)
+        self.ustaff.save()
+
+        resp = self.staff.get(reverse('staff.views.import_from_keepass'))
+        self.assertEqual(resp.status_code, 200)
+        form = resp.context['form']
+        post = {}
+        for i in form:
+            if i.value() is not None:
+                post[i.name] = i.value()
+        post['password'] = 'test'
+        post['group'] = gp.id
+        with open('docs/keepass/test2.kdb') as fp:
+            post['file'] = fp
+            resp = self.staff.post(reverse('staff.views.import_from_keepass'), post, follow=True)
+        self.assertEqual(resp.status_code, 200)
+        newcred = Cred.objects.get(title='Google', group=gp)
+        self.assertEqual(newcred.password, 'Q5CLQhLqI3CtKgK')
+        self.assertEqual(newcred.tags.all()[0].name, 'Internet')
+
+    def test_credundelete(self):
+        self.cred.delete()
+        resp = self.staff.get(reverse('staff.views.credundelete', args=(self.cred.id,)))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.context['cred'], self.cred)
+        resp = self.staff.post(reverse('staff.views.credundelete', args=(self.cred.id,)), follow=True)
+        self.assertEqual(resp.status_code, 200)
+        cred = Cred.objects.get(id=self.cred.id)
+        self.assertFalse(cred.is_deleted)
+
 class StaffChangeAdviceTest(TestCase):
     def setUp(self):
         self.group = Group(name='testgroup')
