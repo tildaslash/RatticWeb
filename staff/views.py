@@ -161,7 +161,8 @@ def change_advice_by_user_and_group(request, user_id, group_id):
             # Get a list of changes done
             Q(cred__group__in=groups, audittype=CredAudit.CREDCHANGE) |
             # Combined with a list of view from this user
-            Q(cred__group__in=groups, audittype__in=[CredAudit.CREDVIEW, CredAUDIT.CREDPASSVIEW], user=user)
+            Q(cred__group__in=groups, audittype__in=[CredAudit.CREDVIEW,
+                CredAudit.CREDPASSVIEW], user=user)
             ).order_by('time')
 
     # Go through each entry in time order

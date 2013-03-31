@@ -4,6 +4,8 @@ from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.test.utils import override_settings
 
+from time import sleep
+
 class StaffViewTests(TestCase):
     def setUp(self):
         self.group = Group(name='testgroup')
@@ -194,5 +196,57 @@ class StaffViewTests(TestCase):
         self.assertEqual(newuser.email, 'newemail@example.com')
         self.assertTrue(newuser.check_password('differentpass'))
 
+class StaffChangeAdviceTest(TestCase):
+    def setUp(self):
+        self.group = Group(name='testgroup')
+        self.group.save()
+
+        self.othergroup = Group(name='othergroup')
+        self.othergroup.save()
+
+        self.unorm = User(username='norm', email='norm@example.com')
+        self.unorm.set_password('password')
+        self.unorm.save()
+        self.unorm.groups.add(self.group)
+        self.unorm.save()
+
+        self.ustaff = User(username='staff', email='steph@example.com', is_staff=True)
+        self.ustaff.set_password('password')
+        self.ustaff.save()
+        self.ustaff.groups.add(self.group)
+        self.ustaff.save()
+
+        self.norm = Client()
+        self.norm.login(username='norm', password='password')
+        self.staff = Client()
+        self.staff.login(username='staff', password='password')
+
+        self.viewedcred = Cred(title='Viewed', password='s3cr3t', group=self.group)
+        self.viewedcred.save()
+        self.changedcred = Cred(title='Changed', password='t4gg3d', group=self.group)
+        self.changedcred.save()
+
+        CredAudit(audittype=CredAudit.CREDADD, cred=self.viewedcred, user=self.unorm).save()
+        CredAudit(audittype=CredAudit.CREDADD, cred=self.changedcred, user=self.unorm).save()
+        CredAudit(audittype=CredAudit.CREDVIEW, cred=self.viewedcred, user=self.unorm).save()
+        CredAudit(audittype=CredAudit.CREDVIEW, cred=self.changedcred, user=self.unorm).save()
+        CredAudit(audittype=CredAudit.CREDCHANGE, cred=self.changedcred, user=self.ustaff).save()
+
+    def test_disable_user(self):
+        resp = self.staff.get(reverse('staff.views.change_advice_by_user', args=(self.unorm.id,)))
+        self.assertEqual(resp.status_code, 200)
+        credlist = resp.context['creds']
+        self.assertIn(self.viewedcred, credlist)
+        self.assertNotIn(self.changedcred, credlist)
+
+    def test_remove_group(self):
+        resp = self.staff.get(reverse('staff.views.change_advice_by_user_and_group',
+            args=(self.unorm.id, self.group.id)))
+        self.assertEqual(resp.status_code, 200)
+        credlist = resp.context['creds']
+        self.assertIn(self.viewedcred, credlist)
+        self.assertNotIn(self.changedcred, credlist)
+
 StaffViewTests = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(StaffViewTests)
+StaffChangeAdviceTest = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(StaffChangeAdviceTest)
 
