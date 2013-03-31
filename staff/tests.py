@@ -156,5 +156,43 @@ class StaffViewTests(TestCase):
         self.assertIn(self.logadd, loglist)
         self.assertIn(self.logview, loglist)
 
+    def test_NewUser(self):
+        resp = self.staff.get(reverse('user_add'))
+        self.assertEqual(resp.status_code, 200)
+        form = resp.context['form']
+        post = {}
+        for i in form:
+            if i.value() is not None:
+                post[i.name] = i.value()
+        post['username'] = 'Test User'
+        post['email'] = 'me@me.com'
+        post['groups'] = self.othergroup.id
+        post['newpass'] = 'crazypass'
+        post['confirmpass'] = 'crazypass'
+        resp = self.staff.post(reverse('user_add'), post, follow=True)
+        self.assertEqual(resp.status_code, 200)
+        newuser = User.objects.get(username='Test User')
+        self.assertEqual(newuser.email, 'me@me.com')
+        self.assertTrue(newuser.check_password('crazypass'))
+        self.assertIn(self.othergroup, newuser.groups.all())
+        self.assertNotIn(self.group, newuser.groups.all())
+
+    def test_UpdateUser(self):
+        resp = self.staff.get(reverse('user_edit', args=(self.unobody.id,)))
+        self.assertEqual(resp.status_code, 200)
+        form = resp.context['form']
+        post = {}
+        for i in form:
+            if i.value() is not None:
+                post[i.name] = i.value()
+        post['email'] = 'newemail@example.com'
+        post['newpass'] = 'differentpass'
+        post['confirmpass'] = 'differentpass'
+        resp = self.staff.post(reverse('user_edit', args=(self.unobody.id,)), post, follow=True)
+        self.assertEqual(resp.status_code, 200)
+        newuser = User.objects.get(id=self.unobody.id)
+        self.assertEqual(newuser.email, 'newemail@example.com')
+        self.assertTrue(newuser.check_password('differentpass'))
+
 StaffViewTests = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(StaffViewTests)
 
