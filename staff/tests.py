@@ -166,14 +166,16 @@ class StaffViewTests(TestCase):
         for i in form:
             if i.value() is not None:
                 post[i.name] = i.value()
-        post['username'] = 'Test User'
+        post['username'] = 'test_user'
         post['email'] = 'me@me.com'
         post['groups'] = self.othergroup.id
         post['newpass'] = 'crazypass'
         post['confirmpass'] = 'crazypass'
         resp = self.staff.post(reverse('user_add'), post, follow=True)
+        with self.assertRaises(KeyError):
+            print resp.context['form'].errors
         self.assertEqual(resp.status_code, 200)
-        newuser = User.objects.get(username='Test User')
+        newuser = User.objects.get(username='test_user')
         self.assertEqual(newuser.email, 'me@me.com')
         self.assertTrue(newuser.check_password('crazypass'))
         self.assertIn(self.othergroup, newuser.groups.all())
