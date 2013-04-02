@@ -1,3 +1,4 @@
+{% load url from future %}
 {% load static from staticfiles %}
 <img src="{% static 'rattic/img/clear.gif' %}" style="height: 10px; width: 10px; background: url({% static 'rattic/img/' %}{{ icon.filename }}) -{{ icon.xoffset }}px -{{ icon.yoffset }}px;" alt="{{ icon.name }}" {% if field %}onclick="$('select#id_{{ field.html_name }}').val({{ icon.id }}); $('#logoModal').modal('hide')"{% endif %} />
 

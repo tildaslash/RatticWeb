@@ -1,9 +1,10 @@
 {% extends "base.html" %}
+{% load url from future %}
 
 {% block content %}
 {% if not hidecredlist %}
 <h1>{{ credtitle|default:"All Passwords" }}</h1>
-<p><a class="btn" href="{% url cred.views.add %}">Add New</a></p>
+<p><a class="btn" href="{% url "cred.views.add" %}">Add New</a></p>
 {% include "cred_table.html" with credlist=credlist only %}
 
 <div class="pagination pagination-centered">
