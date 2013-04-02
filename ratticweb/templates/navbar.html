@@ -1,8 +1,9 @@
 {% load static from staticfiles %}
-{% url cred.views.list as cred_views_list %}
-{% url cred.views.viewqueue as cred_views_viewqueue %}
-{% url staff.views.home as staff_views_home %}
-{% url help.views.home as help_views_home %}
+{% load url from future %}
+{% url "cred.views.list" as cred_views_list %}
+{% url "cred.views.viewqueue" as cred_views_viewqueue %}
+{% url "staff.views.home" as staff_views_home %}
+{% url "help.views.home" as help_views_home %}
 <div class="navbar">
     <div class="navbar-inner">
 	    <a class="brand" href="/"><img class="logo" src="{% static "rattic/img/logo.png" %}" /><span class="hidden-phone"> RatticDB</span></a>
