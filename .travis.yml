@@ -6,6 +6,8 @@ services: mysql
 env:
   - DJANGO=1.4.5 DB=sqllite
   - DJANGO=1.4.5 DB=mysql
+  - DJANGO=1.5 DB=sqllite
+  - DJANGO=1.5 DB=mysql
 install:
   - pip install -q mysql-python --use-mirrors
   - pip install -q Django==$DJANGO --use-mirrors
