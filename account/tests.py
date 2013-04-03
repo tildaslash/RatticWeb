@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core.management import call_command
 from tastypie.models import ApiKey
 
+
 class AccountViewTests(TestCase):
     username = 'testinguser'
     password = 'testpass'
@@ -36,6 +37,7 @@ class AccountViewTests(TestCase):
         new = ApiKey.objects.get(user=self.u)
         self.assertNotEqual(old.key, new.key)
 
+
 class AccountViewTests(TestCase):
     def test_command_demosetup(self):
         args=[]
@@ -44,4 +46,3 @@ class AccountViewTests(TestCase):
         u = User.objects.get(username='admin')
         self.assertTrue(u.check_password('rattic'))
         self.assertTrue(u.is_staff)
-

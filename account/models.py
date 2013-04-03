@@ -7,14 +7,16 @@ from django.dispatch import receiver
 from datetime import datetime
 from django.utils.timezone import now
 
-class UserProfile(models.Model):
-  user = models.ForeignKey(User, unique=True)
-  items_per_page = models.IntegerField(default=25)
-  tags_on_sidebar = models.IntegerField(default=5)
-  password_changed = models.DateTimeField(default=now)
 
-  def __unicode__(self):
-    return self.user.username
+class UserProfile(models.Model):
+    user = models.ForeignKey(User, unique=True)
+    items_per_page = models.IntegerField(default=25)
+    tags_on_sidebar = models.IntegerField(default=5)
+    password_changed = models.DateTimeField(default=now)
+
+    def __unicode__(self):
+        return self.user.username
+
 
 class UserProfileForm(ModelForm):
     class Meta:
@@ -23,6 +25,7 @@ class UserProfileForm(ModelForm):
 
 # Attach the UserProfile object to the User
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
+
 
 @receiver(pre_save, sender=User)
 def user_save_handler(sender, instance, **kwargs):
@@ -36,4 +39,3 @@ def user_save_handler(sender, instance, **kwargs):
         p.save()
 
 admin.site.register(UserProfile)
-

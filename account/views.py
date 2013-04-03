@@ -5,6 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from tastypie.models import ApiKey
 from models import UserProfileForm
 
+
 def profile(request):
     try:
         api_key = ApiKey.objects.get(user=request.user)
@@ -24,6 +25,7 @@ def profile(request):
         'apikey': api_key,
     })
 
+
 def newapikey(request):
     try:
         api_key = ApiKey.objects.get(user=request.user)
@@ -33,4 +35,3 @@ def newapikey(request):
         api_key = ApiKey.objects.create(user=request.user)
 
     return HttpResponseRedirect(reverse('account.views.profile'))
-
