@@ -6,6 +6,7 @@ from django.test.utils import override_settings
 
 from time import sleep
 
+
 class StaffViewTests(TestCase):
     def setUp(self):
         self.group = Group(name='testgroup')
@@ -231,6 +232,7 @@ class StaffViewTests(TestCase):
         cred = Cred.objects.get(id=self.cred.id)
         self.assertFalse(cred.is_deleted)
 
+
 class StaffChangeAdviceTest(TestCase):
     def setUp(self):
         self.group = Group(name='testgroup')
@@ -282,6 +284,6 @@ class StaffChangeAdviceTest(TestCase):
         self.assertIn(self.viewedcred, credlist)
         self.assertNotIn(self.changedcred, credlist)
 
+
 StaffViewTests = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(StaffViewTests)
 StaffChangeAdviceTest = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(StaffChangeAdviceTest)
-

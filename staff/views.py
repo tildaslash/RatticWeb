@@ -13,11 +13,13 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import datetime
 from django.utils.timezone import now
 
+
 @staff_member_required
 def home(request):
     userlist = User.objects.all()
     grouplist = Group.objects.all()
     return render(request, 'staff_home.html', {'userlist': userlist, 'grouplist': grouplist})
+
 
 @staff_member_required
 def view_trash(request):
@@ -33,13 +35,14 @@ def view_trash(request):
     # This template comes from the cred app
     return render(request, 'cred_list.html', {'credlist': cred, 'credtitle': 'Trashcan'})
 
-# user detail
+
 @staff_member_required
 def userdetail(request, uid):
     user = get_object_or_404(User, pk=uid)
     credlogs = CredAudit.objects.filter(user=user, cred__group__in=request.user.groups.all())[:5]
     morelink = reverse('staff.views.audit_by_user', args=(user.id,))
-    return render(request, 'staff_userdetail.html', {'viewuser' : user, 'credlogs':credlogs, 'morelink':morelink})
+    return render(request, 'staff_userdetail.html', {'viewuser': user, 'credlogs': credlogs, 'morelink': morelink})
+
 
 @staff_member_required
 def groupadd(request):
@@ -54,11 +57,12 @@ def groupadd(request):
 
     return render(request, 'staff_groupedit.html', {'form': form})
 
-# group detail
+
 @staff_member_required
 def groupdetail(request, gid):
     group = get_object_or_404(Group, pk=gid)
-    return render(request, 'staff_groupdetail.html', {'group' : group})
+    return render(request, 'staff_groupdetail.html', {'group': group})
+
 
 @staff_member_required
 def groupedit(request, gid):
@@ -71,27 +75,27 @@ def groupedit(request, gid):
     else:
         form = GroupForm(instance=group)
 
-    return render(request, 'staff_groupedit.html', {'group' : group, 'form': form})
+    return render(request, 'staff_groupedit.html', {'group': group, 'form': form})
 
-# group delete
+
 @staff_member_required
 def groupdelete(request, gid):
     group = get_object_or_404(Group, pk=gid)
     if request.method == 'POST':
         group.delete()
         return HttpResponseRedirect(reverse('staff.views.home'))
-    return render(request, 'staff_groupdetail.html', {'group' : group, 'delete':True})
+    return render(request, 'staff_groupdetail.html', {'group': group, 'delete': True})
 
-# User delete
+
 @staff_member_required
 def userdelete(request, uid):
     user = get_object_or_404(User, pk=uid)
     if request.method == 'POST':
         user.delete()
         return HttpResponseRedirect(reverse('staff.views.home'))
-    return render(request, 'staff_userdetail.html', {'viewuser' : user, 'delete':True})
+    return render(request, 'staff_userdetail.html', {'viewuser': user, 'delete': True})
 
-# Credential view
+
 @staff_member_required
 def audit_by_cred(request, cred_id):
     cred = get_object_or_404(Cred, pk=cred_id)
@@ -107,7 +111,8 @@ def audit_by_cred(request, cred_id):
     except EmptyPage:
         logs = paginator.page(paginator.num_pages)
 
-    return render(request, 'staff_audit.html', { 'logs': logs, 'type': 'cred', 'cred': cred })
+    return render(request, 'staff_audit.html', {'logs': logs, 'type': 'cred', 'cred': cred})
+
 
 @staff_member_required
 def audit_by_user(request, user_id):
@@ -124,7 +129,8 @@ def audit_by_user(request, user_id):
     except EmptyPage:
         logs = paginator.page(paginator.num_pages)
 
-    return render(request, 'staff_audit.html', { 'logs': logs, 'type': 'user', 'loguser': loguser })
+    return render(request, 'staff_audit.html', {'logs': logs, 'type': 'user', 'loguser': loguser})
+
 
 @staff_member_required
 def audit_by_days(request, days_ago):
@@ -141,7 +147,8 @@ def audit_by_days(request, days_ago):
     except EmptyPage:
         logs = paginator.page(paginator.num_pages)
 
-    return render(request, 'staff_audit.html', { 'logs': logs, 'type': 'time', 'days_ago': days_ago })
+    return render(request, 'staff_audit.html', {'logs': logs, 'type': 'time', 'days_ago': days_ago})
+
 
 @staff_member_required
 def change_advice_by_user_and_group(request, user_id, group_id):
@@ -158,12 +165,12 @@ def change_advice_by_user_and_group(request, user_id, group_id):
         groups = Group.objects.all()
 
     logs = CredAudit.objects.filter(
-            # Get a list of changes done
-            Q(cred__group__in=groups, audittype=CredAudit.CREDCHANGE) |
-            # Combined with a list of view from this user
-            Q(cred__group__in=groups, audittype__in=[CredAudit.CREDVIEW,
-                CredAudit.CREDPASSVIEW], user=user)
-            ).order_by('time')
+        # Get a list of changes done
+        Q(cred__group__in=groups, audittype=CredAudit.CREDCHANGE) |
+        # Combined with a list of view from this user
+        Q(cred__group__in=groups, audittype__in=[CredAudit.CREDVIEW,
+            CredAudit.CREDPASSVIEW], user=user)
+    ).order_by('time')
 
     # Go through each entry in time order
     tochange = []
@@ -179,14 +186,15 @@ def change_advice_by_user_and_group(request, user_id, group_id):
     # Fetch the list of credentials to change from the DB for the view
     creds = Cred.objects.filter(id__in=tochange)
 
-    return render(request, 'staff_changeadvice.html', { 'creds': creds,
-        'viewuser':user })
+    return render(request, 'staff_changeadvice.html', {'creds': creds,
+        'viewuser': user})
+
 
 @staff_member_required
 def change_advice_by_user(request, user_id):
     return change_advice_by_user_and_group(request, user_id, None)
 
-# New User
+
 class NewUser(FormView):
     form_class = UserForm
     template_name = 'staff_useredit.html'
@@ -204,7 +212,7 @@ class NewUser(FormView):
         user.save()
         return super(NewUser, self).form_valid(form)
 
-# Edit Users
+
 class UpdateUser(UpdateView):
     model = User
     form_class = UserForm
@@ -238,6 +246,7 @@ class UpdateUser(UpdateView):
             self.success_url = reverse('staff.views.change_advice_by_user', args=(form.instance.id,))
         return super(UpdateUser, self).form_valid(form)
 
+
 @staff_member_required
 def import_from_keepass(request):
     if request.method == 'POST':
@@ -255,13 +264,14 @@ def import_from_keepass(request):
                 cred.save()
                 CredAudit(audittype=CredAudit.CREDADD, cred=cred, user=request.user).save()
                 for t in e['tags']:
-                  (tag, create) = Tag.objects.get_or_create(name=t)
-                  cred.tags.add(tag)
+                    (tag, create) = Tag.objects.get_or_create(name=t)
+                    cred.tags.add(tag)
 
             return HttpResponseRedirect(reverse('staff.views.home'))
     else:
         form = KeepassImportForm(request.user)
     return render(request, 'staff_keepassimport.html', {'form': form})
+
 
 @staff_member_required
 def credundelete(request, cred_id):
@@ -269,9 +279,9 @@ def credundelete(request, cred_id):
 
     try:
         lastchange = CredAudit.objects.filter(
-                cred=cred,
-                audittype__in=[CredAudit.CREDCHANGE, CredAudit.CREDADD],
-                ).latest().time
+            cred=cred,
+            audittype__in=[CredAudit.CREDCHANGE, CredAudit.CREDADD],
+        ).latest().time
     except CredAudit.DoesNotExist:
         lastchange = "Unknown (Logs deleted)"
 
@@ -286,7 +296,4 @@ def credundelete(request, cred_id):
 
     CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
 
-    return render(request, 'cred_detail.html',{'cred' : cred, 'lastchange': lastchange, 'action':reverse('cred.views.delete', args=(cred_id,)), 'undelete':True})
-
-
-
+    return render(request, 'cred_detail.html', {'cred': cred, 'lastchange': lastchange, 'action': reverse('cred.views.delete', args=(cred_id,)), 'undelete': True})

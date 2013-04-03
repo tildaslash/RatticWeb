@@ -9,7 +9,7 @@ from tastypie.exceptions import Unauthorized
 
 from cred.models import Cred, Tag, CredAudit
 
-## Auth
+
 class RatticGroupAuthorization(Authorization):
     def read_list(self, object_list, bundle):
         return object_list
@@ -61,4 +61,3 @@ class GroupResource(ModelResource):
         resource_name = 'group'
         authentication = MultiAuthentication(ApiKeyAuthentication(), SessionAuthentication())
         authorization = RatticGroupAuthorization()
-

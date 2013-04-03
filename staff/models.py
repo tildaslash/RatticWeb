@@ -3,6 +3,7 @@ from django.contrib.auth.models import User, Group
 from django import forms
 from importloaders import keepass
 
+
 class UserForm(forms.ModelForm):
     # We want two password input boxes
     newpass = forms.CharField(widget=forms.PasswordInput, required=False, max_length=32, min_length=8)
@@ -17,7 +18,7 @@ class UserForm(forms.ModelForm):
         super(UserForm, self).__init__(*args, **kwargs)
         # Use checkboxes for groups
         #self.fields["groups"].widget = forms.CheckboxSelectMultiple()
-        self.fields["groups"].widget = forms.SelectMultiple(attrs={'class':'chzn-select'})
+        self.fields["groups"].widget = forms.SelectMultiple(attrs={'class': 'chzn-select'})
         self.fields["groups"].queryset = Group.objects.all()
 
     def clean(self):
@@ -34,6 +35,7 @@ class UserForm(forms.ModelForm):
 
         return cleaned_data
 
+
 class GroupForm(forms.ModelForm):
     class Meta:
         model = Group
@@ -46,8 +48,8 @@ class KeepassImportForm(forms.Form):
     group = forms.ModelChoiceField(queryset=Group.objects.all())
 
     def __init__(self, requser, *args, **kwargs):
-      super (KeepassImportForm, self).__init__(*args,**kwargs)
-      self.fields['group'].queryset = Group.objects.filter(user=requser)
+        super(KeepassImportForm, self).__init__(*args, **kwargs)
+        self.fields['group'].queryset = Group.objects.filter(user=requser)
 
     def clean(self):
         cleaned_data = super(KeepassImportForm, self).clean()
@@ -65,7 +67,5 @@ class KeepassImportForm(forms.Form):
             self._errors['file'] = self.error_class([msg])
             del cleaned_data['file']
             del cleaned_data['password']
-            
 
         return cleaned_data
-
