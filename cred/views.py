@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.models import Group
 
+
 @login_required
 def list(request):
     cred_list = Cred.objects.accessable(request.user)
@@ -19,6 +20,7 @@ def list(request):
     except EmptyPage:
         cred = paginator.page(paginator.num_pages)
     return render(request, 'cred_list.html', {'credlist': cred})
+
 
 @login_required
 def list_by_tag(request, tag_id):
@@ -34,6 +36,7 @@ def list_by_tag(request, tag_id):
         cred = paginator.page(paginator.num_pages)
     title = 'Passwords for tag: ' + tag.name
     return render(request, 'cred_list.html', {'credlist': cred, 'tag': tag, 'credtitle': title})
+
 
 @login_required
 def list_by_group(request, group_id):
@@ -52,10 +55,12 @@ def list_by_group(request, group_id):
     title = 'Passwords for group: ' + group.name
     return render(request, 'cred_list.html', {'credlist': cred, 'group': group, 'credtitle': title})
 
+
 @login_required
 def tags(request):
     tags = Tag.objects.all()
     return render(request, 'cred_tags.html', {'tags': tags})
+
 
 @login_required
 def list_by_search(request, search):
@@ -70,7 +75,8 @@ def list_by_search(request, search):
     except EmptyPage:
         cred = paginator.page(paginator.num_pages)
     title = 'Passwords for search: ' + search
-    return render(request, 'cred_list.html', {'credlist': cred, 'tag':tag, 'showtaglist':True, 'credtitle': title})
+    return render(request, 'cred_list.html', {'credlist': cred, 'tag': tag, 'showtaglist': True, 'credtitle': title})
+
 
 @login_required
 def detail(request, cred_id):
@@ -84,9 +90,9 @@ def detail(request, cred_id):
 
     try:
         lastchange = CredAudit.objects.filter(
-                cred=cred,
-                audittype__in=[CredAudit.CREDCHANGE, CredAudit.CREDADD],
-                ).latest().time
+            cred=cred,
+            audittype__in=[CredAudit.CREDCHANGE, CredAudit.CREDADD],
+        ).latest().time
     except CredAudit.DoesNotExist:
         lastchange = "Unknown (Logs deleted)"
 
@@ -98,11 +104,12 @@ def detail(request, cred_id):
         morelink = None
 
     return render(request, 'cred_detail.html', {
-        'cred' : cred,
+        'cred': cred,
         'credlogs': credlogs,
         'lastchange': lastchange,
         'morelink': morelink
-        })
+    })
+
 
 @login_required
 def add(request):
@@ -117,6 +124,7 @@ def add(request):
 
     return render(request, 'cred_edit.html', {'form': form, 'action':
       reverse('cred.views.add'), 'icons': CredIcon.objects.all()})
+
 
 @login_required
 def edit(request, cred_id):
@@ -151,15 +159,16 @@ def edit(request, cred_id):
     return render(request, 'cred_edit.html', {'form': form, 'action':
         reverse('cred.views.edit', args=(cred.id,)), 'next': next, 'icons': CredIcon.objects.all()})
 
+
 @login_required
 def delete(request, cred_id):
     cred = get_object_or_404(Cred, pk=cred_id)
 
     try:
         lastchange = CredAudit.objects.filter(
-                cred=cred,
-                audittype__in=[CredAudit.CREDCHANGE, CredAudit.CREDADD],
-                ).latest().time
+            cred=cred,
+            audittype__in=[CredAudit.CREDCHANGE, CredAudit.CREDADD],
+        ).latest().time
     except CredAudit.DoesNotExist:
         lastchange = "Unknown (Logs deleted)"
 
@@ -173,10 +182,9 @@ def delete(request, cred_id):
 
     CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
 
-    return render(request, 'cred_detail.html',{'cred' : cred, 'lastchange': lastchange, 'action':reverse('cred.views.delete', args=(cred_id,)), 'delete':True})
+    return render(request, 'cred_detail.html', {'cred': cred, 'lastchange': lastchange, 'action': reverse('cred.views.delete', args=(cred_id,)), 'delete': True})
 
 
-# Categories 
 @login_required
 def tagadd(request):
     if request.method == 'POST':
@@ -187,7 +195,8 @@ def tagadd(request):
     else:
         form = TagForm()
 
-    return render(request, 'cred_tagedit.html', {'form': form,})
+    return render(request, 'cred_tagedit.html', {'form': form})
+
 
 @login_required
 def tagedit(request, tag_id):
@@ -200,7 +209,8 @@ def tagedit(request, tag_id):
     else:
         form = TagForm(instance=tag)
 
-    return render(request, 'cred_tagedit.html', {'form': form,})
+    return render(request, 'cred_tagedit.html', {'form': form})
+
 
 @login_required
 def tagdelete(request, tag_id):
@@ -208,12 +218,14 @@ def tagdelete(request, tag_id):
     if request.method == 'POST':
         tag.delete()
         return HttpResponseRedirect(reverse('cred.views.list'))
-    return render(request, 'cred_tagdelete.html',{})
+    return render(request, 'cred_tagdelete.html', {})
+
 
 @login_required
 def viewqueue(request):
     queue = CredChangeQ.objects.for_user(request.user)
     return render(request, 'cred_queue.html', {'queue': queue})
+
 
 @login_required
 def addtoqueue(request, cred_id):
@@ -225,6 +237,7 @@ def addtoqueue(request, cred_id):
     CredAudit(audittype=CredAudit.CREDSCHEDCHANGE, cred=cred, user=request.user).save()
     return HttpResponseRedirect(reverse('cred.views.viewqueue'))
 
+
 @login_required
 def bulkaddtoqueue(request):
     tochange = Cred.objects.filter(id__in=request.POST.getlist('tochange'))
@@ -235,4 +248,3 @@ def bulkaddtoqueue(request):
             CredChangeQ.objects.add_to_changeq(c)
 
     return HttpResponseRedirect(reverse('cred.views.viewqueue'))
-

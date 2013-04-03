@@ -4,6 +4,7 @@ from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.test.utils import override_settings
 
+
 class CredAccessTest(TestCase):
     def setUp(self):
         g = Group(name='h')
@@ -51,6 +52,7 @@ class CredAccessTest(TestCase):
         self.assertTrue(self.d in Cred.objects.accessable(self.s, deleted=True))
         self.assertTrue(not self.d in Cred.objects.accessable(self.u, deleted=True))
 
+
 class CredDeleteTest(TestCase):
     def setUp(self):
         g = Group(name='h')
@@ -79,6 +81,7 @@ class CredDeleteTest(TestCase):
             test = True
 
         self.assertTrue(test)
+
 
 class CredHistoryTest(TestCase):
     def setUp(self):
@@ -117,6 +120,7 @@ class CredHistoryTest(TestCase):
         newid = c.id
 
         self.assertEqual(oldid, newid)
+
 
 class CredViewTests(TestCase):
     def setUp(self):
@@ -336,7 +340,7 @@ class CredViewTests(TestCase):
         self.assertEqual(resp.status_code, 200)
         resp = self.staff.post(reverse('cred.views.tagdelete', args=(self.tag.id,)), follow=True)
         self.assertEqual(resp.status_code, 200)
-	with self.assertRaises(Tag.DoesNotExist):
+        with self.assertRaises(Tag.DoesNotExist):
             deltag = Tag.objects.get(id=self.tag.id)
 
     def test_viewqueue_normal(self):
@@ -357,4 +361,3 @@ class CredViewTests(TestCase):
         self.assertTrue(self.tagcred.on_changeq())
 
 CredViewTests = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(CredViewTests)
-

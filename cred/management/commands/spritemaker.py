@@ -3,6 +3,7 @@ from PIL import Image
 from cred.models import CredIcon
 import os
 
+
 class Command(BaseCommand):
     help = 'Ensures there exists a user named "admin" with the password "rattic"'
 
@@ -38,4 +39,3 @@ class Command(BaseCommand):
             curx += maxwidth
 
         sprite.save(spritepath)
-        

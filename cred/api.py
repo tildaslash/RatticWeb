@@ -9,7 +9,7 @@ from tastypie.exceptions import Unauthorized
 
 from cred.models import Cred, Tag, CredAudit
 
-## Auth
+
 class CredAuthorization(Authorization):
     def read_list(self, object_list, bundle):
         # This assumes a ``QuerySet`` from ``ModelResource``.
@@ -58,13 +58,15 @@ class CredResource(ModelResource):
         authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
         authorization = CredAuthorization()
 
+
 class TagResource(ModelResource):
     creds = fields.ToManyField(CredResource,
-                               attribute=lambda bundle: Cred.objects.accessable(bundle.request.user).filter(tags=bundle.obj),
-                               full=True,
-                               null=True)
+        attribute=lambda bundle: Cred.objects.accessable(bundle.request.user).filter(tags=bundle.obj),
+        full=True,
+        null=True,
+    )
+
     class Meta:
         queryset = Tag.objects.all()
         resource_name = 'tag'
         authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
-

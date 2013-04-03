@@ -9,15 +9,18 @@ from tastypie.models import create_api_key
 # Every time a user is saved, make sure they have an API key.
 models.signals.post_save.connect(create_api_key, sender=User)
 
+
 class Tag(models.Model):
     name = models.CharField(max_length=64)
 
     def __unicode__(self):
         return self.name
 
+
 class TagForm(ModelForm):
     class Meta:
         model = Tag
+
 
 class CredIcon(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -28,8 +31,10 @@ class CredIcon(models.Model):
     def __unicode__(self):
         return self.name
 
+
 class CredIconAdmin(admin.ModelAdmin):
     list_display = ('name', 'filename')
+
 
 class SearchManager(models.Manager):
     def accessable(self, user, historical=False, deleted=False):
@@ -46,6 +51,7 @@ class SearchManager(models.Manager):
                      | Q(latest__group__in=usergroups))
 
         return qs
+
 
 class Cred(models.Model):
     METADATA = ('description', 'group', 'tags', 'icon')
@@ -75,11 +81,11 @@ class Cred(models.Model):
         super(Cred, self).save(*args, **kwargs)
 
     def delete(self):
-      if not self.is_deleted:
-          self.is_deleted = True
-          self.save()
-      else:
-          super(Cred, self).delete()
+        if not self.is_deleted:
+            self.is_deleted = True
+            self.save()
+        else:
+            super(Cred, self).delete()
 
     def on_changeq(self):
         return CredChangeQ.objects.filter(cred=self).exists()
@@ -90,11 +96,11 @@ class Cred(models.Model):
             return True
 
         # If its the latest and in your group you can see it
-        if not self.is_deleted and self.latest == None and self.group in user.groups.all():
+        if not self.is_deleted and self.latest is None and self.group in user.groups.all():
             return True
 
         # If the latest is in your group you can see it
-        if not self.is_deleted and self.latest != None and self.latest.group in user.groups.all():
+        if not self.is_deleted and self.latest is not None and self.latest.group in user.groups.all():
             return True
 
         return False
@@ -102,20 +108,23 @@ class Cred(models.Model):
     def __unicode__(self):
         return self.title
 
+
 class CredForm(ModelForm):
-    def __init__(self,requser,*args,**kwargs):
-        super (CredForm,self ).__init__(*args,**kwargs) # populates the post
+    def __init__(self, requser, *args, **kwargs):
+        super(CredForm, self).__init__(*args, **kwargs)
         self.fields['group'].queryset = Group.objects.filter(user=requser)
 
     class Meta:
         model = Cred
         exclude = ('is_deleted', 'latest')
         widgets = {
-            'tags': SelectMultiple(attrs={'class':'chzn-select'}),
+            'tags': SelectMultiple(attrs={'class': 'chzn-select'}),
         }
+
 
 class CredAdmin(admin.ModelAdmin):
     list_display = ('title', 'username', 'group')
+
 
 class CredAudit(models.Model):
     CREDADD = 'A'
@@ -144,8 +153,10 @@ class CredAudit(models.Model):
         get_latest_by = 'time'
         ordering = ('-time',)
 
+
 class CredAuditAdmin(admin.ModelAdmin):
     list_display = ('audittype', 'user', 'cred', 'time')
+
 
 class CredChangeQManager(models.Manager):
     def add_to_changeq(self, cred):
@@ -154,14 +165,17 @@ class CredChangeQManager(models.Manager):
     def for_user(self, user):
         return self.filter(cred__in=Cred.objects.accessable(user))
 
+
 class CredChangeQ(models.Model):
     objects = CredChangeQManager()
 
     cred = models.ForeignKey(Cred, unique=True)
     time = models.DateTimeField(auto_now_add=True)
 
+
 class CredChangeQAdmin(admin.ModelAdmin):
     list_display = ('cred', 'time')
+
 
 admin.site.register(CredAudit, CredAuditAdmin)
 admin.site.register(Cred, CredAdmin)
