@@ -170,7 +170,7 @@ def change_advice_by_user_and_group(request, user_id, group_id):
         # Combined with a list of view from this user
         Q(cred__group__in=groups, audittype__in=[CredAudit.CREDVIEW,
             CredAudit.CREDPASSVIEW], user=user)
-    ).order_by('time')
+    ).order_by('time', 'id')
 
     # Go through each entry in time order
     tochange = []
