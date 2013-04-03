@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 import tempfile
 import os
 
+
 class HelpTests(TestCase):
     def setUp(self):
         self.client = Client()
@@ -41,6 +42,7 @@ class HelpTests(TestCase):
                 args=('NonExistantdfgdfgdfgd',)))
             self.assertEqual(resp.status_code, 404)
             self.assertTemplateNotUsed(resp, 'help_markdown.html')
+
 
 class HelpOffTests(TestCase):
     def test_helpoff(self):

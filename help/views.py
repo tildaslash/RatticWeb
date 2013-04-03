@@ -5,8 +5,9 @@ from django.core.urlresolvers import reverse
 
 import os
 
+
 def markdown(request, page):
-    if settings.HELP_SYSTEM_FILES == False:
+    if settings.HELP_SYSTEM_FILES is False:
         return render(request, 'help_nohelp.html', {})
 
     filename = os.path.join(settings.HELP_SYSTEM_FILES, page + '.md')
@@ -15,6 +16,6 @@ def markdown(request, page):
 
     return render(request, 'help_markdown.html', {'file': filename})
 
+
 def home(request):
     return markdown(request, 'Home')
-

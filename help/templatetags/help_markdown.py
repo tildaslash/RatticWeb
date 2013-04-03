@@ -3,19 +3,19 @@ import markdown
 
 register = template.Library()
 
+
 @register.simple_tag
 def markdown_file(filename):
     with open(filename) as f:
         out = markdown.markdown(
-                text=f.read(),
-                extensions=[
-                    'fenced_code',
-                    'nl2br',
-                    'headerid',
-                    'wikilinks(base_url=/help/)'
-                    ],
-                safe_mode='escape',
-                )
+            text=f.read(),
+            extensions=[
+                'fenced_code',
+                'nl2br',
+                'headerid',
+                'wikilinks(base_url=/help/)'
+            ],
+            safe_mode='escape',
+        )
 
     return out
-
