@@ -2,6 +2,7 @@ from cred.models import Tag, CredChangeQ
 from django.db.models import Count
 from django.conf import settings
 
+
 def base_template_reqs(request):
     cntx = {
         'pageurl': request.path,
@@ -19,5 +20,3 @@ def base_template_reqs(request):
         cntx['alltags'] = []
 
     return cntx
-
-

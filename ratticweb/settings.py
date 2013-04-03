@@ -14,18 +14,18 @@ MANAGERS = ADMINS
 # SMTP Mail Opts
 #EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 #EMAIL_HOST = 'localhost'
-#EMAIL_PORT = 
+#EMAIL_PORT =
 #EMAIL_USE_TLS = True
 #EMAIL_HOST_USER = 'root'
 #EMAIL_HOST_PASSWORD = ''
 
 # Dev Mail Opts
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = '/tmp/rattic-messages' 
+EMAIL_FILE_PATH = '/tmp/rattic-messages'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'db/ratticdb',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
@@ -103,7 +103,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -113,7 +113,7 @@ SECRET_KEY = '&amp;9mjhxkul-8l@-g^(_u_^1uu9=tzaf)jwmpda33k2jrl-5%+f7'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    #'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -203,7 +203,6 @@ PASSWORD_EXPIRY = timedelta(days=10)
 HELP_SYSTEM_FILES = False
 
 try:
-  from local_settings import *
+    from local_settings import *
 except:
-  pass
-
+    pass

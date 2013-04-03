@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.test import Client
 from django.core.urlresolvers import reverse
 
+
 class HomepageTest(TestCase):
     def test_homepage_to_login_redirect(self):
         client = Client()
@@ -14,4 +15,3 @@ class HomepageTest(TestCase):
         client = Client()
         response = client.get('/admin/')
         self.assertEqual(response.status_code, 404)
-
