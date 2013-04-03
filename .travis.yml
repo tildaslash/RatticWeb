@@ -15,6 +15,7 @@ install:
   - pip install -q django-tastypie==0.9.12 --use-mirrors
   - pip install -q pycrypto==2.6 --use-mirrors
   - pip install -q markdown==2.1.1 --use-mirrors
+  - pip install -q pep8 --use-mirrors
 before_script:
   - "pep8 --exclude=migrations,lib --ignore=E501,E225,E128,E124 ."
   - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'create database IF NOT EXISTS rattic;'; fi"
