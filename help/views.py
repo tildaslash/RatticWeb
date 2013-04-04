@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.conf import settings
-from django.http import HttpResponseRedirect, Http404
-from django.core.urlresolvers import reverse
+from django.http import Http404
 
 import os
 
