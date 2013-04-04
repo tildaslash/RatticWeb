@@ -38,7 +38,7 @@ class AccountViewTests(TestCase):
         self.assertNotEqual(old.key, new.key)
 
 
-class AccountViewTests(TestCase):
+class AccountCommandTests(TestCase):
     def test_command_demosetup(self):
         args=[]
         opts={}
