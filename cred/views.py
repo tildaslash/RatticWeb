@@ -241,10 +241,9 @@ def addtoqueue(request, cred_id):
 @login_required
 def bulkaddtoqueue(request):
     tochange = Cred.objects.filter(id__in=request.POST.getlist('tochange'))
-    usergroups = request.user.groups.all()
     for c in tochange:
-        if not cred.is_accessable_by(request.user):
-            CredAudit(audittype=CredAudit.CREDSCHEDCHANGE, cred=cred, user=request.user).save()
+        if not c.is_accessable_by(request.user):
+            CredAudit(audittype=CredAudit.CREDSCHEDCHANGE, cred=c, user=request.user).save()
             CredChangeQ.objects.add_to_changeq(c)
 
     return HttpResponseRedirect(reverse('cred.views.viewqueue'))
