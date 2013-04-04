@@ -1,6 +1,3 @@
-from django.db import models
-from django.contrib.auth.models import User
-
 from tastypie import fields
 from tastypie.authentication import SessionAuthentication, MultiAuthentication, ApiKeyAuthentication
 from tastypie.resources import ModelResource

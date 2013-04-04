@@ -319,7 +319,8 @@ class CredViewTests(TestCase):
         post['name'] = 'New Tag'
         resp = self.norm.post(reverse('cred.views.tagadd'), post, follow=True)
         self.assertEqual(resp.status_code, 200)
-        newcred = Tag.objects.get(name='New Tag')
+        newtag = Tag.objects.get(name='New Tag')
+        self.assertTrue(newtag is not None)
 
     def test_tagedit_normal(self):
         resp = self.norm.get(reverse('cred.views.tagedit', args=(self.tag.id,)))
@@ -341,7 +342,7 @@ class CredViewTests(TestCase):
         resp = self.staff.post(reverse('cred.views.tagdelete', args=(self.tag.id,)), follow=True)
         self.assertEqual(resp.status_code, 200)
         with self.assertRaises(Tag.DoesNotExist):
-            deltag = Tag.objects.get(id=self.tag.id)
+            Tag.objects.get(id=self.tag.id)
 
     def test_viewqueue_normal(self):
         resp = self.norm.get(reverse('cred.views.viewqueue'))
