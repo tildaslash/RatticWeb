@@ -22,6 +22,7 @@ function runtest() {
 }
 
 runtest "PEP8" "pep8 --exclude=migrations,lib --ignore=E501,E225,E128,E124 ."
+runtest "pyflakes" "./pyflakes.sh"
 runtest "Unit Tests" "./manage.py test"
 
 exit 0
