@@ -1,5 +1,4 @@
 from lib.keepass import kpdb
-from cred.models import Cred, Tag
 
 
 def keepass(filep, password):

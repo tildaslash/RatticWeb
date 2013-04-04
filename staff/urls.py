@@ -1,9 +1,5 @@
-from django.conf.urls import patterns, include, url
-from django.contrib.admin.views.decorators import staff_member_required
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.contrib.auth.models import User, Group
+from django.conf.urls import patterns, url
 from views import NewUser, UpdateUser
-from models import GroupForm
 
 urlpatterns = patterns('staff.views',
     # Views in views.py

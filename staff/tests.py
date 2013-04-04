@@ -4,8 +4,6 @@ from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.test.utils import override_settings
 
-from time import sleep
-
 
 class StaffViewTests(TestCase):
     def setUp(self):
@@ -94,7 +92,8 @@ class StaffViewTests(TestCase):
         post['name'] = 'Test Group'
         resp = self.staff.post(reverse('staff.views.groupadd'), post, follow=True)
         self.assertEqual(resp.status_code, 200)
-        newgroup = Group.objects.get(name='Test Group')
+        # Make sure we can get the object without exception
+        Group.objects.get(name='Test Group')
 
     def test_groupdetail(self):
         resp = self.staff.get(reverse('staff.views.groupdetail',
@@ -112,7 +111,7 @@ class StaffViewTests(TestCase):
         resp = self.staff.post(reverse('staff.views.groupdelete',
             args=(self.othergroup.id,)), follow=True)
         with self.assertRaises(Group.DoesNotExist):
-            delgroup = Group.objects.get(id=self.othergroup.id)
+            Group.objects.get(id=self.othergroup.id)
 
     def test_userdelete(self):
         resp = self.staff.get(reverse('staff.views.userdelete',
@@ -124,7 +123,7 @@ class StaffViewTests(TestCase):
             args=(self.unobody.id,)), follow=True)
         self.assertEqual(resp.status_code, 200)
         with self.assertRaises(User.DoesNotExist):
-            deluser = User.objects.get(id=self.unobody.id)
+            User.objects.get(id=self.unobody.id)
 
     def test_audit_by_cred(self):
         resp = self.staff.get(reverse('staff.views.audit_by_cred',

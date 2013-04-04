@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.http import HttpResponseRedirect
-from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
+from django.http import HttpResponseRedirect, Http404
+from django.views.generic.edit import UpdateView, FormView
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User, Group

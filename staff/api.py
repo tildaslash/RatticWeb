@@ -1,13 +1,9 @@
-from django.db import models
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 
-from tastypie import fields
 from tastypie.authentication import SessionAuthentication, MultiAuthentication, ApiKeyAuthentication
 from tastypie.resources import ModelResource
 from tastypie.authorization import Authorization
 from tastypie.exceptions import Unauthorized
-
-from cred.models import Cred, Tag, CredAudit
 
 
 class RatticGroupAuthorization(Authorization):
