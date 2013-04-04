@@ -14,7 +14,12 @@ def markdown(request, page):
     if not os.path.exists(filename):
         raise Http404
 
-    return render(request, 'help_markdown.html', {'file': filename})
+    latestcopy = settings.PUBLIC_HELP_WIKI_BASE + page
+
+    return render(request, 'help_markdown.html', {
+        'file': filename,
+        'latestlink': latestcopy,
+    })
 
 
 def home(request):

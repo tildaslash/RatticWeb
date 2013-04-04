@@ -198,9 +198,11 @@ LOGIN_REDIRECT_URL = "/cred/list/"
 LOGIN_URL = "/account/login/"
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-PASSWORD_EXPIRY = timedelta(days=10)
 
+# Custom settings
+PASSWORD_EXPIRY = timedelta(days=10)
 HELP_SYSTEM_FILES = False
+PUBLIC_HELP_WIKI_BASE = 'https://github.com/tildaslash/RatticWeb/wiki/'
 
 try:
     from local_settings import *
