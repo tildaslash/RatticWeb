@@ -194,12 +194,8 @@ LOGGING = {
     }
 }
 
-LOGIN_REDIRECT_URL = "/cred/list/"
-LOGIN_URL = "/account/login/"
-
+# Custom settings (can be overridden)
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-
-# Custom settings
 PASSWORD_EXPIRY = timedelta(days=10)
 HELP_SYSTEM_FILES = False
 PUBLIC_HELP_WIKI_BASE = 'https://github.com/tildaslash/RatticWeb/wiki/'
@@ -207,4 +203,36 @@ PUBLIC_HELP_WIKI_BASE = 'https://github.com/tildaslash/RatticWeb/wiki/'
 try:
     from local_settings import *
 except:
+    pass
+
+# Application settings
+LOGIN_REDIRECT_URL = "/cred/list/"
+LOGIN_URL = "/account/login/"
+
+# LDAP Configuration
+# If AUTH_LDAP_SERVER_URI is set, enable LDAP auth
+try:
+    if AUTH_LDAP_SERVER_URI:
+        AUTHENTICATION_BACKENDS = (
+            'django_auth_ldap.backend.LDAPBackend',
+            'django.contrib.auth.backends.ModelBackend',
+        )
+except NameError:
+    pass
+
+AUTH_LDAP_USER_ATTR_MAP = {
+    "email": "mail",
+}
+
+AUTH_LDAP_USER_FLAGS_BY_GROUP = {
+}
+
+AUTH_LDAP_MIRROR_GROUPS=True
+
+try:
+    if AUTH_LDAP_STAFF_GROUP:
+        AUTH_LDAP_USER_FLAGS_BY_GROUP += {
+            "is_staff": AUTH_LDAP_STAFF_GROUP,
+        }
+except NameError:
     pass
