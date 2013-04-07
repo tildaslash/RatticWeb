@@ -217,8 +217,11 @@ try:
             'django_auth_ldap.backend.LDAPBackend',
             'django.contrib.auth.backends.ModelBackend',
         )
+        LDAP_ENABLED = True
+    else:
+        LDAP_ENABLED = False
 except NameError:
-    pass
+    LDAP_ENABLED = False
 
 AUTH_LDAP_USER_ATTR_MAP = {
     "email": "mail",
@@ -231,8 +234,6 @@ AUTH_LDAP_MIRROR_GROUPS=True
 
 try:
     if AUTH_LDAP_STAFF_GROUP:
-        AUTH_LDAP_USER_FLAGS_BY_GROUP += {
-            "is_staff": AUTH_LDAP_STAFF_GROUP,
-        }
+        AUTH_LDAP_USER_FLAGS_BY_GROUP['is_staff'] = AUTH_LDAP_STAFF_GROUP
 except NameError:
     pass
