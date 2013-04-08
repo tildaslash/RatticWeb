@@ -9,6 +9,7 @@ from django.db.models import Q
 from models import UserForm, GroupForm, KeepassImportForm
 from cred.models import CredAudit, Cred, Tag
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from account.decorators import not_with_ldap
 
 import datetime
 from django.utils.timezone import now
@@ -44,6 +45,7 @@ def userdetail(request, uid):
     return render(request, 'staff_userdetail.html', {'viewuser': user, 'credlogs': credlogs, 'morelink': morelink})
 
 
+@not_with_ldap
 @staff_member_required
 def groupadd(request):
     if request.method == 'POST':
@@ -64,6 +66,7 @@ def groupdetail(request, gid):
     return render(request, 'staff_groupdetail.html', {'group': group})
 
 
+@not_with_ldap
 @staff_member_required
 def groupedit(request, gid):
     group = get_object_or_404(Group, pk=gid)
@@ -78,6 +81,7 @@ def groupedit(request, gid):
     return render(request, 'staff_groupedit.html', {'group': group, 'form': form})
 
 
+@not_with_ldap
 @staff_member_required
 def groupdelete(request, gid):
     group = get_object_or_404(Group, pk=gid)
@@ -87,6 +91,7 @@ def groupdelete(request, gid):
     return render(request, 'staff_groupdetail.html', {'group': group, 'delete': True})
 
 
+@not_with_ldap
 @staff_member_required
 def userdelete(request, uid):
     user = get_object_or_404(User, pk=uid)
@@ -201,6 +206,7 @@ class NewUser(FormView):
     success_url = reverse_lazy('staff.views.home')
 
     # Staff access only
+    @method_decorator(not_with_ldap)
     @method_decorator(staff_member_required)
     def dispatch(self, *args, **kwargs):
         return super(NewUser, self).dispatch(*args, **kwargs)
@@ -220,6 +226,7 @@ class UpdateUser(UpdateView):
     success_url = reverse_lazy('staff.views.home')
 
     # Staff access only
+    @method_decorator(not_with_ldap)
     @method_decorator(staff_member_required)
     def dispatch(self, *args, **kwargs):
         return super(UpdateUser, self).dispatch(*args, **kwargs)
