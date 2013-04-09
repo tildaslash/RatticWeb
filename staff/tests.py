@@ -1,8 +1,10 @@
 from django.test import TestCase, Client
+from django.utils.unittest import skipIf
 from cred.models import Cred, Tag, CredChangeQ, CredAudit
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.test.utils import override_settings
+from django.conf import settings
 
 
 class StaffViewTests(TestCase):
@@ -81,6 +83,7 @@ class StaffViewTests(TestCase):
         user = resp.context['viewuser']
         self.assertEqual(self.unobody.id, user.id)
 
+    @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_groupadd(self):
         resp = self.staff.get(reverse('staff.views.groupadd'))
         self.assertEqual(resp.status_code, 200)
@@ -102,6 +105,7 @@ class StaffViewTests(TestCase):
         group = resp.context['group']
         self.assertEqual(self.group.id, group.id)
 
+    @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_groupdelete(self):
         resp = self.staff.get(reverse('staff.views.groupdelete',
             args=(self.othergroup.id,)))
@@ -113,6 +117,7 @@ class StaffViewTests(TestCase):
         with self.assertRaises(Group.DoesNotExist):
             Group.objects.get(id=self.othergroup.id)
 
+    @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_userdelete(self):
         resp = self.staff.get(reverse('staff.views.userdelete',
             args=(self.unobody.id,)))
@@ -158,6 +163,7 @@ class StaffViewTests(TestCase):
         self.assertIn(self.logadd, loglist)
         self.assertIn(self.logview, loglist)
 
+    @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_NewUser(self):
         resp = self.staff.get(reverse('user_add'))
         self.assertEqual(resp.status_code, 200)
@@ -181,6 +187,7 @@ class StaffViewTests(TestCase):
         self.assertIn(self.othergroup, newuser.groups.all())
         self.assertNotIn(self.group, newuser.groups.all())
 
+    @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_UpdateUser(self):
         resp = self.staff.get(reverse('user_edit', args=(self.unobody.id,)))
         self.assertEqual(resp.status_code, 200)
