@@ -6,6 +6,7 @@ from django.conf import settings
 def base_template_reqs(request):
     cntx = {
         'pageurl': request.path,
+        'LDAP_ENABLED': settings.LDAP_ENABLED,
     }
 
     if settings.HELP_SYSTEM_FILES:

@@ -1,5 +1,5 @@
 {% load url from future %}
-{% if user.is_staff %}
+{% if user.is_staff and not LDAP_ENABLED %}
 <script>
 var attachstaffbuttons = true;
 </script>

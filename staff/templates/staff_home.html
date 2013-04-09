@@ -5,8 +5,10 @@
 <h1>Staff Manage</h1>
 
 <div class="btn-group">
-  <a class="btn" href="{% url "user_add" %}">Add User</a>
-  <a class="btn" href="{% url "staff.views.groupadd" %}">Add Group</a>
+  {% if not LDAP_ENABLED %}
+    <a class="btn" href="{% url "user_add" %}">Add User</a>
+    <a class="btn" href="{% url "staff.views.groupadd" %}">Add Group</a>
+  {% endif %}
   <a class="btn" href="{% url "staff.views.import_from_keepass" %}">Import Keepass</a>
   <a class="btn" href="{% url "staff.views.view_trash" %}">View Trash</a>
   <a class="btn" href="{% url "staff.views.audit_by_days" 7 %}">Audit One Week</a>
@@ -14,25 +16,29 @@
 
 <h2>Users</h2>
 <table class="table table-striped table-bordered table-condensed">
-  <tr><th>Username</th><th>email</th><th>Edit</th><th>Delete</th></tr>
+  <tr><th>Username</th><th>email</th>{% if not LDAP_ENABLED %}<th>Edit</th><th>Delete</th>{% endif %}</tr>
 {% for u in userlist %}
 <tr {% if not u.is_active %}class="error"{% endif %}>
   <td><a href="{% url "staff.views.userdetail" u.id %}">{{ u.username }}</a></td>
   <td>{{ u.email }}</td>
-  <td><a href="{% url "user_edit" u.id %}">Edit</a></td>
-  <td><a href="{% url "staff.views.userdelete" u.id %}">Delete</a></td>
+  {% if not LDAP_ENABLED %}
+    <td><a href="{% url "user_edit" u.id %}">Edit</a></td>
+    <td><a href="{% url "staff.views.userdelete" u.id %}">Delete</a></td>
+  {% endif %}
 </tr>
 {% endfor %}
 </table>
 
 <h2>Access Groups</h2>
 <table class="table table-striped table-bordered table-condensed">
-  <tr><th>Name</th><th>Edit</th><th>Delete</th></tr>
+  <tr><th>Name</th>{% if not LDAP_ENABLED %}<th>Edit</th><th>Delete</th>{% endif %}</tr>
 {% for g in grouplist %}
 <tr>
   <td><a href="{% url "staff.views.groupdetail" g.id %}">{{ g.name }}</a></td>
-  <td><a href="{% url "staff.views.groupedit" g.id %}">Edit</a></td>
-  <td><a href="{% url "staff.views.groupdelete" g.id %}">Delete</a></td>
+  {% if not LDAP_ENABLED %}
+    <td><a href="{% url "staff.views.groupedit" g.id %}">Edit</a></td>
+    <td><a href="{% url "staff.views.groupdelete" g.id %}">Delete</a></td>
+  {% endif %}
 </tr>
 {% endfor %}
 </table>
