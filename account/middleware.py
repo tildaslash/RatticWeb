@@ -13,7 +13,7 @@ class StrictAuthentication:
 
 class PasswordExpirer:
     def process_view(self, request, view_func, view_args, view_kwargs):
-        if not settings.PASSWORD_EXPIRY:
+        if not settings.PASSWORD_EXPIRY or settings.LDAP_ENABLED:
             return
 
         if not request.user.is_authenticated():

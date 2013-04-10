@@ -22,6 +22,6 @@
     <div class="controls">
         <input class="btn-primary" type="submit" value="Submit" />
     </div>
-    <p><a href="{% url "django.contrib.auth.views.password_reset" %}">Forgotten password?</a></p>
+    {% if not LDAP_ENABLED %}<p><a href="{% url "django.contrib.auth.views.password_reset" %}">Forgotten password?</a></p>{% endif %}
 </form>
 {% endblock %}
