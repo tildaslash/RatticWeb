@@ -41,13 +41,6 @@ def userdetail(request, uid):
     user = get_object_or_404(User, pk=uid)
     credlogs = CredAudit.objects.filter(user=user, cred__group__in=request.user.groups.all())[:5]
     morelink = reverse('staff.views.audit_by_user', args=(user.id,))
-
-    # Try to update the uders details
-    if settings.LDAP_ENABLED:
-      from django_auth_ldap.backend import LDAPBackend
-      user = LDAPBackend().populate_user(user.username)
-      user = get_object_or_404(User, pk=uid)
-
     return render(request, 'staff_userdetail.html', {'viewuser': user, 'credlogs': credlogs, 'morelink': morelink})
 
 
