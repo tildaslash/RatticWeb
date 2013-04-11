@@ -1,4 +1,5 @@
 from django.contrib.auth.models import Group
+from django.conf import settings
 
 from tastypie.authentication import SessionAuthentication, MultiAuthentication, ApiKeyAuthentication
 from tastypie.resources import ModelResource
@@ -14,12 +15,18 @@ class RatticGroupAuthorization(Authorization):
         return True
 
     def create_list(self, object_list, bundle):
+        if settings.LDAP_ENABLED:
+            raise Unauthorized("Please create groups in your LDAP server")
+
         if bundle.request.user.is_staff:
             return object_list
 
         raise Unauthorized("Only staff may create groups")
 
     def create_detail(self, object_list, bundle):
+        if settings.LDAP_ENABLED:
+            raise Unauthorized("Please create groups in your LDAP server")
+
         if bundle.request.user.is_staff:
             return True
 
