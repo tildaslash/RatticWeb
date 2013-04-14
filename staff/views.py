@@ -6,6 +6,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User, Group
 from django.db.models import Q
+from django.conf import settings
 from models import UserForm, GroupForm, KeepassImportForm
 from cred.models import CredAudit, Cred, Tag
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -39,6 +40,11 @@ def view_trash(request):
 @staff_member_required
 def userdetail(request, uid):
     user = get_object_or_404(User, pk=uid)
+    if settings.LDAP_ENABLED:
+        from django_auth_ldap.backend import LDAPBackend
+        user = LDAPBackend().populate_user(user.username)
+        if user is None:
+            raise Http404
     credlogs = CredAudit.objects.filter(user=user, cred__group__in=request.user.groups.all())[:5]
     morelink = reverse('staff.views.audit_by_user', args=(user.id,))
     return render(request, 'staff_userdetail.html', {'viewuser': user, 'credlogs': credlogs, 'morelink': morelink})
