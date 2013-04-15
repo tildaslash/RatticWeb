@@ -24,18 +24,18 @@ function showpass(){
     if ( typeof showpass.password == 'undefined' ) {
         getCred(credId, function(data){
             showpass.password = data['password'];
+            $('span#password').html(showpass.password);
             showpass()
         }, function(){});
     } else {
-        $('span#password').html(showpass.password);
-        $('span#password').hide().css({visibility: "visible"}).fadeIn("slow");
+        $('span#password').css('text-shadow', '0 0 0px #000000')
         $('a#showpass').css('display', 'none')
         $('a#hidepass').css('display', 'inline-block')
     }
 }
 
 function hidepass(){
-    $('span#password').css('visibility', 'hidden')
+    $('span#password').css('text-shadow', '0 0 10px #000000')
     $('a#showpass').css('display', 'inline-block')
     $('a#hidepass').css('display', 'none')
 }
@@ -78,16 +78,46 @@ function createGroup(name, successcallback, failurecallback) {
 }
 
 function getCred(id, successcallback, failurecallback) {
-    return $.ajax({
-        url: '/api/v1/cred/' + id + '/',
-        type: 'GET',
-        contentType: 'application/json',
-        beforeSend: function(jqXHR, settings) {
-           jqXHR.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
-        },
-        success: successcallback,
-        error: failurecallback,
-    })
+    if ( typeof getCred.cred == 'undefined' ) {
+        getCred.cred = [];
+    }
+    if ( typeof getCred.cred[id] == 'undefined' ) {
+        $.ajax({
+            url: '/api/v1/cred/' + id + '/',
+            type: 'GET',
+            contentType: 'application/json',
+            beforeSend: function(jqXHR, settings) {
+               jqXHR.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+            },
+            success: function(data){
+               getCred.cred[id] = data;
+               successcallback(data);
+            },
+            error: failurecallback,
+        })
+    } else {
+        successcallback(getCred.cred[id])
+    }
+}
+
+function getCredWait(id) {
+    if ( typeof getCred.cred == 'undefined' ) {
+        getCred.cred = [];
+    }
+    if ( typeof getCred.cred[id] == 'undefined' ) {
+        getCred.cred[id] = $.parseJSON($.ajax({
+            url: '/api/v1/cred/' + id + '/',
+            type: 'GET',
+            contentType: 'application/json',
+            beforeSend: function(jqXHR, settings) {
+               jqXHR.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+            },
+            async: false,
+        }).responseText);
+        return getCred.cred[id];
+    } else {
+        return getCred.cred[id]
+    }
 }
 
 function groupCreated(group) {
@@ -107,9 +137,6 @@ function createGroupModal() {
         }
     );
 
-    // Doesnt seem to work
-    //$("button#saveGroupButton").button('loading');
-
     return false;
 }
 
@@ -124,6 +151,34 @@ $(document).ready(function(){
             $("input#groupname").val('');
             $("button#saveGroupbutton").button('reset');
         });
+    }
+
+    if ($("copyclipboard").length = 1){
+        var clip = new ZeroClipboard($("#copyclipboard"));
+
+        clip.on( 'dataRequested', function ( client, args ) {
+            clip.setText(getCredWait(credId)['password']);
+        } );
+
+        $('#password').on('mouseover', function(){
+            getCred(credId, function(data){
+                clip.setText(data['password']);
+                $('button#copyclipboard').css({visibility: "visible"})
+                $('span#password').html(data['password']);
+            }, function(){})
+        });
+
+        $('#password').on('mouseleave', function(){
+            $('button#copyclipboard').css('visibility', 'hidden')
+        });
+
+        clip.on('mouseover', function(){
+            $('button#copyclipboard').css({visibility: "visible"})
+        })
+
+        clip.on('mouseout', function(){
+            $('button#copyclipboard').css({visibility: "hidden"})
+        })
     }
 });
 

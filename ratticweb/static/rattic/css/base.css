@@ -8,6 +8,12 @@ div.copybutton {
 }
 
 span#password {
+  color: transparent;
+  text-shadow: 0 0 10px #000000;
+  transition: text-shadow 0.5s ease-in-out 0s;
+}
+
+button#copyclipboard {
   visibility: hidden;
 }
 
