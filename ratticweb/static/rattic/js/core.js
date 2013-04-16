@@ -168,16 +168,12 @@ $(document).ready(function(){
             }, function(){})
         });
 
-        $('#password').on('mouseleave', function(){
-            $('button#copyclipboard').css('visibility', 'hidden')
+        $('#passtd').on('mouseleave', function(){
+            $('button#copyclipboard').css({visibility: 'hidden'})
         });
 
         clip.on('mouseover', function(){
             $('button#copyclipboard').css({visibility: "visible"})
-        })
-
-        clip.on('mouseout', function(){
-            $('button#copyclipboard').css({visibility: "hidden"})
         })
     }
 });
