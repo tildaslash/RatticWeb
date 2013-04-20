@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
 from django.conf import settings
 from views import profile, newapikey
+from models import LDAPPassChangeForm
 
 urlpatterns = patterns('',
     url(r'^profile/$', profile, {}),
@@ -11,9 +12,9 @@ urlpatterns = patterns('',
 
     url(r'^logout/$', 'django.contrib.auth.views.logout', {
         'next_page': '/'}),
-
 )
 
+# URLs we don't want enabled with LDAP
 if not settings.LDAP_ENABLED:
     urlpatterns += (
         url(r'^reset/$', 'django.contrib.auth.views.password_reset', {
@@ -31,4 +32,13 @@ if not settings.LDAP_ENABLED:
         url(r'^changepass/$', 'django.contrib.auth.views.password_change', {
             'post_change_redirect': '/account/profile/',
             'template_name': 'account_changepass.html'})
+    )
+
+# URLs we do want enabled with LDAP
+if settings.LDAP_ENABLED:
+    urlpatterns += patterns('account.views',
+        url(r'^changepass/$', 'django.contrib.auth.views.password_change', {
+            'post_change_redirect': '/account/profile/',
+            'template_name': 'account_changepass.html',
+            'password_change_form': LDAPPassChangeForm})
     )
