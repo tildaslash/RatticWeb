@@ -36,7 +36,7 @@ if not settings.LDAP_ENABLED:
 
 # URLs we do want enabled with LDAP
 if settings.LDAP_ENABLED:
-    urlpatterns += patterns('account.views',
+    urlpatterns += patterns('',
         url(r'^changepass/$', 'django.contrib.auth.views.password_change', {
             'post_change_redirect': '/account/profile/',
             'template_name': 'account_changepass.html',

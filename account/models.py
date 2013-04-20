@@ -14,30 +14,21 @@ class LDAPPassChangeForm(SetPasswordForm):
 
     def clean_old_password(self):
         from django_auth_ldap.backend import LDAPBackend
-        import ldap
 
         old_password = self.cleaned_data["old_password"]
-        l = LDAPBackend()._get_connection()
-        try:
-            l.simple_bind_s(self.user.ldap_user.dn, old_password)
-        except ldap.INVALID_CREDENTIALS:
-            raise forms.ValidationError(
-                self.error_messages['password_incorrect'])
+        u = LDAPBackend().authenticate(self.user.username, old_password)
+        if u is None:
+            raise forms.ValidationError("Incorrect password")
         return old_password
 
     def save(self):
-        from django_auth_ldap.backend import LDAPBackend
-        import ldap
-
         old_password = self.cleaned_data["old_password"]
         new_password = self.cleaned_data["new_password1"]
-        l = LDAPBackend()._get_connection()
-        try:
-            l.simple_bind_s(self.user.ldap_user.dn, old_password)
-            l.passwd_s(self.dn, old_password.encode('utf-8'), new_password.encode('utf-8'))
-        except ldap.INVALID_CREDENTIALS:
-            raise forms.ValidationError(
-                self.error_messages['password_incorrect'])
+
+        conn = self.user.ldap_user._get_connection()
+        conn.simple_bind_s(self.user.ldap_user.dn, old_password.encode('utf-8'))
+        conn.passwd_s(self.user.ldap_user.dn, old_password.encode('utf-8'), new_password.encode('utf-8'))
+
         return self.user
 
 LDAPPassChangeForm.base_fields.keyOrder = ['old_password', 'new_password1', 'new_password2']
