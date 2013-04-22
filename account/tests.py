@@ -23,7 +23,7 @@ class AccountViewTests(TestCase):
         profile.save()
         self.client.login(username=self.username, password=self.password)
         # View the profile page to create an API key
-        response = self.client.get(reverse('account.views.profile'))
+        self.client.get(reverse('account.views.profile'))
 
     def test_profile_page(self):
         response = self.client.get(reverse('account.views.profile'))
