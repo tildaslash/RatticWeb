@@ -7,6 +7,8 @@ def base_template_reqs(request):
     cntx = {
         'pageurl': request.path,
         'LDAP_ENABLED': settings.LDAP_ENABLED,
+        'ALLOWPWCHANGE': not (settings.LDAP_ENABLED
+            and not settings.AUTH_LDAP_ALLOW_PASSWORD_CHANGE),
     }
 
     if settings.HELP_SYSTEM_FILES:

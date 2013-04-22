@@ -199,6 +199,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 PASSWORD_EXPIRY = timedelta(days=10)
 HELP_SYSTEM_FILES = False
 PUBLIC_HELP_WIKI_BASE = 'https://github.com/tildaslash/RatticWeb/wiki/'
+AUTH_LDAP_ALLOW_PASSWORD_CHANGE = False
 
 try:
     from local_settings import *
