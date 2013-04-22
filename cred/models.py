@@ -6,9 +6,6 @@ from django.forms import ModelForm, SelectMultiple
 
 from tastypie.models import create_api_key
 
-# Every time a user is saved, make sure they have an API key.
-models.signals.post_save.connect(create_api_key, sender=User)
-
 
 class Tag(models.Model):
     name = models.CharField(max_length=64)
