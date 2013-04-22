@@ -22,6 +22,8 @@ class AccountViewTests(TestCase):
         profile.tags_on_sidebar = self.testtags
         profile.save()
         self.client.login(username=self.username, password=self.password)
+        # View the profile page to create an API key
+        response = self.client.get(reverse('account.views.profile'))
 
     def test_profile_page(self):
         response = self.client.get(reverse('account.views.profile'))
