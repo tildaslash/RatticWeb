@@ -15,7 +15,7 @@
 {% endfor %}
 </table>
 <input class="btn btn-primary" type="submit" name="submit" value="Save Changes" />
-<a class="btn" href="{% url "django.contrib.auth.views.password_change" %}">Change password</a>
+<a class="btn" href="{% url "password_change" %}">Change password</a>
 <a class="btn" href="{% url "account.views.newapikey" %}">Reset API Key</a>
 </form>
 {% endblock %}

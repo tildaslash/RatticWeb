@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load url from future %}
+
+{% block content %}
+<h1>LDAP Error</h1>
+<p>Your LDAP server returned the following error:<br />
+<strong>Description:</strong> {{desc}}<br />
+<strong>Further Info:</strong> {{info}}
+</p>
+{% endblock %}

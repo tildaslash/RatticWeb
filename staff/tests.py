@@ -77,6 +77,7 @@ class StaffViewTests(TestCase):
         self.assertIn(self.cred, credlist)
         self.assertNotIn(self.tagcred, credlist)
 
+    @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_userdetail(self):
         resp = self.staff.get(reverse('staff.views.userdetail', args=(self.unobody.id,)))
         self.assertEqual(resp.status_code, 200)
