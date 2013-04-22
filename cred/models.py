@@ -4,8 +4,6 @@ from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from django.forms import ModelForm, SelectMultiple
 
-from tastypie.models import create_api_key
-
 
 class Tag(models.Model):
     name = models.CharField(max_length=64)
