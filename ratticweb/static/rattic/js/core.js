@@ -25,19 +25,19 @@ function showpass(){
         getCred(credId, function(data){
             showpass.password = data['password'];
             $('span#password').html(showpass.password);
-            showpass()
+            showpass();
         }, function(){});
     } else {
-        $('span#password').css('text-shadow', '0 0 0px #000000')
-        $('a#showpass').css('display', 'none')
-        $('a#hidepass').css('display', 'inline-block')
+        $('span#password').removeClass('passhidden');
+        $('a#showpass').css('display', 'none');
+        $('a#hidepass').css('display', 'inline-block');
     }
 }
 
 function hidepass(){
-    $('span#password').css('text-shadow', '0 0 10px #000000')
-    $('a#showpass').css('display', 'inline-block')
-    $('a#hidepass').css('display', 'none')
+    $('span#password').addClass('passhidden');
+    $('a#showpass').css('display', 'inline-block');
+    $('a#hidepass').css('display', 'none');
 }
 
 function togglepassinput(){
