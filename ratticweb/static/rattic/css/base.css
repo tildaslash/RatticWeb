@@ -7,15 +7,26 @@ div.copybutton {
   display: inline;
 }
 
-span#password {
+/* CSS rules to hide/unhide the password */
+.textshadow span#password {
   color: transparent;
   text-shadow: 0 0 0px #000000;
   transition: text-shadow 0.5s ease-in-out 0s;
 }
 
-span#password.passhidden {
+.textshadow span#password.passhidden {
   text-shadow: 0 0 10px #000000;
 }
+
+.no-textshadow span#password {
+  visibility: visible;
+}
+
+.no-textshadow span#password.passhidden {
+  visibility: hidden;
+}
+
+
 
 button#copyclipboard {
   visibility: hidden;
