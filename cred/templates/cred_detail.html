@@ -25,7 +25,15 @@
 <table class="table table-striped table-bordered table-condensed">
 {% if cred.url %}<tr><th>URL</th><td><a href="{{ cred.url }}">{{ cred.url }}</a></td></tr>{% endif %}
 <tr><th>Username</th><td>{{ cred.username }}</td></tr>
-<tr><th>Password <a id="hidepass" onclick="hidepass()" class="btn btn-mini"><i class="icon-eye-close"></i></a> <a id="showpass" onclick="showpass()" class="btn btn-mini"><i class="icon-eye-open"></i></a></th><td id="passtd"><span id="password">XX XX XXX XXX</span><button class="btn btn-mini" id="copyclipboard">Copy</button></td></tr>
+<tr>
+  <th>Password <a id="hidepass" onclick="hidepass()" class="btn btn-mini"><i class="icon-eye-close"></i></a>
+    <a id="showpass" onclick="showpass()" class="btn btn-mini"><i class="icon-eye-open"></i></a>
+  </th>
+  <td id="passtd">
+    <span id="password">XX XX XXX XXX</span>
+    <button class="btn btn-mini" id="copyclipboard">Copy</button>
+  </td>
+</tr>
 <tr><th>Group</th><td><a href="{% url 'cred.views.list_by_group' cred.group.id %}">{{ cred.group.name }}</a></td></tr>
 <tr><th>Tags</th><td>{% for t in cred.tags.all %}<a href="{% url 'cred.views.list_by_tag' t.id %}">{{ t.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</td></tr>
 <tr><th>Last Change</th><td>{{ lastchange }}</td></tr>
