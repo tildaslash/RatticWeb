@@ -7,19 +7,13 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.models import Group
 
+from shortcut import render_credlist
+
 
 @login_required
 def list(request):
     cred_list = Cred.objects.accessable(request.user)
-    paginator = Paginator(cred_list, request.user.profile.items_per_page)
-    page = request.GET.get('page')
-    try:
-        cred = paginator.page(page)
-    except PageNotAnInteger:
-        cred = paginator.page(1)
-    except EmptyPage:
-        cred = paginator.page(paginator.num_pages)
-    return render(request, 'cred_list.html', {'credlist': cred})
+    return render_credlist(request, cred_list)
 
 
 @login_required
