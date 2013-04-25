@@ -219,10 +219,7 @@ class CredViewTests(TestCase):
     def test_list_by_search_normal(self):
         resp = self.norm.get(reverse('cred.views.list_by_search', args=('tag',)))
         self.assertEqual(resp.status_code, 200)
-        taglist = resp.context['tag']
         credlist = resp.context['credlist'].object_list
-        self.assertTrue(self.tag in taglist)
-        self.assertEqual(len(taglist), 1)
         self.assertTrue(self.tagcred in credlist)
         self.assertTrue(self.cred not in credlist)
 
