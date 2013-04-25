@@ -30,7 +30,6 @@ def list_by_group(request, group_id):
     if group not in request.user.groups.all():
         raise Http404
     cred_list = Cred.objects.accessable(request.user).filter(group=group)
-    paginator = Paginator(cred_list, request.user.profile.items_per_page)
     title = 'Passwords for group: %s' % group.name
     return render_credlist(request, cred_list, title)
 
