@@ -20,16 +20,8 @@ def list(request):
 def list_by_tag(request, tag_id):
     tag = get_object_or_404(Tag, pk=tag_id)
     cred_list = Cred.objects.accessable(request.user).filter(tags=tag)
-    paginator = Paginator(cred_list, request.user.profile.items_per_page)
-    page = request.GET.get('page')
-    try:
-        cred = paginator.page(page)
-    except PageNotAnInteger:
-        cred = paginator.page(1)
-    except EmptyPage:
-        cred = paginator.page(paginator.num_pages)
-    title = 'Passwords for tag: ' + tag.name
-    return render(request, 'cred_list.html', {'credlist': cred, 'tag': tag, 'credtitle': title})
+    title = 'Passwords tagged with: %s' % tag.name
+    return render_credlist(request, cred_list, title)
 
 
 @login_required
@@ -39,15 +31,8 @@ def list_by_group(request, group_id):
         raise Http404
     cred_list = Cred.objects.accessable(request.user).filter(group=group)
     paginator = Paginator(cred_list, request.user.profile.items_per_page)
-    page = request.GET.get('page')
-    try:
-        cred = paginator.page(page)
-    except PageNotAnInteger:
-        cred = paginator.page(1)
-    except EmptyPage:
-        cred = paginator.page(paginator.num_pages)
-    title = 'Passwords for group: ' + group.name
-    return render(request, 'cred_list.html', {'credlist': cred, 'group': group, 'credtitle': title})
+    title = 'Passwords for group: %s' % group.name
+    return render_credlist(request, cred_list, title)
 
 
 @login_required
