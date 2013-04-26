@@ -15,7 +15,7 @@ def list(request, cfilter='special', value='all', sort='title', page=1):
 
     # Setup basic stuff
     viewdict = {}
-    viewdict['title'] = 'All passwords'
+    viewdict['credtitle'] = 'All passwords'
     viewdict['filter'] = str(cfilter).lower()
     viewdict['value'] = str(value).lower()
     viewdict['sort'] = str(sort).lower()
@@ -28,16 +28,16 @@ def list(request, cfilter='special', value='all', sort='title', page=1):
     if cfilter == 'tag':
         tag = get_object_or_404(Tag, pk=value)
         cred_list = cred_list.filter(tags=tag)
-        viewdict['title'] = 'Passwords tagged with %s' % tag.name
+        viewdict['credtitle'] = 'Passwords tagged with %s' % tag.name
     elif cfilter == 'group':
         group = get_object_or_404(Group, pk=value)
         if group not in request.user.groups.all():
             raise Http404
         cred_list = cred_list.filter(group=group)
-        viewdict['title'] = 'Passwords in group %s' % group.name
+        viewdict['credtitle'] = 'Passwords in group %s' % group.name
     elif cfilter == 'search':
         cred_list = cred_list.filter(title__icontains=value)
-        viewdict['title'] = 'Passwords for search "%s"' % value
+        viewdict['credtitle'] = 'Passwords for search "%s"' % value
     elif cfilter == 'special' and value == 'all':
         pass
     else:
