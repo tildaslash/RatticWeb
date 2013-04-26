@@ -9,7 +9,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 @login_required
-def list(request, cfilter=None, value=None, sort='title', page=None):
+def list(request, cfilter='special', value='all', sort='title', page=1):
     # Static stuff
     sortables = ('title', 'username')
 
@@ -38,6 +38,10 @@ def list(request, cfilter=None, value=None, sort='title', page=None):
     elif cfilter == 'search':
         cred_list = cred_list.filter(title__icontains=value)
         viewdict['title'] = 'Passwords for search "%s"' % value
+    elif cfilter == 'special' and value == 'all':
+        pass
+    else:
+        raise Http404
 
     # Apply the sorting rules
     if sort in sortables:
