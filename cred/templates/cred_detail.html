@@ -34,8 +34,8 @@
     <button class="btn btn-mini" id="copyclipboard">Copy</button>
   </td>
 </tr>
-<tr><th>Group</th><td><a href="{% url 'cred.views.list_by_group' cred.group.id %}">{{ cred.group.name }}</a></td></tr>
-<tr><th>Tags</th><td>{% for t in cred.tags.all %}<a href="{% url 'cred.views.list_by_tag' t.id %}">{{ t.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</td></tr>
+<tr><th>Group</th><td><a href="{% url 'cred.views.list' 'group' cred.group.id %}">{{ cred.group.name }}</a></td></tr>
+<tr><th>Tags</th><td>{% for t in cred.tags.all %}<a href="{% url 'cred.views.list' 'tag' t.id %}">{{ t.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</td></tr>
 <tr><th>Last Change</th><td>{{ lastchange }}</td></tr>
 </table>
 <strong>Description:</strong>

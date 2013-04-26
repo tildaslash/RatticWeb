@@ -1,11 +1,12 @@
 from django.conf.urls import patterns, url
 
 urlpatterns = patterns('cred.views',
-    # List views
+    # New list views
     url(r'^list/$', 'list'),
-    url(r'^list-by-tag/(?P<tag_id>\d+)/$', 'list_by_tag'),
-    url(r'^list-by-group/(?P<group_id>\d+)/$', 'list_by_group'),
-    url(r'^list-by-search/(?P<search>[\w\.]*)/$', 'list_by_search'),
+    url(r'^list-by-(?P<cfilter>\w+)/(?P<value>\d+)/$', 'list'),
+    url(r'^list-by-(?P<cfilter>\w+)/(?P<value>[\.\w\d]*)/$', 'list'),
+    url(r'^list-by-(?P<cfilter>\w+)/(?P<value>[\.\w\d]*)/sort-by-(?P<sort>\w+)/$', 'list'),
+    url(r'^list-by-(?P<cfilter>\w+)/(?P<value>[\.\w\d]*)/sort-by-(?P<sort>\w+)/page-(?P<page>\d+)/$', 'list'),
 
     # Single cred views
     url(r'^detail/(?P<cred_id>\d+)/$', 'detail'),

@@ -5,45 +5,65 @@ from models import Cred, CredForm, CredAudit, TagForm, Tag, CredChangeQ, CredIco
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from shortcut import render_credlist
 
 
 @login_required
-def list(request):
+def list(request, cfilter=None, value=None, sort='title', page=None):
+    # Static stuff
+    sortables = ('title', 'username')
+
+    # Setup basic stuff
+    viewdict = {}
+    viewdict['title'] = 'All passwords'
+    viewdict['filter'] = str(cfilter).lower()
+    viewdict['value'] = str(value).lower()
+    viewdict['sort'] = str(sort).lower()
+    viewdict['page'] = str(page).lower()
+
+    # Get every cred the user has access to
     cred_list = Cred.objects.accessable(request.user)
-    return render_credlist(request, cred_list)
 
+    # Apply the filters
+    if cfilter == 'tag':
+        tag = get_object_or_404(Tag, pk=value)
+        cred_list = cred_list.filter(tags=tag)
+        viewdict['title'] = 'Passwords tagged with %s' % tag.name
+    elif cfilter == 'group':
+        group = get_object_or_404(Group, pk=value)
+        if group not in request.user.groups.all():
+            raise Http404
+        cred_list = cred_list.filter(group=group)
+        viewdict['title'] = 'Passwords in group %s' % group.name
+    elif cfilter == 'search':
+        cred_list = cred_list.filter(title__icontains=value)
+        viewdict['title'] = 'Passwords for search "%s"' % value
 
-@login_required
-def list_by_tag(request, tag_id):
-    tag = get_object_or_404(Tag, pk=tag_id)
-    cred_list = Cred.objects.accessable(request.user).filter(tags=tag)
-    title = 'Passwords tagged with: %s' % tag.name
-    return render_credlist(request, cred_list, title)
+    # Apply the sorting rules
+    if sort in sortables:
+        cred_list = cred_list.order_by(sort)
+    
+    # Get the page
+    paginator = Paginator(cred_list, request.user.profile.items_per_page)
+    try:
+        cred = paginator.page(page)
+    except PageNotAnInteger:
+        cred = paginator.page(1)
+    except EmptyPage:
+        cred = paginator.page(paginator.num_pages)
 
+    # Get variables to give the template
+    viewdict['credlist'] = cred
 
-@login_required
-def list_by_group(request, group_id):
-    group = get_object_or_404(Group, pk=group_id)
-    if group not in request.user.groups.all():
-        raise Http404
-    cred_list = Cred.objects.accessable(request.user).filter(group=group)
-    title = 'Passwords for group: %s' % group.name
-    return render_credlist(request, cred_list, title)
+    return render(request, 'cred_list.html', viewdict)
 
 
 @login_required
 def tags(request):
     tags = Tag.objects.all()
     return render(request, 'cred_tags.html', {'tags': tags})
-
-
-@login_required
-def list_by_search(request, search):
-    cred_list = Cred.objects.accessable(request.user).filter(title__icontains=search)
-    title = 'Passwords for search: %s' % search
-    return render_credlist(request, cred_list, title)
 
 
 @login_required

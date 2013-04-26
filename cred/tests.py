@@ -178,35 +178,35 @@ class CredViewTests(TestCase):
         self.assertTrue(self.cred not in credlist)
 
     def test_list_by_tag_normal(self):
-        resp = self.norm.get(reverse('cred.views.list_by_tag', args=(self.tag.id,)))
+        resp = self.norm.get(reverse('cred.views.list', args=('tag', self.tag.id)))
         self.assertEqual(resp.status_code, 200)
         credlist = resp.context['credlist'].object_list
         self.assertTrue(self.cred not in credlist)
         self.assertTrue(self.tagcred in credlist)
 
     def test_list_by_tag_staff(self):
-        resp = self.staff.get(reverse('cred.views.list_by_tag', args=(self.tag.id,)))
+        resp = self.staff.get(reverse('cred.views.list', args=('tag', self.tag.id)))
         self.assertEqual(resp.status_code, 200)
         credlist = resp.context['credlist'].object_list
         self.assertTrue(self.cred not in credlist)
         self.assertTrue(self.tagcred not in credlist)
 
     def test_list_by_group_normal(self):
-        resp = self.norm.get(reverse('cred.views.list_by_group', args=(self.group.id,)))
+        resp = self.norm.get(reverse('cred.views.list', args=('group', self.group.id)))
         self.assertEqual(resp.status_code, 200)
         credlist = resp.context['credlist'].object_list
         self.assertTrue(self.cred in credlist)
         self.assertTrue(self.tagcred in credlist)
 
     def test_list_by_group_staff(self):
-        resp = self.staff.get(reverse('cred.views.list_by_group', args=(self.othergroup.id,)))
+        resp = self.staff.get(reverse('cred.views.list', args=('group', self.othergroup.id)))
         self.assertEqual(resp.status_code, 200)
         credlist = resp.context['credlist'].object_list
         self.assertTrue(self.cred not in credlist)
         self.assertTrue(self.tagcred not in credlist)
 
     def test_list_by_group_nobody(self):
-        resp = self.nobody.get(reverse('cred.views.list_by_group', args=(self.othergroup.id,)))
+        resp = self.nobody.get(reverse('cred.views.list', args=('group', self.othergroup.id)))
         self.assertEqual(resp.status_code, 404)
 
     def test_tags_normal(self):
@@ -217,7 +217,7 @@ class CredViewTests(TestCase):
         self.assertEqual(len(taglist), 1)
 
     def test_list_by_search_normal(self):
-        resp = self.norm.get(reverse('cred.views.list_by_search', args=('tag',)))
+        resp = self.norm.get(reverse('cred.views.list', args=('search', 'tag')))
         self.assertEqual(resp.status_code, 200)
         credlist = resp.context['credlist'].object_list
         self.assertTrue(self.tagcred in credlist)
