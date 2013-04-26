@@ -7,8 +7,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from shortcut import render_credlist
-
 
 @login_required
 def list(request, cfilter=None, value=None, sort='title', page=None):
@@ -44,7 +42,7 @@ def list(request, cfilter=None, value=None, sort='title', page=None):
     # Apply the sorting rules
     if sort in sortables:
         cred_list = cred_list.order_by(sort)
-    
+
     # Get the page
     paginator = Paginator(cred_list, request.user.profile.items_per_page)
     try:
