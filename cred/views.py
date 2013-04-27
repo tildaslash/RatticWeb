@@ -41,6 +41,9 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
         viewdict['credtitle'] = 'Passwords for search "%s"' % value
     elif cfilter == 'special' and value == 'all':
         pass
+    elif cfilter == 'special' and value == 'trash':
+        cred_list = Cred.objects.accessable(request.user, deleted=True).filter(is_deleted=True)
+        viewdict['credtitle'] = 'Passwords in the trash'
     else:
         raise Http404
 
@@ -51,6 +54,8 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
     elif sortdir == 'descending' and sort in sortables:
         cred_list = cred_list.order_by('-' + sort)
         viewdict['revsortdir'] = 'ascending'
+    else:
+        raise Http404
 
     # Get the page
     paginator = Paginator(cred_list, request.user.profile.items_per_page)

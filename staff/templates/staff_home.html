@@ -10,7 +10,7 @@
     <a class="btn" href="{% url "staff.views.groupadd" %}">Add Group</a>
   {% endif %}
   <a class="btn" href="{% url "staff.views.import_from_keepass" %}">Import Keepass</a>
-  <a class="btn" href="{% url "staff.views.view_trash" %}">View Trash</a>
+  <a class="btn" href="{% url "cred.views.list" 'special' 'trash' %}">View Trash</a>
   <a class="btn" href="{% url "staff.views.audit_by_days" 7 %}">Audit One Week</a>
 </div>
 

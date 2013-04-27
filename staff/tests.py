@@ -68,15 +68,6 @@ class StaffViewTests(TestCase):
         self.assertIn(self.group, grouplist)
         self.assertIn(self.othergroup, grouplist)
 
-    def test_view_trash(self):
-        self.cred.is_deleted = True
-        self.cred.save()
-        resp = self.staff.get(reverse('staff.views.view_trash'))
-        self.assertEqual(resp.status_code, 200)
-        credlist = resp.context['credlist'].object_list
-        self.assertIn(self.cred, credlist)
-        self.assertNotIn(self.tagcred, credlist)
-
     @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_userdetail(self):
         resp = self.staff.get(reverse('staff.views.userdetail', args=(self.unobody.id,)))
