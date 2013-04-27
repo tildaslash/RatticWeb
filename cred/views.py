@@ -9,9 +9,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 @login_required
-def list(request, cfilter='special', value='all', sort='title', page=1):
+def list(request, cfilter='special', value='all', sortdir='ascending', sort='title', page=1):
     # Static stuff
-    sortables = ('title', 'username')
+    sortables = ('title', 'username', 'group')
 
     # Setup basic stuff
     viewdict = {}
@@ -19,6 +19,7 @@ def list(request, cfilter='special', value='all', sort='title', page=1):
     viewdict['filter'] = str(cfilter).lower()
     viewdict['value'] = str(value).lower()
     viewdict['sort'] = str(sort).lower()
+    viewdict['sortdir'] = str(sortdir).lower()
     viewdict['page'] = str(page).lower()
 
     # Get every cred the user has access to
@@ -44,8 +45,10 @@ def list(request, cfilter='special', value='all', sort='title', page=1):
         raise Http404
 
     # Apply the sorting rules
-    if sort in sortables:
+    if sortdir == 'ascending' and sort in sortables:
         cred_list = cred_list.order_by(sort)
+    elif sortdir == 'descending' and sort in sortables:
+        cred_list = cred_list.order_by('-' + sort)
 
     # Get the page
     paginator = Paginator(cred_list, request.user.profile.items_per_page)

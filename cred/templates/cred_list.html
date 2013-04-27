@@ -25,7 +25,7 @@
 <div class="pagination pagination-centered">
   <ul>
     {% if credlist.has_previous %}
-    <li><a href="{% url "cred.views.list" filter value sort credlist.previous_page_number %}">Prev</a></li>
+    <li><a href="{% url "cred.views.list" filter value sortdir sort credlist.previous_page_number %}">Prev</a></li>
     {% else %}
       <li class="disabled"><a href="#">Prev</a></li>
     {% endif %}
@@ -33,11 +33,11 @@
       {% if credlist.number == p %}
         <li class="active"><a href="#">{{ p }}</a></li>
       {% else %}
-        <li><a href="{% url "cred.views.list" filter value sort p %}">{{ p }}</a></li>
+        <li><a href="{% url "cred.views.list" filter value sortdir sort p %}">{{ p }}</a></li>
       {% endif %}
     {% endfor %}
     {% if credlist.has_next %}
-      <li><a href="{% url "cred.views.list" filter value sort credlist.next_page_number %}">Next</a></li>
+      <li><a href="{% url "cred.views.list" filter value sortdir sort credlist.next_page_number %}">Next</a></li>
     {% else %}
       <li class="disabled"><a href="#">Next</a></li>
     {%endif %}
