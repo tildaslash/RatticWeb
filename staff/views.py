@@ -23,21 +23,6 @@ def home(request):
 
 
 @staff_member_required
-def view_trash(request):
-    cred_list = Cred.objects.accessable(request.user, deleted=True).filter(is_deleted=True)
-    paginator = Paginator(cred_list, request.user.profile.items_per_page)
-    page = request.GET.get('page')
-    try:
-        cred = paginator.page(page)
-    except PageNotAnInteger:
-        cred = paginator.page(1)
-    except EmptyPage:
-        cred = paginator.page(paginator.num_pages)
-    # This template comes from the cred app
-    return render(request, 'cred_list.html', {'credlist': cred, 'credtitle': 'Trashcan'})
-
-
-@staff_member_required
 def userdetail(request, uid):
     user = get_object_or_404(User, pk=uid)
     if settings.LDAP_ENABLED:
@@ -298,7 +283,7 @@ def credundelete(request, cred_id):
         CredAudit(audittype=CredAudit.CREDADD, cred=cred, user=request.user).save()
         cred.is_deleted = False
         cred.save()
-        return HttpResponseRedirect(reverse('staff.views.view_trash'))
+        return HttpResponseRedirect(reverse('cred.views.list', args=('special', 'trash')))
 
     CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
 
