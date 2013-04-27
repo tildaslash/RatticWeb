@@ -47,8 +47,10 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
     # Apply the sorting rules
     if sortdir == 'ascending' and sort in sortables:
         cred_list = cred_list.order_by(sort)
+        viewdict['revsortdir'] = 'descending'
     elif sortdir == 'descending' and sort in sortables:
         cred_list = cred_list.order_by('-' + sort)
+        viewdict['revsortdir'] = 'ascending'
 
     # Get the page
     paginator = Paginator(cred_list, request.user.profile.items_per_page)

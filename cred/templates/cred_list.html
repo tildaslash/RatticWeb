@@ -7,9 +7,27 @@
 <p><a class="btn" href="{% url "cred.views.add" %}">Add New</a></p>
 <table class="table table-striped table-bordered table-condensed">
   <tr>
-    <th>Title</th>
-    <th>User</th>
-    <th>Group</th>
+    <th>
+      {% if sort == 'title' %}
+        <a href="{% url 'cred.views.list' filter value revsortdir 'title' page %}">Title {% if sortdir == 'ascending' %}<i class='icon-chevron-up'></i>{% else %}<i class='icon-chevron-down'></i>{% endif %}</a>
+      {% else %}
+        <a href="{% url 'cred.views.list' filter value sortdir 'title' page %}">Title</a>
+      {% endif %}
+    </th>
+    <th>
+      {% if sort == 'username' %}
+        <a href="{% url 'cred.views.list' filter value revsortdir 'username' page %}">User {% if sortdir == 'ascending' %}<i class='icon-chevron-up'></i>{% else %}<i class='icon-chevron-down'></i>{% endif %}</a>
+      {% else %}
+        <a href="{% url 'cred.views.list' filter value sortdir 'username' page %}">User</a>
+      {% endif %}
+    </th>
+    <th>
+      {% if sort == 'group' %}
+        <a href="{% url 'cred.views.list' filter value revsortdir 'group' page %}">Group {% if sortdir == 'ascending' %}<i class='icon-chevron-up'></i>{% else %}<i class='icon-chevron-down'></i>{% endif %}</a>
+      {% else %}
+        <a href="{% url 'cred.views.list' filter value sortdir 'group' page %}">Group</a>
+      {% endif %}
+    </th>
     <th>Tags</th>
   </tr>
     {% for c in credlist %}
