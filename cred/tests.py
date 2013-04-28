@@ -192,6 +192,13 @@ class CredViewTests(TestCase):
         credlist = resp.context['credlist'].object_list
         self.assertTrue(self.cred in credlist)
 
+    def test_list_changeq_normal(self):
+        self.cred.delete()
+        resp = self.norm.get(reverse('cred.views.list', args=('special', 'changeq')))
+        self.assertEqual(resp.status_code, 200)
+        credlist = resp.context['credlist'].object_list
+        self.assertTrue(self.cred not in credlist)
+
     def test_list_by_tag_normal(self):
         resp = self.norm.get(reverse('cred.views.list', args=('tag', self.tag.id)))
         self.assertEqual(resp.status_code, 200)
