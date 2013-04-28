@@ -177,6 +177,21 @@ class CredViewTests(TestCase):
         credlist = resp.context['credlist'].object_list
         self.assertTrue(self.cred not in credlist)
 
+    def test_list_trash_normal(self):
+        self.cred.delete()
+        resp = self.norm.get(reverse('cred.views.list', args=('special', 'trash')))
+        self.assertEqual(resp.status_code, 200)
+        credlist = resp.context['credlist'].object_list
+        self.assertTrue(self.cred not in credlist)
+
+    def test_list_trash_staff(self):
+        self.cred.delete()
+        self.ustaff.groups.add(self.group)
+        resp = self.staff.get(reverse('cred.views.list', args=('special', 'trash')))
+        self.assertEqual(resp.status_code, 200)
+        credlist = resp.context['credlist'].object_list
+        self.assertTrue(self.cred in credlist)
+
     def test_list_by_tag_normal(self):
         resp = self.norm.get(reverse('cred.views.list', args=('tag', self.tag.id)))
         self.assertEqual(resp.status_code, 200)
