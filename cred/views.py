@@ -44,6 +44,10 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
     elif cfilter == 'special' and value == 'trash':
         cred_list = Cred.objects.accessable(request.user, deleted=True).filter(is_deleted=True)
         viewdict['credtitle'] = 'Passwords in the trash'
+    elif cfilter == 'special' and value == 'changeq':
+        q = Cred.objects.filter(credchangeq__in=CredChangeQ.objects.all())
+        cred_list = cred_list.filter(id__in=q)
+        viewdict['credtitle'] = 'Passwords on the Change Queue'
     else:
         raise Http404
 
@@ -222,12 +226,6 @@ def tagdelete(request, tag_id):
 
 
 @login_required
-def viewqueue(request):
-    queue = CredChangeQ.objects.for_user(request.user)
-    return render(request, 'cred_queue.html', {'queue': queue})
-
-
-@login_required
 def addtoqueue(request, cred_id):
     cred = get_object_or_404(Cred, pk=cred_id)
     # Check user has perms
@@ -235,7 +233,7 @@ def addtoqueue(request, cred_id):
         raise Http404
     CredChangeQ.objects.add_to_changeq(cred)
     CredAudit(audittype=CredAudit.CREDSCHEDCHANGE, cred=cred, user=request.user).save()
-    return HttpResponseRedirect(reverse('cred.views.viewqueue'))
+    return HttpResponseRedirect(reverse('cred.views.list', args=('special', 'changeq')))
 
 
 @login_required
@@ -246,4 +244,4 @@ def bulkaddtoqueue(request):
             CredAudit(audittype=CredAudit.CREDSCHEDCHANGE, cred=c, user=request.user).save()
             CredChangeQ.objects.add_to_changeq(c)
 
-    return HttpResponseRedirect(reverse('cred.views.viewqueue'))
+    return HttpResponseRedirect(reverse('cred.views.list', args=('special', 'changeq')))

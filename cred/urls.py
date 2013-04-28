@@ -20,9 +20,6 @@ urlpatterns = patterns('cred.views',
     url(r'^tagedit/(?P<tag_id>\d+)/$', 'tagedit'),
     url(r'^tagdelete/(?P<tag_id>\d+)/$', 'tagdelete'),
 
-    # Should be up with the list views, but currently isn't
-    url(r'^viewqueue/$', 'viewqueue'),
-
     # Adding to the change queue
     url(r'^addtoqueue/(?P<cred_id>\d+)/$', 'addtoqueue'),
     url(r'^bulkaddtoqueue/$', 'bulkaddtoqueue'),

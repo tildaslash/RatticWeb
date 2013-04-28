@@ -342,15 +342,15 @@ class CredViewTests(TestCase):
             Tag.objects.get(id=self.tag.id)
 
     def test_viewqueue_normal(self):
-        resp = self.norm.get(reverse('cred.views.viewqueue'))
+        resp = self.norm.get(reverse('cred.views.list', args=('special', 'changeq')))
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(len(resp.context['queue']), 1)
-        self.assertEqual(resp.context['queue'][0].cred.id, self.cred.id)
+        self.assertEqual(len(resp.context['credlist']), 1)
+        self.assertEqual(resp.context['credlist'][0].id, self.cred.id)
 
     def test_viewqueue_nobody(self):
-        resp = self.nobody.get(reverse('cred.views.viewqueue'))
+        resp = self.nobody.get(reverse('cred.views.list', args=('special', 'changeq')))
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(len(resp.context['queue']), 0)
+        self.assertEqual(len(resp.context['credlist']), 0)
 
     def test_addtoqueuestaff(self):
         resp = self.staff.get(reverse('cred.views.addtoqueue',
