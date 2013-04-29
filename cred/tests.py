@@ -135,6 +135,7 @@ class CredViewTests(TestCase):
 
         self.unorm = User(username='norm', email='norm@example.com')
         self.unorm.set_password('password')
+        self.normpass = 'password'
         self.unorm.save()
         self.unorm.groups.add(self.group)
         self.unorm.save()
@@ -379,5 +380,23 @@ class CredViewTests(TestCase):
             args=(self.tagcred.id,)), follow=True)
         self.assertEqual(resp.status_code, 200)
         self.assertTrue(self.tagcred.on_changeq())
+
+    def test_deeplink_login_redirect(self):
+        testuser = Client()
+        loginurl = reverse('django.contrib.auth.views.login')
+        credurl = reverse('cred.views.detail', args=(self.cred.id,))
+        nexturl = loginurl + '?next=' + credurl
+        resp = testuser.get(credurl, follow=True)
+        self.assertRedirects(resp, nexturl, status_code=302, target_status_code=200)
+        self.assertEqual(resp.context['next'], credurl)
+
+    def test_deeplink_post_login_redirect(self):
+        testuser = Client()
+        loginurl = reverse('django.contrib.auth.views.login')
+        credurl = reverse('cred.views.detail', args=(self.cred.id,))
+        fullurl = loginurl + '?next=' + credurl
+        resp = testuser.post(fullurl, {'username': self.unorm.username, 'password': self.normpass}, follow=True)
+        self.assertRedirects(resp, credurl, status_code=302, target_status_code=200)
+
 
 CredViewTests = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(CredViewTests)
