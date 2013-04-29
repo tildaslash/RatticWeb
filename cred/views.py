@@ -30,24 +30,30 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
         tag = get_object_or_404(Tag, pk=value)
         cred_list = cred_list.filter(tags=tag)
         viewdict['credtitle'] = 'Passwords tagged with %s' % tag.name
+
     elif cfilter == 'group':
         group = get_object_or_404(Group, pk=value)
         if group not in request.user.groups.all():
             raise Http404
         cred_list = cred_list.filter(group=group)
         viewdict['credtitle'] = 'Passwords in group %s' % group.name
+
     elif cfilter == 'search':
         cred_list = cred_list.filter(title__icontains=value)
         viewdict['credtitle'] = 'Passwords for search "%s"' % value
+
     elif cfilter == 'special' and value == 'all':
         pass
+
     elif cfilter == 'special' and value == 'trash':
         cred_list = Cred.objects.accessable(request.user, deleted=True).filter(is_deleted=True)
         viewdict['credtitle'] = 'Passwords in the trash'
+
     elif cfilter == 'special' and value == 'changeq':
         q = Cred.objects.filter(credchangeq__in=CredChangeQ.objects.all())
         cred_list = cred_list.filter(id__in=q)
         viewdict['credtitle'] = 'Passwords on the Change Queue'
+
     else:
         raise Http404
 
