@@ -5,7 +5,6 @@ from django.views.generic.edit import UpdateView, FormView
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User, Group
-from django.db.models import Q
 from django.conf import settings
 from models import UserForm, GroupForm, KeepassImportForm
 from cred.models import CredAudit, Cred, Tag
@@ -155,27 +154,7 @@ def change_advice_by_user_and_group(request, user_id, group_id):
     else:
         groups = Group.objects.all()
 
-    logs = CredAudit.objects.filter(
-        # Get a list of changes done
-        Q(cred__group__in=groups, audittype=CredAudit.CREDCHANGE) |
-        # Combined with a list of view from this user
-        Q(cred__group__in=groups, audittype__in=[CredAudit.CREDVIEW,
-            CredAudit.CREDPASSVIEW], user=user)
-    ).order_by('time', 'id')
-
-    # Go through each entry in time order
-    tochange = []
-    for l in logs:
-        # If this user viewed the password then change it
-        if l.audittype == CredAudit.CREDVIEW or l.audittype == CredAudit.CREDPASSVIEW:
-            tochange.append(l.cred.id)
-        # If there was a change done not by this user, dont change it
-        if l.audittype == CredAudit.CREDCHANGE and l.user != user:
-            if l.cred.id in tochange:
-                tochange.remove(l.cred.id)
-
-    # Fetch the list of credentials to change from the DB for the view
-    creds = Cred.objects.filter(id__in=tochange)
+    creds = Cred.objects.change_advice(user, groups)
 
     return render(request, 'staff_changeadvice.html', {'creds': creds,
         'viewuser': user})

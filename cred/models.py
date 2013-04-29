@@ -47,6 +47,29 @@ class SearchManager(models.Manager):
 
         return qs
 
+    def change_advice(self, user, grouplist=[]):
+        logs = CredAudit.objects.filter(
+            # Get a list of changes done
+            Q(cred__group__in=grouplist, audittype=CredAudit.CREDCHANGE) |
+            # Combined with a list of view from this user
+            Q(cred__group__in=grouplist, audittype__in=[CredAudit.CREDVIEW,
+                CredAudit.CREDPASSVIEW], user=user)
+        ).order_by('time', 'id')
+
+        # Go through each entry in time order
+        tochange = []
+        for l in logs:
+            # If this user viewed the password then change it
+            if l.audittype == CredAudit.CREDVIEW or l.audittype == CredAudit.CREDPASSVIEW:
+                tochange.append(l.cred.id)
+            # If there was a change done not by this user, dont change it
+            if l.audittype == CredAudit.CREDCHANGE and l.user != user:
+                if l.cred.id in tochange:
+                    tochange.remove(l.cred.id)
+
+        # Fetch the list of credentials to change from the DB for the view
+        return Cred.objects.filter(id__in=tochange)
+
 
 class Cred(models.Model):
     METADATA = ('description', 'group', 'tags', 'icon')
