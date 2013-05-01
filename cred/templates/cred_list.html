@@ -14,11 +14,14 @@
         {% if buttons.delete %}
           <a class="btn" href="#">Delete</a>
         {% endif %}
+        {% if buttons.changeq %}
+          <a class="btn" href="#">Add to Change Queue</a>
+        {% endif %}
       </td>
     </tr>
     <tr>
       <th>
-        <input onclick="copycheckbox('all', 'credcheck')" type="checkbox" checked="true" name="all" value="" />
+        <input onclick="copycheckbox('all', 'credcheck')" type="checkbox" name="all" value="" />
       </th>
       <th>
         {% if sort == 'title' %}
@@ -53,8 +56,8 @@
       <td><a href="{% url "cred.views.list" "group" c.group.id %}">{{ c.group.name }}</a></td>
       <td>{% for t in c.tags.all %}{% if not forloop.first %}, {% endif %}<a href="{% url "cred.views.list" "tag" t.id %}">{{ t.name }}</a>{% endfor %}</td>
     </tr>
+    {% endfor %}
   </tbody>
-{% endfor %}
 </table>
 
 <div class="pagination pagination-centered">
