@@ -19,7 +19,6 @@ Requirements:
 * <a href="http://tastypieapi.org/">Django Tastypie 0.9.12</a>
 * <a href="https://www.dlitz.net/software/pycrypto/">PyCrypto</a>
 * <a href="https://pypi.python.org/pypi/Markdown">Python Markdown</a>
-* <a href="https://pypi.python.org/pypi/selenium">Python Selenium</a>
 
 Support and Known Issues:
 * Through <a href="http://twitter.com/RatticDB">twitter</a> or <a href="https://github.com/tildaslash/RatticWeb/issues?state=open">Github Issues</a>
