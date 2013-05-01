@@ -3,8 +3,7 @@ from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.test.utils import override_settings
 
-from ratticweb.util import SouthTransactionTestCaseMixin
-from models import Cred, Tag, CredChangeQ, CredIcon
+from models import Cred, Tag, CredChangeQ
 
 from selenium.webdriver.firefox.webdriver import WebDriver
 
