@@ -140,6 +140,11 @@ function createGroupModal() {
     return false;
 }
 
+function submitCredForm(action) {
+    $('#credchecksubmitform')[0].action = action;
+    $('#credchecksubmitform')[0].submit();
+}
+
 $(document).ready(function(){
 
     $(".chzn-select").chosen();

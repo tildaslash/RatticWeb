@@ -53,6 +53,7 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
         cred_list = Cred.objects.accessable(request.user, deleted=True).filter(is_deleted=True)
         viewdict['credtitle'] = 'Passwords in the trash'
         viewdict['buttons']['add'] = False
+        viewdict['buttons']['delete'] = True
 
     elif cfilter == 'special' and value == 'changeq':
         q = Cred.objects.filter(credchangeq__in=CredChangeQ.objects.all())
@@ -249,10 +250,22 @@ def addtoqueue(request, cred_id):
 
 
 @login_required
+def bulkdelete(request):
+    todel = Cred.objects.filter(id__in=request.POST.getlist('credcheck'))
+    print todel
+    for c in todel:
+        if c.is_accessable_by(request.user):
+            CredAudit(audittype=CredAudit.CREDDELETE, cred=c, user=request.user).save()
+            c.delete()
+
+    return HttpResponseRedirect(reverse('cred.views.list'))
+
+
+@login_required
 def bulkaddtoqueue(request):
     tochange = Cred.objects.filter(id__in=request.POST.getlist('tochange'))
     for c in tochange:
-        if not c.is_accessable_by(request.user):
+        if c.is_accessable_by(request.user):
             CredAudit(audittype=CredAudit.CREDSCHEDCHANGE, cred=c, user=request.user).save()
             CredChangeQ.objects.add_to_changeq(c)
 

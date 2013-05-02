@@ -23,4 +23,5 @@ urlpatterns = patterns('cred.views',
     # Adding to the change queue
     url(r'^addtoqueue/(?P<cred_id>\d+)/$', 'addtoqueue'),
     url(r'^bulkaddtoqueue/$', 'bulkaddtoqueue'),
+    url(r'^bulkdelete/$', 'bulkdelete'),
 )
