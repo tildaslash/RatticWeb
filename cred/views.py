@@ -262,7 +262,8 @@ def bulkdelete(request):
             CredAudit(audittype=CredAudit.CREDDELETE, cred=c, user=request.user).save()
             c.delete()
 
-    return HttpResponseRedirect(reverse('cred.views.list'))
+    redirect = request.POST.get('next', reverse('cred.views.list'))
+    return HttpResponseRedirect(redirect)
 
 
 @login_required
@@ -274,7 +275,8 @@ def bulkundelete(request):
             c.is_deleted = False
             c.save()
 
-    return HttpResponseRedirect(reverse('cred.views.list'))
+    redirect = request.POST.get('next', reverse('cred.views.list'))
+    return HttpResponseRedirect(redirect)
 
 
 @login_required
@@ -285,4 +287,5 @@ def bulkaddtoqueue(request):
             CredAudit(audittype=CredAudit.CREDSCHEDCHANGE, cred=c, user=request.user).save()
             CredChangeQ.objects.add_to_changeq(c)
 
-    return HttpResponseRedirect(reverse('cred.views.list', args=('special', 'changeq')))
+    redirect = request.POST.get('next', reverse('cred.views.list'))
+    return HttpResponseRedirect(redirect)
