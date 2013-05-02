@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from models import Cred, Tag, CredChangeQ
+from models import Cred, Tag, CredChangeQ, CredAudit
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.test.utils import override_settings
@@ -166,6 +166,18 @@ class CredViewTests(TestCase):
 
         CredChangeQ.objects.add_to_changeq(self.cred)
 
+        self.viewedcred = Cred(title='Viewed', password='s3cr3t', group=self.group)
+        self.viewedcred.save()
+        self.changedcred = Cred(title='Changed', password='t4gg3d', group=self.group)
+        self.changedcred.save()
+
+        CredAudit(audittype=CredAudit.CREDADD, cred=self.viewedcred, user=self.unorm).save()
+        CredAudit(audittype=CredAudit.CREDADD, cred=self.changedcred, user=self.unorm).save()
+        CredAudit(audittype=CredAudit.CREDVIEW, cred=self.viewedcred, user=self.unorm).save()
+        CredAudit(audittype=CredAudit.CREDVIEW, cred=self.changedcred, user=self.unorm).save()
+        CredAudit(audittype=CredAudit.CREDCHANGE, cred=self.changedcred, user=self.ustaff).save()
+
+
     def test_list_normal(self):
         resp = self.norm.get(reverse('cred.views.list'))
         self.assertEqual(resp.status_code, 200)
@@ -231,6 +243,20 @@ class CredViewTests(TestCase):
     def test_list_by_group_nobody(self):
         resp = self.nobody.get(reverse('cred.views.list', args=('group', self.othergroup.id)))
         self.assertEqual(resp.status_code, 404)
+
+    def test_list_by_changeadvice_disable_user(self):
+        resp = self.staff.get(reverse('cred.views.list', args=('changeadvice', self.unorm.id)))
+        self.assertEqual(resp.status_code, 200)
+        credlist = resp.context['credlist'].object_list
+        self.assertIn(self.viewedcred, credlist)
+        self.assertNotIn(self.changedcred, credlist)
+
+    def test_list_by_changeadvice_remove_group(self):
+        resp = self.staff.get(reverse('cred.views.list', args=('changeadvice', self.unorm.id)) + '?group=%s' % self.group.id)
+        self.assertEqual(resp.status_code, 200)
+        credlist = resp.context['credlist'].object_list
+        self.assertIn(self.viewedcred, credlist)
+        self.assertNotIn(self.changedcred, credlist)
 
     def test_tags_normal(self):
         resp = self.norm.get(reverse('cred.views.tags'))

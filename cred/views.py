@@ -1,12 +1,14 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from models import Cred, CredForm, CredAudit, TagForm, Tag, CredChangeQ, CredIcon
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from models import Cred, CredForm, CredAudit, TagForm, Tag, CredChangeQ, CredIcon
+
+from django.contrib.auth.models import User, Group
 
 @login_required
 def list(request, cfilter='special', value='all', sortdir='ascending', sort='title', page=1):
@@ -47,6 +49,23 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
     elif cfilter == 'search':
         cred_list = cred_list.filter(title__icontains=value)
         viewdict['credtitle'] = 'Passwords for search "%s"' % value
+
+    elif cfilter == 'changeadvice':
+        if not request.user.is_staff:
+            raise Http404
+        user = get_object_or_404(User, pk=value)
+        get_groups = request.GET.getlist('group')
+
+        if len(get_groups) > 0:
+            groups = Group.objects.filter(id__in=get_groups)
+        else:
+            groups = Group.objects.all()
+
+        cred_list = Cred.objects.change_advice(user, groups)
+        viewdict['credtitle'] = 'Changes required for "%s"' % user.username
+        viewdict['buttons']['add'] = False
+        viewdict['buttons']['delete'] = True
+        viewdict['buttons']['changeq'] = True
 
     elif cfilter == 'special' and value == 'all':
         pass

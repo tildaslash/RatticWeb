@@ -140,31 +140,6 @@ def audit_by_days(request, days_ago):
     return render(request, 'staff_audit.html', {'logs': logs, 'type': 'time', 'days_ago': days_ago})
 
 
-@staff_member_required
-def change_advice_by_user_and_group(request, user_id, group_id):
-    user = get_object_or_404(User, pk=user_id)
-    get_groups = request.GET.getlist('group')
-
-    # If we were given a group, use that, otherwise use all the users groups
-    if group_id is not None:
-        group = get_object_or_404(Group, pk=group_id)
-        groups = (group,)
-    elif len(get_groups) > 0:
-        groups = Group.objects.filter(id__in=get_groups)
-    else:
-        groups = Group.objects.all()
-
-    creds = Cred.objects.change_advice(user, groups)
-
-    return render(request, 'staff_changeadvice.html', {'creds': creds,
-        'viewuser': user})
-
-
-@staff_member_required
-def change_advice_by_user(request, user_id):
-    return change_advice_by_user_and_group(request, user_id, None)
-
-
 class NewUser(FormView):
     form_class = UserForm
     template_name = 'staff_useredit.html'
@@ -209,11 +184,11 @@ class UpdateUser(UpdateView):
 
             # The user may have just added groups
             if len(missing_groups) > 0:
-                self.success_url = reverse('staff.views.change_advice_by_user',
-                    args=(form.instance.id,)) + '?' + '&'.join(missing_groups)
+                self.success_url = reverse('cred.views.list',
+                        args=('changeadvice', form.instance.id)) + '?' + '&'.join(missing_groups)
         # If user is becoming inactive we want to redirect to change advice
         if 'is_active' in form.changed_data and not form.instance.is_active:
-            self.success_url = reverse('staff.views.change_advice_by_user', args=(form.instance.id,))
+            self.success_url = reverse('cred.views.list', args=('changeadvice', form.instance.id))
         return super(UpdateUser, self).form_valid(form)
 
 
