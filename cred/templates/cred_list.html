@@ -15,8 +15,11 @@
         {% if buttons.delete %}
           <a class="btn" href="#" onclick="submitCredForm('{% url "cred.views.bulkdelete" %}')">Delete</a>
         {% endif %}
+        {% if buttons.undelete %}
+          <a class="btn" href="#" onclick="submitCredForm('{% url "cred.views.bulkundelete" %}')">Undelete</a>
+        {% endif %}
         {% if buttons.changeq %}
-          <a class="btn" href="#">Add to Change Queue</a>
+          <a class="btn" href="#" onclick="submitCredForm('{% url "cred.views.bulkaddtoqueue" %}')">Add to Change Queue</a>
         {% endif %}
       </td>
     </tr>

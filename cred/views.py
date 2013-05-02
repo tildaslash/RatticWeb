@@ -25,6 +25,7 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
     # Default buttons
     viewdict['buttons'] = {}
     viewdict['buttons']['add'] = True
+    viewdict['buttons']['delete'] = True
 
     # Get every cred the user has access to
     cred_list = Cred.objects.accessable(request.user)
@@ -54,6 +55,7 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
         viewdict['credtitle'] = 'Passwords in the trash'
         viewdict['buttons']['add'] = False
         viewdict['buttons']['delete'] = True
+        viewdict['buttons']['undelete'] = True
 
     elif cfilter == 'special' and value == 'changeq':
         q = Cred.objects.filter(credchangeq__in=CredChangeQ.objects.all())
@@ -256,6 +258,18 @@ def bulkdelete(request):
         if c.is_accessable_by(request.user):
             CredAudit(audittype=CredAudit.CREDDELETE, cred=c, user=request.user).save()
             c.delete()
+
+    return HttpResponseRedirect(reverse('cred.views.list'))
+
+
+@login_required
+def bulkundelete(request):
+    toundel = Cred.objects.filter(id__in=request.POST.getlist('credcheck'))
+    for c in toundel:
+        if c.is_accessable_by(request.user):
+            CredAudit(audittype=CredAudit.CREDADD, cred=c, user=request.user).save()
+            c.is_deleted = False
+            c.save()
 
     return HttpResponseRedirect(reverse('cred.views.list'))
 
