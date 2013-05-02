@@ -252,7 +252,6 @@ def addtoqueue(request, cred_id):
 @login_required
 def bulkdelete(request):
     todel = Cred.objects.filter(id__in=request.POST.getlist('credcheck'))
-    print todel
     for c in todel:
         if c.is_accessable_by(request.user):
             CredAudit(audittype=CredAudit.CREDDELETE, cred=c, user=request.user).save()
@@ -263,7 +262,7 @@ def bulkdelete(request):
 
 @login_required
 def bulkaddtoqueue(request):
-    tochange = Cred.objects.filter(id__in=request.POST.getlist('tochange'))
+    tochange = Cred.objects.filter(id__in=request.POST.getlist('credcheck'))
     for c in tochange:
         if c.is_accessable_by(request.user):
             CredAudit(audittype=CredAudit.CREDSCHEDCHANGE, cred=c, user=request.user).save()

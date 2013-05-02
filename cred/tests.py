@@ -381,6 +381,22 @@ class CredViewTests(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTrue(self.tagcred.on_changeq())
 
+    def test_bulkdelete_staff(self):
+        resp = self.staff.post(reverse('cred.views.bulkdelete'), {'credcheck': self.cred.id}, follow=True)
+        self.assertEqual(resp.status_code, 200)
+        delcred = Cred.objects.get(id=self.cred.id)
+        self.assertTrue(delcred.is_deleted)
+
+        resp = self.staff.post(reverse('cred.views.bulkdelete'), {'credcheck': self.cred.id}, follow=True)
+        self.assertEqual(resp.status_code, 200)
+        with self.assertRaises(Cred.DoesNotExist):
+            Cred.objects.get(id=self.cred.id)
+
+    def test_bulkaddtochangeq_staff(self):
+        resp = self.staff.post(reverse('cred.views.bulkaddtoqueue'), {'credcheck': self.tagcred.id}, follow=True)
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(self.tagcred.on_changeq())
+
     def test_deeplink_login_redirect(self):
         testuser = Client()
         loginurl = reverse('django.contrib.auth.views.login')
