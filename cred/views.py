@@ -26,6 +26,7 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
     viewdict['buttons'] = {}
     viewdict['buttons']['add'] = True
     viewdict['buttons']['delete'] = True
+    viewdict['buttons']['changeq'] = True
 
     # Get every cred the user has access to
     cred_list = Cred.objects.accessable(request.user)
@@ -54,14 +55,16 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
         cred_list = Cred.objects.accessable(request.user, deleted=True).filter(is_deleted=True)
         viewdict['credtitle'] = 'Passwords in the trash'
         viewdict['buttons']['add'] = False
-        viewdict['buttons']['delete'] = True
         viewdict['buttons']['undelete'] = True
+        viewdict['buttons']['changeq'] = False
 
     elif cfilter == 'special' and value == 'changeq':
         q = Cred.objects.filter(credchangeq__in=CredChangeQ.objects.all())
         cred_list = cred_list.filter(id__in=q)
         viewdict['credtitle'] = 'Passwords on the Change Queue'
         viewdict['buttons']['add'] = False
+        viewdict['buttons']['delete'] = False
+        viewdict['buttons']['changeq'] = False
 
     else:
         raise Http404
