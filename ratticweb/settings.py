@@ -124,7 +124,6 @@ MIDDLEWARE_CLASSES = (
     'account.middleware.StrictAuthentication',
     'account.middleware.PasswordExpirer',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.transaction.TransactionMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
