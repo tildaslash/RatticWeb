@@ -9,8 +9,8 @@ from cred.models import Cred, Tag, CredAudit
 
 class CredAuthorization(Authorization):
     def read_list(self, object_list, bundle):
-        # This assumes a ``QuerySet`` from ``ModelResource``.
-        return object_list
+        # List views remove the deletes and historical credentials
+        return object_list.filter(is_deleted=False, latest=None)
 
     def read_detail(self, object_list, bundle):
         # This audit should go somewhere else, is there a detail list function we can override?
@@ -40,7 +40,7 @@ class CredAuthorization(Authorization):
 
 class CredResource(ModelResource):
     def get_object_list(self, request):
-        return super(CredResource, self).get_object_list(request).filter(group__in=request.user.groups.all())
+        return Cred.objects.accessable(request.user, historical=True, deleted=True)
 
     def dehydrate(self, bundle):
         bundle.data['username'] = bundle.obj.username
