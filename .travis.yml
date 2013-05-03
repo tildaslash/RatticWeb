@@ -4,10 +4,8 @@ python:
   - "2.7"
 services: mysql
 env:
-  - DJANGO=1.4.5 DB=sqllite
-  - DJANGO=1.4.5 DB=mysql
-  - DJANGO=1.5 DB=sqllite
-  - DJANGO=1.5 DB=mysql
+  - DJANGO=1.4.5
+  - DJANGO=1.5
 install:
   - pip install -q mysql-python --use-mirrors
   - pip install -q Django==$DJANGO --use-mirrors
@@ -20,10 +18,11 @@ install:
 before_script:
   - "./pyflakes.sh"
   - "pep8 --exclude=migrations,lib --ignore=E501,E225,E128,E124 ."
-  - sh -c "if [ '$DB' = 'mysql' ]; then mysql -e 'create database IF NOT EXISTS rattic;'; fi"
-  - sh -c "if [ '$DB' = 'mysql' ]; then cp docs/travis/local_settings_mysql.py ratticweb/local_settings.py; fi"
-  - sh -c "if [ '$DB' = 'mysql' ]; then python manage.py syncdb --noinput; fi"
-  - sh -c "if [ '$DB' = 'mysql' ]; then python manage.py migrate; fi"
+  - mysql -e 'create database IF NOT EXISTS rattic;'
 script:
+  - python manage.py test
+  - cp docs/travis/local_settings_mysql.py ratticweb/local_settings.py
+  - python manage.py syncdb --noinput
+  - python manage.py migrate
   - python manage.py test
 
