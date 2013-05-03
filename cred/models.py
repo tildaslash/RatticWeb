@@ -108,6 +108,9 @@ class Cred(models.Model):
     def on_changeq(self):
         return CredChangeQ.objects.filter(cred=self).exists()
 
+    def is_latest(self):
+        return self.latest is None
+
     def is_accessable_by(self, user):
         # Staff can see anything
         if user.is_staff:
