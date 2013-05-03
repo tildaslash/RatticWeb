@@ -56,6 +56,9 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
         cred_list = Cred.objects.accessable(request.user,
                 historical=True).filter(Q(latest=value) | Q(id=value))
         viewdict['credtitle'] = 'Versions of: "%s"' % cred.title
+        viewdict['buttons']['add'] = False
+        viewdict['buttons']['delete'] = False
+        viewdict['buttons']['changeq'] = False
 
     elif cfilter == 'changeadvice':
         if not request.user.is_staff:
