@@ -26,9 +26,12 @@ def userdetail(request, uid):
     user = get_object_or_404(User, pk=uid)
     if settings.LDAP_ENABLED:
         from django_auth_ldap.backend import LDAPBackend
-        user = LDAPBackend().populate_user(user.username)
-        if user is None:
-            raise Http404
+        popuser = LDAPBackend().populate_user(user.username)
+        if popuser is None:
+            user.is_active = False
+            user.save()
+            return HttpResponseRedirect(reverse('cred.views.list',
+                args=('changeadvice', user.id)))
     credlogs = CredAudit.objects.filter(user=user, cred__group__in=request.user.groups.all())[:5]
     morelink = reverse('staff.views.audit_by_user', args=(user.id,))
     return render(request, 'staff_userdetail.html', {'viewuser': user, 'credlogs': credlogs, 'morelink': morelink})
