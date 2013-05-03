@@ -129,14 +129,6 @@ def detail(request, cred_id):
 
     CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
 
-    try:
-        lastchange = CredAudit.objects.filter(
-            cred=cred,
-            audittype__in=[CredAudit.CREDCHANGE, CredAudit.CREDADD],
-        ).latest().time
-    except CredAudit.DoesNotExist:
-        lastchange = "Unknown (Logs deleted)"
-
     if request.user.is_staff:
         credlogs = cred.logs.all()[:5]
         morelink = reverse('staff.views.audit_by_cred', args=(cred.id,))
@@ -147,7 +139,6 @@ def detail(request, cred_id):
     return render(request, 'cred_detail.html', {
         'cred': cred,
         'credlogs': credlogs,
-        'lastchange': lastchange,
         'morelink': morelink
     })
 
