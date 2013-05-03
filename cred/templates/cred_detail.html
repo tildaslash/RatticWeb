@@ -9,11 +9,12 @@
 {% if delete %}
 <div class="alert alert-error">You are about to delete this password. A staff member will be required if you want to undelete it.</div>
 {% endif %}
-{% if cred.is_deleted %}
+{% if cred.is_deleted and not cred.is_latest %}
 <div class="alert alert-error">This credential has been deleted and is in the trash can. It is only visible to staff. You can alter it if you wish, its history will still be recorded. Click the undelete button to restore it. If you click the Delete Permanently button then the password, its entire history and all its audit logs will be removed.</div>
 {% endif %}
 <p><div class="btn-group">
     <a class="btn" href="{% url 'cred.views.edit' cred.id %}">Edit</a>
+    {% if cred.is_latest %}<a class="btn" href="{% url 'cred.views.list' 'history' cred.id 'ascending' 'id' %}">History</a>{% endif %}
     {% if not delete %}<a class="btn btn-danger" href="{% url 'cred.views.delete' cred.id %}">Delete</a>{% endif %}
     {% if not cred.is_deleted %}
         <a class="btn" href="{% url 'cred.views.addtoqueue' cred.id %}">Add to Change Queue</a>
@@ -36,7 +37,7 @@
 </tr>
 <tr><th>Group</th><td><a href="{% url 'cred.views.list' 'group' cred.group.id %}">{{ cred.group.name }}</a></td></tr>
 <tr><th>Tags</th><td>{% for t in cred.tags.all %}<a href="{% url 'cred.views.list' 'tag' t.id %}">{{ t.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</td></tr>
-<tr><th>Last Change</th><td>{{ cred.created }}</td></tr>
+<tr><th>Created:</th><td>{{ cred.created }}</td></tr>
 </table>
 <strong>Description:</strong>
 <pre>

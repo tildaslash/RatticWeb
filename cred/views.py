@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 
 from models import Cred, CredForm, CredAudit, TagForm, Tag, CredChangeQ, CredIcon
 
@@ -13,7 +14,7 @@ from django.contrib.auth.models import User, Group
 @login_required
 def list(request, cfilter='special', value='all', sortdir='ascending', sort='title', page=1):
     # Static stuff
-    sortables = ('title', 'username', 'group')
+    sortables = ('title', 'username', 'group', 'id')
 
     # Setup basic stuff
     viewdict = {}
@@ -49,6 +50,12 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
     elif cfilter == 'search':
         cred_list = cred_list.filter(title__icontains=value)
         viewdict['credtitle'] = 'Passwords for search "%s"' % value
+
+    elif cfilter == 'history':
+        cred = get_object_or_404(Cred, pk=value)
+        cred_list = Cred.objects.accessable(request.user,
+                historical=True).filter(Q(latest=value) | Q(id=value))
+        viewdict['credtitle'] = 'Versions of: "%s"' % cred.title
 
     elif cfilter == 'changeadvice':
         if not request.user.is_staff:

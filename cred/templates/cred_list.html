@@ -3,7 +3,7 @@
 
 {% block content %}
 {% if not hidecredlist %}
-<h1>{{ credtitle|default:"All Passwords" }}</h1>
+<h1>{{ credtitle }}</h1>
 <form id="credchecksubmitform" action="" method="post">{% csrf_token %}
 <input type='hidden' name='next' value="{% url "cred.views.list" filter value sortdir sort page %}" />
 <table class="table table-striped table-bordered table-condensed">
@@ -54,7 +54,7 @@
   </thead>
   <tbody>
     {% for c in credlist %}
-    <tr {% if c.on_changeq %}class="warning" {% endif %}>
+    <tr class="{% if c.on_changeq %}warning{% endif %} {% if not c.is_latest %}info{% endif %}">
       <td class="credcheck"><input type="checkbox" name="credcheck" value="{{ c.id }}" onclick="updatebuttons()" /></td>
       <td>{% include 'cred_credicon.html' with icon=c.icon only %} <a href="{% url "cred.views.detail" c.id %}">{{ c.title }}</a></td>
       <td>{{ c.username }}</td>
