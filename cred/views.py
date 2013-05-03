@@ -3,12 +3,12 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import Group
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from models import Cred, CredForm, CredAudit, TagForm, Tag, CredChangeQ, CredIcon
 
 from django.contrib.auth.models import User, Group
+
 
 @login_required
 def list(request, cfilter='special', value='all', sortdir='ascending', sort='title', page=1):

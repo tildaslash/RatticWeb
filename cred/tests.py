@@ -177,7 +177,6 @@ class CredViewTests(TestCase):
         CredAudit(audittype=CredAudit.CREDVIEW, cred=self.changedcred, user=self.unorm).save()
         CredAudit(audittype=CredAudit.CREDCHANGE, cred=self.changedcred, user=self.ustaff).save()
 
-
     def test_list_normal(self):
         resp = self.norm.get(reverse('cred.views.list'))
         self.assertEqual(resp.status_code, 200)
