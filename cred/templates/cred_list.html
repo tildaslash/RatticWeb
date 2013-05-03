@@ -14,19 +14,19 @@
           <a class="btn" href="{% url "cred.views.add" %}">Add New</a>
         {% endif %}
         {% if buttons.delete %}
-          <a class="btn" href="#" onclick="submitCredForm('{% url "cred.views.bulkdelete" %}')">Delete</a>
+          <a class="btn disabled checkbutton" href="javascript:void(0)" onclick="submitCredForm('{% url "cred.views.bulkdelete" %}')">Delete</a>
         {% endif %}
         {% if buttons.undelete %}
-          <a class="btn" href="#" onclick="submitCredForm('{% url "cred.views.bulkundelete" %}')">Undelete</a>
+          <a class="btn disabled checkbutton" href="javascript:void(0)" onclick="submitCredForm('{% url "cred.views.bulkundelete" %}')">Undelete</a>
         {% endif %}
         {% if buttons.changeq %}
-          <a class="btn" href="#" onclick="submitCredForm('{% url "cred.views.bulkaddtoqueue" %}')">Add to Change Queue</a>
+          <a class="btn disabled checkbutton" href="javascript:void(0)" onclick="submitCredForm('{% url "cred.views.bulkaddtoqueue" %}')">Add to Change Queue</a>
         {% endif %}
       </td>
     </tr>
     <tr>
       <th>
-        <input onclick="copycheckbox('all', 'credcheck')" type="checkbox" name="all" value="" />
+        <input onclick="copycheckbox('all', 'credcheck'); updatebuttons()" type="checkbox" name="all" value="" />
       </th>
       <th>
         {% if sort == 'title' %}
@@ -55,7 +55,7 @@
   <tbody>
     {% for c in credlist %}
     <tr {% if c.on_changeq %}class="warning" {% endif %}>
-      <td><input type="checkbox" name="credcheck" value="{{ c.id }}" /></td>
+      <td class="credcheck"><input type="checkbox" name="credcheck" value="{{ c.id }}" onclick="updatebuttons()" /></td>
       <td>{% include 'cred_credicon.html' with icon=c.icon only %} <a href="{% url "cred.views.detail" c.id %}">{{ c.title }}</a></td>
       <td>{{ c.username }}</td>
       <td><a href="{% url "cred.views.list" "group" c.group.id %}">{{ c.group.name }}</a></td>

@@ -141,8 +141,21 @@ function createGroupModal() {
 }
 
 function submitCredForm(action) {
+    if (countcheckboxes('.credcheck') == 0) return false;
     $('#credchecksubmitform')[0].action = action;
     $('#credchecksubmitform')[0].submit();
+}
+
+function countcheckboxes(parentclass) {
+    return $(':checkbox:checked', parentclass).length
+}
+
+function updatebuttons() {
+    if (countcheckboxes('.credcheck') > 0) {
+        $('a.checkbutton').removeClass('disabled');
+    } else {
+        $('a.checkbutton').addClass('disabled');
+    }
 }
 
 $(document).ready(function(){
