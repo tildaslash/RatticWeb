@@ -171,6 +171,10 @@ def add(request):
 @login_required
 def edit(request, cred_id):
     cred = get_object_or_404(Cred, pk=cred_id)
+
+    if cred.latest is not None:
+        raise Http404
+
     next = request.GET.get('next', None)
     # Check user has perms
     if not cred.is_accessable_by(request.user):
@@ -205,6 +209,9 @@ def edit(request, cred_id):
 @login_required
 def delete(request, cred_id):
     cred = get_object_or_404(Cred, pk=cred_id)
+
+    if cred.latest is not None:
+        raise Http404
 
     try:
         lastchange = CredAudit.objects.filter(
@@ -278,7 +285,7 @@ def addtoqueue(request, cred_id):
 def bulkdelete(request):
     todel = Cred.objects.filter(id__in=request.POST.getlist('credcheck'))
     for c in todel:
-        if c.is_accessable_by(request.user):
+        if c.is_accessable_by(request.user) and c.latest is None:
             CredAudit(audittype=CredAudit.CREDDELETE, cred=c, user=request.user).save()
             c.delete()
 
@@ -303,7 +310,7 @@ def bulkundelete(request):
 def bulkaddtoqueue(request):
     tochange = Cred.objects.filter(id__in=request.POST.getlist('credcheck'))
     for c in tochange:
-        if c.is_accessable_by(request.user):
+        if c.is_accessable_by(request.user) and c.latest is None:
             CredAudit(audittype=CredAudit.CREDSCHEDCHANGE, cred=c, user=request.user).save()
             CredChangeQ.objects.add_to_changeq(c)
 

@@ -12,9 +12,13 @@
 {% if cred.is_deleted and not cred.is_latest %}
 <div class="alert alert-error">This credential has been deleted and is in the trash can. It is only visible to staff. You can alter it if you wish, its history will still be recorded. Click the undelete button to restore it. If you click the Delete Permanently button then the password, its entire history and all its audit logs will be removed.</div>
 {% endif %}
+{% if not cred.is_latest %}
+<div class="alert alert-info"><strong>Hey there!</strong> This credential is an historical version. <a href="{% url 'cred.views.detail' cred.latest.id %}">Click here</a> to see the latest version.</div>
+{% endif %}
+{% if cred.is_latest %}
 <p><div class="btn-group">
     <a class="btn" href="{% url 'cred.views.edit' cred.id %}">Edit</a>
-    {% if cred.is_latest %}<a class="btn" href="{% url 'cred.views.list' 'history' cred.id 'ascending' 'id' %}">History</a>{% endif %}
+    <a class="btn" href="{% url 'cred.views.list' 'history' cred.id 'ascending' 'id' %}">History</a>
     {% if not delete %}<a class="btn btn-danger" href="{% url 'cred.views.delete' cred.id %}">Delete</a>{% endif %}
     {% if not cred.is_deleted %}
         <a class="btn" href="{% url 'cred.views.addtoqueue' cred.id %}">Add to Change Queue</a>
@@ -23,6 +27,7 @@
     <a class="btn btn-success" href="{% url 'staff.views.credundelete' cred.id %}">Undelete</a>
     {% endif %}
 </div></p>
+{% endif %}
 <table class="table table-striped table-bordered table-condensed">
 {% if cred.url %}<tr><th>URL</th><td><a href="{{ cred.url }}">{{ cred.url }}</a></td></tr>{% endif %}
 <tr><th>Username</th><td>{{ cred.username }}</td></tr>
