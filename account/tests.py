@@ -19,7 +19,6 @@ class AccountViewTests(TestCase):
         self.u.save()
         profile = self.u.profile
         profile.items_per_page = self.testitems
-        profile.tags_on_sidebar = self.testtags
         profile.save()
         self.client.login(username=self.username, password=self.password)
         # View the profile page to create an API key
@@ -30,7 +29,6 @@ class AccountViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         user = response.context['user']
         self.assertEqual(user.profile.items_per_page, self.testitems)
-        self.assertEqual(user.profile.tags_on_sidebar, self.testtags)
 
     def test_newapikey_page(self):
         old = ApiKey.objects.get(user=self.u)

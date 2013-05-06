@@ -1,12 +1,14 @@
 from django.db import models
 from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm, SelectMultiple
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import SetPasswordForm
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.utils.timezone import now
+
+from cred.models import Tag
 
 
 class LDAPPassChangeForm(SetPasswordForm):
@@ -37,7 +39,7 @@ LDAPPassChangeForm.base_fields.keyOrder = ['old_password', 'new_password1', 'new
 class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
     items_per_page = models.IntegerField(default=25)
-    tags_on_sidebar = models.IntegerField(default=5)
+    favourite_tags = models.ManyToManyField(Tag, blank=True)
     password_changed = models.DateTimeField(default=now)
 
     def __unicode__(self):
@@ -48,6 +50,9 @@ class UserProfileForm(ModelForm):
     class Meta:
         model = UserProfile
         exclude = ('user', 'password_changed',)
+        widgets = {
+            'favourite_tags': SelectMultiple(attrs={'class': 'chzn-select'}),
+        }
 
 # Attach the UserProfile object to the User
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
