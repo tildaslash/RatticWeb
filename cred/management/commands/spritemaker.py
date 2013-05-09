@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from PIL import Image
 from cred.models import CredIcon
 import os
+import json
 
 
 class Command(BaseCommand):
@@ -10,6 +11,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         basepath = os.path.join('cred', 'static', 'rattic', 'img', 'credicons')
         spritepath = os.path.join('cred', 'static', 'rattic', 'img', 'sprite.png')
+        jsonpath = os.path.join('cred', 'static', 'rattic', 'img', 'sprite.json')
 
         maxwidth = 0
         maxheight = 0
@@ -23,10 +25,16 @@ class Command(BaseCommand):
             maxheight = max(height, maxheight)
 
         sprite = Image.new('RGBA', (maxwidth * len(images), maxheight))
+        spritejson = {}
         curx = 0
         for (path, image) in images:
-            name = os.path.basename(path).split('.', 1)[0]
+            jsprite = {}
+            fname = os.path.basename(path)
+            name = fname.split('.', 1)[0]
             sprite.paste(image, (curx, 0), image)
+            jsprite['filename'] = fname
+            jsprite['xoffset'] = curx
+            jsprite['yoffset'] = 0
             try:
                 icon = CredIcon.objects.get(name=name)
                 icon.filename=os.path.basename(spritepath)
@@ -37,5 +45,8 @@ class Command(BaseCommand):
                 icon = CredIcon(name=name, filename=spritepath, xoffset=curx, yoffset=0)
                 icon.save()
             curx += maxwidth
+            spritejson[fname] = jsprite
 
         sprite.save(spritepath)
+        with open(jsonpath, 'w') as jsonfile:
+            jsonfile.write(json.dumps(spritejson))
