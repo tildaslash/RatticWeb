@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load credicons %}
 
 {% block content %}
 {% if not hidecredlist %}
@@ -56,7 +57,7 @@
     {% for c in credlist %}
     <tr class="{% if c.on_changeq %}warning{% endif %} {% if not c.is_latest %}info{% endif %}">
       <td class="credcheck"><input type="checkbox" name="credcheck" value="{{ c.id }}" onclick="updatebuttons()" /></td>
-      <td>{% include 'cred_credicon.html' with icon=c.icon only %} <a href="{% url "cred.views.detail" c.id %}">{{ c.title }}</a></td>
+      <td>{% cred_icon c.iconname %} <a href="{% url "cred.views.detail" c.id %}">{{ c.title }}</a></td>
       <td>{{ c.username }}</td>
       <td><a href="{% url "cred.views.list" "group" c.group.id %}">{{ c.group.name }}</a></td>
       <td>{% for t in c.tags.all %}{% if not forloop.first %}, {% endif %}<a href="{% url "cred.views.list" "tag" t.id %}">{{ t.name }}</a>{% endfor %}</td>

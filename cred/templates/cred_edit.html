@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load credicons %}
 
 {% block content %}
 
@@ -11,17 +12,18 @@
             {{ field.errors }}
             <label class="control-label" for="{{ field.html_name }}">{{ field.label }}</label>
             <div class="controls">
-                {% if field.html_name == 'icon' %}
-                    {{ field }}<a href="#logoModal" role="button" class="btn" data-toggle="modal">Chooser</a>
+                {% if field.html_name == 'iconname' %}
+                    <input type='hidden' name='{{ field.html_name }}' id='id_{{ field.html_name }}' value='{{ field.value }}' />
+		    <a href="#logoModal" role="button" class="btn" data-toggle="modal">Choose</a>
                     <div id='logoModal' class="modal hide fade">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                             <h3>Icons</h3>
-                            </div>
+                        </div>
                         <div class="modal-body">
                             <div style="width: 540px">
                                 {% for icon in icons %}
-                                    {% include 'cred_credicon.html' with icon=icon field=field only %}
+				    {% cred_icon icon field.html_name %}
                                 {% endfor %}
                             </div>
                         </div>

@@ -6,7 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 
-from models import Cred, CredForm, CredAudit, TagForm, Tag, CredChangeQ, CredIcon
+from models import Cred, CredForm, CredAudit, TagForm, Tag, CredChangeQ
+from cred.icon import allicons
 
 from django.contrib.auth.models import User, Group
 
@@ -165,7 +166,7 @@ def add(request):
         form = CredForm(request.user)
 
     return render(request, 'cred_edit.html', {'form': form, 'action':
-      reverse('cred.views.add'), 'icons': CredIcon.objects.all()})
+      reverse('cred.views.add'), 'icons': allicons})
 
 
 @login_required
@@ -202,8 +203,10 @@ def edit(request, cred_id):
         form = CredForm(request.user, instance=cred)
         CredAudit(audittype=CredAudit.CREDPASSVIEW, cred=cred, user=request.user).save()
 
-    return render(request, 'cred_edit.html', {'form': form, 'action':
-        reverse('cred.views.edit', args=(cred.id,)), 'next': next, 'icons': CredIcon.objects.all()})
+    return render(request, 'cred_edit.html', {'form': form,
+        'action': reverse('cred.views.edit', args=(cred.id,)),
+        'next': next,
+        'icons': allicons})
 
 
 @login_required

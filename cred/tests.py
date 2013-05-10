@@ -306,7 +306,7 @@ class CredViewTests(TestCase):
             'title': 'New Credential',
             'password': 'A password',
             'group': self.group.id,
-            'icon': form['icon'].value(),
+            'iconname': form['iconname'].value(),
         }, follow=True)
         self.assertEqual(resp.status_code, 200)
         newcred = Cred.objects.get(title='New Credential')

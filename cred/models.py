@@ -17,16 +17,6 @@ class TagForm(ModelForm):
         model = Tag
 
 
-class CredIcon(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    filename = models.CharField(max_length=50)
-    xoffset = models.IntegerField(default=0)
-    yoffset = models.IntegerField(default=0)
-
-    def __unicode__(self):
-        return self.name
-
-
 class CredIconAdmin(admin.ModelAdmin):
     list_display = ('name', 'filename')
 
@@ -72,7 +62,7 @@ class SearchManager(models.Manager):
 
 
 class Cred(models.Model):
-    METADATA = ('description', 'group', 'tags', 'icon')
+    METADATA = ('description', 'group', 'tags', 'iconname')
     objects = SearchManager()
 
     title = models.CharField(max_length=64)
@@ -82,7 +72,7 @@ class Cred(models.Model):
     description = models.TextField(blank=True, null=True)
     group = models.ForeignKey(Group)
     tags = models.ManyToManyField(Tag, related_name='child_creds', blank=True, null=True, default=None)
-    icon = models.ForeignKey(CredIcon, default=58)
+    iconname = models.CharField(default='Key.png', max_length=64, verbose_name='Icon')
     is_deleted = models.BooleanField(default=False)
     latest = models.ForeignKey('Cred', related_name='history', blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -200,6 +190,5 @@ class CredChangeQAdmin(admin.ModelAdmin):
 
 admin.site.register(CredAudit, CredAuditAdmin)
 admin.site.register(Cred, CredAdmin)
-admin.site.register(CredIcon, CredIconAdmin)
 admin.site.register(Tag)
 admin.site.register(CredChangeQ, CredChangeQAdmin)

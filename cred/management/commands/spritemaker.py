@@ -1,6 +1,5 @@
 from django.core.management.base import BaseCommand
 from PIL import Image
-from cred.models import CredIcon
 import os
 import json
 
@@ -30,20 +29,10 @@ class Command(BaseCommand):
         for (path, image) in images:
             jsprite = {}
             fname = os.path.basename(path)
-            name = fname.split('.', 1)[0]
             sprite.paste(image, (curx, 0), image)
             jsprite['filename'] = fname
             jsprite['xoffset'] = curx
             jsprite['yoffset'] = 0
-            try:
-                icon = CredIcon.objects.get(name=name)
-                icon.filename=os.path.basename(spritepath)
-                icon.xoffset=curx
-                icon.yoffset=0
-                icon.save()
-            except CredIcon.DoesNotExist:
-                icon = CredIcon(name=name, filename=spritepath, xoffset=curx, yoffset=0)
-                icon.save()
             curx += maxwidth
             spritejson[fname] = jsprite
 
