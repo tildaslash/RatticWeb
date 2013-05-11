@@ -9,9 +9,6 @@ class Migration(DataMigration):
     def forwards(self, orm):
         "Write your forwards methods here."
         # Note: Remember to use orm['appname.ModelName'] rather than "from appname.models..."
-        icon = orm.CredIcon.objects.get(id=24)
-        icon.name = "Pokeball"
-        icon.save()
 
     def backwards(self, orm):
         "Write your backwards methods here."

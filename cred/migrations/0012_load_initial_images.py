@@ -4,13 +4,10 @@ from south.db import db
 from south.v2 import DataMigration
 from django.db import models
 
-from ratticweb.util import load_fixture
-
 class Migration(DataMigration):
 
     def forwards(self, orm):
         "Write your forwards methods here."
-        load_fixture(orm, "cred/db/initialicons.json")
 
     def backwards(self, orm):
         "Write your backwards methods here."

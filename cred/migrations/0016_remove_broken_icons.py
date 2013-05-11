@@ -7,20 +7,7 @@ from django.db import models
 class Migration(DataMigration):
 
     def forwards(self, orm):
-        "Write your forwards methods here."
-        # Note: Remember to use orm['appname.ModelName'] rather than "from appname.models..."
-        # Get the icons to delete
-        icons = orm.CredIcon.objects.filter(name__in=['Dribbble', 'Skype', 'Twitter', 'RSS', 'Forrst'])
-        # Get a nice new icon for these ones
-        repicon = orm.CredIcon.objects.get(name='Key')
-
-        # Find creds using the removed icons
-        for c in orm.Cred.objects.filter(icon__in=icons):
-            c.icon = repicon
-            c.save()
-
-        # Delete the unwanted icons
-        icons.delete()
+        pass
 
     def backwards(self, orm):
         "Write your backwards methods here."
