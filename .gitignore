@@ -3,3 +3,4 @@ db/ratticdb
 *.swp
 ratticweb/local_settings.py
 .coverage
+build/rpm/out/*
