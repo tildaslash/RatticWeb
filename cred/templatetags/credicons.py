@@ -1,6 +1,7 @@
 from django import template
+from django.conf import settings
 
-from cred.icon import allicons
+from cred.icon import get_icon_data
 
 register = template.Library()
 
@@ -15,12 +16,18 @@ register = template.Library()
 
 @register.simple_tag
 def cred_icon(iconname, field=None):
-    if iconname not in allicons:
-        return ''
+    data = get_icon_data()[iconname]
+
+    alt = 'alt="%s"' % iconname
+    stylesize = 'height: %spx; width: %spx; ' % (data['height'], data['width'])
+    bgurl = settings.STATIC_URL + settings.CRED_ICON_SPRITE
+    stylebg = 'background: url(%s) -%spx -%spx; ' % (bgurl, data['xoffset'], data['yoffset'])
+    style = 'style="' + stylesize + stylebg + '"'
+    src = 'src="' + settings.STATIC_URL + settings.CRED_ICON_CLEAR + '"'
 
     onclick = ''
 
     if field is not None:
         onclick = 'onclick="$(\'input#id_%s\').val(\'%s\');$(\'#logoModal\').modal(\'hide\')"' % (field, iconname)
 
-    return '<img src="/static/rattic/img/credicons/%s" %s />' % (iconname, onclick)
+    return '<img %s %s %s %s>' % (alt, style, src, onclick)

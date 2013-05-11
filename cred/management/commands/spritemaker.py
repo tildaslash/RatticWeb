@@ -1,41 +1,22 @@
-from django.core.management.base import BaseCommand
-from PIL import Image
 import os
 import json
+
+from django.core.management.base import BaseCommand
+from django.conf import settings
+
+from cred.icon import make_sprite
 
 
 class Command(BaseCommand):
     help = 'Ensures there exists a user named "admin" with the password "rattic"'
 
     def handle(self, *args, **options):
-        basepath = os.path.join('cred', 'static', 'rattic', 'img', 'credicons')
-        spritepath = os.path.join('cred', 'static', 'rattic', 'img', 'sprite.png')
-        jsonpath = os.path.join('cred', 'static', 'rattic', 'img', 'sprite.json')
+        basepath = os.path.join('cred', 'static', settings.CRED_ICON_BASEDIR)
+        spritepath = os.path.join('cred', 'static', settings.CRED_ICON_SPRITE)
+        jsonpath = os.path.join('cred', settings.CRED_ICON_JSON)
 
-        maxwidth = 0
-        maxheight = 0
-        images = []
-        for f in os.listdir(basepath):
-            fullpath = os.path.join(basepath, f)
-            image = Image.open(fullpath)
-            images.append((fullpath, image))
-            (width, height) = image.size
-            maxwidth = max(width, maxwidth)
-            maxheight = max(height, maxheight)
-
-        sprite = Image.new('RGBA', (maxwidth * len(images), maxheight))
-        spritejson = {}
-        curx = 0
-        for (path, image) in images:
-            jsprite = {}
-            fname = os.path.basename(path)
-            sprite.paste(image, (curx, 0), image)
-            jsprite['filename'] = fname
-            jsprite['xoffset'] = curx
-            jsprite['yoffset'] = 0
-            curx += maxwidth
-            spritejson[fname] = jsprite
+        (data, sprite) = make_sprite(basepath)
 
         sprite.save(spritepath)
         with open(jsonpath, 'w') as jsonfile:
-            jsonfile.write(json.dumps(spritejson))
+            jsonfile.write(json.dumps(data))

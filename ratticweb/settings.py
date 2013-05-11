@@ -199,6 +199,10 @@ PASSWORD_EXPIRY = timedelta(days=10)
 HELP_SYSTEM_FILES = False
 PUBLIC_HELP_WIKI_BASE = 'https://github.com/tildaslash/RatticWeb/wiki/'
 AUTH_LDAP_ALLOW_PASSWORD_CHANGE = False
+CRED_ICON_JSON = 'db/icons.json'
+CRED_ICON_SPRITE = 'rattic/img/sprite.png'
+CRED_ICON_BASEDIR = 'rattic/img/credicons'
+CRED_ICON_CLEAR = 'rattic/img/clear.gif'
 
 try:
     from local_settings import *
