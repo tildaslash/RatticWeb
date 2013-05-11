@@ -439,5 +439,13 @@ class CredViewTests(TestCase):
         resp = testuser.post(fullurl, {'username': self.unorm.username, 'password': self.normpass}, follow=True)
         self.assertRedirects(resp, credurl, status_code=302, target_status_code=200)
 
+    def test_invalid_icon(self):
+        resp = self.norm.get(reverse('cred.views.list'))
+        fakename = 'Namethatdoesnotexist.png'
+        self.cred.iconname = fakename
+        self.cred.save()
+        self.assertEqual(resp.status_code, 200)
+        self.assertNotContains(resp, fakename, 200)
+
 
 CredViewTests = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(CredViewTests)

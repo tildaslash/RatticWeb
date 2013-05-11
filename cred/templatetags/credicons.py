@@ -16,7 +16,10 @@ register = template.Library()
 
 @register.simple_tag
 def cred_icon(iconname, field=None):
-    data = get_icon_data()[iconname]
+    try:
+        data = get_icon_data()[iconname]
+    except KeyError:
+        return ''
 
     alt = 'alt="%s"' % iconname
     stylesize = 'height: %spx; width: %spx; ' % (data['height'], data['width'])
