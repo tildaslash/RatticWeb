@@ -19,4 +19,3 @@ mock --rebuild ${SRPMBUILDDIR}/${NAME}-*.src.rpm --resultdir ${RPMBUILDDIR}
 cp ${SRPMBUILDDIR}/${NAME}-*.src.rpm out/
 cp ${RPMBUILDDIR}/${NAME}-*.rpm out/
 
-rm -rf ${TMPDIR}
