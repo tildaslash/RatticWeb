@@ -1,12 +1,11 @@
 from django.conf import settings
 
-from PIL import Image
-
 import json
 import os
 
 
 def open_icons_in_folder(path):
+    from PIL import Image
     images = []
     for f in os.listdir(path):
         img = Image.open(os.path.join(path, f))
@@ -34,6 +33,7 @@ def build_layout(images):
 
 
 def draw_sprite(images, data, size):
+    from PIL import Image
     sprite = Image.new('RGBA', size)
     for (name, img) in images:
         xloc = data[name]['xoffset']
