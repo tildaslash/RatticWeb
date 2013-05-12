@@ -1,6 +1,6 @@
 db/ratticdb
 *.pyc
 *.swp
-ratticweb/local_settings.py
 .coverage
 build/rpm/out/*
+conf/local.cfg

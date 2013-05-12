@@ -1,44 +1,22 @@
 from datetime import timedelta
+from ConfigParser import RawConfigParser, NoOptionError
 
-# Django settings for ratticweb project.
+config = RawConfigParser()
+config.read(['conf/defaults.cfg', 'conf/local.cfg', '/etc/ratticweb.cfg'])
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+
+def confget(section, var, default):
+    try:
+        return config.get(section, var)
+    except NoOptionError:
+        return default
+
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
 MANAGERS = ADMINS
-
-# SMTP Mail Opts
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#EMAIL_HOST = 'localhost'
-#EMAIL_PORT =
-#EMAIL_USE_TLS = True
-#EMAIL_HOST_USER = 'root'
-#EMAIL_HOST_PASSWORD = ''
-
-# Dev Mail Opts
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = '/tmp/rattic-messages'
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'db/ratticdb',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
-
-# Local time zone for this installation. Choices can be found here:
-# http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
-# although not all choices may be available on all operating systems.
-# In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'Australia/Melbourne'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -56,25 +34,6 @@ USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
-
-# Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash.
-# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
-
-# Absolute path to the directory static files should be collected to.
-# Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = ''
-
-# URL prefix for static files.
-# Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -106,9 +65,6 @@ STATICFILES_FINDERS = (
     #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = '&amp;9mjhxkul-8l@-g^(_u_^1uu9=tzaf)jwmpda33k2jrl-5%+f7'
-
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -129,6 +85,10 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'ratticweb.urls'
+
+# Urls
+MEDIA_URL = '/media/'
+STATIC_URL = '/static/'
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'ratticweb.wsgi.application'
@@ -193,51 +153,95 @@ LOGGING = {
     }
 }
 
-# Custom settings (can be overridden)
+#######################
+# Custom app settings #
+#######################
+
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-PASSWORD_EXPIRY = timedelta(days=10)
-HELP_SYSTEM_FILES = False
 PUBLIC_HELP_WIKI_BASE = 'https://github.com/tildaslash/RatticWeb/wiki/'
-AUTH_LDAP_ALLOW_PASSWORD_CHANGE = False
 CRED_ICON_JSON = 'db/icons.json'
 CRED_ICON_SPRITE = 'rattic/img/sprite.png'
 CRED_ICON_BASEDIR = 'rattic/img/credicons'
 CRED_ICON_CLEAR = 'rattic/img/clear.gif'
 
-try:
-    from local_settings import *
-except:
-    pass
-
-# Application settings
 LOGIN_REDIRECT_URL = "/cred/list/"
 LOGIN_URL = "/account/login/"
 
-# LDAP Configuration
-# If AUTH_LDAP_SERVER_URI is set, enable LDAP auth
-try:
-    if AUTH_LDAP_SERVER_URI:
-        AUTHENTICATION_BACKENDS = (
-            'django_auth_ldap.backend.LDAPBackend',
-            'django.contrib.auth.backends.ModelBackend',
-        )
-        LDAP_ENABLED = True
-    else:
-        LDAP_ENABLED = False
-except NameError:
-    LDAP_ENABLED = False
-
-AUTH_LDAP_USER_ATTR_MAP = {
-    "email": "mail",
-}
-
-AUTH_LDAP_USER_FLAGS_BY_GROUP = {
-}
-
+AUTH_LDAP_USER_ATTR_MAP = {"email": "mail", }
+AUTH_LDAP_USER_FLAGS_BY_GROUP = {}
 AUTH_LDAP_MIRROR_GROUPS=True
 
+###############################
+# External environment config #
+###############################
+
+# [ratticweb]
+DEBUG = config.getboolean('ratticweb', 'debug')
+TEMPLATE_DEBUG = DEBUG
+TIME_ZONE = config.get('ratticweb', 'timezone')
+SECRET_KEY = config.get('ratticweb', 'secretkey')
+
 try:
-    if AUTH_LDAP_STAFF_GROUP:
-        AUTH_LDAP_USER_FLAGS_BY_GROUP['is_staff'] = AUTH_LDAP_STAFF_GROUP
-except NameError:
-    pass
+    PASSWORD_EXPIRY = timedelta(days=config.getint('ratticweb', 'passwordexpirydays'))
+except NoOptionError:
+    PASSWORD_EXPIRY = False
+
+# [filepaths]
+HELP_SYSTEM_FILES = confget('filepaths', 'help', False)
+MEDIA_ROOT = confget('filepaths', 'media', '')
+STATIC_ROOT = confget('filepaths', 'static', '')
+
+# [database]
+DATABASES = {
+    'default': {
+        'ENGINE': confget('database', 'engine', 'django.db.backends.sqlite3'),
+        'NAME': confget('database', 'name', 'db/ratticweb'),
+        'USER': confget('database', 'user', ''),
+        'PASSWORD': confget('database', 'password', ''),
+        'HOST': confget('database', 'host', ''),
+        'PORT': confget('database', 'port', ''),
+    }
+}
+
+# [email]
+# SMTP Mail Opts
+EMAIL_BACKEND = confget('email', 'backend', 'django.core.mail.backends.filebased.EmailBackend')
+EMAIL_FILE_PATH = confget('email', 'filepath', '/tmp/ratticweb-messages')
+EMAIL_HOST = confget('email', 'host', '')
+EMAIL_PORT = confget('email', 'port', '')
+EMAIL_HOST_USER = confget('email', 'user', '')
+EMAIL_HOST_PASSWORD = confget('email', 'password', '')
+
+try:
+    EMAIL_USE_TLS = config.getboolean('email', 'usetls')
+except NoOptionError:
+    EMAIL_USE_TLS = False
+
+# [ldap]
+LDAP_ENABLED = 'ldap' in config.sections()
+
+if LDAP_ENABLED:
+    # Add LDAP to the auth modules
+    AUTHENTICATION_BACKENDS = (
+        'django_auth_ldap.backend.LDAPBackend',
+        'django.contrib.auth.backends.ModelBackend',
+    )
+
+    # Get config options for LDAP
+    AUTH_LDAP_SERVER_URI = config.get('ldap', 'uri')
+    AUTH_LDAP_BIND_DN = confget('ldap', 'binddn', '')
+    AUTH_LDAP_BIND_PASSWORD = confget('ldap', 'bindpw', '')
+    AUTH_LDAP_USER_FLAGS_BY_GROUP['is_staff'] = confget('ldap', 'staff', '')
+
+    # Searching for things
+    AUTH_LDAP_USER_SEARCH = LDAPSearch(config.get('ldap', 'userbase'), ldap.SCOPE_SUBTREE, config.get('ldap', 'userfilter'))
+    AUTH_LDAP_GROUP_SEARCH = LDAPSearch(config.get('ldap', 'groupbase'), ldap.SCOPE_SUBTREE, config.get('ldap', 'groupfilter'))
+
+    # Groups type
+    AUTH_LDAP_GROUP_TYPE = getattr(__import__('django_auth_ldap').config, config.get('ldap', 'grouptype'))()
+
+    # Booleans
+    try:
+        AUTH_LDAP_ALLOW_PASSWORD_CHANGE = config.getboolean('ldap', 'pwchange')
+    except NoOptionError:
+        AUTH_LDAP_ALLOW_PASSWORD_CHANGE = False
