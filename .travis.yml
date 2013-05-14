@@ -21,7 +21,7 @@ before_script:
   - mysql -e 'create database IF NOT EXISTS rattic;'
 script:
   - python manage.py test
-  - cp docs/travis/local_settings_mysql.py ratticweb/local_settings.py
+  - cp docs/travis/mysql.cfg conf/local.cfg
   - python manage.py syncdb --noinput
   - python manage.py migrate
   - python manage.py test
