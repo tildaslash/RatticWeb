@@ -245,6 +245,7 @@ if LDAP_ENABLED:
 
     # Booleans
     AUTH_LDAP_ALLOW_PASSWORD_CHANGE = confgetbool('ldap', 'pwchange', False)
+    AUTH_LDAP_START_TLS = confgetbool('ldap', 'starttls', False)
     AUTH_LDAP_GLOBAL_OPTIONS = {
         ldap.OPT_X_TLS_REQUIRE_CERT: confgetbool('ldap', 'requirecert', True),
         ldap.OPT_REFERRALS: confgetbool('ldap', 'referrals', False),
