@@ -12,6 +12,12 @@ def confget(section, var, default):
         return default
 
 
+def confgetbool(section, var, default):
+    try:
+        return config.getboolean(section, var)
+    except NoOptionError:
+        return default
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
@@ -212,10 +218,7 @@ EMAIL_PORT = confget('email', 'port', '')
 EMAIL_HOST_USER = confget('email', 'user', '')
 EMAIL_HOST_PASSWORD = confget('email', 'password', '')
 
-try:
-    EMAIL_USE_TLS = config.getboolean('email', 'usetls')
-except NoOptionError:
-    EMAIL_USE_TLS = False
+EMAIL_USE_TLS = confgetbool('email', 'usetls', False)
 
 # [ldap]
 LDAP_ENABLED = 'ldap' in config.sections()
@@ -241,7 +244,8 @@ if LDAP_ENABLED:
     AUTH_LDAP_GROUP_TYPE = getattr(__import__('django_auth_ldap').config, config.get('ldap', 'grouptype'))()
 
     # Booleans
-    try:
-        AUTH_LDAP_ALLOW_PASSWORD_CHANGE = config.getboolean('ldap', 'pwchange')
-    except NoOptionError:
-        AUTH_LDAP_ALLOW_PASSWORD_CHANGE = False
+    AUTH_LDAP_ALLOW_PASSWORD_CHANGE = confgetbool('ldap', 'pwchange', False)
+    AUTH_LDAP_GLOBAL_OPTIONS = {
+        ldap.OPT_X_TLS_REQUIRE_CERT: confgetbool('ldap', 'requirecert', True),
+        ldap.OPT_REFERRALS: confgetbool('ldap', 'referrals', False),
+    }
