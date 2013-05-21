@@ -188,7 +188,7 @@ TIME_ZONE = config.get('ratticweb', 'timezone')
 SECRET_KEY = config.get('ratticweb', 'secretkey')
 
 try:
-    PASSWORD_EXPIRY = timedelta(days=config.getint('ratticweb', 'passwordexpirydays'))
+    PASSWORD_EXPIRY = timedelta(days=int(config.get('ratticweb', 'passwordexpirydays')))
 except NoOptionError:
     PASSWORD_EXPIRY = False
 
