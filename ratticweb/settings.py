@@ -191,6 +191,8 @@ try:
     PASSWORD_EXPIRY = timedelta(days=int(config.get('ratticweb', 'passwordexpirydays')))
 except NoOptionError:
     PASSWORD_EXPIRY = False
+except ValueError:
+    PASSWORD_EXPIRY = False
 
 # [filepaths]
 HELP_SYSTEM_FILES = confget('filepaths', 'help', False)
