@@ -50,6 +50,7 @@ class AccountCommandTests(TestCase):
         self.assertTrue(u.check_password('rattic'))
         self.assertTrue(u.is_staff)
 
+
 class JavascriptTests(LiveServerTestCase):
     def setUp(self):
         self.unorm = User(username='norm', email='norm@example.com')
@@ -94,5 +95,6 @@ class JavascriptTests(LiveServerTestCase):
         self.assertEquals(self.selenium.current_url, '%s%s' % (self.live_server_url, reverse('django.contrib.auth.views.login')))
         self.waitforload()
         self.selenium.find_element_by_id('loginfailed')
+
 
 JavascriptTests = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(JavascriptTests)
