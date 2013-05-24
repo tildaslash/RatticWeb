@@ -15,7 +15,10 @@ install:
   - pip install -q markdown==2.1.1 --use-mirrors
   - pip install -q pep8 --use-mirrors
   - pip install -q pyflakes --use-mirrors
+  - pip install -q selenium --use-mirrors
 before_script:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
   - "./pyflakes.sh"
   - "pep8 --exclude=migrations,lib --ignore=E501,E225,E128,E124 ."
   - mysql -e 'create database IF NOT EXISTS rattic;'
