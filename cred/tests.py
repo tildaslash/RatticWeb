@@ -6,6 +6,8 @@ from django.test.utils import override_settings
 from models import Cred, Tag, CredChangeQ, CredAudit
 
 from selenium.webdriver.firefox.webdriver import WebDriver
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.keys import Keys
 
 
 class CredAccessTest(TestCase):
@@ -486,7 +488,7 @@ class JavascriptTests(LiveServerTestCase):
         self.nobody = Client()
         self.nobody.login(username='nobody', password='password')
 
-        self.cred = Cred(title='secret', password='s3cr3t', group=self.group)
+        self.cred = Cred(title='secret', username='peh!', password='s3cr3t', group=self.group)
         self.cred.save()
         self.tagcred = Cred(title='tagged', password='t4gg3d', group=self.group)
         self.tagcred.save()
@@ -504,6 +506,32 @@ class JavascriptTests(LiveServerTestCase):
     def tearDownClass(cls):
         cls.selenium.quit()
         super(JavascriptTests, cls).tearDownClass()
+
+    def waitforload(self):
+        timeout = 2
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_tag_name('body'))
+
+    def login_as(self, username, password):
+        self.selenium.get('%s%s' % (self.live_server_url, '/'))
+        self.waitforload()
+        username_input = self.selenium.find_element_by_name("username")
+        username_input.send_keys(username)
+        password_input = self.selenium.find_element_by_name("password")
+        password_input.send_keys(password)
+        self.selenium.find_element_by_xpath('//input[@value="login"]').click()
+        self.waitforload()
+
+    def test_search(self):
+        self.login_as(self.unorm.username, self.normpass)
+        self.selenium.get('%s%s' % (self.live_server_url, reverse('cred.views.list')))
+        self.waitforload()
+        searchbox = self.selenium.find_element_by_id("search-box")
+        searchbox.send_keys("secret")
+        searchbox.send_keys(Keys.ENTER)
+        self.waitforload()
+        self.assertEquals(self.selenium.current_url, '%s%s' % (self.live_server_url, reverse('cred.views.list', args=('search', 'secret'))))
+
 
 CredViewTests = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(CredViewTests)
 JavascriptTests = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(JavascriptTests)
