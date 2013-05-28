@@ -1,0 +1,32 @@
+## Build the root node.
+dn: dc=example,dc=com
+dc: example
+objectClass: dcObject
+objectClass: organizationalUnit
+ou: Example Company
+
+## Build the people ou.
+dn: ou=people,dc=example,dc=com
+ou: people
+objectClass: organizationalUnit
+
+### Build the staff/people ou.
+dn: ou=user,ou=people,dc=example,dc=com
+ou: staff
+objectClass: organizationalUnit
+
+## Build the group/people ou.
+dn: ou=group,ou=people,dc=example,dc=com
+ou: group
+objectClass: organizationalUnit
+
+## Build the services ou.
+dn: ou=services,dc=example,dc=com
+ou: services
+objectClass: organizationalUnit
+
+## Build the hosts ou.
+dn: ou=hosts,dc=example,dc=com
+ou: hosts
+objectClass: organizationalUnit
+

@@ -8,3 +8,4 @@ if [ -f .ldapbase ]; then
     rm -rf ${LDAPBASE}
     rm .ldapbase
 fi
+echo LDAP Stopped
