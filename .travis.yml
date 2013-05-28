@@ -17,6 +17,8 @@ install:
   - pip install -q pyflakes --use-mirrors
   - pip install -q selenium --use-mirrors
 before_script:
+  - "sudo apt-get install -qq slapd ldap-utils"
+  - "pushd docs/ldap; ./startldap.sh; popd"
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - "./pyflakes.sh"
