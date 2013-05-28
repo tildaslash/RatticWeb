@@ -25,7 +25,9 @@ nohup slapd -d3 -f ${LDAPBASE}/slapd.conf -h 'ldap://localhost:3389/' &> ${LDAPB
 # Give LDAP a few seconds to start
 sleep 3
 
-cat ${LDAPBASE}/slapd.log
+if [ ! -z "$DEBUG" ]; then
+  cat ${LDAPBASE}/slapd.log
+fi
 
 ldapadd -x -D 'cn=manager,dc=example,dc=com' -w testpass -H 'ldap://localhost:3389/' -f initial.ldif > /dev/null
 echo "LDAP Started"
