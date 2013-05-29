@@ -7,6 +7,7 @@ from models import Cred, Tag
 from ratticweb.tests import TestData
 
 from selenium.webdriver.firefox.webdriver import WebDriver
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 
@@ -418,7 +419,7 @@ class JavascriptTests(LiveServerTestCase):
         super(JavascriptTests, cls).tearDownClass()
 
     def waitforload(self):
-        timeout = 2
+        timeout = 4
         WebDriverWait(self.selenium, timeout).until(
             lambda driver: driver.find_element_by_tag_name('body'))
 
@@ -441,6 +442,19 @@ class JavascriptTests(LiveServerTestCase):
         searchbox.send_keys(Keys.ENTER)
         self.waitforload()
         self.assertEquals(self.selenium.current_url, '%s%s' % (self.live_server_url, reverse('cred.views.list', args=('search', 'secret'))))
+
+    def test_password_details(self):
+        timeout = 4
+        self.login_as(self.data.unorm.username, self.data.normpass)
+        self.selenium.get('%s%s' % (self.live_server_url,
+            reverse('cred.views.detail', args=(self.data.cred.id,))))
+        self.waitforload()
+        elempass = self.selenium.find_element_by_id('password')
+        self.assertNotEquals(elempass.text, self.data.cred.password)
+        hov = ActionChains(self.selenium).move_to_element(elempass)
+        hov.perform()
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: elempass.text == self.data.cred.password)
 
 
 CredViewTests = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(CredViewTests)
