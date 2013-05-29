@@ -6,78 +6,34 @@ from django.core.urlresolvers import reverse
 from django.test.utils import override_settings
 from django.conf import settings
 
+from ratticweb.tests import TestData
+
 
 class StaffViewTests(TestCase):
     def setUp(self):
-        self.group = Group(name='testgroup')
-        self.group.save()
-
-        self.othergroup = Group(name='othergroup')
-        self.othergroup.save()
-
-        self.tag = Tag(name='tag')
-        self.tag.save()
-
-        self.unorm = User(username='norm', email='norm@example.com')
-        self.unorm.set_password('password')
-        self.unorm.save()
-        self.unorm.groups.add(self.group)
-        self.unorm.save()
-
-        self.ustaff = User(username='staff', email='steph@example.com', is_staff=True)
-        self.ustaff.set_password('password')
-        self.ustaff.save()
-        self.ustaff.groups.add(self.group)
-        self.ustaff.save()
-
-        self.unobody = User(username='nobody', email='nobody@example.com')
-        self.unobody.set_password('password')
-        self.unobody.save()
-
-        self.norm = Client()
-        self.norm.login(username='norm', password='password')
-        self.staff = Client()
-        self.staff.login(username='staff', password='password')
-        self.nobody = Client()
-        self.nobody.login(username='nobody', password='password')
-
-        self.cred = Cred(title='secret', password='s3cr3t', group=self.group)
-        self.cred.save()
-        self.tagcred = Cred(title='tagged', password='t4gg3d', group=self.group)
-        self.tagcred.save()
-        self.tagcred.tags.add(self.tag)
-        self.tagcred.save()
-
-        CredChangeQ.objects.add_to_changeq(self.cred)
-
-        self.logadd = CredAudit(audittype=CredAudit.CREDADD, cred=self.cred,
-                user=self.ustaff)
-        self.logview = CredAudit(audittype=CredAudit.CREDVIEW, cred=self.cred,
-                user=self.ustaff)
-        self.logadd.save()
-        self.logview.save()
+        self.data = TestData()
 
     def test_home(self):
-        resp = self.staff.get(reverse('staff.views.home'))
+        resp = self.data.staff.get(reverse('staff.views.home'))
         self.assertEqual(resp.status_code, 200)
         userlist = resp.context['userlist']
         grouplist = resp.context['grouplist']
-        self.assertIn(self.unorm, userlist)
-        self.assertIn(self.ustaff, userlist)
-        self.assertIn(self.unobody, userlist)
-        self.assertIn(self.group, grouplist)
-        self.assertIn(self.othergroup, grouplist)
+        self.assertIn(self.data.unorm, userlist)
+        self.assertIn(self.data.ustaff, userlist)
+        self.assertIn(self.data.unobody, userlist)
+        self.assertIn(self.data.group, grouplist)
+        self.assertIn(self.data.othergroup, grouplist)
 
     @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_userdetail(self):
-        resp = self.staff.get(reverse('staff.views.userdetail', args=(self.unobody.id,)))
+        resp = self.data.staff.get(reverse('staff.views.userdetail', args=(self.data.unobody.id,)))
         self.assertEqual(resp.status_code, 200)
         user = resp.context['viewuser']
-        self.assertEqual(self.unobody.id, user.id)
+        self.assertEqual(self.data.unobody.id, user.id)
 
     @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_groupadd(self):
-        resp = self.staff.get(reverse('staff.views.groupadd'))
+        resp = self.data.staff.get(reverse('staff.views.groupadd'))
         self.assertEqual(resp.status_code, 200)
         form = resp.context['form']
         post = {}
@@ -85,79 +41,79 @@ class StaffViewTests(TestCase):
             if i.value() is not None:
                 post[i.name] = i.value()
         post['name'] = 'Test Group'
-        resp = self.staff.post(reverse('staff.views.groupadd'), post, follow=True)
+        resp = self.data.staff.post(reverse('staff.views.groupadd'), post, follow=True)
         self.assertEqual(resp.status_code, 200)
         # Make sure we can get the object without exception
         Group.objects.get(name='Test Group')
 
     def test_groupdetail(self):
-        resp = self.staff.get(reverse('staff.views.groupdetail',
-            args=(self.group.id,)))
+        resp = self.data.staff.get(reverse('staff.views.groupdetail',
+            args=(self.data.group.id,)))
         self.assertEqual(resp.status_code, 200)
         group = resp.context['group']
-        self.assertEqual(self.group.id, group.id)
+        self.assertEqual(self.data.group.id, group.id)
 
     @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_groupdelete(self):
-        resp = self.staff.get(reverse('staff.views.groupdelete',
-            args=(self.othergroup.id,)))
+        resp = self.data.staff.get(reverse('staff.views.groupdelete',
+            args=(self.data.othergroup.id,)))
         self.assertEqual(resp.status_code, 200)
         group = resp.context['group']
-        self.assertEqual(self.othergroup.id, group.id)
-        resp = self.staff.post(reverse('staff.views.groupdelete',
-            args=(self.othergroup.id,)), follow=True)
+        self.assertEqual(self.data.othergroup.id, group.id)
+        resp = self.data.staff.post(reverse('staff.views.groupdelete',
+            args=(self.data.othergroup.id,)), follow=True)
         with self.assertRaises(Group.DoesNotExist):
-            Group.objects.get(id=self.othergroup.id)
+            Group.objects.get(id=self.data.othergroup.id)
 
     @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_userdelete(self):
-        resp = self.staff.get(reverse('staff.views.userdelete',
-            args=(self.unobody.id,)))
+        resp = self.data.staff.get(reverse('staff.views.userdelete',
+            args=(self.data.unobody.id,)))
         self.assertEqual(resp.status_code, 200)
         user = resp.context['viewuser']
-        self.assertEqual(self.unobody.id, user.id)
-        resp = self.staff.post(reverse('staff.views.userdelete',
-            args=(self.unobody.id,)), follow=True)
+        self.assertEqual(self.data.unobody.id, user.id)
+        resp = self.data.staff.post(reverse('staff.views.userdelete',
+            args=(self.data.unobody.id,)), follow=True)
         self.assertEqual(resp.status_code, 200)
         with self.assertRaises(User.DoesNotExist):
-            User.objects.get(id=self.unobody.id)
+            User.objects.get(id=self.data.unobody.id)
 
     def test_audit_by_cred(self):
-        resp = self.staff.get(reverse('staff.views.audit_by_cred',
-            args=(self.cred.id,)))
+        resp = self.data.staff.get(reverse('staff.views.audit_by_cred',
+            args=(self.data.cred.id,)))
         self.assertEqual(resp.status_code, 200)
         cred = resp.context['cred']
         loglist = resp.context['logs'].object_list
-        self.assertEqual(self.cred.id, cred.id)
+        self.assertEqual(self.data.cred.id, cred.id)
         self.assertEqual(resp.context['type'], 'cred')
-        self.assertIn(self.logadd, loglist)
-        self.assertIn(self.logview, loglist)
+        self.assertIn(self.data.logadd, loglist)
+        self.assertIn(self.data.logview, loglist)
 
     def test_audit_by_user(self):
-        resp = self.staff.get(reverse('staff.views.audit_by_user',
-            args=(self.ustaff.id,)))
+        resp = self.data.staff.get(reverse('staff.views.audit_by_user',
+            args=(self.data.ustaff.id,)))
         self.assertEqual(resp.status_code, 200)
         user = resp.context['loguser']
         loglist = resp.context['logs'].object_list
-        self.assertEqual(self.ustaff.id, user.id)
+        self.assertEqual(self.data.ustaff.id, user.id)
         self.assertEqual(resp.context['type'], 'user')
-        self.assertIn(self.logadd, loglist)
-        self.assertIn(self.logview, loglist)
+        self.assertIn(self.data.logadd, loglist)
+        self.assertIn(self.data.logview, loglist)
 
     def test_audit_by_days(self):
-        resp = self.staff.get(reverse('staff.views.audit_by_days',
+        resp = self.data.staff.get(reverse('staff.views.audit_by_days',
             args=(2,)))
         self.assertEqual(resp.status_code, 200)
         days_ago = resp.context['days_ago']
         loglist = resp.context['logs'].object_list
         self.assertEqual(int(days_ago), 2)
         self.assertEqual(resp.context['type'], 'time')
-        self.assertIn(self.logadd, loglist)
-        self.assertIn(self.logview, loglist)
+        self.assertIn(self.data.logadd, loglist)
+        self.assertIn(self.data.logview, loglist)
 
     @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_NewUser(self):
-        resp = self.staff.get(reverse('user_add'))
+        resp = self.data.staff.get(reverse('user_add'))
         self.assertEqual(resp.status_code, 200)
         form = resp.context['form']
         post = {}
@@ -166,22 +122,22 @@ class StaffViewTests(TestCase):
                 post[i.name] = i.value()
         post['username'] = 'test_user'
         post['email'] = 'me@me.com'
-        post['groups'] = self.othergroup.id
+        post['groups'] = self.data.othergroup.id
         post['newpass'] = 'crazypass'
         post['confirmpass'] = 'crazypass'
-        resp = self.staff.post(reverse('user_add'), post, follow=True)
+        resp = self.data.staff.post(reverse('user_add'), post, follow=True)
         with self.assertRaises(KeyError):
             print resp.context['form'].errors
         self.assertEqual(resp.status_code, 200)
         newuser = User.objects.get(username='test_user')
         self.assertEqual(newuser.email, 'me@me.com')
         self.assertTrue(newuser.check_password('crazypass'))
-        self.assertIn(self.othergroup, newuser.groups.all())
-        self.assertNotIn(self.group, newuser.groups.all())
+        self.assertIn(self.data.othergroup, newuser.groups.all())
+        self.assertNotIn(self.data.group, newuser.groups.all())
 
     @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_UpdateUser(self):
-        resp = self.staff.get(reverse('user_edit', args=(self.unobody.id,)))
+        resp = self.data.staff.get(reverse('user_edit', args=(self.data.unobody.id,)))
         self.assertEqual(resp.status_code, 200)
         form = resp.context['form']
         post = {}
@@ -191,19 +147,19 @@ class StaffViewTests(TestCase):
         post['email'] = 'newemail@example.com'
         post['newpass'] = 'differentpass'
         post['confirmpass'] = 'differentpass'
-        resp = self.staff.post(reverse('user_edit', args=(self.unobody.id,)), post, follow=True)
+        resp = self.data.staff.post(reverse('user_edit', args=(self.data.unobody.id,)), post, follow=True)
         self.assertEqual(resp.status_code, 200)
-        newuser = User.objects.get(id=self.unobody.id)
+        newuser = User.objects.get(id=self.data.unobody.id)
         self.assertEqual(newuser.email, 'newemail@example.com')
         self.assertTrue(newuser.check_password('differentpass'))
 
     def test_import_from_keepass(self):
         gp = Group(name='KeepassImportTest')
         gp.save()
-        self.ustaff.groups.add(gp)
-        self.ustaff.save()
+        self.data.ustaff.groups.add(gp)
+        self.data.ustaff.save()
 
-        resp = self.staff.get(reverse('staff.views.import_from_keepass'))
+        resp = self.data.staff.get(reverse('staff.views.import_from_keepass'))
         self.assertEqual(resp.status_code, 200)
         form = resp.context['form']
         post = {}
@@ -214,20 +170,20 @@ class StaffViewTests(TestCase):
         post['group'] = gp.id
         with open('docs/keepass/test2.kdb') as fp:
             post['file'] = fp
-            resp = self.staff.post(reverse('staff.views.import_from_keepass'), post, follow=True)
+            resp = self.data.staff.post(reverse('staff.views.import_from_keepass'), post, follow=True)
         self.assertEqual(resp.status_code, 200)
         newcred = Cred.objects.get(title='Google', group=gp)
         self.assertEqual(newcred.password, 'Q5CLQhLqI3CtKgK')
         self.assertEqual(newcred.tags.all()[0].name, 'Internet')
 
     def test_credundelete(self):
-        self.cred.delete()
-        resp = self.staff.get(reverse('staff.views.credundelete', args=(self.cred.id,)))
+        self.data.cred.delete()
+        resp = self.data.staff.get(reverse('staff.views.credundelete', args=(self.data.cred.id,)))
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(resp.context['cred'], self.cred)
-        resp = self.staff.post(reverse('staff.views.credundelete', args=(self.cred.id,)), follow=True)
+        self.assertEqual(resp.context['cred'], self.data.cred)
+        resp = self.data.staff.post(reverse('staff.views.credundelete', args=(self.data.cred.id,)), follow=True)
         self.assertEqual(resp.status_code, 200)
-        cred = Cred.objects.get(id=self.cred.id)
+        cred = Cred.objects.get(id=self.data.cred.id)
         self.assertFalse(cred.is_deleted)
 
 StaffViewTests = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(StaffViewTests)

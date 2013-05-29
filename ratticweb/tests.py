@@ -33,9 +33,9 @@ class TestData:
         self.ustaff.groups.add(self.othergroup)
         self.ustaff.save()
 
-        self.nobody = User(username='nobody', email='nobody@example.com')
-        self.nobody.set_password('password')
-        self.nobody.save()
+        self.unobody = User(username='nobody', email='nobody@example.com')
+        self.unobody.set_password('password')
+        self.unobody.save()
 
         self.norm = Client()
         self.norm.login(username='norm', password='password')
@@ -63,6 +63,11 @@ class TestData:
         CredAudit(audittype=CredAudit.CREDVIEW, cred=self.viewedcred, user=self.unorm).save()
         CredAudit(audittype=CredAudit.CREDVIEW, cred=self.changedcred, user=self.unorm).save()
         CredAudit(audittype=CredAudit.CREDCHANGE, cred=self.changedcred, user=self.ustaff).save()
+
+        self.logadd = CredAudit(audittype=CredAudit.CREDADD, cred=self.cred, user=self.ustaff)
+        self.logview = CredAudit(audittype=CredAudit.CREDVIEW, cred=self.cred, user=self.ustaff)
+        self.logadd.save()
+        self.logview.save()
 
 
 class HomepageTest(TestCase):
