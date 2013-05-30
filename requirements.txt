@@ -11,7 +11,7 @@ pyasn1==0.1.7
 pycrypto==2.6
 pyflakes==0.7.2
 python-dateutil==2.1
-python-ldap==2.4.11
+python-ldap==2.4.12
 selenium==2.33.0
 six==1.3.0
 wsgiref==0.1.2
