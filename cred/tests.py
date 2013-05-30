@@ -462,9 +462,13 @@ class JavascriptTests(LiveServerTestCase):
         hov.perform()
         # Check password is fetched
         WebDriverWait(self.selenium, timeout).until(
-            lambda driver: elempass.text == self.data.cred.password)
+            lambda driver: driver.find_element_by_id('password').text == self.data.cred.password)
         # Check password is still hidden
         self.assertTrue('passhidden' in elempass.get_attribute('class'))
+        # Click show button
+        self.selenium.find_element_by_id('showpass').click()
+        # Check password is visible
+        self.assertTrue('passhidden' not in elempass.get_attribute('class'))
 
 
 CredViewTests = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(CredViewTests)
