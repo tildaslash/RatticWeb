@@ -7,15 +7,7 @@ env:
   - DJANGO=1.4.5
   - DJANGO=1.5
 install:
-  - pip install -q mysql-python --use-mirrors
-  - pip install -q Django==$DJANGO --use-mirrors
-  - pip install -q South==0.7.5 --use-mirrors
-  - pip install -q django-tastypie==0.9.12 --use-mirrors
-  - pip install -q pycrypto==2.6 --use-mirrors
-  - pip install -q markdown==2.1.1 --use-mirrors
-  - pip install -q pep8 --use-mirrors
-  - pip install -q pyflakes --use-mirrors
-  - pip install -q selenium --use-mirrors
+  - pip install -q -r requirements.txt --use-mirrors
 before_script:
   - "sudo apt-get install -qq slapd ldap-utils"
   - "pushd docs/ldap; DEBUG=true ./startldap.sh; popd"
