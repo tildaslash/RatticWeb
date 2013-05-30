@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.test import Client
+from django.conf import settings
 from django.core.urlresolvers import reverse
 
 from django.contrib.auth.models import User, Group
@@ -8,17 +9,39 @@ from cred.models import Tag, Cred, CredChangeQ, CredAudit
 
 class TestData:
     def __init__(self):
+        if settings.LDAP_ENABLED:
+            self.getLDAPAuthData()
+        else:
+            self.setUpAuthData()
         self.setUpBasicData()
 
-    def setUpBasicData(self):
+    def loginLDAP(self, username, password):
+        c = Client()
+        loginurl = reverse('django.contrib.auth.views.login')
+        c.post(loginurl, {'username': username, 'password': password})
+
+        return c
+
+    def getLDAPAuthData(self):
+        self.norm = self.loginLDAP(username='norm', password='password')
+        self.unorm = User.objects.get(username='norm')
+        self.normpass = 'password'
+
+        self.staff = self.loginLDAP(username='staff', password='password')
+        self.ustaff = User.objects.get(username='staff')
+
+        self.nobody = self.loginLDAP(username='nobody', password='password')
+        self.unobody = User.objects.get(username='nobody')
+
+        self.group = Group.objects.get(name='testgroup')
+        self.othergroup = Group.objects.get(name='othergroup')
+
+    def setUpAuthData(self):
         self.group = Group(name='testgroup')
         self.group.save()
 
         self.othergroup = Group(name='othergroup')
         self.othergroup.save()
-
-        self.tag = Tag(name='tag')
-        self.tag.save()
 
         self.unorm = User(username='norm', email='norm@example.com')
         self.unorm.set_password('password')
@@ -43,6 +66,10 @@ class TestData:
         self.staff.login(username='staff', password='password')
         self.nobody = Client()
         self.nobody.login(username='nobody', password='password')
+
+    def setUpBasicData(self):
+        self.tag = Tag(name='tag')
+        self.tag.save()
 
         self.cred = Cred(title='secret', username='peh!', password='s3cr3t', group=self.group)
         self.cred.save()

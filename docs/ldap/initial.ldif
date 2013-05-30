@@ -86,3 +86,21 @@ homeDirectory: /home/nobody
 loginShell: /bin/bash
 userPassword: password
 
+# group
+dn: cn=testgroup,ou=group,ou=people,dc=example,dc=com
+objectClass: groupOfNames
+member: uid=norm,ou=user,ou=people,dc=example,dc=com
+cn: testgroup
+
+# othergroup
+dn: cn=othergroup,ou=group,ou=people,dc=example,dc=com
+objectClass: groupOfNames
+member: uid=staff,ou=user,ou=people,dc=example,dc=com
+cn: othergroup
+
+# staff, group, people, example.com
+dn: cn=staff,ou=group,ou=people,dc=example,dc=com
+objectClass: groupOfNames
+member: uid=staff,ou=user,ou=people,dc=example,dc=com
+cn: staff
+
