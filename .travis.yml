@@ -18,6 +18,8 @@ before_script:
   - mysql -e 'create database IF NOT EXISTS rattic;'
 script:
   - python manage.py test
+  - cp docs/travis/ldap.cfg conf/local.cfg
+  - python manage.py test
   - cp docs/travis/mysql.cfg conf/local.cfg
   - python manage.py syncdb --noinput
   - python manage.py migrate
