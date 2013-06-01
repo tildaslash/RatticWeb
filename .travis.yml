@@ -12,6 +12,7 @@ before_script:
   - "sudo apt-get install -qq slapd ldap-utils"
   - "pushd docs/ldap; DEBUG=true ./startldap.sh; popd"
   - "export DISPLAY=:99.0"
+  - "xdpyinfo"
   - "sh -e /etc/init.d/xvfb start"
   - "./pyflakes.sh"
   - "pep8 --exclude=migrations,lib --ignore=E501,E225,E128,E124 ."
