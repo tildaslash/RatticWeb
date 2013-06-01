@@ -1,12 +1,13 @@
 {% load url from future %}
 {% load static from staticfiles %}
+{% load url_root from ratticweb %}
 {% url "cred.views.list" as cred_views_list %}
 {% url "cred.views.list" "special" "changeq" as cred_views_viewqueue %}
 {% url "staff.views.home" as staff_views_home %}
 {% url "help.views.home" as help_views_home %}
 <div class="navbar">
     <div class="navbar-inner">
-	    <a class="brand" href="/"><img class="logo" src="{% static "rattic/img/logo.png" %}" /><span class="hidden-phone"> RatticDB</span></a>
+	    <a class="brand" href="{% url_root %}"><img class="logo" src="{% static "rattic/img/logo.png" %}" /><span class="hidden-phone"> RatticDB</span></a>
 
         <ul class="nav visible-desktop">
           <li {% if pageurl == cred_views_list %}class="active"{% endif %}><a href="{{ cred_views_list }}">Passwords</a></li>
