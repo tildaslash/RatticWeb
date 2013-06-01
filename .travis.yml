@@ -17,6 +17,7 @@ before_script:
   - "pep8 --exclude=migrations,lib --ignore=E501,E225,E128,E124 ."
   - mysql -e 'create database IF NOT EXISTS rattic;'
   - "xdpyinfo"
+  - "firefox -v"
 script:
   - python manage.py test
   - cp docs/travis/ldap.cfg conf/local.cfg
