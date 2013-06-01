@@ -1,5 +1,6 @@
 {% load url from future %}
 {% load static from staticfiles %}
+{% load url_root from ratticweb %}
 <!DOCTYPE html>
 <html lang="en">
 <!--
@@ -13,6 +14,7 @@
   <link href="{% static "rattic/css/base.css" %}" rel="stylesheet" media="screen">
   <link href="{% static "chosen/500c34bc/css/chosen.css" %}" rel="stylesheet" media="screen">
   <script src="{% static "modernizr/2.6.2/modernizr.js" %}" ></script>
+  <script> var url_root = "{% url_root %}" </script>
   <link href="{% static "favicon.ico" %}" rel="shortcut icon">
 </head>
 <body>

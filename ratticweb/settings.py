@@ -95,8 +95,10 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'ratticweb.urls'
 
 # Urls
-MEDIA_URL = '/media/'
-STATIC_URL = '/static/'
+RATTIC_ROOT_URL = confget('ratticweb', 'urlroot', '/')
+MEDIA_URL = RATTIC_ROOT_URL +'media/'
+STATIC_URL = RATTIC_ROOT_URL +'static/'
+
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'ratticweb.wsgi.application'
@@ -172,8 +174,8 @@ CRED_ICON_SPRITE = 'rattic/img/sprite.png'
 CRED_ICON_BASEDIR = 'rattic/img/credicons'
 CRED_ICON_CLEAR = 'rattic/img/clear.gif'
 
-LOGIN_REDIRECT_URL = "/cred/list/"
-LOGIN_URL = "/account/login/"
+LOGIN_REDIRECT_URL = RATTIC_ROOT_URL +"cred/list/"
+LOGIN_URL = RATTIC_ROOT_URL +"account/login/"
 
 AUTH_LDAP_USER_ATTR_MAP = {"email": "mail", }
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {}
