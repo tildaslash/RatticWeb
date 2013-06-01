@@ -12,7 +12,6 @@ BuildRequires:  python Django14 Django-south httpd mod_wsgi mod_ssl MySQL-python
 BuildRequires:  python-mimeparse python-six python-crypto
 BuildRequires:  python-pip
 Requires:       python Django14 Django-south httpd mod_wsgi mod_ssl MySQL-python
-BuildRequires:  python-mimeparse python-six python-crypto
 
 %description
 
