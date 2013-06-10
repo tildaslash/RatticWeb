@@ -16,7 +16,7 @@ function getCookie(name) {
 
 function credsearch() {
     var searchstr = document.forms["search"]["box"].value
-    window.location = "/cred/list-by-search/" + searchstr + "/";
+    window.location = url_root + "cred/list-by-search/" + searchstr + "/";
     return false;
 }
 
@@ -63,7 +63,7 @@ function createGroup(name, successcallback, failurecallback) {
     });
 
     return $.ajax({
-        url: '/api/v1/group/',
+        url: url_root + 'api/v1/group/',
         type: 'POST',
         contentType: 'application/json',
         beforeSend: function(jqXHR, settings) {
@@ -83,7 +83,7 @@ function getCred(id, successcallback, failurecallback) {
     }
     if ( typeof getCred.cred[id] == 'undefined' ) {
         $.ajax({
-            url: '/api/v1/cred/' + id + '/',
+            url: url_root + 'api/v1/cred/' + id + '/',
             type: 'GET',
             contentType: 'application/json',
             beforeSend: function(jqXHR, settings) {
@@ -106,7 +106,7 @@ function getCredWait(id) {
     }
     if ( typeof getCred.cred[id] == 'undefined' ) {
         getCred.cred[id] = $.parseJSON($.ajax({
-            url: '/api/v1/cred/' + id + '/',
+            url: url_root + 'api/v1/cred/' + id + '/',
             type: 'GET',
             contentType: 'application/json',
             beforeSend: function(jqXHR, settings) {
