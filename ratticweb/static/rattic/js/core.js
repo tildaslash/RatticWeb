@@ -24,7 +24,7 @@ function showpass(){
     if ( typeof showpass.password == 'undefined' ) {
         getCred(credId, function(data){
             showpass.password = data['password'];
-            $('span#password').html(showpass.password);
+            $('span#password').text(showpass.password);
             showpass();
         }, function(){});
     } else {
