@@ -77,6 +77,13 @@ class TestData:
         self.tagcred.save()
         self.tagcred.tags.add(self.tag)
         self.tagcred.save()
+        self.injectcred = Cred(
+            title='<script>document.write("BADTITLE!")</script>Bold!',
+            username='<script>document.write("BADUNAME!")</script>Italics!',
+            password='<script>document.write("BADPWD!")</script>Test',
+            group=self.group
+        )
+        self.injectcred.save()
 
         CredChangeQ.objects.add_to_changeq(self.cred)
 
