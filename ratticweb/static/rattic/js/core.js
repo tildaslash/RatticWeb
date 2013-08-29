@@ -182,7 +182,7 @@ $(document).ready(function(){
             getCred(credId, function(data){
                 clip.setText(data['password']);
                 $('button#copyclipboard').css({visibility: "visible"})
-                $('span#password').html(data['password']);
+                $('span#password').text(data['password']);
             }, function(){})
         });
 
