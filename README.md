@@ -25,13 +25,7 @@ Support and Known Issues:
 * Through <a href="http://twitter.com/RatticDB">twitter</a> or <a href="https://github.com/tildaslash/RatticWeb/issues?state=open">Github Issues</a>
 * Apache config needs to have "WSGIPassAuthorization On" for the API keys to work  
 
-Dev Setup:
-* Install requirements, if you need help seek out pydocs and your OS documentation. 
-* Checkout the code
-* ```mkdir db```
-* ```./manage.py syncdb```
-* ```./manage.py migrate```
-* ```./manage.py runserver```
+Dev Setup: <https://github.com/tildaslash/RatticWeb/wiki/Development>
 
 If you want to edit the help files:
 * Clone the wiki files from ```git@github.com:tildaslash/RatticWeb.wiki.git```
