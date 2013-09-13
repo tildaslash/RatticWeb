@@ -171,7 +171,25 @@ $(document).ready(function(){
         });
     }
 
-    if ($("copyclipboard").length = 1){
+    if ($("copyuser").length = 1 && FlashDetect.installed){
+        var clipuser = new ZeroClipboard($("#copyuser"));
+
+        $('#username').on('mouseover', function(){
+            getCred(credId, function(data){
+                $('button#copyuser').css({visibility: "visible"})
+            }, function(){})
+        });
+
+        $('#usertd').on('mouseleave', function(){
+            $('button#copyuser').css({visibility: 'hidden'})
+        });
+
+        clipuser.on('mouseover', function(){
+            $('button#copyuser').css({visibility: "visible"})
+        })
+    }
+
+    if ($("copyclipboard").length = 1 && FlashDetect.installed){
         var clip = new ZeroClipboard($("#copyclipboard"));
 
         clip.on( 'dataRequested', function ( client, args ) {
