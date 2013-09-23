@@ -12,6 +12,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 import datetime
 from django.utils.timezone import now
+from django.utils.timezone import utc
 
 
 @staff_member_required
@@ -127,8 +128,12 @@ def audit_by_user(request, user_id):
 
 @staff_member_required
 def audit_by_days(request, days_ago):
-    delta = datetime.timedelta(days=int(days_ago))
-    alllogs = CredAudit.objects.filter(time__gte=now() - delta)
+    try:
+      delta = datetime.timedelta(days=int(days_ago))
+      datefrom = now() - delta
+    except OverflowError:
+      datefrom = datetime.date(1970, 1, 1)
+    alllogs = CredAudit.objects.filter(time__gte=datefrom)
 
     paginator = Paginator(alllogs, request.user.profile.items_per_page)
     page = request.GET.get('page')
