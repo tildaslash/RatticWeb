@@ -111,6 +111,17 @@ class StaffViewTests(TestCase):
         self.assertIn(self.data.logadd, loglist)
         self.assertIn(self.data.logview, loglist)
 
+    def test_audit_by_largedays(self):
+        resp = self.data.staff.get(reverse('staff.views.audit_by_days',
+            args=(9999999999999,)))
+        self.assertEqual(resp.status_code, 200)
+        days_ago = resp.context['days_ago']
+        loglist = resp.context['logs'].object_list
+        self.assertEqual(int(days_ago), 9999999999999)
+        self.assertEqual(resp.context['type'], 'time')
+        self.assertIn(self.data.logadd, loglist)
+        self.assertIn(self.data.logview, loglist)
+
     @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_NewUser(self):
         resp = self.data.staff.get(reverse('user_add'))
