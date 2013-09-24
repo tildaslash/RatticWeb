@@ -15,6 +15,9 @@
 {% if not cred.is_latest %}
 <div class="alert alert-info"><strong>Hey there!</strong> This credential is an historical version. <a href="{% url 'cred.views.detail' cred.latest.id %}">Click here</a> to see the latest version.</div>
 {% endif %}
+{% if cred.on_changeq %}
+<div class="alert alert-warning"><strong>Change Required</strong> This credential is on the change queue and should have its password changed as soon as possible. Why not do it now?</div>
+{% endif %}
 {% if cred.is_latest %}
 <p><div class="btn-group">
     <a class="btn" href="{% url 'cred.views.edit' cred.id %}">Edit</a>
