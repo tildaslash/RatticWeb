@@ -14,6 +14,18 @@ function getCookie(name) {
     return cookieValue;
 }
 
+function randomstring(sourcechars) {
+    var charcount = sourcechars.length;
+    var strout = ""
+
+    for (var x = 0; x < 10; x++) {
+        charnum = Math.abs(sjcl.random.randomWords(1)[0]) % charcount;
+        strout += sourcechars[charnum];
+    }
+
+    return strout;
+}
+
 function credsearch() {
     var searchstr = document.forms["search"]["box"].value
     window.location = url_root + "cred/list-by-search/" + searchstr + "/";
