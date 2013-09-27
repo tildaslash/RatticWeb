@@ -470,6 +470,45 @@ class JavascriptTests(LiveServerTestCase):
         # Check password is visible
         self.assertTrue('passhidden' not in elempass.get_attribute('class'))
 
+    def test_password_edit(self):
+        self.login_as(self.data.unorm.username, self.data.normpass)
+        self.selenium.get('%s%s' % (self.live_server_url,
+            reverse('cred.views.edit', args=(self.data.cred.id,))))
+        self.waitforload()
+        elempass = self.selenium.find_element_by_id('id_password')
+        currpass = elempass.get_attribute('value')
+        # Check password
+        self.assertEqual(currpass, self.data.cred.password)
+        # Check password is hidden
+        self.assertEqual(elempass.get_attribute('type'), 'password')
+        # Click show button
+        self.selenium.find_element_by_id('passtoggle').click()
+        # Check password is visible
+        self.assertEqual(elempass.get_attribute('type'), 'text')
+        # Click hide button
+        self.selenium.find_element_by_id('passtoggle').click()
+        # Check password is hidden
+        self.assertEqual(elempass.get_attribute('type'), 'password')
+
+    def test_password_generator(self):
+        self.login_as(self.data.unorm.username, self.data.normpass)
+        self.selenium.get('%s%s' % (self.live_server_url,
+            reverse('cred.views.edit', args=(self.data.cred.id,))))
+        self.waitforload()
+        elempass = self.selenium.find_element_by_id('id_password')
+        # Check password is hidden
+        self.assertEqual(elempass.get_attribute('type'), 'password')
+        # Get password
+        currpass = elempass.get_attribute('value')
+        # Check password
+        self.assertEqual(currpass, self.data.cred.password)
+        # Generate new password
+        self.selenium.find_element_by_id('newpassword').click()
+        # Check password
+        currpass = elempass.get_attribute('value')
+        self.assertNotEqual(currpass, self.data.cred.password)
+        self.assertEqual(len(currpass), 12)
+
     def test_script_injection(self):
         timeout = 4
         self.login_as(self.data.unorm.username, self.data.normpass)
