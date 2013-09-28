@@ -494,7 +494,6 @@ class JavascriptTests(LiveServerTestCase):
         WebDriverWait(self.selenium, timeout).until(
             lambda driver: driver.find_element_by_id('id_password').get_attribute('type') == 'password')
 
-    @unittest.expectedFailure
     def test_password_generator(self):
         timeout = 4
         self.login_as(self.data.unorm.username, self.data.normpass)
@@ -508,9 +507,14 @@ class JavascriptTests(LiveServerTestCase):
         currpass = elempass.get_attribute('value')
         # Check password
         self.assertEqual(currpass, self.data.cred.password)
-        # Generate new password
-        self.selenium.find_element_by_id('newpassword').click()
-        # Check password
+        # Show Dialog
+        self.selenium.find_element_by_id('genpass').click()
+        # Wait for dialog
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_id('genpassconfirm').is_displayed())
+        # Generate password
+        self.selenium.find_element_by_id('genpassconfirm').click()
+        # Wait for dialog
         WebDriverWait(self.selenium, timeout).until(
             lambda driver: driver.find_element_by_id('id_password').get_attribute('value') != self.data.cred.password)
         currpass = elempass.get_attribute('value')
