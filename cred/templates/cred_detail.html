@@ -19,7 +19,7 @@
 <div class="alert alert-warning"><strong>Change Required</strong> This credential is on the change queue and should have its password changed as soon as possible. Why not do it now?</div>
 {% endif %}
 {% if cred.is_latest %}
-<p><div class="btn-group">
+<div class="btn-group">
     <a class="btn" href="{% url 'cred.views.edit' cred.id %}">Edit</a>
     <a class="btn" href="{% url 'cred.views.list' 'history' cred.id 'ascending' 'id' %}">History</a>
     {% if not delete %}<a class="btn btn-danger" href="{% url 'cred.views.delete' cred.id %}">Delete</a>{% endif %}
@@ -29,7 +29,8 @@
     {% if cred.is_deleted and not undelete %}
     <a class="btn btn-success" href="{% url 'staff.views.credundelete' cred.id %}">Undelete</a>
     {% endif %}
-</div></p>
+</div>
+<p></p>
 {% endif %}
 <table class="table table-striped table-bordered table-condensed">
 {% if cred.url %}<tr><th>URL</th><td><a href="{{ cred.url }}">{{ cred.url }}</a></td></tr>{% endif %}
