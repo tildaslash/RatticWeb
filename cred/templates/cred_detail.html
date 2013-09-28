@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load cred_markdown %}
+
 {% block content %}
 <script>
   var credId = {{ cred.id }};
@@ -56,10 +58,19 @@
 <tr><th>Tags</th><td>{% for t in cred.tags.all %}<a href="{% url 'cred.views.list' 'tag' t.id %}">{{ t.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</td></tr>
 <tr><th>Created:</th><td>{{ cred.created }}</td></tr>
 </table>
+
+
+
 <strong>Description:</strong>
-<pre>
-{{ cred.description }}
-</pre>
+{% if cred.descriptionmarkdown %}
+  <div class="creddescription">
+   {% markdown_cred cred.description %}
+  </div>
+{% else %}
+  <pre>{{ cred.description }}</pre>
+{% endif %}
+
+
 {% if delete %}
     <form action="" method="post">{% csrf_token %}
         <input type="submit" class="btn btn-danger" value="Delete" />

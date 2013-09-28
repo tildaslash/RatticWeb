@@ -49,6 +49,16 @@ img.logo {
     margin: 20px 0;
 }
 
+.creddescription {
+    background-color: #F5F5F5;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px 4px 4px 4px;
+    margin: 0 0 10px;
+    padding: 9.5px;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
 
 /* Sticky footer styles */
 html,

@@ -62,13 +62,14 @@ class SearchManager(models.Manager):
 
 
 class Cred(models.Model):
-    METADATA = ('description', 'group', 'tags', 'iconname')
+    METADATA = ('description', 'descriptionmarkdown', 'group', 'tags', 'iconname')
     objects = SearchManager()
 
     title = models.CharField(max_length=64)
     url = models.URLField(blank=True, null=True)
     username = models.CharField(max_length=250, blank=True, null=True)
     password = models.CharField(max_length=250)
+    descriptionmarkdown = models.BooleanField(default=False, verbose_name='Markdown Description')
     description = models.TextField(blank=True, null=True)
     group = models.ForeignKey(Group)
     tags = models.ManyToManyField(Tag, related_name='child_creds', blank=True, null=True, default=None)
