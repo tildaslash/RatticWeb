@@ -15,7 +15,21 @@ function getCookie(name) {
 }
 
 function genpassword() {
-    $("input#id_password").val(randomstring(12, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+    var canset = [];
+    var mustset = [];
+    var passlength = parseInt($("#txt_length").val());
+
+    for(var key in pass_settings) {
+        if ($('#chk_must_' + key).is(":checked")) {
+            mustset.push(key);
+        }
+
+        if ($('#chk_can_' + key).is(":checked")) {
+            canset.push(key);
+        }
+    }
+
+    $("input#id_password").val(make_password(passlength, canset, mustset));
 }
 
 function credsearch() {
