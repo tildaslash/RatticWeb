@@ -16,6 +16,18 @@ var pass_settings = {
     "candefault": true,
     "mustdefault": false,
     "set": "0123456789"
+  },
+  "special": {
+    "description": "Special",
+    "candefault": false,
+    "mustdefault": false,
+    "set": "!@#$%^&*()_-+=:;\"',.<>?/\|"
+  },
+  "spaces": {
+    "description": "Spaces",
+    "candefault": false,
+    "mustdefault": false,
+    "set": " "
   }
 }
 
