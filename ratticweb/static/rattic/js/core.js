@@ -14,18 +14,6 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function randomstring(length, sourcechars) {
-    var charcount = sourcechars.length;
-    var strout = ""
-
-    for (var x = 0; x < length; x++) {
-        charnum = Math.abs(sjcl.random.randomWords(1)[0]) % charcount;
-        strout += sourcechars[charnum];
-    }
-
-    return strout;
-}
-
 function genpassword() {
     $("input#id_password").val(randomstring(12, "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"));
 }
