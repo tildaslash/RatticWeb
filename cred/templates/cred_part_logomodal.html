@@ -1,0 +1,19 @@
+{% load credicons %}
+
+<div id='logoModal' class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Icons</h3>
+    </div>
+    <div class="modal-body">
+        <div style="width: 540px">
+            {% for icon in icons %}
+                {% cred_icon icon field.html_name %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    </div>
+</div>
+

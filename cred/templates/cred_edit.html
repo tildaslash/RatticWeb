@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% load url from future %}
-{% load credicons %}
 
 {% block content %}
 
 {% include "staff_part_addgroupmodal.html" %}
 {% include "cred_part_passgenmodal.html" %}
+{% include "cred_part_logomodal.html" %}
 
 <form class="form-horizontal"  autocomplete="off" action="{{ action }}{% if next %}?next={{ next }}{% endif %}" method="post">{% csrf_token %}
     {% for field in form %}
@@ -13,37 +13,18 @@
             {{ field.errors }}
             <label class="control-label" for="{{ field.html_name }}">{{ field.label }}</label>
             <div class="controls">
-                {% if field.html_name == 'iconname' %}
-                    <input type='hidden' name='{{ field.html_name }}' id='id_{{ field.html_name }}' value='{{ field.value }}' />
-                    <a href="#logoModal" role="button" class="btn" data-toggle="modal">Choose</a>
-                    {% comment %}
-                      TODO: Split this modal out into a seperate file
-                    {% endcomment %}
-                    <div id='logoModal' class="modal hide fade">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h3>Icons</h3>
-                        </div>
-                        <div class="modal-body">
-                            <div style="width: 540px">
-                                {% for icon in icons %}
-                                    {% cred_icon icon field.html_name %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                        </div>
-                    </div>
-        {% elif field.html_name == 'password' %}
-            <div class="input-append">
-              <input id="id_password" name="password" value="{% if field.value %}{{ field.value }}{% endif %}" maxlength="250" type="password">
-              <button class="btn" id="passtoggle" type="button" onclick="togglepassinput()"><i class="icon-eye-open"></i></button>
-              <a class="btn" role="button" href="#passgenmodal" data-toggle="modal" id="genpass" ><i class="icon-repeat"></i></a>
-                    </div>
-        {% else %}
-            {{ field }}
-                {% endif %}
+            {% if field.html_name == 'iconname' %}
+              <input type='hidden' name='{{ field.html_name }}' id='id_{{ field.html_name }}' value='{{ field.value }}' />
+              <a href="#logoModal" role="button" class="btn" data-toggle="modal">Choose</a>
+            {% elif field.html_name == 'password' %}
+              <div class="input-append">
+                <input id="id_password" name="password" value="{% if field.value %}{{ field.value }}{% endif %}" maxlength="250" type="password">
+                <button class="btn" id="passtoggle" type="button" onclick="togglepassinput()"><i class="icon-eye-open"></i></button>
+                <a class="btn" role="button" href="#passgenmodal" data-toggle="modal" id="genpass" ><i class="icon-repeat"></i></a>
+              </div>
+            {% else %}
+                {{ field }}
+            {% endif %}
             </div>
         </div>
     {% endfor %}
