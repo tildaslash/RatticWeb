@@ -12,6 +12,7 @@ from ratticweb.tests import TestData
 from cred.icon import get_icon_data
 
 from selenium.webdriver.firefox.webdriver import WebDriver
+from selenium.webdriver.firefox.webdriver import FirefoxProfile
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
@@ -415,7 +416,9 @@ class JavascriptTests(LiveServerTestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.selenium = WebDriver()
+        ffp = FirefoxProfile()
+        ffp.native_events_enabled = True
+        cls.selenium = WebDriver(ffp)
         super(JavascriptTests, cls).setUpClass()
 
     @classmethod
