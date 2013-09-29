@@ -14,7 +14,7 @@ txtfield - The name of the field to put the chosen icon name in.
     <div class="modal-body">
         <div style="width: 540px">
             {% for icon in icons %}
-                {% cred_icon icon 'logocallback' %}
+                {% cred_icon icon callback='logocallback' tagname='logomodalimg' tagnumber=forloop.counter %}
             {% endfor %}
         </div>
     </div>

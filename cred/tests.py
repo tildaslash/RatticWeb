@@ -4,9 +4,12 @@ from django.test import TestCase, Client, LiveServerTestCase
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.test.utils import override_settings
+from django.conf import settings
 
 from models import Cred, Tag
 from ratticweb.tests import TestData
+
+from cred.icon import get_icon_data
 
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.common.action_chains import ActionChains
@@ -493,6 +496,44 @@ class JavascriptTests(LiveServerTestCase):
         # Check password is hidden
         WebDriverWait(self.selenium, timeout).until(
             lambda driver: driver.find_element_by_id('id_password').get_attribute('type') == 'password')
+
+    def test_password_edit_logo(self):
+        timeout = 4
+        self.login_as(self.data.unorm.username, self.data.normpass)
+        self.selenium.get('%s%s' % (self.live_server_url,
+            reverse('cred.views.edit', args=(self.data.cred.id,))))
+        self.waitforload()
+        elemlogo = self.selenium.find_element_by_id('id_iconname')
+        currlogo = elemlogo.get_attribute('value')
+        # Check Logo
+        self.assertEqual(currlogo, self.data.cred.iconname)
+        # Click change logo button
+        self.selenium.find_element_by_id('choosebutton').click()
+        # Wait for dialog
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: driver.find_element_by_id('logomodalimg_3').is_displayed())
+        # Pick the third logo
+        self.selenium.find_element_by_id('logomodalimg_3').click()
+        # Wait for dialog to go
+        WebDriverWait(self.selenium, timeout).until(
+            lambda driver: not driver.find_element_by_id('logomodalimg_3').is_displayed())
+        # Check the new iconname is in the list
+        iconname = self.selenium.find_element_by_id('id_iconname').get_attribute('value')
+        icondata = get_icon_data()[iconname]
+        # Validate the logo is shown correctly
+        logodisplay = self.selenium.find_element_by_id('logodisplay')
+        logocss = logodisplay.get_attribute('style')
+        spritelocation = settings.STATIC_URL + settings.CRED_ICON_SPRITE
+        self.assertRegexpMatches(logocss, r'width:\W+' + str(icondata['width']) + r'px;')
+        self.assertRegexpMatches(logocss, r'height:\W+' + str(icondata['height']) + r'px;')
+        self.assertRegexpMatches(logocss, r'background:\W+url\("' + spritelocation + r'"\)\W+repeat\W+scroll\W+-?'
+                                          + str(icondata['xoffset']) + r'px\W+-?' + str(icondata['yoffset']) + r'px\W+transparent;')
+        # Save the credential
+        self.selenium.find_element_by_id('credsave').click()
+        self.waitforload()
+        # Check it has the right data now
+        chgcred = Cred.objects.get(id=self.data.cred.id)
+        self.assertEqual(chgcred.iconname, iconname)
 
     @unittest.expectedFailure
     def test_password_generator(self):

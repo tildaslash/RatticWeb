@@ -15,7 +15,7 @@ register = template.Library()
 
 
 @register.simple_tag
-def cred_icon(iconname, callback=None, tagid=None):
+def cred_icon(iconname, callback=None, tagid=None, tagname=None, tagnumber=None):
     cred_icon.count += 1
 
     try:
@@ -30,7 +30,9 @@ def cred_icon(iconname, callback=None, tagid=None):
     style = 'style="' + stylesize + stylebg + '"'
     src = 'src="' + settings.STATIC_URL + settings.CRED_ICON_CLEAR + '"'
 
-    if tagid is None:
+    if tagid is None and tagname is not None and tagnumber is not None:
+      tagid = tagname + '_' + str(tagnumber)
+    elif tagid is None and (tagname is None or tagnumber is None):
       tagid = 'credicon_' + str(cred_icon.count)
 
     if callback is None:
