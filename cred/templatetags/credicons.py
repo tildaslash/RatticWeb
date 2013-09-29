@@ -31,14 +31,14 @@ def cred_icon(iconname, callback=None, tagid=None, tagname=None, tagnumber=None)
     src = 'src="' + settings.STATIC_URL + settings.CRED_ICON_CLEAR + '"'
 
     if tagid is None and tagname is not None and tagnumber is not None:
-      tagid = tagname + '_' + str(tagnumber)
+        tagid = tagname + '_' + str(tagnumber)
     elif tagid is None and (tagname is None or tagnumber is None):
-      tagid = 'credicon_' + str(cred_icon.count)
+        tagid = 'credicon_' + str(cred_icon.count)
 
     if callback is None:
-      onclick=''
+        onclick=''
     else:
-      onclick='onclick="' + callback + '(\'' + iconname + '\', \'' + tagid + '\')"'
+        onclick='onclick="' + callback + '(\'' + iconname + '\', \'' + tagid + '\')"'
 
     return '<img id="%s" %s %s %s %s>' % (tagid, alt, style, src, onclick)
 
