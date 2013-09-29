@@ -15,7 +15,9 @@ register = template.Library()
 
 
 @register.simple_tag
-def cred_icon(iconname, field=None):
+def cred_icon(iconname, callback=None, tagid=None):
+    cred_icon.count += 1
+
     try:
         data = get_icon_data()[iconname]
     except KeyError:
@@ -28,9 +30,14 @@ def cred_icon(iconname, field=None):
     style = 'style="' + stylesize + stylebg + '"'
     src = 'src="' + settings.STATIC_URL + settings.CRED_ICON_CLEAR + '"'
 
-    onclick = ''
+    if tagid is None:
+      tagid = 'credicon_' + str(cred_icon.count)
 
-    if field is not None:
-        onclick = 'onclick="$(\'input#id_%s\').val(\'%s\');$(\'#logoModal\').modal(\'hide\')"' % (field, iconname)
+    if callback is None:
+      onclick=''
+    else:
+      onclick='onclick="' + callback + '(\'' + iconname + '\', \'' + tagid + '\')"'
 
-    return '<img %s %s %s %s>' % (alt, style, src, onclick)
+    return '<img id="%s" %s %s %s %s>' % (tagid, alt, style, src, onclick)
+
+cred_icon.count = 0

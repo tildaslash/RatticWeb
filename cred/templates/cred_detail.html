@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 {% load url from future %}
 {% load cred_markdown %}
+{% load credicons %}
 
 {% block content %}
 <script>
   var credId = {{ cred.id }};
 </script>
 
-<h1>{{ cred.title }}</h1>
+<h1>{% cred_icon cred.iconname %} {{ cred.title }}</h1>
 {% if delete %}
 <div class="alert alert-error">You are about to delete this password. A staff member will be required if you want to undelete it.</div>
 {% endif %}
