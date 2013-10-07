@@ -7,9 +7,10 @@ env:
   - DJANGO=1.4.5
   - DJANGO=1.5
 install:
+  - "sudo apt-get update"
+  - "sudo apt-get install -qq slapd ldap-utils"
   - pip install -r requirements.txt --use-mirrors
 before_script:
-  - "sudo apt-get install -qq slapd ldap-utils"
   - "pushd docs/ldap; DEBUG=true ./startldap.sh; popd"
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
