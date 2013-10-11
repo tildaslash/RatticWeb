@@ -3,6 +3,8 @@
 {% load cred_markdown %}
 {% load credicons %}
 
+{% block title %}Rattic - {{ cred.title }}{% endblock %}
+
 {% block content %}
 <script>
   var credId = {{ cred.id }};

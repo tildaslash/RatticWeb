@@ -2,6 +2,8 @@
 {% load url from future %}
 {% load credicons %}
 
+{% block title %}Rattic - {{ credtitle }}{% endblock %}
+
 {% block content %}
 {% if not hidecredlist %}
 <h1>{{ credtitle }}</h1>
