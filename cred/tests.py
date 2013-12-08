@@ -145,6 +145,22 @@ class CredViewTests(TestCase):
         credlist = resp.context['credlist'].object_list
         self.assertTrue(self.data.cred in credlist)
 
+    def test_list_sorting(self):
+        resp = self.data.norm.get(reverse('cred.views.list',
+                args=('special', 'all', 'ascending', 'title', 1)))
+        self.assertEqual(resp.status_code, 200)
+        credlist = resp.context['credlist'].object_list
+        self.assertTrue(self.data.cred in credlist)
+        it = iter(credlist)
+        last = it.next()
+        while True:
+            try:
+                current = it.next()
+                self.assertGreaterEqual(current.title, last.title)
+                last = current
+            except StopIteration:
+                break
+
     def test_list_staff(self):
         resp = self.data.staff.get(reverse('cred.views.list'))
         self.assertEqual(resp.status_code, 200)
