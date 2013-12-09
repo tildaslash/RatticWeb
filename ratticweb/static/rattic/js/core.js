@@ -224,7 +224,7 @@ $(document).ready(function(){
         });
     }
 
-    if ($("copyuser").length = 1 && FlashDetect.installed){
+    if ($("#copyuser").length == 1 && FlashDetect.installed){
         var clipuser = new ZeroClipboard($("#copyuser"));
 
         $('#username').on('mouseover', function(){
@@ -242,27 +242,29 @@ $(document).ready(function(){
         })
     }
 
-    if ($("copyclipboard").length = 1 && FlashDetect.installed){
+    if ($("#copyclipboard").length == 1){
         var clip = new ZeroClipboard($("#copyclipboard"));
 
         clip.on( 'dataRequested', function ( client, args ) {
-            clip.setText(getCredWait(credId)['password']);
+            if (FlashDetect.installed) clip.setText(getCredWait(credId)['password']);
         } );
 
         $('#password').on('mouseover', function(){
             getCred(credId, function(data){
-                clip.setText(data['password']);
-                $('button#copyclipboard').css({visibility: "visible"})
+                if (FlashDetect.installed) {
+                    clip.setText(data['password']);
+                    $('button#copyclipboard').css({visibility: "visible"})
+                }
                 $('span#password').text(data['password']);
             }, function(){})
         });
 
         $('#passtd').on('mouseleave', function(){
-            $('button#copyclipboard').css({visibility: 'hidden'})
+            if (FlashDetect.installed) $('button#copyclipboard').css({visibility: 'hidden'})
         });
 
         clip.on('mouseover', function(){
-            $('button#copyclipboard').css({visibility: "visible"})
+            if (FlashDetect.installed) $('button#copyclipboard').css({visibility: "visible"})
         })
     }
 });
