@@ -12,7 +12,6 @@
          {% empty %}
          <p>Add Favourite Tags on the <a href="{% url 'account.views.profile' %}">profile</a> page to see them here.</p>
          {% endfor %}
-         <a class="btn" href="{% url "cred.views.tagadd" %}"><i class="icon-plus"></i> Add Tag</a>
      {% endif %}
 {% else %}
     <h4>Login</h4>
