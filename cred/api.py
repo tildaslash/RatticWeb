@@ -37,6 +37,7 @@ class CredAuthorization(Authorization):
     def delete_detail(self, object_list, bundle):
         raise Unauthorized("Not yet implemented.")
 
+
 class TagAuthorization(Authorization):
     def read_list(self, object_list, bundle):
         return object_list
@@ -63,6 +64,7 @@ class TagAuthorization(Authorization):
 
     def delete_detail(self, object_list, bundle):
         raise Unauthorized("Not yet implemented.")
+
 
 class CredResource(ModelResource):
     def get_object_list(self, request):
@@ -94,4 +96,3 @@ class TagResource(ModelResource):
         resource_name = 'tag'
         authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
         authorization = TagAuthorization()
-
