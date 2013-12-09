@@ -8,7 +8,7 @@
      <h4><a href="{% url "cred.views.tags"  %}">Tags</a></h4>
      {% if user.is_authenticated %}
          {% for tag in user.profile.favourite_tags.all %}
-         <p><a href="{% url "cred.views.tagdelete" tag.id %}"><i class="icon-minus"></i> </a><a href="{% url "cred.views.list" "tag" tag.id %}">{{ tag.name }}</a></p>
+         <p><i class="icon-minus"></i> <a href="{% url "cred.views.list" "tag" tag.id %}">{{ tag.name }}</a></p>
          {% empty %}
          <p>Add Favourite Tags on the <a href="{% url 'account.views.profile' %}">profile</a> page to see them here.</p>
          {% endfor %}
