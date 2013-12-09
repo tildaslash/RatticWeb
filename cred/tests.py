@@ -449,7 +449,7 @@ class JavascriptTests(LiveServerTestCase):
         self.waitforload()
 
     def test_search(self):
-        searchkey = "secret+\%$"
+        searchkey = "secret.password's\\test"
         self.login_as(self.data.unorm.username, self.data.normpass)
         self.selenium.get('%s%s' % (self.live_server_url, reverse('cred.views.list')))
         self.waitforload()
