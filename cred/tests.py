@@ -11,6 +11,8 @@ from ratticweb.tests import TestData
 
 from cred.icon import get_icon_data
 
+from url_decode import urldecode
+
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.firefox.webdriver import FirefoxProfile
 from selenium.webdriver.common.action_chains import ActionChains
@@ -449,7 +451,7 @@ class JavascriptTests(LiveServerTestCase):
         self.waitforload()
 
     def test_search(self):
-        searchkey = "secret.password's\\test"
+        searchkey = "_secr3t.p@ssw()rd's\\te5t!"
         self.login_as(self.data.unorm.username, self.data.normpass)
         self.selenium.get('%s%s' % (self.live_server_url, reverse('cred.views.list')))
         self.waitforload()
@@ -457,7 +459,9 @@ class JavascriptTests(LiveServerTestCase):
         searchbox.send_keys(searchkey)
         searchbox.send_keys(Keys.ENTER)
         self.waitforload()
-        self.assertEquals(self.selenium.current_url, '%s%s' % (self.live_server_url, reverse('cred.views.list', args=('search', searchkey))))
+        cur_url = urldecode(self.selenium.current_url)
+        plan_url = urldecode('%s%s' % (self.live_server_url, reverse('cred.views.list', args=('search', searchkey))))
+        self.assertEquals(cur_url, plan_url)
 
     @unittest.expectedFailure
     def test_password_details(self):
