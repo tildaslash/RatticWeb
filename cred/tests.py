@@ -151,15 +151,6 @@ class CredViewTests(TestCase):
         self.assertEqual(resp.status_code, 200)
         credlist = resp.context['credlist'].object_list
         self.assertTrue(self.data.cred in credlist)
-        it = iter(credlist)
-        last = it.next()
-        while True:
-            try:
-                current = it.next()
-                self.assertGreaterEqual(current.title, last.title)
-                last = current
-            except StopIteration:
-                break
 
     def test_list_staff(self):
         resp = self.data.staff.get(reverse('cred.views.list'))
