@@ -37,6 +37,32 @@ class CredAuthorization(Authorization):
     def delete_detail(self, object_list, bundle):
         raise Unauthorized("Not yet implemented.")
 
+class TagAuthorization(Authorization):
+    def read_list(self, object_list, bundle):
+        return object_list
+
+    def read_detail(self, object_list, bundle):
+        return True
+
+    def create_list(self, object_list, bundle):
+        # Assuming their auto-assigned to ``user``.
+        raise Unauthorized("Not yet implemented.")
+
+    def create_detail(self, object_list, bundle):
+        return True
+
+    def update_list(self, object_list, bundle):
+        raise Unauthorized("Not yet implemented.")
+
+    def update_detail(self, object_list, bundle):
+        raise Unauthorized("Not yet implemented.")
+
+    def delete_list(self, object_list, bundle):
+        # Sorry user, no deletes for you!
+        raise Unauthorized("Not yet implemented.")
+
+    def delete_detail(self, object_list, bundle):
+        raise Unauthorized("Not yet implemented.")
 
 class CredResource(ModelResource):
     def get_object_list(self, request):
@@ -67,3 +93,5 @@ class TagResource(ModelResource):
         queryset = Tag.objects.all()
         resource_name = 'tag'
         authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
+        authorization = TagAuthorization()
+

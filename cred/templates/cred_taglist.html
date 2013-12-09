@@ -1,4 +1,19 @@
 {% load url from future %}
-<ul>
-{% for t in tags %}<li><a href="{% url "cred.views.list" 'tag' t.id %}">{{ t.name }}</a></li>{% endfor %}
-</ul>
+
+{% include "cred_part_newtagmodal.html" %}
+
+<table class="table table-striped table-bordered table-condensed">
+<thead>
+    <tr><td colspan="3"><a class="btn" data-toggle="modal" href="#newtagmodal" >Add New</a></td></tr>
+    <tr><th>Name</th><th>Count</th><th>Actions</th></tr>
+</thead>
+<tbody>
+    {% for t in tags %}
+    <tr>
+        <td><a href="{% url "cred.views.list" 'tag' t.id %}">{{ t.name }}</a></td>
+        <td>{{ t.child_creds.count }}</td>
+        <td></td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>

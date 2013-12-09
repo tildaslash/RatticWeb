@@ -95,6 +95,26 @@ function createGroup(name, successcallback, failurecallback) {
     })
 }
 
+function createTag(name, successcallback, failurecallback) {
+    var data = JSON.stringify({
+        'name': name
+    });
+
+    return $.ajax({
+        url: url_root + 'api/v1/tag/',
+        type: 'POST',
+        contentType: 'application/json',
+        beforeSend: function(jqXHR, settings) {
+           jqXHR.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+        },
+        data: data,
+        dataType: 'json',
+        processData: false,
+        success: successcallback,
+        error: failurecallback,
+    })
+}
+
 function getCred(id, successcallback, failurecallback) {
     if ( typeof getCred.cred == 'undefined' ) {
         getCred.cred = [];
@@ -152,6 +172,21 @@ function createGroupModal() {
         },
         function(){
             $('#addGroup').modal('hide');
+        }
+    );
+
+    return false;
+}
+
+function createTagModal() {
+    ajax = createTag(
+        $("input#tagname").val(),
+        function(){
+            $('#newtagmodal').modal('hide');
+        },
+        function(){
+            $('#newtagmodal').modal('hide');
+            if (ajax.status == 201) document.location.reload();
         }
     );
 
