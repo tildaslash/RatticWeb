@@ -4,3 +4,5 @@ db/ratticdb
 .coverage
 build/rpm/out/*
 conf/local.cfg
+.vagrant
+vagrant_ansible_inventory_rattic

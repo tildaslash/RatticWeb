@@ -1,0 +1,110 @@
+---
+- hosts: rattic
+  vars:
+    release: "v0.13"
+  tasks:
+
+  - name: setup EPEL
+    action: command rpm -ivh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm creates=/etc/yum.repos.d/epel.repo
+
+  - name: install apache/mysql/python
+    action: yum name={{ item }} state=latest
+    notify:
+      - restart httpd
+      - restart mysql
+    with_items:
+      - httpd
+      - mod_wsgi
+      - mod_ssl
+      - MySQL-python
+      - mysql-server
+      - mysql-devel
+      - mysql
+      - git
+      - cryptsetup
+      - device-mapper
+      - util-linux
+      - python-virtualenv
+      - openldap-devel
+
+  - name: copy apache config
+    action: template src=files/httpd.conf.j2 dest=/etc/httpd/conf.d/rattic.conf
+    notify: reload httpd
+
+  - name: create apps dir
+    action: file dest=/opt/apps state=directory
+
+  - name: checkout RatticWeb.wiki
+    action: git repo=git://github.com/tildaslash/RatticWeb.wiki.git dest=/opt/apps/RatticWeb.wiki force=no version={{ release }}
+
+  - name: checkout RatticWeb
+    action: git repo=git://github.com/tildaslash/RatticWeb.git dest=/opt/apps/RatticWeb force=no version={{ release }}
+    notify:
+      - sync db
+      - migrate db
+      - generate static
+      - restart httpd
+
+  - name: Setup virtualenv
+    pip: requirements=/opt/apps/RatticWeb/requirements.txt virtualenv=/opt/apps/RatticWeb.venv
+    notify:
+      - restart httpd
+
+  - name: create static dir
+    action: file dest=/opt/apps/RatticWeb/static state=directory
+    notify: generate static
+
+  - name: encrypt swap
+    action: lineinfile dest=/etc/crypttab regexp="^swap" line="swap /dev/VolGroup/lv_swap /dev/urandom swap,cipher=aes-cbc-essiv:sha256"
+
+  - name: use encrypted swap
+    action: lineinfile dest=/etc/fstab regexp="swap.*swap.*defaults" line="/dev/mapper/swap none swap defaults 0 0"
+
+  - name: set mysql to start
+    action: service name=mysqld state=started enabled=yes
+
+  - name: set apache to start
+    action: service name=httpd state=started enabled=yes
+
+  - name: create MySQL database
+    action: mysql_db db=rattic state=present
+    notify:
+      - migrate db
+      - sync db
+      - create initial user
+
+  - name: remove MySQL test database
+    action: mysql_db db=test state=absent
+
+  - name: create MySQL user
+    action: mysql_user name=rattic password=allthepass priv=rattic.*:ALL state=present
+
+  - name: setup RatticWeb
+    action: copy src=files/local.cfg dest=/opt/apps/RatticWeb/conf/local.cfg
+    notify: restart httpd
+
+  - name: copy iptables
+    action: copy src=files/iptables dest=/etc/sysconfig/iptables
+    notify: restart iptables
+
+  handlers:
+  - name: generate static
+    django_manage: command=collectstatic virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
+  - name: sync db
+    django_manage: command=syncdb virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
+  - name: migrate db
+    django_manage: command=migrate virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
+  - name: create initial user
+    django_manage: command=demosetup virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
+  - name: restart httpd
+    action: service name=httpd state=restarted
+  - name: restart iptables
+    action: service name=iptables state=restarted
+  - name: reload httpd
+    action: service name=httpd state=reloaded
+  - name: restart mysql
+    action: service name=mysqld state=restarted
+  - name: reload mysql
+    action: service name=mysqld state=reloaded
+
+
