@@ -1,5 +1,6 @@
 from django.utils.cache import patch_cache_control
 
+
 class DisableClientSideCachingMiddleware(object):
     def process_response(self, request, response):
         patch_cache_control(response,
