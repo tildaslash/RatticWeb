@@ -463,7 +463,6 @@ class JavascriptTests(LiveServerTestCase):
         plan_url = urldecode('%s%s' % (self.live_server_url, reverse('cred.views.list', args=('search', searchkey))))
         self.assertEquals(cur_url, plan_url)
 
-    @unittest.expectedFailure
     def test_password_details(self):
         timeout = 4
         self.login_as(self.data.unorm.username, self.data.normpass)
