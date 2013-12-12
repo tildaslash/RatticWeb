@@ -3,9 +3,11 @@
 {% load url_root from ratticweb %}
 <!DOCTYPE html>
 <html lang="en">
+{% if TEMPLATE_DEBUG %}
 <!--
 {% debug %}
 -->
+{% endif %}
 <head>
   <title>{% block title %}Rattic{% endblock %}</title>
   <meta charset="utf-8" />

@@ -186,7 +186,7 @@ AUTH_LDAP_MIRROR_GROUPS=True
 ###############################
 
 # [ratticweb]
-DEBUG = config.getboolean('ratticweb', 'debug')
+DEBUG = confgetbool('ratticweb', 'debug', False)
 TEMPLATE_DEBUG = DEBUG
 TIME_ZONE = config.get('ratticweb', 'timezone')
 SECRET_KEY = config.get('ratticweb', 'secretkey')
