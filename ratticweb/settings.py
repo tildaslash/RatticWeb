@@ -4,7 +4,8 @@ import ldap
 from django_auth_ldap.config import LDAPSearch
 
 config = RawConfigParser()
-config.read(['conf/defaults.cfg', 'conf/local.cfg', '/etc/ratticweb.cfg'])
+config.readfp(open('conf/defaults.cfg'))
+config.read(['conf/local.cfg', '/etc/ratticweb.cfg'])
 
 
 def confget(section, var, default):
