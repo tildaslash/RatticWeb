@@ -36,14 +36,24 @@
 
   - name: checkout RatticWeb.wiki
     action: git repo=git://github.com/tildaslash/RatticWeb.wiki.git dest=/opt/apps/RatticWeb.wiki force=no version={{ release }}
+    when: release != "vagrant"
+
+  - name: checkout latest RatticWeb.wiki
+    action: git repo=git://github.com/tildaslash/RatticWeb.wiki.git dest=/opt/apps/RatticWeb.wiki force=no version=master
+    when: release == "vagrant"
 
   - name: checkout RatticWeb
-    action: git repo=git://github.com/tildaslash/RatticWeb.git dest=/opt/apps/RatticWeb force=no version={{ release }}
+    git: repo=git://github.com/tildaslash/RatticWeb.git dest=/opt/apps/RatticWeb force=no version={{ release }}
+    when: release != "vagrant"
     notify:
       - sync db
       - migrate db
       - generate static
       - restart httpd
+
+  - name: link to external RatticWeb
+    file: path=/opt/apps/RatticWeb state=link src=/vagrant
+    when: release == "vagrant"
 
   - name: Setup virtualenv
     pip: requirements=/opt/apps/RatticWeb/requirements.txt virtualenv=/opt/apps/RatticWeb.venv
@@ -80,7 +90,7 @@
     action: mysql_user name=rattic password=allthepass priv=rattic.*:ALL state=present
 
   - name: setup RatticWeb
-    action: copy src=files/local.cfg dest=/opt/apps/RatticWeb/conf/local.cfg
+    action: copy src=files/local.cfg dest=/etc/ratticweb.cfg
     notify: restart httpd
 
   - name: copy iptables

@@ -18,6 +18,7 @@ Vagrant.configure("2") do |config|
     config.vm.network :forwarded_port, host: 8443, guest: 443
     config.vm.provision :ansible do |ansible|
       ansible.playbook = "docs/ansible/rattic.play"
+      ansible.extra_vars = { release: "vagrant" }
       ansible.sudo = true
       ansible.host_key_checking = false
     end
