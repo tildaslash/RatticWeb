@@ -8,6 +8,9 @@ urlpatterns = patterns('cred.views',
     url(r'^list-by-(?P<cfilter>\w+)/(?P<value>[^/]*)/sort-(?P<sortdir>ascending|descending)-by-(?P<sort>\w+)/$', 'list'),
     url(r'^list-by-(?P<cfilter>\w+)/(?P<value>[^/]*)/sort-(?P<sortdir>ascending|descending)-by-(?P<sort>\w+)/page-(?P<page>\d+)/$', 'list'),
 
+    # Search dialog for mobile
+    url(r'^search/$', 'search'),
+
     # Single cred views
     url(r'^detail/(?P<cred_id>\d+)/$', 'detail'),
     url(r'^edit/(?P<cred_id>\d+)/$', 'edit'),

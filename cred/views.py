@@ -238,6 +238,11 @@ def delete(request, cred_id):
 
 
 @login_required
+def search(request):
+    return render(request, 'cred_search.html', {})
+
+
+@login_required
 def tagadd(request):
     if request.method == 'POST':
         form = TagForm(request.POST)

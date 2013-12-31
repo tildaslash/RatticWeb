@@ -32,8 +32,8 @@ function genpassword() {
     $("input#id_password").val(make_password(passlength, canset, mustset));
 }
 
-function credsearch() {
-    var searchstr = document.forms["search"]["box"].value
+function credsearch(form) {
+    var searchstr = form["box"].value
     window.location = url_root + "cred/list-by-search/" + searchstr + "/";
     return false;
 }

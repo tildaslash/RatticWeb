@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load url from future %}
+
+{% block content %}
+
+<form id="search" onsubmit="return credsearch(this)" class="text-center">
+  <h1>Search</h1>
+  <input id="search-box" type="text" name="box" class="search-query" placeholder="Type your Query">
+</form>
+
+{% endblock %}
+
