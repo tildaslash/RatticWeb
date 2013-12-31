@@ -60,7 +60,9 @@ img.logo {
 }
 
 
-/* Sticky footer styles */
+/************************
+ * Sticky footer styles *
+ ************************/
 html,
 body {
   height: 100%;
