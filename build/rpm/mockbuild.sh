@@ -14,6 +14,7 @@ mkdir ${SRCDIR} ${SRPMBUILDDIR} ${RPMBUILDDIR}
 mkdir -p out
 
 spectool -gf ${SPEC} -C ${SRCDIR}
+pip bundle $SRCDIR/RatticWeb.pybundle -r ../../requirements.txt
 mock --buildsrpm --spec ${SPEC} --sources ${SRCDIR} --resultdir ${SRPMBUILDDIR}
 mock --rebuild ${SRPMBUILDDIR}/${NAME}-*.src.rpm --resultdir ${RPMBUILDDIR}
 cp ${SRPMBUILDDIR}/${NAME}-*.src.rpm out/
