@@ -34,7 +34,7 @@ function genpassword() {
 
 function credsearch(form) {
     var searchstr = form["box"].value
-    window.location = url_root + "cred/list-by-search/" + searchstr + "/";
+    if (searchstr.length > 0) window.location = url_root + "cred/list-by-search/" + searchstr + "/";
     return false;
 }
 
