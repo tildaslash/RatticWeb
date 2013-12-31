@@ -97,3 +97,17 @@ body {
   }
 }
 
+/*********************
+ * Responsive tables *
+ *********************/
+@media (max-width: 767px) {
+    .table-responsive-fourth-column tbody td:nth-child(4),
+    .table-responsive-fourth-column thead th:nth-child(4){display: none;}
+}
+
+@media (max-width: 767px) {
+    .table-responsive-fifth-column tbody td:nth-child(5),
+    .table-responsive-fifth-column thead th:nth-child(5){display: none;}
+}
+
+
