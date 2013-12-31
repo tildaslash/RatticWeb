@@ -52,6 +52,11 @@
                   <a href="{{ help_views_home }}">Help</a>
                 </li>
               {% endif %}
+	          {% if user.is_authenticated %}
+                <li>
+                  <a href="{% url "django.contrib.auth.views.logout" %}">Logout</a>
+                </li>
+              {% endif %}
 	    </ul>
 	  </li>
         </ul>
