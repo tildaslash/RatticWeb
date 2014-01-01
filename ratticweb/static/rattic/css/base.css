@@ -100,7 +100,7 @@ body {
 /*********************
  * Responsive tables *
  *********************/
-@media (max-width: 767px) {
+@media (max-width: 500px) {
     .table-responsive-fourth-column tbody td:nth-child(4),
     .table-responsive-fourth-column thead th:nth-child(4){display: none;}
 }
