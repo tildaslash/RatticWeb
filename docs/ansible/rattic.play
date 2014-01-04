@@ -1,7 +1,7 @@
 ---
 - hosts: rattic
   vars:
-    release: "v0.13"
+    release: "v0.14"
   tasks:
 
   - name: setup EPEL
