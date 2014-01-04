@@ -126,7 +126,9 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
 
 @login_required
 def tags(request):
-    tags = Tag.objects.all()
+    tags = {}
+    for t in Tag.objects.all():
+        tags[t] = t.visible_count(request.user)
     return render(request, 'cred_tags.html', {'tags': tags})
 
 

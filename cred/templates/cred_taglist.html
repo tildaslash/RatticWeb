@@ -8,10 +8,10 @@
     <tr><th>Name</th><th>Count</th><th>Actions</th></tr>
 </thead>
 <tbody>
-    {% for t in tags %}
+    {% for t,c in tags.items %}
     <tr>
         <td><a href="{% url "cred.views.list" 'tag' t.id %}">{{ t.name }}</a></td>
-        <td>{{ t.child_creds.count }}</td>
+        <td>{{ c }}</td>
         <td></td>
     </tr>
     {% endfor %}

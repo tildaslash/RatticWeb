@@ -11,6 +11,9 @@ class Tag(models.Model):
     def __unicode__(self):
         return self.name
 
+    def visible_count(self, user):
+        return Cred.objects.accessable(user).filter(tags=self).count()
+    
 
 class TagForm(ModelForm):
     class Meta:
