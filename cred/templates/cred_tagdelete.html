@@ -3,6 +3,7 @@
 
 {% block content %}
 <form action="" method="post">{% csrf_token %}
+    <p><b>Deleting tag:</b> {{ t.name }}</p>
 	<input type="submit" value="Confirm" />
 </form>
 {% endblock %}

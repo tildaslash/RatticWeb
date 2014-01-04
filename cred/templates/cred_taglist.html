@@ -12,7 +12,7 @@
     <tr>
         <td><a href="{% url "cred.views.list" 'tag' t.id %}">{{ t.name }}</a></td>
         <td>{{ c }}</td>
-        <td></td>
+        <td><a href="{% url "cred.views.tagdelete" t.id %}">Delete</a></td>
     </tr>
     {% endfor %}
 </tbody>

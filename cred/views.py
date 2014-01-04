@@ -276,8 +276,8 @@ def tagdelete(request, tag_id):
     tag = get_object_or_404(Tag, pk=tag_id)
     if request.method == 'POST':
         tag.delete()
-        return HttpResponseRedirect(reverse('cred.views.list'))
-    return render(request, 'cred_tagdelete.html', {})
+        return HttpResponseRedirect(reverse('cred.views.tags'))
+    return render(request, 'cred_tagdelete.html', {'t': tag})
 
 
 @login_required
