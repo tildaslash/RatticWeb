@@ -38,5 +38,13 @@ WSGIProcessGroup rattic
   </Files>
 </Directory>
 
-
-
+<Location />
+  SetOutputFilter DEFLATE
+  
+  BrowserMatch ^Mozilla/4 gzip-only-text/html
+  BrowserMatch ^Mozilla/4\.0[678] no-gzip
+  BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+  SetEnvIfNoCase Request_URI \
+  \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+  Header append Vary User-Agent env=!dont-vary
+</Location> 
