@@ -31,7 +31,8 @@
       - python-devel
 
   - name: turn off selinux (FIX ME!!!!!)
-    command: setenforce 0
+    command: /usr/sbin/setenforce 0
+    ignore_errors: True
 
   - name: copy apache config
     action: template src=files/httpd.conf.j2 dest=/etc/httpd/conf.d/rattic.conf
