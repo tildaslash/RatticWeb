@@ -33,9 +33,8 @@
       - gcc
       - python-devel
 
-  - name: turn off selinux (FIX ME!!!!!)
-    command: /usr/sbin/setenforce 0
-    ignore_errors: True
+  - name: turn off selinux
+    selinux: state=disabled
 
   - name: copy apache config
     action: template src=files/httpd.conf.j2 dest=/etc/httpd/conf.d/rattic.conf
