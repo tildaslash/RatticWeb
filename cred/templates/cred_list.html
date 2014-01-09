@@ -7,6 +7,11 @@
 {% block content %}
 {% if not hidecredlist %}
 <h1>{{ credtitle }}</h1>
+{% for alert in alerts %}
+  <div class="alert alert-{{ alert.type }}">
+    {{ alert.message }}
+  </div>
+{% endfor %}
 <form id="credchecksubmitform" action="" method="post">{% csrf_token %}
 <input type='hidden' name='next' value="{% url "cred.views.list" filter value sortdir sort page %}" />
 <table class="table table-striped table-bordered table-condensed table-responsive-fourth-column table-responsive-fifth-column">

@@ -20,6 +20,7 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
     # Setup basic stuff
     viewdict = {}
     viewdict['credtitle'] = 'All passwords'
+    viewdict['alerts'] = []
     viewdict['filter'] = str(cfilter).lower()
     viewdict['value'] = str(value).lower()
     viewdict['sort'] = str(sort).lower()
@@ -73,10 +74,16 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
             groups = Group.objects.all()
 
         cred_list = Cred.objects.change_advice(user, groups)
+
+        alert = {}
+        alert['message'] = "That user is now disabled. Here is a list of passwords that they have viewed that have not since been changed. You probably want to add them all to the change queue."
+        alert['type'] = 'info'
+
         viewdict['credtitle'] = 'Changes required for "%s"' % user.username
         viewdict['buttons']['add'] = False
         viewdict['buttons']['delete'] = True
         viewdict['buttons']['changeq'] = True
+        viewdict['alerts'].append(alert)
 
     elif cfilter == 'special' and value == 'all':
         pass
