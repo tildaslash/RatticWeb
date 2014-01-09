@@ -2,6 +2,9 @@
 - hosts: rattic
   vars:
     release: "v0.14"
+    db_name: rattic
+    db_user: rattic
+    db_passwd: allthepass
   tasks:
 
   - name: setup EPEL
@@ -30,9 +33,8 @@
       - gcc
       - python-devel
 
-  - name: turn off selinux (FIX ME!!!!!)
-    command: /usr/sbin/setenforce 0
-    ignore_errors: True
+  - name: turn off selinux
+    selinux: state=disabled
 
   - name: copy apache config
     action: template src=files/httpd.conf.j2 dest=/etc/httpd/conf.d/rattic.conf
@@ -84,7 +86,7 @@
     action: service name=httpd state=started enabled=yes
 
   - name: create MySQL database
-    action: mysql_db db=rattic state=present
+    action: mysql_db db={{db_name}} state=present
     notify:
       - migrate db
       - sync db
@@ -94,10 +96,10 @@
     action: mysql_db db=test state=absent
 
   - name: create MySQL user
-    action: mysql_user name=rattic password=allthepass priv=rattic.*:ALL state=present
+    action: mysql_user name={{db_user}} password={{db_passwd}} priv={{db_name}}.*:ALL state=present
 
   - name: setup RatticWeb
-    action: copy src=files/local.cfg dest=/etc/ratticweb.cfg
+    action: template src=files/local.cfg dest=/etc/ratticweb.cfg
     notify: restart httpd
 
   - name: copy iptables
