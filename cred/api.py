@@ -68,7 +68,7 @@ class TagAuthorization(Authorization):
 
 class CredResource(ModelResource):
     def get_object_list(self, request):
-        return Cred.objects.accessable(request.user, historical=True, deleted=True)
+        return Cred.objects.accessible(request.user, historical=True, deleted=True)
 
     def dehydrate(self, bundle):
         bundle.data['username'] = bundle.obj.username
@@ -86,7 +86,7 @@ class CredResource(ModelResource):
 
 class TagResource(ModelResource):
     creds = fields.ToManyField(CredResource,
-        attribute=lambda bundle: Cred.objects.accessable(bundle.request.user).filter(tags=bundle.obj),
+        attribute=lambda bundle: Cred.objects.accessible(bundle.request.user).filter(tags=bundle.obj),
         full=True,
         null=True,
     )
