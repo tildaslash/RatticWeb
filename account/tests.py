@@ -1,11 +1,15 @@
 from django.test import TestCase, LiveServerTestCase, Client
 from django.test.utils import override_settings
 from django.utils.unittest import skipIf
+from django.utils.timezone import now
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.core.management import call_command
 from django.conf import settings
+
 from tastypie.models import ApiKey
+
+from datetime import timedelta
 
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
@@ -50,6 +54,19 @@ class AccountViewTests(TestCase):
         self.u.save()
         response = self.client.get(reverse('account.views.profile'))
         self.assertNotEqual(response.status_code, 200)
+
+    @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
+    @override_settings(PASSWORD_EXPIRY=timedelta(days=5))
+    def test_password_expiry(self):
+        profile = self.u.profile
+        profile.password_changed = now() - timedelta(days=6)
+        profile.save()
+        resp = self.client.get(reverse('account.views.profile'), follow=True)
+        self.assertRedirects(resp, reverse('django.contrib.auth.views.password_change'), status_code=302, target_status_code=200)
+        profile.password_changed = now()
+        profile.save()
+        resp = self.client.get(reverse('account.views.profile'))
+        self.assertEqual(resp.status_code, 200)
 
 
 class AccountCommandTests(TestCase):
