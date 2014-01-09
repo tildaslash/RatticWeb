@@ -84,6 +84,8 @@ class TestData:
             group=self.group
         )
         self.injectcred.save()
+        self.markdowncred = Cred(title='Markdown Cred', password='qwerty', group=self.group, description='# Test', descriptionmarkdown=True)
+        self.markdowncred.save()
 
         CredChangeQ.objects.add_to_changeq(self.cred)
 

@@ -32,6 +32,9 @@ class CredAccessTest(TestCase):
         d.save()
         d.delete()
 
+        md = Cred(title='Markdown Cred', password='qwerty', group=g, description='# Test')
+        md.save()
+
         u = User(username='dan')
         u.save()
         u.groups.add(g)
@@ -251,6 +254,13 @@ class CredViewTests(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.context['cred'].id, self.data.tagcred.id)
         self.assertEqual(resp.context['credlogs'], None)
+
+    def test_detail_markdown(self):
+        resp = self.data.norm.get(reverse('cred.views.detail', args=(self.data.markdowncred.id,)))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.context['cred'].id, self.data.markdowncred.id)
+        self.assertEqual(resp.context['credlogs'], None)
+        self.assertContains(resp, "<h1>Test</h1>", html=True, count=1)
 
     def test_detail_staff(self):
         resp = self.data.staff.get(reverse('cred.views.detail', args=(self.data.cred.id,)))
