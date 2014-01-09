@@ -1,8 +1,10 @@
 from django.test import TestCase, LiveServerTestCase, Client
 from django.test.utils import override_settings
+from django.utils.unittest import skipIf
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.core.management import call_command
+from django.conf import settings
 from tastypie.models import ApiKey
 
 from selenium.webdriver.firefox.webdriver import WebDriver
@@ -40,6 +42,7 @@ class AccountViewTests(TestCase):
         new = ApiKey.objects.get(user=self.u)
         self.assertNotEqual(old.key, new.key)
 
+    @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_disable_during_login(self):
         response = self.client.get(reverse('account.views.profile'))
         self.assertEqual(response.status_code, 200)
@@ -104,6 +107,7 @@ class JavascriptTests(LiveServerTestCase):
         self.waitforload()
         self.selenium.find_element_by_id('loginfailed')
 
+    @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_login_disabled(self):
         self.unorm.is_active = False
         self.unorm.save()
