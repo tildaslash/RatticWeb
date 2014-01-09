@@ -553,7 +553,7 @@ class JavascriptTests(LiveServerTestCase):
         self.assertRegexpMatches(logocss, r'background:\W+url\("' + spritelocation + r'"\)\W+repeat\W+scroll\W+-?'
                                           + str(icondata['xoffset']) + r'px\W+-?' + str(icondata['yoffset']) + r'px\W+transparent;')
         # Save the credential
-        self.selenium.find_element_by_id('credsave').click()
+        logodisplay.submit()
         self.waitforload()
         # Check it has the right data now
         chgcred = Cred.objects.get(id=self.data.cred.id)
