@@ -40,6 +40,14 @@ class AccountViewTests(TestCase):
         new = ApiKey.objects.get(user=self.u)
         self.assertNotEqual(old.key, new.key)
 
+    def test_disable_during_login(self):
+        response = self.client.get(reverse('account.views.profile'))
+        self.assertEqual(response.status_code, 200)
+        self.u.is_active=False
+        self.u.save()
+        response = self.client.get(reverse('account.views.profile'))
+        self.assertNotEqual(response.status_code, 200)
+
 
 class AccountCommandTests(TestCase):
     def test_command_demosetup(self):
@@ -91,6 +99,20 @@ class JavascriptTests(LiveServerTestCase):
         username_input.send_keys(self.unorm.username)
         password_input = self.selenium.find_element_by_name("password")
         password_input.send_keys(self.normpass + 'wrongpass')
+        self.selenium.find_element_by_xpath('//input[@value="login"]').click()
+        self.assertEquals(self.selenium.current_url, '%s%s' % (self.live_server_url, reverse('django.contrib.auth.views.login')))
+        self.waitforload()
+        self.selenium.find_element_by_id('loginfailed')
+
+    def test_login_disabled(self):
+        self.unorm.is_active = False
+        self.unorm.save()
+        self.selenium.get('%s%s' % (self.live_server_url, '/'))
+        self.waitforload()
+        username_input = self.selenium.find_element_by_name("username")
+        username_input.send_keys(self.unorm.username)
+        password_input = self.selenium.find_element_by_name("password")
+        password_input.send_keys(self.normpass)
         self.selenium.find_element_by_xpath('//input[@value="login"]').click()
         self.assertEquals(self.selenium.current_url, '%s%s' % (self.live_server_url, reverse('django.contrib.auth.views.login')))
         self.waitforload()
