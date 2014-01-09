@@ -4,10 +4,11 @@
     <h3>Add New Tag</h3>
   </div>
   <div class="modal-body">
+      <p class="text-success" id="tagcreatedmessage"></p>
       <label for="tagname">Tag Name:</label> <input autocomplete="off" type="text" id="tagname" />
   </div>
   <div class="modal-footer">
-    <button href="#" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-    <a href="#" onclick="createTagModal()" id="newtagconfirm" class="btn btn-primary">Create</a>
+    <a href="#" onclick="createTagModal(false)" id="newtagconfirm" class="btn">Create Another</a>
+    <a href="#" onclick="createTagModal(true)" id="newtagconfirm" class="btn btn-primary">Create</a>
   </div>
 </div>

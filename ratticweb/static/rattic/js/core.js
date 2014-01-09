@@ -178,15 +178,21 @@ function createGroupModal() {
     return false;
 }
 
-function createTagModal() {
+function createTagModal(close) {
     ajax = createTag(
         $("input#tagname").val(),
         function(){
             $('#newtagmodal').modal('hide');
         },
         function(){
-            $('#newtagmodal').modal('hide');
-            if (ajax.status == 201) document.location.reload();
+            if (ajax.status == 201 && close) {
+                $('#newtagmodal').modal('hide');
+                document.location.reload();
+            }
+            if (ajax.status == 201 && !close) {
+                $('p#tagcreatedmessage').text($('input#tagname').val() + " has been created");
+                $("input#tagname").val('');
+            } 
         }
     );
 
