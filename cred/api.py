@@ -72,6 +72,7 @@ class CredResource(ModelResource):
 
     def dehydrate(self, bundle):
         bundle.data['username'] = bundle.obj.username
+        bundle.data['on_changeq'] = bundle.obj.on_changeq()
         if self.get_resource_uri(bundle) != bundle.request.path:
             del bundle.data['password']
         return bundle
