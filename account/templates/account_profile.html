@@ -9,10 +9,29 @@
 <tr><th>Email</th><td>{{ user.email }}</td></tr>
 <tr><th>Last Password Change</th><td>{{ user.profile.password_changed }}</td></tr>
 <tr><th>Groups</th><td>{% for g in user.groups.all %}{{ g.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td></tr>
-<tr><th>API Key</th><td>{{ apikey.key }}</td></tr>
 {% for field in form %}
 <tr><th>{{ field.label }}</th><td>{{ field }}</td></tr>
 {% endfor %}
+</table>
+<h2>API Keys</h2>
+<table class="table table-striped table-bordered table-condensed">
+  <thead>
+    <tr><td colspan="3">
+        <a href="{% url 'account.views.newapikey' %}" class="btn">New API Key</a>
+    </td></tr>
+    <tr>
+      <th>Key Name</th>
+      <th>Date generated</th>
+      <th>Active</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for key in keys %}
+    <tr><td>{{ key.name }}</td><td>{{ key.created }}</td><td>{{ key.active }}</td></tr>
+    {% empty %}
+      <tr><td colspan="3">No API Keys available yet</td></tr>
+    {% endfor %}
+  </tbody>
 </table>
 <input class="btn btn-primary" type="submit" name="submit" value="Save Changes" />
 {% if ALLOWPWCHANGE %}<a class="btn" href="{% url "password_change" %}">Change password</a>{% endif %}

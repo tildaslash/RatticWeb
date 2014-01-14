@@ -1,4 +1,5 @@
 import uuid
+import hmac
 
 from django.db import models
 from django import forms
@@ -13,6 +14,12 @@ from django.utils.timezone import now
 from tastypie.compat import AUTH_USER_MODEL
 
 from cred.models import Tag
+
+try:
+    from hashlib import sha1
+except ImportError:
+    import sha
+    sha1 = sha.sha
 
 
 class LDAPPassChangeForm(SetPasswordForm):
@@ -74,7 +81,7 @@ def user_save_handler(sender, instance, **kwargs):
         p.save()
 
 class ApiKey(models.Model):
-    user = models.OneToOneField(AUTH_USER_MODEL, related_name='rattic_api_key')
+    user = models.ForeignKey(AUTH_USER_MODEL, related_name='rattic_api_key')
     key = models.CharField(max_length=128, blank=True, default='', db_index=True)
     name = models.CharField(max_length=128)
     active = models.BooleanField(default=True)
@@ -94,6 +101,12 @@ class ApiKey(models.Model):
         new_uuid = uuid.uuid4()
         # Hmac that beast.
         return hmac.new(new_uuid.bytes, digestmod=sha1).hexdigest()
+
+
+class ApiKeyForm(ModelForm):
+    class Meta:
+        model = ApiKey
+        exclude = ('user', 'key', 'active', 'created',)
 
 
 admin.site.register(UserProfile)

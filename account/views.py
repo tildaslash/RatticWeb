@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
-from tastypie.models import ApiKey
+from account.models import ApiKey, ApiKeyForm
 from models import UserProfileForm, LDAPPassChangeForm
 
 from django.views.decorators.debug import sensitive_post_parameters
@@ -12,10 +12,7 @@ from django.template.response import TemplateResponse
 
 @login_required
 def profile(request):
-    try:
-        api_key = ApiKey.objects.get(user=request.user)
-    except ObjectDoesNotExist:
-        api_key = ApiKey.objects.create(user=request.user)
+    keys = ApiKey.objects.filter(user=request.user)
 
     if request.method == 'POST':
         form = UserProfileForm(request.POST, instance=request.user.profile)
@@ -25,22 +22,26 @@ def profile(request):
         form = UserProfileForm(instance=request.user.profile)
 
     return render(request, 'account_profile.html', {
+        'keys' : keys,
         'form': form,
         'user': request.user,
-        'apikey': api_key,
     })
 
 
 @login_required
 def newapikey(request):
-    try:
-        api_key = ApiKey.objects.get(user=request.user)
-        api_key.delete()
-        api_key = ApiKey.objects.create(user=request.user)
-    except ObjectDoesNotExist:
-        api_key = ApiKey.objects.create(user=request.user)
+    if request.method == 'POST':
+        newkey = ApiKey(user=request.user, active=True)
+        form = ApiKeyForm(request.POST, instance=newkey)
+        if form.is_valid():
+            form.save()
+        return HttpResponseRedirect(reverse('account.views.profile'))
+    else:
+        form = ApiKeyForm()
 
-    return HttpResponseRedirect(reverse('account.views.profile'))
+    return render(request, 'account_newapikey.html', {
+        'form': form,
+    })
 
 
 # Stolen from django.contrib.auth.views
