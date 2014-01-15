@@ -2,6 +2,7 @@ from django.contrib.auth.models import Group
 from django.conf import settings
 
 from tastypie.authentication import SessionAuthentication, MultiAuthentication, ApiKeyAuthentication
+from account.authentication import MultiApiKeyAuthentication
 from tastypie.resources import ModelResource
 from tastypie.authorization import Authorization
 from tastypie.exceptions import Unauthorized
@@ -62,5 +63,5 @@ class GroupResource(ModelResource):
         queryset = Group.objects.all()
         always_return_data = True
         resource_name = 'group'
-        authentication = MultiAuthentication(ApiKeyAuthentication(), SessionAuthentication())
+        authentication = MultiAuthentication(MultiApiKeyAuthentication(), SessionAuthentication())
         authorization = RatticGroupAuthorization()

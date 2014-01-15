@@ -1,5 +1,6 @@
 from tastypie import fields
 from tastypie.authentication import SessionAuthentication, MultiAuthentication, ApiKeyAuthentication
+from account.authentication import MultiApiKeyAuthentication
 from tastypie.resources import ModelResource
 from tastypie.authorization import Authorization
 from tastypie.exceptions import Unauthorized
@@ -81,7 +82,7 @@ class CredResource(ModelResource):
         queryset = Cred.objects.filter(is_deleted=False, latest=None)
         resource_name = 'cred'
         excludes = ['username', 'is_deleted']
-        authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
+        authentication = MultiAuthentication(SessionAuthentication(), MultiApiKeyAuthentication())
         authorization = CredAuthorization()
 
 
@@ -95,5 +96,5 @@ class TagResource(ModelResource):
     class Meta:
         queryset = Tag.objects.all()
         resource_name = 'tag'
-        authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
+        authentication = MultiAuthentication(SessionAuthentication(), MultiApiKeyAuthentication())
         authorization = TagAuthorization()
