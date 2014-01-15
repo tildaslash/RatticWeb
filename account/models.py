@@ -80,6 +80,7 @@ def user_save_handler(sender, instance, **kwargs):
         p.password_changed = now()
         p.save()
 
+
 class ApiKey(models.Model):
     user = models.ForeignKey(AUTH_USER_MODEL, related_name='rattic_api_key')
     key = models.CharField(max_length=128, blank=True, default='', db_index=True)

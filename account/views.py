@@ -1,7 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
-from django.core.exceptions import ObjectDoesNotExist
 from account.models import ApiKey, ApiKeyForm
 from models import UserProfileForm, LDAPPassChangeForm
 
@@ -22,7 +21,7 @@ def profile(request):
         form = UserProfileForm(instance=request.user.profile)
 
     return render(request, 'account_profile.html', {
-        'keys' : keys,
+        'keys': keys,
         'form': form,
         'user': request.user,
     })
@@ -35,22 +34,23 @@ def newapikey(request):
         form = ApiKeyForm(request.POST, instance=newkey)
         if form.is_valid():
             form.save()
-        return render(request, 'account_viewapikey.html', { 'key': newkey })
+        return render(request, 'account_viewapikey.html', {'key': newkey})
     else:
         form = ApiKeyForm()
 
-    return render(request, 'account_newapikey.html', { 'form': form })
+    return render(request, 'account_newapikey.html', {'form': form})
+
 
 @login_required
 def deleteapikey(request, key_id):
     key = get_object_or_404(ApiKey, pk=key_id)
-    
+
     if key.user != request.user:
-      raise Http404
+        raise Http404
 
     if request.method == 'POST':
-      key.delete()
-      return HttpResponseRedirect(reverse('account.views.profile'))
+        key.delete()
+        return HttpResponseRedirect(reverse('account.views.profile'))
 
     return render(request, 'account_deleteapikey.html', {'key': key})
 

@@ -7,8 +7,6 @@ from django.contrib.auth.models import User
 from django.core.management import call_command
 from django.conf import settings
 
-from tastypie.models import ApiKey
-
 from datetime import timedelta
 
 from selenium.webdriver.firefox.webdriver import WebDriver
@@ -38,13 +36,6 @@ class AccountViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         user = response.context['user']
         self.assertEqual(user.profile.items_per_page, self.testitems)
-
-    def test_newapikey_page(self):
-        old = ApiKey.objects.get(user=self.u)
-        response = self.client.get(reverse('account.views.newapikey'), follow=True)
-        self.assertEqual(response.status_code, 200)
-        new = ApiKey.objects.get(user=self.u)
-        self.assertNotEqual(old.key, new.key)
 
     @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_disable_during_login(self):
