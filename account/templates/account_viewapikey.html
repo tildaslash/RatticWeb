@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% block title %}New API Key - Rattic{% endblock %}
+
+{% block content %}
+<h1>New API Key</h1>
+
+<div class="alert"><strong>Warning!</strong> This is the last chance that you will have to access the secret key. You should save it in a safe place now.</div>
+<p>
+  Your new API key has been created.
+</p>
+<p>
+  <strong>Name:</strong> {{ key.name }}<br />
+  <strong>Secret Key:</strong> {{ key.key }}
+</p>
+<p>
+  <a href="{% url 'account.views.profile' %}" class="btn btn-primary">Back to Profile</a>
+</p>
+
+{% endblock %}

@@ -1,10 +1,11 @@
 from django.conf.urls import patterns, url
 from django.conf import settings
-from views import profile, newapikey
+from views import profile, newapikey, deleteapikey
 
 urlpatterns = patterns('',
     url(r'^profile/$', profile, {}),
     url(r'^newapikey/$', newapikey, {}),
+    url(r'^deleteapikey/(?P<key_id>\d+)/$', deleteapikey, {}),
 
     url(r'^login/$', 'django.contrib.auth.views.login', {
         'template_name': 'account_login.html'}),

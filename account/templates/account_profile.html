@@ -20,14 +20,22 @@
         <a href="{% url 'account.views.newapikey' %}" class="btn">New API Key</a>
     </td></tr>
     <tr>
+      <th>&nbsp;</th>
       <th>Key Name</th>
       <th>Date generated</th>
-      <th>Active</th>
     </tr>
   </thead>
   <tbody>
     {% for key in keys %}
-    <tr><td>{{ key.name }}</td><td>{{ key.created }}</td><td>{{ key.active }}</td></tr>
+      <tr>
+        <td>
+          <a href="{% url 'account.views.deleteapikey' key.id %}" class="btn btn-danger">
+            <i class="icon-remove"></i>
+          </a>
+        </td>
+        <td>{{ key.name }}</td>
+        <td>{{ key.created }}</td>
+      </tr>
     {% empty %}
       <tr><td colspan="3">No API Keys available yet</td></tr>
     {% endfor %}
@@ -35,7 +43,6 @@
 </table>
 <input class="btn btn-primary" type="submit" name="submit" value="Save Changes" />
 {% if ALLOWPWCHANGE %}<a class="btn" href="{% url "password_change" %}">Change password</a>{% endif %}
-<a class="btn" href="{% url "account.views.newapikey" %}">Reset API Key</a>
 </form>
 {% endblock %}
 
