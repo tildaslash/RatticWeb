@@ -1,5 +1,5 @@
 from tastypie import fields
-from tastypie.authentication import SessionAuthentication, MultiAuthentication, ApiKeyAuthentication
+from tastypie.authentication import SessionAuthentication, MultiAuthentication
 from account.authentication import MultiApiKeyAuthentication
 from tastypie.resources import ModelResource
 from tastypie.authorization import Authorization

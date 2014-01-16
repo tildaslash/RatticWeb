@@ -34,7 +34,7 @@ class AccountViewTests(TestCase):
         self.client.get(reverse('account.views.profile'))
 
     def test_api_key_mgmt(self):
-        resp = self.client.post(reverse('account.views.newapikey'), {'name':'testing'})
+        resp = self.client.post(reverse('account.views.newapikey'), {'name': 'testing'})
         keyval = resp.context['key'].key
         testkey = ApiKey.objects.get(user=self.u, key=keyval)
         self.assertEqual(testkey.name, 'testing')

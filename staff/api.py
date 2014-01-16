@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Group
 from django.conf import settings
 
-from tastypie.authentication import SessionAuthentication, MultiAuthentication, ApiKeyAuthentication
+from tastypie.authentication import SessionAuthentication, MultiAuthentication
 from account.authentication import MultiApiKeyAuthentication
 from tastypie.resources import ModelResource
 from tastypie.authorization import Authorization
