@@ -12,6 +12,8 @@ from datetime import timedelta
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
 
+from account.models import ApiKey
+
 
 class AccountViewTests(TestCase):
     username = 'testinguser'
@@ -30,6 +32,15 @@ class AccountViewTests(TestCase):
         self.client.login(username=self.username, password=self.password)
         # View the profile page to create an API key
         self.client.get(reverse('account.views.profile'))
+
+    def test_api_key_mgmt(self):
+        resp = self.client.post(reverse('account.views.newapikey'), {'name':'testing'})
+        keyval = resp.context['key'].key
+        testkey = ApiKey.objects.get(user=self.u, key=keyval)
+        self.assertEqual(testkey.name, 'testing')
+        resp = self.client.post(reverse('account.views.deleteapikey', args=(testkey.id,)))
+        with self.assertRaises(ApiKey.DoesNotExist):
+            ApiKey.objects.get(user=self.u, key=keyval)
 
     def test_profile_page(self):
         response = self.client.get(reverse('account.views.profile'))
