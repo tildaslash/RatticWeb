@@ -22,14 +22,21 @@ class AccountViewTests(TestCase):
     testitems = 43
 
     def setUp(self):
-        self.client = Client()
+        # Make user
         self.u = User(username=self.username, email='you@example.com')
         self.u.set_password(self.password)
         self.u.save()
+
+        # Setup their profile
         profile = self.u.profile
         profile.items_per_page = self.testitems
         profile.save()
-        self.client.login(username=self.username, password=self.password)
+
+        # Log them in
+        self.client = Client()
+        loginurl = reverse('django.contrib.auth.views.login')
+        self.client.post(loginurl, {'username': self.username, 'password': self.password})
+
         # View the profile page to create an API key
         self.client.get(reverse('account.views.profile'))
 

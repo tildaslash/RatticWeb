@@ -15,7 +15,7 @@ class TestData:
             self.setUpAuthData()
         self.setUpBasicData()
 
-    def loginLDAP(self, username, password):
+    def login(self, username, password):
         c = Client()
         loginurl = reverse('django.contrib.auth.views.login')
         c.post(loginurl, {'username': username, 'password': password})
@@ -23,14 +23,14 @@ class TestData:
         return c
 
     def getLDAPAuthData(self):
-        self.norm = self.loginLDAP(username='norm', password='password')
+        self.norm = self.login(username='norm', password='password')
         self.unorm = User.objects.get(username='norm')
         self.normpass = 'password'
 
-        self.staff = self.loginLDAP(username='staff', password='password')
+        self.staff = self.login(username='staff', password='password')
         self.ustaff = User.objects.get(username='staff')
 
-        self.nobody = self.loginLDAP(username='nobody', password='password')
+        self.nobody = self.login(username='nobody', password='password')
         self.unobody = User.objects.get(username='nobody')
 
         self.group = Group.objects.get(name='testgroup')
@@ -60,12 +60,9 @@ class TestData:
         self.unobody.set_password('password')
         self.unobody.save()
 
-        self.norm = Client()
-        self.norm.login(username='norm', password='password')
-        self.staff = Client()
-        self.staff.login(username='staff', password='password')
-        self.nobody = Client()
-        self.nobody.login(username='nobody', password='password')
+        self.norm = self.login(username='norm', password='password')
+        self.staff = self.login(username='staff', password='password')
+        self.nobody = self.login(username='nobody', password='password')
 
     def setUpBasicData(self):
         self.tag = Tag(name='tag')
