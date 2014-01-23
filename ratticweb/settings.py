@@ -2,6 +2,7 @@ from datetime import timedelta
 from ConfigParser import RawConfigParser, NoOptionError
 import ldap
 from django_auth_ldap.config import LDAPSearch
+from django.core.urlresolvers import reverse_lazy
 
 config = RawConfigParser()
 config.readfp(open('conf/defaults.cfg'))
@@ -86,9 +87,13 @@ MIDDLEWARE_CLASSES = (
     'user_sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
+
+    # Custom Middleware
     'account.middleware.StrictAuthentication',
     'account.middleware.PasswordExpirer',
     'ratticweb.middleware.DisableClientSideCachingMiddleware',
+
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -129,6 +134,10 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'user_sessions',
+    'django_otp',
+    'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_totp',
+    'two_factor',
     'south',
     'tastypie',
 ) + LOCAL_APPS
@@ -176,8 +185,8 @@ CRED_ICON_SPRITE = 'rattic/img/sprite.png'
 CRED_ICON_BASEDIR = 'rattic/img/credicons'
 CRED_ICON_CLEAR = 'rattic/img/clear.gif'
 
-LOGIN_REDIRECT_URL = RATTIC_ROOT_URL +"cred/list/"
-LOGIN_URL = RATTIC_ROOT_URL +"account/login/"
+LOGIN_REDIRECT_URL = RATTIC_ROOT_URL + "cred/list/"
+LOGIN_URL = RATTIC_ROOT_URL + "account/login/"
 
 AUTH_LDAP_USER_ATTR_MAP = {"email": "mail", }
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {}
