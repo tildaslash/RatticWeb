@@ -1,7 +1,7 @@
 ---
 - hosts: rattic
   vars:
-    release: "v0.14"
+    release: "v0.15"
     db_name: rattic
     db_user: rattic
     db_passwd: allthepass
