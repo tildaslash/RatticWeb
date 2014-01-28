@@ -163,7 +163,7 @@
 
 
   - name: setup RatticWeb
-    action: template src=files/local.cfg dest=/etc/ratticweb.cfg
+    action: template src=files/local.cfg dest=/etc/ratticweb.cfg owner=root group=apache mode=640
     notify: restart httpd
 
   - name: copy iptables
