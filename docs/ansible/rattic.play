@@ -146,7 +146,7 @@
     command: /etc/init.d/postgresql initdb creates=/var/lib/pgsql/data/postgresql.conf
 
   - name: set PostgreSQL to start
-    action: service name=postgresqld state=started enabled=yes
+    action: service name=postgresql state=started enabled=yes
     when: db_platform == "postgresql"
 
   - name: create PostgreSQL user
