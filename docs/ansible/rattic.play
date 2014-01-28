@@ -7,6 +7,13 @@
     db_passwd: allthepass
   tasks:
 
+  - name: abort if not redhat
+    when: ansible_os_family != "RedHat"
+    action: debug
+      "msg=We don't support {{ ansible_os_family }}"
+      fail=yes
+
+
   - name: setup EPEL
     action: command rpm -ivh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm creates=/etc/yum.repos.d/epel.repo
 
