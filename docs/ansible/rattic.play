@@ -5,6 +5,9 @@
     db_name: rattic
     db_user: rattic
     db_passwd: allthepass
+    # this should be either 'mysql' or 'postgres'
+    db_platform: mysql
+    #db_platform: postgres
   tasks:
 
   - name: abort if not redhat
@@ -13,23 +16,25 @@
       "msg=We don't support {{ ansible_os_family }}"
       fail=yes
 
+  - name: abort if db_platform invalid
+    when: db_platform != "mysql"
+      and db_platform != "postgres"
+    action: debug
+      "msg=Ooops, db_platform must be either mysql or postgres"
+      fail=yes
+
 
   - name: setup EPEL
     action: command rpm -ivh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm creates=/etc/yum.repos.d/epel.repo
 
-  - name: install apache/mysql/python
+  - name: install apache/python/etc
     action: yum name={{ item }} state=latest
     notify:
       - restart httpd
-      - restart mysql
     with_items:
       - httpd
       - mod_wsgi
       - mod_ssl
-      - MySQL-python
-      - mysql-server
-      - mysql-devel
-      - mysql
       - git
       - cryptsetup
       - device-mapper
@@ -71,8 +76,15 @@
     file: path=/opt/apps/RatticWeb state=link src=/vagrant
     when: release == "vagrant"
 
-  - name: Setup virtualenv
-    pip: requirements=/opt/apps/RatticWeb/requirements.txt virtualenv=/opt/apps/RatticWeb.venv
+  - name: Setup virtualenv (mysql)
+    pip: requirements=/opt/apps/RatticWeb/requirements-mysql.txt virtualenv=/opt/apps/RatticWeb.venv
+    when: db_platform == "mysql"
+    notify:
+      - restart httpd
+
+  - name: Setup virtualenv (pgsql)
+    pip: requirements=/opt/apps/RatticWeb/requirements-pgsql.txt virtualenv=/opt/apps/RatticWeb.venv
+    when: db_platform == "postgres"
     notify:
       - restart httpd
 
@@ -86,14 +98,27 @@
   - name: use encrypted swap
     action: lineinfile dest=/etc/fstab regexp="swap.*swap.*defaults" line="/dev/mapper/swap none swap defaults 0 0"
 
-  - name: set mysql to start
-    action: service name=mysqld state=started enabled=yes
-
   - name: set apache to start
     action: service name=httpd state=started enabled=yes
 
+  ### mysql setup tasks
+  - name: install mysql
+    action: yum name={{ item }} state=latest
+    notify:
+      - restart mysql
+    with_items:
+      - mysql-server
+      - mysql-devel
+      - mysql
+      - MySQL-python
+
+  - name: set mysql to start
+    action: service name=mysqld state=started enabled=yes
+    when: db_platform == "mysql"
+
   - name: create MySQL database
     action: mysql_db db={{db_name}} state=present
+    when: db_platform == "mysql"
     notify:
       - migrate db
       - sync db
@@ -101,9 +126,41 @@
 
   - name: remove MySQL test database
     action: mysql_db db=test state=absent
+    when: db_platform == "mysql"
 
   - name: create MySQL user
     action: mysql_user name={{db_user}} password={{db_passwd}} priv={{db_name}}.*:ALL state=present
+    when: db_platform == "mysql"
+
+  ### postgresql setup tasks
+  - name: install postgresql
+    action: yum name={{ item }} state=latest
+    notify:
+      - restart postgresql
+    with_items:
+      - postgresql-server
+      - postgresql-devel
+      - python-psycopg2
+
+  - name: initdb for postgresql
+    command: /etc/init.d/postgresql initdb creates=/var/lib/pgsql/data/postgresql.conf
+
+  - name: set PostgreSQL to start
+    action: service name=postgresqld state=started enabled=yes
+    when: db_platform == "postgresql"
+
+  - name: create PostgreSQL user
+    action: postgresql_user name={{db_user}} password={{db_passwd}} encrypted=false state=present
+    when: db_platform == "postgresql"
+
+  - name: create PostgreSQL database
+    action: postgresql_db name={{db_name}} owner={{db_user}} state=present
+    when: db_platform == "postgresql"
+    notify:
+      - migrate db
+      - sync db
+      - create initial user
+
 
   - name: setup RatticWeb
     action: template src=files/local.cfg dest=/etc/ratticweb.cfg
@@ -132,5 +189,9 @@
     action: service name=mysqld state=restarted
   - name: reload mysql
     action: service name=mysqld state=reloaded
+  - name: restart postgresql
+    action: service name=postgresql state=restarted
+  - name: reload postgresql
+    action: service name=postgresql state=reloaded
 
 
