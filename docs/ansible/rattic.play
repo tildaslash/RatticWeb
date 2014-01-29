@@ -76,18 +76,6 @@
     file: path=/opt/apps/RatticWeb state=link src=/vagrant
     when: release == "vagrant"
 
-  - name: Setup virtualenv (mysql)
-    pip: requirements=/opt/apps/RatticWeb/requirements-mysql.txt virtualenv=/opt/apps/RatticWeb.venv
-    when: db_platform == "mysql"
-    notify:
-      - restart httpd
-
-  - name: Setup virtualenv (pgsql)
-    pip: requirements=/opt/apps/RatticWeb/requirements-pgsql.txt virtualenv=/opt/apps/RatticWeb.venv
-    when: db_platform == "postgres"
-    notify:
-      - restart httpd
-
   - name: create static dir
     action: file dest=/opt/apps/RatticWeb/static state=directory
     notify: generate static
@@ -132,6 +120,12 @@
     action: mysql_user name={{db_user}} password={{db_passwd}} priv={{db_name}}.*:ALL state=present
     when: db_platform == "mysql"
 
+  - name: Setup virtualenv (mysql)
+    pip: requirements=/opt/apps/RatticWeb/requirements-mysql.txt virtualenv=/opt/apps/RatticWeb.venv
+    when: db_platform == "mysql"
+    notify:
+      - restart httpd
+
   ### postgresql setup tasks
   - name: install postgresql
     action: yum name={{ item }} state=latest
@@ -175,6 +169,12 @@
       - migrate db
       - sync db
       - create initial user
+
+  - name: Setup virtualenv (pgsql)
+    pip: requirements=/opt/apps/RatticWeb/requirements-pgsql.txt virtualenv=/opt/apps/RatticWeb.venv
+    when: db_platform == "postgres"
+    notify:
+      - restart httpd
 
 
   - name: setup RatticWeb
