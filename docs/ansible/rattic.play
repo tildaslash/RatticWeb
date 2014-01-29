@@ -145,17 +145,32 @@
   - name: initdb for postgresql
     command: /etc/init.d/postgresql initdb creates=/var/lib/pgsql/data/postgresql.conf
 
+  - name: configure pg_hba.conf
+    action: lineinfile
+      dest=/var/lib/pgsql/data/pg_hba.conf
+      state=present
+      "line={{ item }}"
+      "insertbefore=^# TYPE"
+    with_items:
+      - "local   rattic   rattic                trust"
+      - "host    rattic   rattic   127.0.0.0/8  trust"
+      - "host    rattic   rattic   ::1/128      trust"
+    notify:
+      - restart postgresql
+
   - name: set PostgreSQL to start
     action: service name=postgresql state=started enabled=yes
-    when: db_platform == "postgresql"
+    when: db_platform == "postgres"
 
   - name: create PostgreSQL user
     action: postgresql_user name={{db_user}} password={{db_passwd}} encrypted=false state=present
-    when: db_platform == "postgresql"
+    when: db_platform == "postgres"
+    sudo_user: postgres
 
   - name: create PostgreSQL database
     action: postgresql_db name={{db_name}} owner={{db_user}} state=present
-    when: db_platform == "postgresql"
+    when: db_platform == "postgres"
+    sudo_user: postgres
     notify:
       - migrate db
       - sync db
@@ -171,20 +186,7 @@
     notify: restart iptables
 
   handlers:
-  - name: generate static
-    django_manage: command=collectstatic virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
-  - name: sync db
-    django_manage: command=syncdb virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
-  - name: migrate db
-    django_manage: command=migrate virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
-  - name: create initial user
-    django_manage: command=demosetup virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
-  - name: restart httpd
-    action: service name=httpd state=restarted
-  - name: restart iptables
-    action: service name=iptables state=restarted
-  - name: reload httpd
-    action: service name=httpd state=reloaded
+    ### these restart handlers need to happen before "sync db"
   - name: restart mysql
     action: service name=mysqld state=restarted
   - name: reload mysql
@@ -194,4 +196,18 @@
   - name: reload postgresql
     action: service name=postgresql state=reloaded
 
+  - name: generate static
+    django_manage: command=collectstatic virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
+  - name: sync db
+    django_manage: command=syncdb virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
+  - name: migrate db
+    django_manage: command=migrate virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
+  - name: create initial user
+    django_manage: command=demosetup virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
 
+  - name: restart httpd
+    action: service name=httpd state=restarted
+  - name: restart iptables
+    action: service name=iptables state=restarted
+  - name: reload httpd
+    action: service name=httpd state=reloaded
