@@ -1,14 +1,15 @@
 from django.conf.urls import patterns, url
 from django.conf import settings
 from views import profile, newapikey, deleteapikey, RatticSessionDeleteView
+from two_factor.views import LoginView
 
 urlpatterns = patterns('',
     url(r'^profile/$', profile, {}),
     url(r'^newapikey/$', newapikey, {}),
     url(r'^deleteapikey/(?P<key_id>\d+)/$', deleteapikey, {}),
 
-    url(r'^login/$', 'django.contrib.auth.views.login', {
-        'template_name': 'account_login.html'}),
+    url(r'^login/$', LoginView.as_view(), {
+        'template_name': 'account_login.html'}, name='login'),
 
     url(r'^logout/$', 'django.contrib.auth.views.logout', {
         'next_page': settings.RATTIC_ROOT_URL}),

@@ -16,12 +16,12 @@
          {% endfor %}
      {% endif %}
 {% else %}
-    <h4>{% trans "Login" %}</h4>
-    <form class="form-inline" method="post" action="{% url "django.contrib.auth.views.login" %}">{% csrf_token %}
-       <label for="id_username">{% trans "Username" %}</label><input class="parent-sized" id="id_username" type="text" name="username" maxlength="30" />
-       <label for="id_password">{% trans "Password" %}</label><input class="parent-sized" type="password" name="password" id="id_password" />
-    <input type="submit" class="btn" value="{% trans "Login" %}"/>
-    {% if not LDAP_ENABLED %}<p><a href="{% url "django.contrib.auth.views.password_reset" %}">{% trans "Forgotten password?" %}</a></p>{% endif %}
+    <h4>Login</h4>
+    <form class="form-inline" method="post" action="{% url "login" %}">{% csrf_token %}
+       <label for="id_username">Username</label><input class="parent-sized" id="id_username" type="text" name="username" maxlength="30" />
+       <label for="id_password">Password</label><input class="parent-sized" type="password" name="password" id="id_password" />
+    <input type="submit" class="btn" value="Login"/>
+    {% if not LDAP_ENABLED %}<p><a href="{% url "django.contrib.auth.views.password_reset" %}">Forgotten password?</a></p>{% endif %}
     <input type="hidden" name="next" value="{{ next|default:'' }}" />
     </form>
 {% endif %}

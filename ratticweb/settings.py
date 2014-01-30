@@ -128,7 +128,7 @@ LOCAL_APPS = (
     'help',
 )
 
-INSTALLED_APPS = (
+INSTALLED_APPS = LOCAL_APPS + (
     # External apps
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -144,7 +144,7 @@ INSTALLED_APPS = (
     'two_factor',
     'south',
     'tastypie',
-) + LOCAL_APPS
+) 
 
 if os.environ.get("ENABLE_TESTS") == "1":
     INSTALLED_APPS += ('django_nose', )

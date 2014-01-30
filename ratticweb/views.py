@@ -6,4 +6,4 @@ def home(request):
     if request.user.is_authenticated():
         return redirect(reverse('cred.views.list'))
     else:
-        return redirect(reverse('django.contrib.auth.views.login'))
+        return redirect(reverse('login'))
