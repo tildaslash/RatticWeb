@@ -10,6 +10,7 @@ from tastypie.exceptions import Unauthorized
 
 from staff.models import GroupForm
 
+
 class RatticGroupAuthorization(Authorization):
     def read_list(self, object_list, bundle):
         return object_list
