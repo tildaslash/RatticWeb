@@ -1,11 +1,12 @@
 from tastypie import fields
 from tastypie.authentication import SessionAuthentication, MultiAuthentication
 from account.authentication import MultiApiKeyAuthentication
+from tastypie.validation import FormValidation
 from tastypie.resources import ModelResource
 from tastypie.authorization import Authorization
 from tastypie.exceptions import Unauthorized
 
-from cred.models import Cred, Tag, CredAudit
+from cred.models import Cred, Tag, CredAudit, TagForm
 
 
 class CredAuthorization(Authorization):
@@ -98,3 +99,4 @@ class TagResource(ModelResource):
         resource_name = 'tag'
         authentication = MultiAuthentication(SessionAuthentication(), MultiApiKeyAuthentication())
         authorization = TagAuthorization()
+        validation = FormValidation(form_class=TagForm)

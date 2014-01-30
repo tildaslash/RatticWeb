@@ -3,10 +3,12 @@ from django.conf import settings
 
 from tastypie.authentication import SessionAuthentication, MultiAuthentication
 from account.authentication import MultiApiKeyAuthentication
+from tastypie.validation import FormValidation
 from tastypie.resources import ModelResource
 from tastypie.authorization import Authorization
 from tastypie.exceptions import Unauthorized
 
+from staff.models import GroupForm
 
 class RatticGroupAuthorization(Authorization):
     def read_list(self, object_list, bundle):
@@ -65,3 +67,4 @@ class GroupResource(ModelResource):
         resource_name = 'group'
         authentication = MultiAuthentication(MultiApiKeyAuthentication(), SessionAuthentication())
         authorization = RatticGroupAuthorization()
+        validation = FormValidation(form_class=GroupForm)
