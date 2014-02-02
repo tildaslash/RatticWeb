@@ -1,0 +1,13 @@
+
+{% extends "base.html" %}
+{% load url from future %}
+
+{% block content %}
+{% if form.errors %}
+<div id="loginfailed" class="alert alert-error">Your username and password didn't match. Please try again.</div>
+{% endif %}
+<div class="pagination-centered hidden-phone">
+    <h1>Welcome to Rattic</h1>
+    <p>It does passwords.</p> 
+</div>
+{% endblock %}

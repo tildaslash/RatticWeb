@@ -17,11 +17,11 @@
      {% endif %}
 {% else %}
     <h4>Login</h4>
-    <form class="form-inline" method="post" action="{% url "login" %}">{% csrf_token %}
-       <label for="id_username">Username</label><input class="parent-sized" id="id_username" type="text" name="username" maxlength="30" />
-       <label for="id_password">Password</label><input class="parent-sized" type="password" name="password" id="id_password" />
+    <form class="form-inline" method="post" action="{% url "login" %}?next={{ next|default:'' }}">{% csrf_token %}
+       <label for="id_username">Username</label><input class="parent-sized" id="id_username" type="text" name="auth-username" maxlength="30" />
+       <label for="id_password">Password</label><input class="parent-sized" type="password" name="auth-password" id="id_password" />
     <input type="submit" class="btn" value="Login"/>
     {% if not LDAP_ENABLED %}<p><a href="{% url "django.contrib.auth.views.password_reset" %}">Forgotten password?</a></p>{% endif %}
-    <input type="hidden" name="next" value="{{ next|default:'' }}" />
+    <input type="hidden" name="login_view-current_step" value="auth" />
     </form>
 {% endif %}

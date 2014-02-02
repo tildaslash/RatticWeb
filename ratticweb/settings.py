@@ -210,7 +210,7 @@ CRED_ICON_CLEAR = 'rattic/img/clear.gif'
 CRED_ICON_DEFAULT = 'Key.png'
 
 LOGIN_REDIRECT_URL = urljoin(RATTIC_ROOT_URL, "cred/list/")
-LOGIN_URL = urljoin(RATTIC_ROOT_URL, "account/login/")
+LOGIN_URL = RATTIC_ROOT_URL
 
 AUTH_LDAP_USER_ATTR_MAP = {"email": "mail", }
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {}
