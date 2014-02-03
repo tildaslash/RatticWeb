@@ -3,13 +3,16 @@ python:
   - "2.6"
   - "2.7"
 services: mysql
+cache:
+  directories:
+    - $HOME/.pip-cache/
 env:
   - DJANGO=1.4.5
   - DJANGO=1.5
 install:
   - "sudo apt-get update"
   - "sudo apt-get install -qq slapd ldap-utils"
-  - pip install -r requirements-mysql.txt --use-mirrors
+  - pip install -r requirements-mysql.txt --use-mirrors --download-cache $HOME/.pip-cache/
 before_script:
   - "pushd docs/ldap; DEBUG=true ./startldap.sh; popd"
   - "export DISPLAY=:99.0"
