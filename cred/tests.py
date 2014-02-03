@@ -224,6 +224,12 @@ class CredViewTests(TestCase):
         self.assertIn(self.data.viewedcred, credlist)
         self.assertNotIn(self.data.changedcred, credlist)
 
+    def test_list_by_changeadvice_user_added(self):
+        resp = self.data.staff.get(reverse('cred.views.list', args=('changeadvice', self.data.unobody.id)))
+        self.assertEqual(resp.status_code, 200)
+        credlist = resp.context['credlist'].object_list
+        self.assertIn(self.data.viewedcred, credlist)
+
     def test_list_by_changeadvice_remove_group(self):
         resp = self.data.staff.get(reverse('cred.views.list', args=('changeadvice', self.data.unorm.id)) + '?group=%s' % self.data.group.id)
         self.assertEqual(resp.status_code, 200)

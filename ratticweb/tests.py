@@ -91,8 +91,8 @@ class TestData:
         self.changedcred = Cred(title='Changed', password='t4gg3d', group=self.group)
         self.changedcred.save()
 
-        CredAudit(audittype=CredAudit.CREDADD, cred=self.viewedcred, user=self.unorm).save()
-        CredAudit(audittype=CredAudit.CREDADD, cred=self.changedcred, user=self.unorm).save()
+        CredAudit(audittype=CredAudit.CREDADD, cred=self.viewedcred, user=self.unobody).save()
+        CredAudit(audittype=CredAudit.CREDADD, cred=self.changedcred, user=self.unobody).save()
         CredAudit(audittype=CredAudit.CREDVIEW, cred=self.viewedcred, user=self.unorm).save()
         CredAudit(audittype=CredAudit.CREDVIEW, cred=self.changedcred, user=self.unorm).save()
         CredAudit(audittype=CredAudit.CREDCHANGE, cred=self.changedcred, user=self.ustaff).save()
