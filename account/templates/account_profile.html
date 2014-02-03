@@ -9,6 +9,12 @@
 <table class="table table-striped table-bordered table-condensed">
 <tr><th>{% trans "Username" %}</th><td>{{ user.username }}</td></tr>
 <tr><th>{% trans "Email" %}</th><td>{{ user.email }}</td></tr>
+{% if default_device %}
+<tr><th>{% trans "Two Factor Auth" %}</th><td>{% trans "Enabled"%} <a href="{% url 'two_factor:disable' %}" class="btn btn-mini btn-danger">{% trans "Disable" %}</a></td></tr>
+<tr><th>{% trans "Backup Codes Left" %}</th><td>{{ backup_codes }}</td></tr>
+{% else %}
+<tr><th>{% trans "Two Factor Auth" %}</th><td>{% trans "Disabled" %} <a href="{% url 'two_factor:setup' %}" class="btn btn-mini">{% trans "Enable now" %}</a></td></tr>
+{% endif %}
 <tr><th>{% trans "Last Password Change" %}</th><td>{{ user.profile.password_changed }}</td></tr>
 <tr><th>{% trans "Groups" %}</th><td>{% for g in user.groups.all %}{{ g.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td></tr>
 {% for field in form %}
