@@ -19,7 +19,7 @@ def profile(request):
     keys = ApiKey.objects.filter(user=request.user)
     try:
         backup_tokens = request.user.staticdevice_set.all()[0].token_set.count()
-    except Exception:
+    except IndexError:
         backup_tokens = 0
 
     # Get a list of the users current sessions
