@@ -1,20 +1,28 @@
 from django.conf.urls import patterns, url
 from django.conf import settings
+
 from views import profile, newapikey, deleteapikey, RatticSessionDeleteView
-from two_factor.views import LoginView
+from views import RatticTFADisableView
+
+from two_factor.views import LoginView, BackupTokensView
+from two_factor.views import SetupView, SetupCompleteView
 
 urlpatterns = patterns('',
-    url(r'^profile/$', profile, {}),
+    url(r'^$', profile, {}),
     url(r'^newapikey/$', newapikey, {}),
     url(r'^deleteapikey/(?P<key_id>\d+)/$', deleteapikey, {}),
-
-    url(r'^login/$', LoginView.as_view(), {
-        'template_name': 'account_login.html'}, name='login'),
 
     url(r'^logout/$', 'django.contrib.auth.views.logout', {
         'next_page': settings.RATTIC_ROOT_URL}),
 
+    # View to kill other sessions with
     url(r'^killsession/(?P<pk>\w+)/', RatticSessionDeleteView.as_view(), name='kill_session')
+
+    # Two Factor Views
+    url(r'^login/$', LoginView.as_view(), name='login'),
+    url(r'^two_factor/disable/$', RatticTFADisableView.as_view(), name='tfa_disable'),
+    url(r'^two_factor/backup/$', BackupTokensView.as_view(), name='tfa_backup'),
+    url(r'^two_factor/setup/$', SetupView.as_view(), name='tfa_setup'),
 )
 
 # URLs we don't want enabled with LDAP

@@ -24,7 +24,7 @@ base_urlpatterns = patterns('',
     url(r'^api/', include(v1_api.urls)),
 
     # two Factor
-    url(r'^', include('two_factor.urls', namespace='two_factor')),
+    #url(r'^', include('two_factor.urls', namespace='two_factor')),
 )
 
 # If in debug mode enable the Django admin interface

@@ -11,6 +11,8 @@ from django.utils.timezone import now
 
 from user_sessions.views import SessionDeleteView
 from two_factor.utils import default_device
+from two_factor.views import LoginView, DisableView, BackupTokensView
+from two_factor.views import SetupView, SetupCompleteView
 
 
 @login_required
@@ -114,3 +116,7 @@ def ldap_password_change(request,
 class RatticSessionDeleteView(SessionDeleteView):
     def get_success_url(self):
         return reverse('account.views.profile')
+
+
+class RatticTFADisableView(DisableView):
+    template_name = 'account_tfa_disable.html'
