@@ -5,7 +5,7 @@ from views import profile, newapikey, deleteapikey, RatticSessionDeleteView
 from views import RatticTFADisableView
 
 from two_factor.views import LoginView, BackupTokensView
-from two_factor.views import SetupView, SetupCompleteView
+from two_factor.views import SetupView
 
 urlpatterns = patterns('',
     url(r'^$', profile, {}),

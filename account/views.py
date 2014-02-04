@@ -11,8 +11,7 @@ from django.utils.timezone import now
 
 from user_sessions.views import SessionDeleteView
 from two_factor.utils import default_device
-from two_factor.views import LoginView, DisableView, BackupTokensView
-from two_factor.views import SetupView, SetupCompleteView
+from two_factor.views import DisableView
 
 
 @login_required

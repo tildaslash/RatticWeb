@@ -144,7 +144,7 @@ INSTALLED_APPS = LOCAL_APPS + (
     'two_factor',
     'south',
     'tastypie',
-) 
+)
 
 if os.environ.get("ENABLE_TESTS") == "1":
     INSTALLED_APPS += ('django_nose', )
