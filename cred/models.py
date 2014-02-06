@@ -126,12 +126,19 @@ class Cred(models.Model):
 class CredForm(ModelForm):
     def __init__(self, requser, *args, **kwargs):
         super(CredForm, self).__init__(*args, **kwargs)
+
+        # Limit the group options to groups that the user is in
         self.fields['group'].queryset = Group.objects.filter(user=requser)
+
+        # Make the URL invalid message a bit more clear
+        self.fields['url'].error_messages['invalid'] = "Please enter a valid HTTP/HTTPS URL"
 
     class Meta:
         model = Cred
+        # These field are not user configurable
         exclude = ('is_deleted', 'latest')
         widgets = {
+            # Use chosen for the tag field
             'tags': SelectMultiple(attrs={'class': 'chzn-select'}),
         }
 
