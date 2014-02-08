@@ -2,10 +2,10 @@ from django.conf.urls import patterns, url
 from django.conf import settings
 
 from views import profile, newapikey, deleteapikey, RatticSessionDeleteView
-from views import RatticTFADisableView
+from views import RatticTFADisableView, RatticTFABackupTokensView
+from views import RatticTFASetupView
 
-from two_factor.views import LoginView, BackupTokensView
-from two_factor.views import SetupView
+from two_factor.views import LoginView
 
 urlpatterns = patterns('',
     url(r'^$', profile, {}),
@@ -21,8 +21,8 @@ urlpatterns = patterns('',
     # Two Factor Views
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^two_factor/disable/$', RatticTFADisableView.as_view(), name='tfa_disable'),
-    url(r'^two_factor/backup/$', BackupTokensView.as_view(), name='tfa_backup'),
-    url(r'^two_factor/setup/$', SetupView.as_view(), name='tfa_setup'),
+    url(r'^two_factor/backup/$', RatticTFABackupTokensView.as_view(), name='tfa_backup'),
+    url(r'^two_factor/setup/$', RatticTFASetupView.as_view(), name='tfa_setup'),
 )
 
 # URLs we don't want enabled with LDAP
