@@ -17,17 +17,17 @@ urlpatterns = patterns('cred.views',
     url(r'^delete/(?P<cred_id>\d+)/$', 'delete'),
     url(r'^add/$', 'add'),
 
-    # Tags
-    url(r'^tags/$', 'tags'),
-    url(r'^tagadd/$', 'tagadd'),
-    url(r'^tagedit/(?P<tag_id>\d+)/$', 'tagedit'),
-    url(r'^tagdelete/(?P<tag_id>\d+)/$', 'tagdelete'),
-
     # Adding to the change queue
     url(r'^addtoqueue/(?P<cred_id>\d+)/$', 'addtoqueue'),
 
     # Bulk views (for buttons on list page)
-    url(r'^bulkaddtoqueue/$', 'bulkaddtoqueue'),
-    url(r'^bulkdelete/$', 'bulkdelete'),
-    url(r'^bulkundelete/$', 'bulkundelete'),
+    url(r'^addtoqueue/bulk/$', 'bulkaddtoqueue'),
+    url(r'^delete/bulk/$', 'bulkdelete'),
+    url(r'^undelete/bulk/$', 'bulkundelete'),
+
+    # Tags
+    url(r'^tag/$', 'tags'),
+    url(r'^tag/add/$', 'tagadd'),
+    url(r'^tag/edit/(?P<tag_id>\d+)/$', 'tagedit'),
+    url(r'^tag/delete/(?P<tag_id>\d+)/$', 'tagdelete'),
 )
