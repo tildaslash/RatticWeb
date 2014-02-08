@@ -22,6 +22,6 @@
        <label for="id_password">Password</label><input class="parent-sized" type="password" name="auth-password" id="id_password" />
     <input type="submit" class="btn" value="Login"/>
     {% if not LDAP_ENABLED %}<p><a href="{% url "django.contrib.auth.views.password_reset" %}">Forgotten password?</a></p>{% endif %}
-    <input type="hidden" name="login_view-current_step" value="auth" />
+    <input type="hidden" name="rattic_tfa_login_view-current_step" value="auth" />
     </form>
 {% endif %}
