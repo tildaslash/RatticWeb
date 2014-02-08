@@ -1,7 +1,7 @@
 Django==1.4.3
 Markdown==2.1.1
 MySQL-python==1.2.3
-PIL==1.1.7
+Pillow==2.3.0
 South==0.7.5
 django-auth-ldap==1.1.4
 django-otp==0.2.2
