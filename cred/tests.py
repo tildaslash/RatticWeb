@@ -410,21 +410,16 @@ class CredViewTests(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTrue(self.data.tagcred.on_changeq())
 
-    def test_deeplink_login_redirect(self):
-        testuser = Client()
-        loginurl = reverse('django.contrib.auth.views.login')
-        credurl = reverse('cred.views.detail', args=(self.data.cred.id,))
-        nexturl = loginurl + '?next=' + credurl
-        resp = testuser.get(credurl, follow=True)
-        self.assertRedirects(resp, nexturl, status_code=302, target_status_code=200)
-        self.assertEqual(resp.context['next'], credurl)
-
     def test_deeplink_post_login_redirect(self):
         testuser = Client()
-        loginurl = reverse('django.contrib.auth.views.login')
+        loginurl = reverse('login')
         credurl = reverse('cred.views.detail', args=(self.data.cred.id,))
         fullurl = loginurl + '?next=' + credurl
-        resp = testuser.post(fullurl, {'username': self.data.unorm.username, 'password': self.data.normpass}, follow=True)
+        resp = testuser.post(fullurl, {
+            'auth-username': self.data.unorm.username,
+            'auth-password': self.data.normpass,
+            'rattic_tfa_login_view-current_step': 'auth',
+            }, follow=True)
         self.assertRedirects(resp, credurl, status_code=302, target_status_code=200)
 
     def test_invalid_icon(self):
@@ -463,9 +458,9 @@ class JavascriptTests(LiveServerTestCase):
     def login_as(self, username, password):
         self.selenium.get('%s%s' % (self.live_server_url, reverse('home')))
         self.waitforload()
-        username_input = self.selenium.find_element_by_name("username")
+        username_input = self.selenium.find_element_by_name("auth-username")
         username_input.send_keys(username)
-        password_input = self.selenium.find_element_by_name("password")
+        password_input = self.selenium.find_element_by_name("auth-password")
         password_input.send_keys(password)
         self.selenium.find_element_by_xpath('//input[@value="Login"]').click()
         self.waitforload()
