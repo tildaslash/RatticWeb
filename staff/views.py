@@ -38,7 +38,11 @@ def userdetail(request, uid):
                 args=('changeadvice', user.id)))
     credlogs = CredAudit.objects.filter(user=user, cred__group__in=request.user.groups.all())[:5]
     morelink = reverse('staff.views.audit_by_user', args=(user.id,))
-    return render(request, 'staff_userdetail.html', {'viewuser': user, 'credlogs': credlogs, 'morelink': morelink})
+    return render(request, 'staff_userdetail.html', {
+        'viewuser': user,
+        'credlogs': credlogs,
+        'morelink': morelink,
+        'hastoken': user_has_device(user)})
 
 
 @staff_member_required

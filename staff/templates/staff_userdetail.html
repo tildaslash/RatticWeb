@@ -21,6 +21,7 @@
     {% else %}
         <a class="btn" href="{% url "user_edit" viewuser.id %}">{% trans "Edit" %}</a>
         <a class="btn btn-danger" href="{% url "staff.views.userdelete" viewuser.id %}">{% trans "Delete" %}</a>
+        <form action="{% url 'staff.views.removetoken' user.id %}" method="post"><input class="btn btn-danger" type="submit" value='{% trans "Disable Two Factor" %}' /></form>
     {% endif %}
     </div>
     <p></p>
