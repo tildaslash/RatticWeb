@@ -304,3 +304,15 @@ def credundelete(request, cred_id):
     CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
 
     return render(request, 'cred_detail.html', {'cred': cred, 'lastchange': lastchange, 'action': reverse('cred.views.delete', args=(cred_id,)), 'undelete': True})
+
+
+@staff_member_required
+def removetoken(request, user_id):
+    if request.method != 'POST':
+        raise Http404
+
+    user = get_object_or_404(User, user_id)
+    for dev in devices_for_user(user):
+        dev.delete()
+
+    return HttpResponseRedirect(reverse('staff.views.userdetail', args=(user_id,)))
