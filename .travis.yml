@@ -23,6 +23,7 @@ before_script:
   - "xdpyinfo"
   - "firefox -v"
 script:
+  - echo -e '[ratticweb]\nsecretkey = blah!' > conf/local.cfg
   - python manage.py test
   - cp docs/travis/ldap.cfg conf/local.cfg
   - python manage.py test
