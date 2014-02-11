@@ -201,7 +201,7 @@ DEBUG = confgetbool('ratticweb', 'debug', False)
 TEMPLATE_DEBUG = DEBUG
 TIME_ZONE = config.get('ratticweb', 'timezone')
 SECRET_KEY = config.get('ratticweb', 'secretkey')
-ALLOWED_HOSTS = [config.get('ratticweb', 'hostname'),]
+ALLOWED_HOSTS = [config.get('ratticweb', 'hostname'), ]
 
 try:
     PASSWORD_EXPIRY = timedelta(days=int(config.get('ratticweb', 'passwordexpirydays')))
