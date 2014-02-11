@@ -311,12 +311,19 @@ def credundelete(request, cred_id):
 
 
 @staff_member_required
-def removetoken(request, user_id):
-    if request.method != 'POST':
-        raise Http404
+def removetoken(request, uid):
+    # Grab the user
+    user = get_object_or_404(User, pk=uid)
 
-    user = get_object_or_404(User, user_id)
+    # Show confirm form on GET
+    if request.method != 'POST':
+        return render(request, 'staff_removetoken.html', {
+            'user': user,
+            })
+
+    # Delete all devices (backup, token and phone)
     for dev in devices_for_user(user):
         dev.delete()
 
-    return HttpResponseRedirect(reverse('staff.views.userdetail', args=(user_id,)))
+    # Redirect to the users detail page
+    return HttpResponseRedirect(reverse('staff.views.userdetail', args=(uid,)))

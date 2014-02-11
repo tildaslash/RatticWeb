@@ -20,11 +20,13 @@
         </form>
     {% else %}
         <a class="btn" href="{% url "user_edit" viewuser.id %}">{% trans "Edit" %}</a>
+        {% if hastoken %}<a class="btn btn-warning" href="{% url "staff.views.removetoken" user.id %}">{% trans "Disable Two Factor" %}</a>{% endif %}
         <a class="btn btn-danger" href="{% url "staff.views.userdelete" viewuser.id %}">{% trans "Delete" %}</a>
-        <form action="{% url 'staff.views.removetoken' user.id %}" method="post"><input class="btn btn-danger" type="submit" value='{% trans "Disable Two Factor" %}' /></form>
     {% endif %}
     </div>
     <p></p>
+{% else %}
+    {% if hastoken %}<a class="btn btn-warning" href="{% url "staff.views.removetoken" user.id %}">Disable Two Factor</a>{% endif %}
 {% endif %}
 <table class="table table-striped table-bordered table-condensed">
 <tr><th>{% trans "Email" %}</th><td>{{ viewuser.email }}</td></tr>
