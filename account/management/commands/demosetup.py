@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
+from django_otp import devices_for_user
 
 
 class Command(BaseCommand):
