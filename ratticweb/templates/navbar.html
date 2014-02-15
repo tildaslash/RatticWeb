@@ -7,7 +7,7 @@
 {% url "help.views.home" as help_views_home %}
 <div class="navbar">
     <div class="navbar-inner">
-	    <a class="brand" href="{% url_root %}"><img class="logo" src="{% static "rattic/img/logo.png" %}" /><span class="hidden-phone"> RatticDB</span></a>
+	    <a class="brand" href="{% url_root %}"><img class="logo" src="{% static "rattic/img/rattic_icon.png" %}" /><span class="hidden-phone"> RatticDB</span></a>
 
         <ul class="nav visible-desktop">
             <li {% if pageurl == cred_views_list %}class="active"{% endif %}>

@@ -45,6 +45,11 @@ img.logo {
     height: 16px;
 }
 
+img.biglogo {
+    height: 200px;
+    width: auto;
+}
+
 .container-fluid .credit {
     margin: 20px 0;
 }

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static from staticfiles %}
 {% load url from future %}
 
 {% block content %}
@@ -7,6 +8,7 @@
 {% endif %}
 <div class="pagination-centered hidden-phone">
     <h1>Welcome to Rattic</h1>
+    <img class="biglogo" src="{% static "rattic/img/rattic_logo_web.svg" %}" alt="RatticDB Logo" />
     <p>It does passwords.</p> 
 </div>
 <form class="form-horizontal visible-phone" action="" method="post">{% csrf_token %}
