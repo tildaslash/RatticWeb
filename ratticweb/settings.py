@@ -93,6 +93,7 @@ MIDDLEWARE_CLASSES = (
     'account.middleware.StrictAuthentication',
     'account.middleware.PasswordExpirer',
     'ratticweb.middleware.DisableClientSideCachingMiddleware',
+    'ratticweb.middleware.XUACompatibleMiddleware',
 
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
