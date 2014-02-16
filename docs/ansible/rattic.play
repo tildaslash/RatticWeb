@@ -1,7 +1,7 @@
 ---
 - hosts: rattic
   vars:
-    release: "v0.15"
+    release: "v0.16"
     db_name: rattic
     db_user: rattic
     db_passwd: allthepass
@@ -23,6 +23,8 @@
       "msg=Ooops, db_platform must be either mysql or postgres"
       fail=yes
 
+  - name: Build a secret key
+    set_fact: secret={{ lookup('password', inventory_hostname + '/secret length=25') }}
 
   - name: setup EPEL
     action: command rpm -ivh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm creates=/etc/yum.repos.d/epel.repo
