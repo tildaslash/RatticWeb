@@ -131,6 +131,7 @@
   ### postgresql setup tasks
   - name: install postgresql
     action: yum name={{ item }} state=latest
+    when: db_platform == "postgres"
     notify:
       - restart postgresql
     with_items:
@@ -140,6 +141,7 @@
 
   - name: initdb for postgresql
     command: /etc/init.d/postgresql initdb creates=/var/lib/pgsql/data/postgresql.conf
+    when: db_platform == "postgres"
 
   - name: configure pg_hba.conf
     action: lineinfile
@@ -147,6 +149,7 @@
       state=present
       "line={{ item }}"
       "insertbefore=^# TYPE"
+    when: db_platform == "postgres"
     with_items:
       - "local   rattic   rattic                trust"
       - "host    rattic   rattic   127.0.0.0/8  trust"
