@@ -8,11 +8,18 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.contrib.auth.decorators import login_required
 from django.template.response import TemplateResponse
 
+import datetime
+
 
 @login_required
 def profile(request):
+    # Get a list of the users API Keys
     keys = ApiKey.objects.filter(user=request.user)
 
+    # Get a list of the users current sessions
+    sessions = request.user.session_set.filter(expire_date__gt=datetime.datetime.now())
+
+    # Process the form if we have data coming in
     if request.method == 'POST':
         form = UserProfileForm(request.POST, instance=request.user.profile)
         if form.is_valid():
@@ -20,8 +27,10 @@ def profile(request):
     else:
         form = UserProfileForm(instance=request.user.profile)
 
+    # Show the template
     return render(request, 'account_profile.html', {
         'keys': keys,
+        'sessions': sessions,
         'form': form,
         'user': request.user,
     })
