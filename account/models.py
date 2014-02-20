@@ -10,6 +10,7 @@ from django.contrib.auth.forms import SetPasswordForm
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.utils.timezone import now
+from django.utils.translation import ugettext_lazy as _
 
 from tastypie.compat import AUTH_USER_MODEL
 
@@ -23,7 +24,7 @@ except ImportError:
 
 
 class LDAPPassChangeForm(SetPasswordForm):
-    old_password = forms.CharField(label="Old password", widget=forms.PasswordInput)
+    old_password = forms.CharField(label=_("Old password"), widget=forms.PasswordInput)
 
     def clean_old_password(self):
         from django_auth_ldap.backend import LDAPBackend
@@ -31,7 +32,7 @@ class LDAPPassChangeForm(SetPasswordForm):
         old_password = self.cleaned_data["old_password"]
         u = LDAPBackend().authenticate(self.user.username, old_password)
         if u is None:
-            raise forms.ValidationError("Incorrect password")
+            raise forms.ValidationError(_("Incorrect password"))
         return old_password
 
     def save(self):

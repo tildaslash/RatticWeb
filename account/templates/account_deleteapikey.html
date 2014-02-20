@@ -1,21 +1,22 @@
 {% extends "base.html" %}
 {% load url from future %}
-{% block title %}Delete API Key - Rattic{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Delete API Key" %} - {% trans "Rattic" %}{% endblock %}
 
 {% block content %}
-<h1>Delete API Key</h1>
+<h1>{% trans "Delete API Key" %}</h1>
 
 <p>
   Please press confirm if you wish to delete this key
 </p>
 <p>
-  <strong>Name:</strong> {{ key.name }}<br />
-  <strong>Created: </strong> {{ key.created }}
+  <strong>{% trans "Name" %}:</strong> {{ key.name }}<br />
+  <strong>{% trans "Created" %}: </strong> {{ key.created }}
 </p>
 
 <form method="post">
 {% csrf_token %}
-  <input type="submit" class="btn btn-primary" value="Confirm"/>
+  <input type="submit" class="btn btn-primary" value="{% trans "Confirm" %}"/>
 </form>
 
 {% endblock %}

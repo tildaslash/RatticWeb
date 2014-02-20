@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load i18n %}
 
 {% block content %}
 
 {% include "staff_part_addgroupmodal.html" %}
 
-<h1>Keepass Import</h1>
-<p>We recommend that you import your keepass data into a seperate group, then adjust the group on each password as required.</p>
+<h1>{% trans "Keepass Import" %}</h1>
+<p>{% blocktrans %}We recommend that you import your keepass data into a
+seperate group, then adjust the group on each password as required.{% endblocktrans %}</p>
 <form enctype="multipart/form-data" class="form-horizontal" action="" method="post">{% csrf_token %}
     {% for field in form %}
         <div class="control-group">
@@ -18,7 +20,7 @@
         </div>
     {% endfor %}
     <div class="controls">
-        <input class="btn-primary" type="submit" value="Submit" />
+        <input class="btn-primary" type="submit" value="{% trans "Submit" %}" />
     </div>
 </form>
 {% endblock %}

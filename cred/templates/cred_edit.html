@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load i18n %}
 {% load credicons %}
 
 {% block content %}
@@ -17,7 +18,7 @@
             {% if field.html_name == 'iconname' %}
               {% cred_icon field.value tagid='logodisplay' %}&nbsp;
               <input type='hidden' name='{{ field.html_name }}' id='id_{{ field.html_name }}' value='{{ field.value }}' />
-              <a href="#logoModal" role="button" class="btn" id="choosebutton" data-toggle="modal">Choose</a>
+              <a href="#logoModal" role="button" class="btn" id="choosebutton" data-toggle="modal">{% trans "Choose" %}</a>
             {% elif field.html_name == 'password' %}
               <div class="input-append">
                 <input id="id_password" name="password" value="{% if field.value %}{{ field.value }}{% endif %}" maxlength="250" type="password">
@@ -31,7 +32,7 @@
         </div>
     {% endfor %}
     <div class="controls">
-        <input id="credsave" class="btn btn-primary" type="submit" value="Submit" />
+        <input id="credsave" class="btn btn-primary" type="submit" value="{% trans "Submit" %}" />
     </div>
 </form>
 {% endblock %}

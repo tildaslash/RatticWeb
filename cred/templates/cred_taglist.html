@@ -1,11 +1,12 @@
 {% load url from future %}
+{% load i18n %}
 
 {% include "cred_part_newtagmodal.html" %}
 
 <table class="table table-striped table-bordered table-condensed">
 <thead>
-    <tr><td colspan="3"><a class="btn" data-toggle="modal" href="#newtagmodal" >Add New</a></td></tr>
-    <tr><th>Name</th><th>Count</th><th>Actions</th></tr>
+    <tr><td colspan="3"><a class="btn" data-toggle="modal" href="#newtagmodal" >{% trans "Add New" %}</a></td></tr>
+    <tr><th>{% trans "Name" %}</th><th>{% trans "Count" %}</th><th>{% trans "Actions" %}</th></tr>
 </thead>
 <tbody>
     {% for t,c in tags.items %}
@@ -13,8 +14,8 @@
         <td><a href="{% url "cred.views.list" 'tag' t.id %}">{{ t.name }}</a></td>
         <td>{{ c }}</td>
         <td>
-          <a href="{% url "cred.views.tagedit" t.id %}" class="btn btn-mini">Rename</a>
-          <a href="{% url "cred.views.tagdelete" t.id %}" class="btn btn-mini">Delete</a>
+          <a href="{% url "cred.views.tagedit" t.id %}" class="btn btn-mini">{% trans "Rename" %}</a>
+          <a href="{% url "cred.views.tagdelete" t.id %}" class="btn btn-mini">{% trans "Delete" %}</a>
         </td>
     </tr>
     {% endfor %}

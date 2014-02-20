@@ -9,6 +9,7 @@ from django.conf import settings
 from models import UserForm, GroupForm, KeepassImportForm
 from cred.models import CredAudit, Cred, Tag
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.utils.translation import ugettext as _
 
 import datetime
 from django.utils.timezone import now
@@ -236,7 +237,7 @@ def credundelete(request, cred_id):
             audittype__in=[CredAudit.CREDCHANGE, CredAudit.CREDADD],
         ).latest().time
     except CredAudit.DoesNotExist:
-        lastchange = "Unknown (Logs deleted)"
+        lastchange = _("Unknown (Logs deleted)")
 
     # Check user has perms
     if not cred.is_accessible_by(request.user):

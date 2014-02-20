@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% load url from future %}
-{% block title %}New API Key - Rattic{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "New API Key" %} - {% trans "Rattic" %}{% endblock %}
 
 {% block content %}
-<h1>New API Key</h1>
+<h1>{% trans "New API Key" %}</h1>
 <form class="form-horizontal" action="" method="post">
 {% csrf_token %}
    {% for field in form %}
@@ -16,7 +17,7 @@
         </div>
     {% endfor %}
     <div class="controls">
-        <input class="btn btn-primary" type="submit" value="Create" />
+        <input class="btn btn-primary" type="submit" value="{% trans "Create" %}" />
     </div>
 </form>
 {% endblock %}

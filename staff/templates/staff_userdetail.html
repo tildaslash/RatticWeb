@@ -1,27 +1,33 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load i18n %}
 
 {% block content %}
 {% if delete %}
-<div class="alert alert-error">Deleting this user will remove any associated auditlogs, maybe deactivate their account instead?</div>
+<div class="alert alert-error">
+  {% blocktrans %}
+    Deleting this user will remove any associated auditlogs, maybe deactivate
+    their account instead?
+  {% endblocktrans %}
+</div>
 {% endif %}
-<h1>User: {{ viewuser.username }}</h1>
+<h1>{% trans "User" %}: {{ viewuser.username }}</h1>
 {% if not LDAP_ENABLED %}
     <div class="btn-group">
     {% if delete %}
         <form action="{% url "staff.views.userdelete" viewuser.id %}" method="post">{% csrf_token %}
-            <input type="submit" class="btn btn-danger" value="Confirm Delete" />
+            <input type="submit" class="btn btn-danger" value="{% trans "Confirm Delete" %}" />
         </form>
     {% else %}
-        <a class="btn" href="{% url "user_edit" viewuser.id %}">Edit</a>
-        <a class="btn btn-danger" href="{% url "staff.views.userdelete" viewuser.id %}">Delete</a>
+        <a class="btn" href="{% url "user_edit" viewuser.id %}">{% trans "Edit" %}</a>
+        <a class="btn btn-danger" href="{% url "staff.views.userdelete" viewuser.id %}">{% trans "Delete" %}</a>
     {% endif %}
     </div>
     <p></p>
 {% endif %}
 <table class="table table-striped table-bordered table-condensed">
-<tr><th>Email</th><td>{{ viewuser.email }}</td></tr>
-<tr><th>Groups</th><td>{% for g in viewuser.groups.all %}<a href="{% url "staff.views.groupdetail" g.id %}">{{ g.name }}</a>, {% endfor %}</td></tr>
+<tr><th>{% trans "Email" %}</th><td>{{ viewuser.email }}</td></tr>
+<tr><th>{% trans "Groups" %}</th><td>{% for g in viewuser.groups.all %}<a href="{% url "staff.views.groupdetail" g.id %}">{{ g.name }}</a>, {% endfor %}</td></tr>
 </table>
 {% if not delete %}
 {% include "credaudit_list.html" with type='cred' %}

@@ -1,6 +1,7 @@
 {% load url from future %}
 {% load static from staticfiles %}
 {% load url_root from ratticweb %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 {% if TEMPLATE_DEBUG %}
@@ -9,7 +10,7 @@
 -->
 {% endif %}
 <head>
-  <title>{% block title %}Rattic{% endblock %}</title>
+  <title>{% block title %}{% trans "Rattic" %}{% endblock %}</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet" media="screen">
@@ -38,7 +39,7 @@
 </div>
 <div id="footer">
   <div class="container-fluid">
-      <p class="muted credit">Password management powered by <a href="http://rattic.org/">RatticDB</a><span class='hidden-phone'>, built by <a href="https://twitter.com/smarthall">@smarthall</a> and <a href="https://twitter.com/zemmiph0bia">@zemmiph0bia</a>. | <a href="https://github.com/tildaslash/RatticWeb/issues/new">Report an issue</a> | <a href="https://twitter.com/RatticDB">Contact Us</a></span></p>
+      <p class="muted credit">{% blocktrans %}Password management powered by{% endblocktrans %} <a href="http://rattic.org/">{% trans "RatticDB" %}</a><span class='hidden-phone'>, {% trans "built by" %} <a href="https://twitter.com/smarthall">@smarthall</a> {% trans "and" %} <a href="https://twitter.com/zemmiph0bia">@zemmiph0bia</a>. | <a href="https://github.com/tildaslash/RatticWeb/issues/new">{% trans "Report an issue" %}</a> | <a href="https://twitter.com/RatticDB">{% trans "Contact Us" %}</a></span></p>
   </div>
 </div>
 <script src="{% static "jquery/js/jquery.min.js" %}"></script>

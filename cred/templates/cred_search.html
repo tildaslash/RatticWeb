@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load i18n %}
 
 {% block content %}
 
 <form onsubmit="return credsearch(this)" class="text-center">
   <h1>Search</h1>
-  <input id="search-box" type="text" name="box" class="search-query" placeholder="Type your Query">
-  <input id="submit" type="submit" name="submit" class="btn btn-primary" value="Search">
+  <input id="search-box" type="text" name="box" class="search-query" placeholder="{% trans "Type your Query" %}">
+  <input id="submit" type="submit" name="submit" class="btn btn-primary" value="{% trans "Search" %}">
 </form>
 
 {% endblock %}

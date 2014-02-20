@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load i18n %}
 {% load credicons %}
 
-{% block title %}{{ credtitle }} - Rattic{% endblock %}
+{% block title %}{{ credtitle }} - {% trans "Rattic" %}{% endblock %}
 
 {% block content %}
 {% if not hidecredlist %}
@@ -19,16 +20,16 @@
     <tr>
       <td colspan="5">
         {% if buttons.add %}
-          <a class="btn" href="{% url "cred.views.add" %}">Add New</a>
+          <a class="btn" href="{% url "cred.views.add" %}">{% trans "Add New" %}</a>
         {% endif %}
         {% if buttons.delete %}
-          <a class="btn disabled checkbutton" href="javascript:void(0)" onclick="submitCredForm('{% url "cred.views.bulkdelete" %}')">Delete</a>
+          <a class="btn disabled checkbutton" href="javascript:void(0)" onclick="submitCredForm('{% url "cred.views.bulkdelete" %}')">{% trans "Delete" %}</a>
         {% endif %}
         {% if buttons.undelete %}
-          <a class="btn disabled checkbutton" href="javascript:void(0)" onclick="submitCredForm('{% url "cred.views.bulkundelete" %}')">Undelete</a>
+          <a class="btn disabled checkbutton" href="javascript:void(0)" onclick="submitCredForm('{% url "cred.views.bulkundelete" %}')">{% trans "Undelete" %}</a>
         {% endif %}
         {% if buttons.changeq %}
-          <a class="btn disabled checkbutton" href="javascript:void(0)" onclick="submitCredForm('{% url "cred.views.bulkaddtoqueue" %}')">Add to Change Queue</a>
+          <a class="btn disabled checkbutton" href="javascript:void(0)" onclick="submitCredForm('{% url "cred.views.bulkaddtoqueue" %}')">{% trans "Add to Change Queue" %}</a>
         {% endif %}
       </td>
     </tr>
@@ -38,26 +39,26 @@
       </th>
       <th>
         {% if sort == 'title' %}
-          <a href="{% url 'cred.views.list' filter value revsortdir 'title' page %}">Title {% if sortdir == 'ascending' %}<i class='icon-chevron-up'></i>{% else %}<i class='icon-chevron-down'></i>{% endif %}</a>
+          <a href="{% url 'cred.views.list' filter value revsortdir 'title' page %}">{% trans "Title" %} {% if sortdir == 'ascending' %}<i class='icon-chevron-up'></i>{% else %}<i class='icon-chevron-down'></i>{% endif %}</a>
         {% else %}
-          <a href="{% url 'cred.views.list' filter value sortdir 'title' page %}">Title</a>
+          <a href="{% url 'cred.views.list' filter value sortdir 'title' page %}">{% trans "Title" %}</a>
         {% endif %}
       </th>
       <th>
         {% if sort == 'username' %}
-          <a href="{% url 'cred.views.list' filter value revsortdir 'username' page %}">User {% if sortdir == 'ascending' %}<i class='icon-chevron-up'></i>{% else %}<i class='icon-chevron-down'></i>{% endif %}</a>
+          <a href="{% url 'cred.views.list' filter value revsortdir 'username' page %}">{% trans "User" %} {% if sortdir == 'ascending' %}<i class='icon-chevron-up'></i>{% else %}<i class='icon-chevron-down'></i>{% endif %}</a>
         {% else %}
-          <a href="{% url 'cred.views.list' filter value sortdir 'username' page %}">User</a>
+          <a href="{% url 'cred.views.list' filter value sortdir 'username' page %}">{% trans "User" %}</a>
         {% endif %}
       </th>
       <th>
         {% if sort == 'group' %}
-          <a href="{% url 'cred.views.list' filter value revsortdir 'group' page %}">Group {% if sortdir == 'ascending' %}<i class='icon-chevron-up'></i>{% else %}<i class='icon-chevron-down'></i>{% endif %}</a>
+          <a href="{% url 'cred.views.list' filter value revsortdir 'group' page %}">{% trans "Group" %} {% if sortdir == 'ascending' %}<i class='icon-chevron-up'></i>{% else %}<i class='icon-chevron-down'></i>{% endif %}</a>
         {% else %}
-          <a href="{% url 'cred.views.list' filter value sortdir 'group' page %}">Group</a>
+          <a href="{% url 'cred.views.list' filter value sortdir 'group' page %}">{% trans "Group" %}</a>
         {% endif %}
       </th>
-      <th>Tags</th>
+      <th>{% trans "Tags" %}</th>
     </tr>
   </thead>
   <tbody>
@@ -77,9 +78,9 @@
 <div class="pagination pagination-centered">
   <ul>
     {% if credlist.has_previous %}
-    <li><a href="{% url "cred.views.list" filter value sortdir sort credlist.previous_page_number %}">Prev</a></li>
+    <li><a href="{% url "cred.views.list" filter value sortdir sort credlist.previous_page_number %}">{% trans "Prev" %}</a></li>
     {% else %}
-      <li class="disabled"><a href="#">Prev</a></li>
+      <li class="disabled"><a href="#">{% trans "Prev" %}</a></li>
     {% endif %}
     {% for p in credlist.paginator.page_range %}
       {% if credlist.number == p %}
@@ -89,9 +90,9 @@
       {% endif %}
     {% endfor %}
     {% if credlist.has_next %}
-      <li><a href="{% url "cred.views.list" filter value sortdir sort credlist.next_page_number %}">Next</a></li>
+      <li><a href="{% url "cred.views.list" filter value sortdir sort credlist.next_page_number %}">{% trans "Next" %}</a></li>
     {% else %}
-      <li class="disabled"><a href="#">Next</a></li>
+      <li class="disabled"><a href="#">{% trans "Next" %}</a></li>
     {%endif %}
   </ul>
 </div>
@@ -99,7 +100,7 @@
 
 
 {% if showtaglist %}
-<h1>Matched Tags</h1>
+<h1>{% trans "Matched Tags" %}</h1>
 {% include "cred_taglist.html" with tags=tag only %}
 {% endif %}
 {% endblock %}

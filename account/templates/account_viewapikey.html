@@ -1,20 +1,24 @@
 {% extends "base.html" %}
 {% load url from future %}
-{% block title %}New API Key - Rattic{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "New API Key" %} - {% trans "Rattic" %}{% endblock %}
 
 {% block content %}
-<h1>New API Key</h1>
+<h1>{% trans "New API Key" %}</h1>
 
-<div class="alert"><strong>Warning!</strong> This is the last chance that you will have to access the secret key. You should save it in a safe place now.</div>
+<div class="alert">
+  <strong>{% trans "Warning!" %}</strong>
+  {% blocktrans %}This is the last chance that you will have to access the secret key. You should save it in a safe place now.{% endblocktrans %}
+</div>
 <p>
-  Your new API key has been created.
+  {% blocktrans %}Your new API key has been created.{% endblocktrans %}
 </p>
 <p>
-  <strong>Name:</strong> {{ key.name }}<br />
-  <strong>Secret Key:</strong> {{ key.key }}
+  <strong>{% trans "Name" %}:</strong> {{ key.name }}<br />
+  <strong>{% trans "Secret Key" %}:</strong> {{ key.key }}
 </p>
 <p>
-  <a href="{% url 'account.views.profile' %}" class="btn btn-primary">Back to Profile</a>
+  <a href="{% url 'account.views.profile' %}" class="btn btn-primary">{% trans "Back to Profile" %}</a>
 </p>
 
 {% endblock %}

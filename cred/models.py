@@ -3,6 +3,7 @@ from django.db.models import Q
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from django.forms import ModelForm, SelectMultiple
+from django.utils.translation import ugettext_lazy as _
 
 
 class Tag(models.Model):
@@ -71,7 +72,7 @@ class Cred(models.Model):
     url = models.URLField(blank=True, null=True)
     username = models.CharField(max_length=250, blank=True, null=True)
     password = models.CharField(max_length=250)
-    descriptionmarkdown = models.BooleanField(default=False, verbose_name='Markdown Description')
+    descriptionmarkdown = models.BooleanField(default=False, verbose_name=_('Markdown Description'))
     description = models.TextField(blank=True, null=True)
     group = models.ForeignKey(Group)
     tags = models.ManyToManyField(Tag, related_name='child_creds', blank=True, null=True, default=None)
@@ -131,7 +132,7 @@ class CredForm(ModelForm):
         self.fields['group'].queryset = Group.objects.filter(user=requser)
 
         # Make the URL invalid message a bit more clear
-        self.fields['url'].error_messages['invalid'] = "Please enter a valid HTTP/HTTPS URL"
+        self.fields['url'].error_messages['invalid'] = _("Please enter a valid HTTP/HTTPS URL")
 
     class Meta:
         model = Cred
@@ -156,13 +157,13 @@ class CredAudit(models.Model):
     CREDDELETE = 'D'
     CREDSCHEDCHANGE = 'S'
     CREDAUDITCHOICES = (
-        (CREDADD, 'Added'),
-        (CREDCHANGE, 'Changed'),
-        (CREDMETACHANGE, 'Only Metadata Changed'),
-        (CREDVIEW, 'Only Details Viewed'),
-        (CREDDELETE, 'Deleted'),
-        (CREDSCHEDCHANGE, 'Scheduled For Change'),
-        (CREDPASSVIEW, 'Password Viewed'),
+        (CREDADD, _('Added')),
+        (CREDCHANGE, _('Changed')),
+        (CREDMETACHANGE, _('Only Metadata Changed')),
+        (CREDVIEW, _('Only Details Viewed')),
+        (CREDDELETE, _('Deleted')),
+        (CREDSCHEDCHANGE, _('Scheduled For Change')),
+        (CREDPASSVIEW, _('Password Viewed')),
     )
 
     audittype = models.CharField(max_length=1, choices=CREDAUDITCHOICES)

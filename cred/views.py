@@ -5,6 +5,7 @@ from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
+from django.utils.translation import ugettext as _
 
 from models import Cred, CredForm, CredAudit, TagForm, Tag, CredChangeQ
 from cred.icon import get_icon_list
@@ -19,7 +20,7 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
 
     # Setup basic stuff
     viewdict = {}
-    viewdict['credtitle'] = 'All passwords'
+    viewdict['credtitle'] = _('All passwords')
     viewdict['alerts'] = []
     viewdict['filter'] = str(cfilter).lower()
     viewdict['value'] = str(value).lower()
@@ -40,24 +41,24 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
     if cfilter == 'tag':
         tag = get_object_or_404(Tag, pk=value)
         cred_list = cred_list.filter(tags=tag)
-        viewdict['credtitle'] = 'Passwords tagged with %s' % tag.name
+        viewdict['credtitle'] = _('Passwords tagged with %(tagname)s') % {'tagname': tag.name, }
 
     elif cfilter == 'group':
         group = get_object_or_404(Group, pk=value)
         if group not in request.user.groups.all():
             raise Http404
         cred_list = cred_list.filter(group=group)
-        viewdict['credtitle'] = 'Passwords in group %s' % group.name
+        viewdict['credtitle'] = _('Passwords in group %(groupname)s') % {'groupname': group.name, }
 
     elif cfilter == 'search':
         cred_list = cred_list.filter(title__icontains=value)
-        viewdict['credtitle'] = 'Passwords for search "%s"' % value
+        viewdict['credtitle'] = _('Passwords for search "%(searchstring)s"') % {'searchstring': value, }
 
     elif cfilter == 'history':
         cred = get_object_or_404(Cred, pk=value)
         cred_list = Cred.objects.accessible(request.user,
                 historical=True).filter(Q(latest=value) | Q(id=value))
-        viewdict['credtitle'] = 'Versions of: "%s"' % cred.title
+        viewdict['credtitle'] = _('Versions of: "%(credtitle)s"') % {'credtitle': cred.title, }
         viewdict['buttons']['add'] = False
         viewdict['buttons']['delete'] = False
         viewdict['buttons']['changeq'] = False
@@ -76,10 +77,10 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
         cred_list = Cred.objects.change_advice(user, groups)
 
         alert = {}
-        alert['message'] = "That user is now disabled. Here is a list of passwords that they have viewed that have not since been changed. You probably want to add them all to the change queue."
+        alert['message'] = _("That user is now disabled. Here is a list of passwords that they have viewed that have not since been changed. You probably want to add them all to the change queue.")
         alert['type'] = 'info'
 
-        viewdict['credtitle'] = 'Changes required for "%s"' % user.username
+        viewdict['credtitle'] = _('Changes required for "%(username)s"') % {'username': user.username}
         viewdict['buttons']['add'] = False
         viewdict['buttons']['delete'] = True
         viewdict['buttons']['changeq'] = True
@@ -90,7 +91,7 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
 
     elif cfilter == 'special' and value == 'trash':
         cred_list = Cred.objects.accessible(request.user, deleted=True).filter(is_deleted=True)
-        viewdict['credtitle'] = 'Passwords in the trash'
+        viewdict['credtitle'] = _('Passwords in the trash')
         viewdict['buttons']['add'] = False
         viewdict['buttons']['undelete'] = True
         viewdict['buttons']['changeq'] = False
@@ -98,7 +99,7 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
     elif cfilter == 'special' and value == 'changeq':
         q = Cred.objects.filter(credchangeq__in=CredChangeQ.objects.all())
         cred_list = cred_list.filter(id__in=q)
-        viewdict['credtitle'] = 'Passwords on the Change Queue'
+        viewdict['credtitle'] = _('Passwords on the Change Queue')
         viewdict['buttons']['add'] = False
         viewdict['buttons']['delete'] = False
         viewdict['buttons']['changeq'] = False
@@ -231,7 +232,7 @@ def delete(request, cred_id):
             audittype__in=[CredAudit.CREDCHANGE, CredAudit.CREDADD],
         ).latest().time
     except CredAudit.DoesNotExist:
-        lastchange = "Unknown (Logs deleted)"
+        lastchange = _("Unknown (Logs deleted)")
 
     # Check user has perms
     if not cred.is_accessible_by(request.user):

@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User, Group
+from django.utils.translation import ugettext_lazy as _
 from django import forms
 from importloaders import keepass
 
@@ -27,7 +28,7 @@ class UserForm(forms.ModelForm):
         confirmpass = cleaned_data.get("confirmpass")
 
         if newpass != confirmpass:
-            msg = u'Passwords do not match'
+            msg = _('Passwords do not match')
             self._errors['confirmpass'] = self.error_class([msg])
             del cleaned_data['newpass']
             del cleaned_data['confirmpass']
@@ -57,12 +58,12 @@ class KeepassImportForm(forms.Form):
             db = keepass(cleaned_data['file'], cleaned_data['password'])
             cleaned_data['db'] = db
         except ValueError:
-            msg = u'Could not read keepass file, check password.'
+            msg = _('Could not read keepass file, the password you gave may not be correct.')
             self._errors['file'] = self.error_class([msg])
             del cleaned_data['file']
             del cleaned_data['password']
         except IOError:
-            msg = u'Could not read keepass file, was that a valid keepass file?'
+            msg = _('Could not read keepass file, was that a valid keepass file?')
             self._errors['file'] = self.error_class([msg])
             del cleaned_data['file']
             del cleaned_data['password']

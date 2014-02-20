@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load i18n %}
 {% load cred_markdown %}
 {% load credicons %}
 
-{% block title %}{{ cred.title }} - Rattic{% endblock %}
+{% block title %}{{ cred.title }} - {% trans "Rattic" %}{% endblock %}
 
 {% block content %}
 <script>
@@ -12,59 +13,59 @@
 
 <h1>{% cred_icon cred.iconname %} {{ cred.title }}</h1>
 {% if delete %}
-<div class="alert alert-error">You are about to delete this password. A staff member will be required if you want to undelete it.</div>
+<div class="alert alert-error">{% blocktrans %}You are about to delete this password. A staff member will be required if you want to undelete it.{% endblocktrans %}</div>
 {% endif %}
 {% if cred.is_deleted and cred.is_latest %}
-<div class="alert alert-error">This credential has been deleted and is in the trash can. It is only visible to staff. You can alter it if you wish, its history will still be recorded. Click the undelete button to restore it. If you click the Delete Permanently button then the password, its entire history and all its audit logs will be removed.</div>
+<div class="alert alert-error">{% blocktrans %}This credential has been deleted and is in the trash can. It is only visible to staff. You can alter it if you wish, its history will still be recorded. Click the undelete button to restore it. If you click the Delete Permanently button then the password, its entire history and all its audit logs will be removed.{% endblocktrans %}</div>
 {% endif %}
 {% if not cred.is_latest %}
-<div class="alert alert-info"><strong>Hey there!</strong> This credential is an historical version. <a href="{% url 'cred.views.detail' cred.latest.id %}">Click here</a> to see the latest version.</div>
+<div class="alert alert-info"><strong>{% trans "Hey there!" %}</strong> {% blocktrans %}This credential is an historical version.{% endblocktrans %} <a href="{% url 'cred.views.detail' cred.latest.id %}">{% trans "Click here" %}</a> {% blocktrans %}to see the latest version.{% endblocktrans %}</div>
 {% endif %}
 {% if cred.on_changeq %}
-<div class="alert alert-warning"><strong>Change Required</strong> This credential is on the change queue and should have its password changed as soon as possible. Why not <a href="{% url 'cred.views.edit' cred.id %}">do it now</a>?</div>
+<div class="alert alert-warning"><strong>{% trans "Change Required" %}</strong> {% blocktrans %}This credential is on the change queue and should have its password changed as soon as possible.{% endblocktrans %} {% trans "Why not" %} <a href="{% url 'cred.views.edit' cred.id %}">{% trans "do it now" %}</a>{% trans "?" %}</div>
 {% endif %}
 {% if cred.is_latest %}
 <div class="btn-group">
-    <a class="btn" href="{% url 'cred.views.edit' cred.id %}">Edit</a>
-    <a class="btn" href="{% url 'cred.views.list' 'history' cred.id 'ascending' 'id' %}">History</a>
-    {% if not delete %}<a class="btn btn-danger" href="{% url 'cred.views.delete' cred.id %}">Delete</a>{% endif %}
+    <a class="btn" href="{% url 'cred.views.edit' cred.id %}">{% trans "Edit" %}</a>
+    <a class="btn" href="{% url 'cred.views.list' 'history' cred.id 'ascending' 'id' %}">{% trans "History" %}</a>
+    {% if not delete %}<a class="btn btn-danger" href="{% url 'cred.views.delete' cred.id %}">{% trans "Delete" %}</a>{% endif %}
     {% if not cred.is_deleted %}
-        <a class="btn" href="{% url 'cred.views.addtoqueue' cred.id %}">Add to Change Queue</a>
+        <a class="btn" href="{% url 'cred.views.addtoqueue' cred.id %}">{% trans "Add to Change Queue" %}</a>
     {% endif %}
     {% if cred.is_deleted and not undelete %}
-    <a class="btn btn-success" href="{% url 'staff.views.credundelete' cred.id %}">Undelete</a>
+    <a class="btn btn-success" href="{% url 'staff.views.credundelete' cred.id %}">{% trans "Undelete" %}</a>
     {% endif %}
 </div>
 <p></p>
 {% endif %}
 <table class="table table-striped table-bordered table-condensed">
-{% if cred.url %}<tr><th>URL</th><td><a href="{{ cred.url }}">{{ cred.url }}</a></td></tr>{% endif %}
+{% if cred.url %}<tr><th>{% trans "URL" %}</th><td><a href="{{ cred.url }}">{{ cred.url }}</a></td></tr>{% endif %}
 <tr>
-  <th>Username</th>
+  <th>{% trans "Username" %}</th>
   <td id="usertd">
     {% if cred.username %}
       <span id="username">{{ cred.username }}</span>
-      <button class="btn btn-mini" data-clipboard-text="{{ cred.username }}" id="copyuser">Copy</button>
+      <button class="btn btn-mini" data-clipboard-text="{{ cred.username }}" id="copyuser">{% trans "Copy" %}</button>
     {% endif %}
   </td>
 </tr>
 <tr>
-  <th>Password <a id="hidepass" onclick="hidepass()" class="btn btn-mini"><i class="icon-eye-close"></i></a>
+  <th>{% trans "Password" %} <a id="hidepass" onclick="hidepass()" class="btn btn-mini"><i class="icon-eye-close"></i></a>
     <a id="showpass" onclick="showpass()" class="btn btn-mini"><i class="icon-eye-open"></i></a>
   </th>
   <td id="passtd">
     <span id="password" class="passhidden">XX XX XXX XXX</span>
-    <button class="btn btn-mini" id="copyclipboard">Copy</button>
+    <button class="btn btn-mini" id="copyclipboard">{% trans "Copy" %}</button>
   </td>
 </tr>
-<tr><th>Group</th><td><a href="{% url 'cred.views.list' 'group' cred.group.id %}">{{ cred.group.name }}</a></td></tr>
-<tr><th>Tags</th><td>{% for t in cred.tags.all %}<a href="{% url 'cred.views.list' 'tag' t.id %}">{{ t.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</td></tr>
-<tr><th>Created:</th><td>{{ cred.created }}</td></tr>
+<tr><th>{% trans "Group" %}</th><td><a href="{% url 'cred.views.list' 'group' cred.group.id %}">{{ cred.group.name }}</a></td></tr>
+<tr><th>{% trans "Tags" %}</th><td>{% for t in cred.tags.all %}<a href="{% url 'cred.views.list' 'tag' t.id %}">{{ t.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</td></tr>
+<tr><th>{% trans "Created" %}</th><td>{{ cred.created }}</td></tr>
 </table>
 
 
 
-<strong>Description:</strong>
+<strong>{% trans "Description:" %}</strong>
 {% if cred.descriptionmarkdown %}
   <div class="creddescription">
    {% markdown_cred cred.description %}
@@ -76,12 +77,12 @@
 
 {% if delete %}
     <form action="" method="post">{% csrf_token %}
-        <input type="submit" class="btn btn-danger" value="Delete" />
+        <input type="submit" class="btn btn-danger" value="{% trans "Delete" %}" />
     </form>
 {% endif %}
 {% if undelete %}
     <form action="" method="post">{% csrf_token %}
-        <input type="submit" class="btn btn-success" value="Undelete" />
+        <input type="submit" class="btn btn-success" value="{% trans "Undelete" %}" />
     </form>
 {% endif %}
 {% if not delete %}

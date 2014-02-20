@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load i18n %}
 
 {% block content %}
 <form action="" method="post">{% csrf_token %}
-    <p><b>Deleting tag:</b> {{ t.name }}</p>
-	<input type="submit" value="Confirm" />
+    <p><b>{% trans "Deleting tag" %}:</b> {{ t.name }}</p>
+    <input type="submit" value="{% trans "Confirm" %}" />
 </form>
 {% endblock %}
 

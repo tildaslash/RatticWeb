@@ -1,15 +1,16 @@
 {% load url from future %}
-<h2>Audit Logs</h2>
+{% load i18n %}
+<h2>{% trans "Audit Logs" %}</h2>
 <table class="table table-striped table-bordered table-condensed">
 <thead>
 <tr>
-    <th>Action</th>
+    <th>{% trans "Action" %}</th>
     {% if type == 'user' %}
-         <th>User</th>
+         <th>{% trans "User" %}</th>
     {% else %}
-         <th>Credential</th>
+         <th>{% trans "Credential" %}</th>
     {% endif %}
-    <th>When</th>
+    <th>{% trans "When" %}</th>
 </tr>
 </thead>
 <tbody>
@@ -25,6 +26,6 @@
 </tr>
 {% endfor %}
 </tbody>
-<tr><td colspan="3"><a href="{{ morelink }}">More logs...</a></td></tr>
+<tr><td colspan="3"><a href="{{ morelink }}">{% trans "More logs..." %}</a></td></tr>
 </table>
 

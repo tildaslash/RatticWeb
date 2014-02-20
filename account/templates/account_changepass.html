@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load i18n %}
 {% block title %}Setting New password{% endblock %}
 
 {% block content %}
-<p>Please enter your new password twice.<br />
-   So we can verify you typed it in correctly.</p>
+<p>{% blocktrans %}Please enter your new password twice.{% endblocktrans %}<br />
+   {% blocktrans %}So we can verify you typed it in correctly.{% endblocktrans %}</p>
 <form class="form-horizontal" action="" method="post">
 {% csrf_token %}
    {% for field in form %}
@@ -17,7 +18,7 @@
         </div>
     {% endfor %}
     <div class="controls">
-        <input class="btn btn-primary" type="submit" value="Change Password" />
+        <input class="btn btn-primary" type="submit" value="{% trans "Change Password" %}" />
     </div>
 </form>
 {% endblock %}
