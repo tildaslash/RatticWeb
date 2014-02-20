@@ -1,0 +1,839 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-02-21 08:41+1100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: account/models.py:27
+msgid "Old password"
+msgstr ""
+
+#: account/models.py:35
+msgid "Incorrect password"
+msgstr ""
+
+#: account/templates/account_changepass.html:7
+#: account/templates/password_reset_confirm.html:8
+msgid "Please enter your new password twice."
+msgstr ""
+
+#: account/templates/account_changepass.html:8
+#: account/templates/password_reset_confirm.html:9
+msgid "So we can verify you typed it in correctly."
+msgstr ""
+
+#: account/templates/account_changepass.html:21
+msgid "Change Password"
+msgstr ""
+
+#: account/templates/account_deleteapikey.html:4
+#: account/templates/account_deleteapikey.html:7
+msgid "Delete API Key"
+msgstr ""
+
+#: account/templates/account_deleteapikey.html:4
+#: account/templates/account_newapikey.html:4
+#: account/templates/account_viewapikey.html:4
+#: account/templates/password_reset.html:5
+#: account/templates/password_reset_complete.html:5
+#: account/templates/password_reset_confirm.html:4
+#: account/templates/password_reset_done.html:5
+#: cred/templates/cred_detail.html:7 cred/templates/cred_list.html:6
+#: ratticweb/templates/base.html:13 staff/templates/staff_home.html:5
+msgid "Rattic"
+msgstr ""
+
+#: account/templates/account_deleteapikey.html:13
+#: account/templates/account_viewapikey.html:17
+#: cred/templates/cred_taglist.html:9
+#: staff/templates/staff_groupdetail.html:10
+#: staff/templates/staff_home.html:33
+msgid "Name"
+msgstr ""
+
+#: account/templates/account_deleteapikey.html:14
+#: cred/templates/cred_detail.html:63
+msgid "Created"
+msgstr ""
+
+#: account/templates/account_deleteapikey.html:19
+#: cred/templates/cred_tagdelete.html:8
+msgid "Confirm"
+msgstr ""
+
+#: account/templates/account_ldaperror.html:6
+msgid "LDAP Error"
+msgstr ""
+
+#: account/templates/account_ldaperror.html:7
+msgid "Your LDAP server returned the following error:"
+msgstr ""
+
+#: account/templates/account_ldaperror.html:8
+#: cred/templates/cred_part_passgenmodal.html:9
+msgid "Description"
+msgstr ""
+
+#: account/templates/account_ldaperror.html:9
+msgid "Further Info"
+msgstr ""
+
+#: account/templates/account_login.html:9
+msgid "Your username and password didn't match. Please try again."
+msgstr ""
+
+#: account/templates/account_login.html:13
+msgid "Welcome to Rattic"
+msgstr ""
+
+#: account/templates/account_login.html:14
+msgid "RatticDB Logo"
+msgstr ""
+
+#: account/templates/account_login.html:15
+msgid "It does passwords."
+msgstr ""
+
+#: account/templates/account_login.html:30 ratticweb/templates/sidebar.html:24
+msgid "Forgotten password?"
+msgstr ""
+
+#: account/templates/account_newapikey.html:4
+#: account/templates/account_newapikey.html:7
+#: account/templates/account_profile.html:25
+#: account/templates/account_viewapikey.html:4
+#: account/templates/account_viewapikey.html:7
+msgid "New API Key"
+msgstr ""
+
+#: account/templates/account_newapikey.html:20
+#: cred/templates/cred_part_newtagmodal.html:13
+#: staff/templates/staff_part_addgroupmodal.html:17
+msgid "Create"
+msgstr ""
+
+#: account/templates/account_profile.html:7
+msgid "Your Account"
+msgstr ""
+
+#: account/templates/account_profile.html:10
+#: cred/templates/cred_detail.html:44 ratticweb/templates/sidebar.html:21
+#: staff/templates/staff_home.html:22
+msgid "Username"
+msgstr ""
+
+#: account/templates/account_profile.html:11
+#: staff/templates/staff_userdetail.html:29
+msgid "Email"
+msgstr ""
+
+#: account/templates/account_profile.html:12
+msgid "Last Password Change"
+msgstr ""
+
+#: account/templates/account_profile.html:13
+#: staff/templates/staff_userdetail.html:30
+msgid "Groups"
+msgstr ""
+
+#: account/templates/account_profile.html:18
+msgid "Save Changes"
+msgstr ""
+
+#: account/templates/account_profile.html:19
+msgid "Change password"
+msgstr ""
+
+#: account/templates/account_profile.html:21
+msgid "API Keys"
+msgstr ""
+
+#: account/templates/account_profile.html:29
+msgid "Key Name"
+msgstr ""
+
+#: account/templates/account_profile.html:30
+msgid "Date generated"
+msgstr ""
+
+#: account/templates/account_profile.html:45
+msgid "No API Keys available yet"
+msgstr ""
+
+#: account/templates/account_profile.html:49
+msgid "Current Sessions"
+msgstr ""
+
+#: account/templates/account_profile.html:54
+msgid "Device"
+msgstr ""
+
+#: account/templates/account_profile.html:55
+msgid "IP Address"
+msgstr ""
+
+#: account/templates/account_viewapikey.html:10
+msgid "Warning!"
+msgstr ""
+
+#: account/templates/account_viewapikey.html:11
+msgid ""
+"This is the last chance that you will have to access the secret key. You "
+"should save it in a safe place now."
+msgstr ""
+
+#: account/templates/account_viewapikey.html:14
+msgid "Your new API key has been created."
+msgstr ""
+
+#: account/templates/account_viewapikey.html:18
+msgid "Secret Key"
+msgstr ""
+
+#: account/templates/account_viewapikey.html:21
+msgid "Back to Profile"
+msgstr ""
+
+#: account/templates/password_reset.html:5
+msgid "Reset Password"
+msgstr ""
+
+#: account/templates/password_reset.html:8
+msgid ""
+"Please specify your email address to receive instructions for resetting it."
+msgstr ""
+
+#: account/templates/password_reset.html:15
+msgid "E-mail address"
+msgstr ""
+
+#: account/templates/password_reset.html:15
+msgid "Reset password"
+msgstr ""
+
+#: account/templates/password_reset_complete.html:5
+msgid "Password reset complete"
+msgstr ""
+
+#: account/templates/password_reset_complete.html:8
+msgid "Your password has been set. You may go ahead and log in now."
+msgstr ""
+
+#: account/templates/password_reset_complete.html:9
+msgid "Log in"
+msgstr ""
+
+#: account/templates/password_reset_confirm.html:4
+msgid "Setting New password"
+msgstr ""
+
+#: account/templates/password_reset_confirm.html:17
+msgid "New password"
+msgstr ""
+
+#: account/templates/password_reset_confirm.html:22
+msgid "Confirm password"
+msgstr ""
+
+#: account/templates/password_reset_confirm.html:27
+msgid "Change my password"
+msgstr ""
+
+#: account/templates/password_reset_confirm.html:32
+msgid "Password reset unsuccessful"
+msgstr ""
+
+#: account/templates/password_reset_confirm.html:33
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used. Please request a new password reset."
+msgstr ""
+
+#: account/templates/password_reset_done.html:5
+msgid "Password reset successful"
+msgstr ""
+
+#: account/templates/password_reset_done.html:8
+msgid ""
+"We've e-mailed you instructions for setting\n"
+"your password to the e-mail address you submitted. You should be\n"
+"receiving it shortly."
+msgstr ""
+
+#: account/templates/password_reset_email.html:4
+#, python-format
+msgid ""
+"\n"
+"You're receiving this e-mail because you requested a password reset for your "
+"user account at %(site_name)s.\n"
+"\n"
+"Please go to the following page and choose a new password:\n"
+msgstr ""
+
+#: account/templates/password_reset_email.html:12
+#, python-format
+msgid ""
+"\n"
+"Your username, in case you've forgotten: %(user.username)s\n"
+"\n"
+"Thanks for using our site!\n"
+"\n"
+"The %(site_name)s team.\n"
+msgstr ""
+
+#: cred/models.py:75
+msgid "Markdown Description"
+msgstr ""
+
+#: cred/models.py:135
+msgid "Please enter a valid HTTP/HTTPS URL"
+msgstr ""
+
+#: cred/models.py:160
+msgid "Added"
+msgstr ""
+
+#: cred/models.py:161
+msgid "Changed"
+msgstr ""
+
+#: cred/models.py:162
+msgid "Only Metadata Changed"
+msgstr ""
+
+#: cred/models.py:163
+msgid "Only Details Viewed"
+msgstr ""
+
+#: cred/models.py:164
+msgid "Deleted"
+msgstr ""
+
+#: cred/models.py:165
+msgid "Scheduled For Change"
+msgstr ""
+
+#: cred/models.py:166
+msgid "Password Viewed"
+msgstr ""
+
+#: cred/views.py:23
+msgid "All passwords"
+msgstr ""
+
+#: cred/views.py:44
+#, python-format
+msgid "Passwords tagged with %(tagname)s"
+msgstr ""
+
+#: cred/views.py:51
+#, python-format
+msgid "Passwords in group %(groupname)s"
+msgstr ""
+
+#: cred/views.py:55
+#, python-format
+msgid "Passwords for search \"%(searchstring)s\""
+msgstr ""
+
+#: cred/views.py:61
+#, python-format
+msgid "Versions of: \"%(credtitle)s\""
+msgstr ""
+
+#: cred/views.py:80
+msgid ""
+"That user is now disabled. Here is a list of passwords that they have viewed "
+"that have not since been changed. You probably want to add them all to the "
+"change queue."
+msgstr ""
+
+#: cred/views.py:83
+#, python-format
+msgid "Changes required for \"%(username)s\""
+msgstr ""
+
+#: cred/views.py:94
+msgid "Passwords in the trash"
+msgstr ""
+
+#: cred/views.py:102
+msgid "Passwords on the Change Queue"
+msgstr ""
+
+#: cred/views.py:235 staff/views.py:240
+msgid "Unknown (Logs deleted)"
+msgstr ""
+
+#: cred/templates/cred_detail.html:16
+msgid ""
+"You are about to delete this password. A staff member will be required if "
+"you want to undelete it."
+msgstr ""
+
+#: cred/templates/cred_detail.html:19
+msgid ""
+"This credential has been deleted and is in the trash can. It is only visible "
+"to staff. You can alter it if you wish, its history will still be recorded. "
+"Click the undelete button to restore it. If you click the Delete Permanently "
+"button then the password, its entire history and all its audit logs will be "
+"removed."
+msgstr ""
+
+#: cred/templates/cred_detail.html:22
+msgid "Hey there!"
+msgstr ""
+
+#: cred/templates/cred_detail.html:22
+msgid "This credential is an historical version."
+msgstr ""
+
+#: cred/templates/cred_detail.html:22
+msgid "Click here"
+msgstr ""
+
+#: cred/templates/cred_detail.html:22
+msgid "to see the latest version."
+msgstr ""
+
+#: cred/templates/cred_detail.html:25
+msgid "Change Required"
+msgstr ""
+
+#: cred/templates/cred_detail.html:25
+msgid ""
+"This credential is on the change queue and should have its password changed "
+"as soon as possible."
+msgstr ""
+
+#: cred/templates/cred_detail.html:25
+msgid "Why not"
+msgstr ""
+
+#: cred/templates/cred_detail.html:25
+msgid "do it now"
+msgstr ""
+
+#: cred/templates/cred_detail.html:25
+msgid "?"
+msgstr ""
+
+#: cred/templates/cred_detail.html:29 staff/templates/staff_home.html:33
+#: staff/templates/staff_home.html.py:38
+#: staff/templates/staff_userdetail.html:22
+msgid "Edit"
+msgstr ""
+
+#: cred/templates/cred_detail.html:30
+msgid "History"
+msgstr ""
+
+#: cred/templates/cred_detail.html:31 cred/templates/cred_detail.html.py:80
+#: cred/templates/cred_list.html:26 cred/templates/cred_taglist.html:18
+#: staff/templates/staff_home.html:33 staff/templates/staff_home.html.py:39
+#: staff/templates/staff_userdetail.html:23
+msgid "Delete"
+msgstr ""
+
+#: cred/templates/cred_detail.html:33 cred/templates/cred_list.html:32
+#: staff/templates/staff_changeadvice.html:37
+msgid "Add to Change Queue"
+msgstr ""
+
+#: cred/templates/cred_detail.html:36 cred/templates/cred_detail.html.py:85
+#: cred/templates/cred_list.html:29
+msgid "Undelete"
+msgstr ""
+
+#: cred/templates/cred_detail.html:42
+msgid "URL"
+msgstr ""
+
+#: cred/templates/cred_detail.html:48 cred/templates/cred_detail.html.py:58
+msgid "Copy"
+msgstr ""
+
+#: cred/templates/cred_detail.html:53 ratticweb/templates/sidebar.html:22
+msgid "Password"
+msgstr ""
+
+#: cred/templates/cred_detail.html:61 cred/templates/cred_list.html:56
+#: cred/templates/cred_list.html.py:58
+#: staff/templates/staff_changeadvice.html:21
+msgid "Group"
+msgstr ""
+
+#: cred/templates/cred_detail.html:62 cred/templates/cred_list.html:61
+#: ratticweb/templates/sidebar.html:9
+#: staff/templates/staff_changeadvice.html:22
+msgid "Tags"
+msgstr ""
+
+#: cred/templates/cred_detail.html:68
+msgid "Description:"
+msgstr ""
+
+#: cred/templates/cred_edit.html:21
+msgid "Choose"
+msgstr ""
+
+#: cred/templates/cred_edit.html:35 cred/templates/cred_tagedit.html:17
+#: staff/templates/staff_groupedit.html:17
+#: staff/templates/staff_keepassimport.html:23
+#: staff/templates/staff_useredit.html:17
+msgid "Submit"
+msgstr ""
+
+#: cred/templates/cred_list.html:23 cred/templates/cred_taglist.html:8
+msgid "Add New"
+msgstr ""
+
+#: cred/templates/cred_list.html:42 cred/templates/cred_list.html.py:44
+#: staff/templates/staff_changeadvice.html:19
+msgid "Title"
+msgstr ""
+
+#: cred/templates/cred_list.html:49 cred/templates/cred_list.html.py:51
+#: cred/templates/credaudit_list.html:9 staff/templates/staff_audit.html:19
+#: staff/templates/staff_changeadvice.html:20
+#: staff/templates/staff_userdetail.html:14
+msgid "User"
+msgstr ""
+
+#: cred/templates/cred_list.html:81 cred/templates/cred_list.html.py:83
+#: staff/templates/staff_audit.html:43 staff/templates/staff_audit.html:45
+msgid "Prev"
+msgstr ""
+
+#: cred/templates/cred_list.html:93 cred/templates/cred_list.html.py:95
+#: staff/templates/staff_audit.html:55 staff/templates/staff_audit.html:57
+msgid "Next"
+msgstr ""
+
+#: cred/templates/cred_list.html:103
+msgid "Matched Tags"
+msgstr ""
+
+#: cred/templates/cred_part_logomodal.html:13
+msgid "Icons"
+msgstr ""
+
+#: cred/templates/cred_part_logomodal.html:23
+msgid "Close"
+msgstr ""
+
+#: cred/templates/cred_part_newtagmodal.html:5
+msgid "Add New Tag"
+msgstr ""
+
+#: cred/templates/cred_part_newtagmodal.html:9
+msgid "Tag Name:"
+msgstr ""
+
+#: cred/templates/cred_part_newtagmodal.html:12
+msgid "Create Another"
+msgstr ""
+
+#: cred/templates/cred_part_passgenmodal.html:5
+msgid "Password Generator"
+msgstr ""
+
+#: cred/templates/cred_part_passgenmodal.html:9
+msgid "Must Have"
+msgstr ""
+
+#: cred/templates/cred_part_passgenmodal.html:9
+msgid "Can Have"
+msgstr ""
+
+#: cred/templates/cred_part_passgenmodal.html:13
+msgid "Lowercase Alphabet"
+msgstr ""
+
+#: cred/templates/cred_part_passgenmodal.html:18
+msgid "Uppercase Alphabet"
+msgstr ""
+
+#: cred/templates/cred_part_passgenmodal.html:23
+msgid "Numbers"
+msgstr ""
+
+#: cred/templates/cred_part_passgenmodal.html:28
+msgid "Special"
+msgstr ""
+
+#: cred/templates/cred_part_passgenmodal.html:33
+msgid "Spaces"
+msgstr ""
+
+#: cred/templates/cred_part_passgenmodal.html:36
+msgid "Password Length"
+msgstr ""
+
+#: cred/templates/cred_part_passgenmodal.html:39
+#: staff/templates/staff_part_addgroupmodal.html:16
+msgid "Cancel"
+msgstr ""
+
+#: cred/templates/cred_part_passgenmodal.html:40
+msgid "Generate"
+msgstr ""
+
+#: cred/templates/cred_search.html:9
+msgid "Type your Query"
+msgstr ""
+
+#: cred/templates/cred_search.html:10 ratticweb/templates/navbar.html:46
+#: ratticweb/templates/navbar.html.py:69
+msgid "Search"
+msgstr ""
+
+#: cred/templates/cred_tagdelete.html:7
+msgid "Deleting tag"
+msgstr ""
+
+#: cred/templates/cred_taglist.html:9
+msgid "Count"
+msgstr ""
+
+#: cred/templates/cred_taglist.html:9
+msgid "Actions"
+msgstr ""
+
+#: cred/templates/cred_taglist.html:17
+msgid "Rename"
+msgstr ""
+
+#: cred/templates/cred_tags.html:7
+msgid "All Tags"
+msgstr ""
+
+#: cred/templates/credaudit_list.html:3
+msgid "Audit Logs"
+msgstr ""
+
+#: cred/templates/credaudit_list.html:7 staff/templates/staff_audit.html:17
+msgid "Action"
+msgstr ""
+
+#: cred/templates/credaudit_list.html:11 staff/templates/staff_audit.html:22
+msgid "Credential"
+msgstr ""
+
+#: cred/templates/credaudit_list.html:13 staff/templates/staff_audit.html:24
+msgid "When"
+msgstr ""
+
+#: cred/templates/credaudit_list.html:29
+msgid "More logs..."
+msgstr ""
+
+#: ratticweb/templates/base.html:42
+msgid "Password management powered by"
+msgstr ""
+
+#: ratticweb/templates/base.html:42 ratticweb/templates/navbar.html:11
+msgid "RatticDB"
+msgstr ""
+
+#: ratticweb/templates/base.html:42
+msgid "built by"
+msgstr ""
+
+#: ratticweb/templates/base.html:42
+msgid "and"
+msgstr ""
+
+#: ratticweb/templates/base.html:42
+msgid "Report an issue"
+msgstr ""
+
+#: ratticweb/templates/base.html:42
+msgid "Contact Us"
+msgstr ""
+
+#: ratticweb/templates/navbar.html:15 ratticweb/templates/navbar.html.py:39
+#: staff/templates/staff_groupdetail.html:12
+msgid "Passwords"
+msgstr ""
+
+#: ratticweb/templates/navbar.html:19 ratticweb/templates/navbar.html.py:43
+msgid "Change Queue"
+msgstr ""
+
+#: ratticweb/templates/navbar.html:24 ratticweb/templates/navbar.html.py:51
+msgid "Staff Management"
+msgstr ""
+
+#: ratticweb/templates/navbar.html:29 ratticweb/templates/navbar.html.py:56
+msgid "Help"
+msgstr ""
+
+#: ratticweb/templates/navbar.html:36
+msgid "Navigation"
+msgstr ""
+
+#: ratticweb/templates/navbar.html:61 ratticweb/templates/sidebar.html:8
+msgid "Logout"
+msgstr ""
+
+#: ratticweb/templates/sidebar.html:5
+msgid "You"
+msgstr ""
+
+#: ratticweb/templates/sidebar.html:6
+#, python-format
+msgid "Welcome %(user.username|title)s."
+msgstr ""
+
+#: ratticweb/templates/sidebar.html:7
+msgid "Profile"
+msgstr ""
+
+#: ratticweb/templates/sidebar.html:14
+msgid "Add Favourite Tags on the "
+msgstr ""
+
+#: ratticweb/templates/sidebar.html:15
+msgid "profile"
+msgstr ""
+
+#: ratticweb/templates/sidebar.html:15
+msgid "page to see them here."
+msgstr ""
+
+#: ratticweb/templates/sidebar.html:19 ratticweb/templates/sidebar.html:23
+msgid "Login"
+msgstr ""
+
+#: staff/models.py:31
+msgid "Passwords do not match"
+msgstr ""
+
+#: staff/models.py:61
+msgid "Could not read keepass file, the password you gave may not be correct."
+msgstr ""
+
+#: staff/models.py:66
+msgid "Could not read keepass file, was that a valid keepass file?"
+msgstr ""
+
+#: staff/templates/staff_audit.html:7
+#, python-format
+msgid "Audit Logs for password &apos;%(cred.title)s&apos;"
+msgstr ""
+
+#: staff/templates/staff_audit.html:10
+#, python-format
+msgid "Audit Logs for user &apos;%(loguser.username)s&apos;"
+msgstr ""
+
+#: staff/templates/staff_audit.html:13
+#, python-format
+msgid "Audit Logs going back %(days_ago)s days ago"
+msgstr ""
+
+#: staff/templates/staff_changeadvice.html:6
+#, python-format
+msgid "Changes for user: %(viewuser.username)s"
+msgstr ""
+
+#: staff/templates/staff_changeadvice.html:7
+msgid ""
+"We noticed that you are disabling a user account, or removing groups\n"
+"from a user. To help you RatticDB has analysed the auditlogs to see what\n"
+"passwords the user knows, and no longer has access to. We recommend that\n"
+"you add all these passwords to the change queue. To do this press the\n"
+"&quot;Add to Change Queue&quot; button, if you don't want to change some\n"
+"of the passwords, simply uncheck them first."
+msgstr ""
+
+#: staff/templates/staff_groupdetail.html:7
+msgid "Deleting this group will delete every password underneath it."
+msgstr ""
+
+#: staff/templates/staff_groupdetail.html:11
+#: staff/templates/staff_home.html:20
+msgid "Users"
+msgstr ""
+
+#: staff/templates/staff_groupdetail.html:16
+msgid "Delete forever"
+msgstr ""
+
+#: staff/templates/staff_home.html:5
+msgid "Staff"
+msgstr ""
+
+#: staff/templates/staff_home.html:8
+msgid "Staff Manage"
+msgstr ""
+
+#: staff/templates/staff_home.html:12
+msgid "Add User"
+msgstr ""
+
+#: staff/templates/staff_home.html:13
+#: staff/templates/staff_part_addgroupmodal.html:10
+msgid "Add Group"
+msgstr ""
+
+#: staff/templates/staff_home.html:15
+msgid "Import Keepass"
+msgstr ""
+
+#: staff/templates/staff_home.html:16
+msgid "View Trash"
+msgstr ""
+
+#: staff/templates/staff_home.html:17
+msgid "Audit One Week"
+msgstr ""
+
+#: staff/templates/staff_home.html:22
+msgid "email"
+msgstr ""
+
+#: staff/templates/staff_home.html:31
+msgid "Access Groups"
+msgstr ""
+
+#: staff/templates/staff_keepassimport.html:9
+msgid "Keepass Import"
+msgstr ""
+
+#: staff/templates/staff_keepassimport.html:10
+msgid ""
+"We recommend that you import your keepass data into a\n"
+"seperate group, then adjust the group on each password as required."
+msgstr ""
+
+#: staff/templates/staff_part_addgroupmodal.html:13
+msgid "Group name"
+msgstr ""
+
+#: staff/templates/staff_userdetail.html:8
+msgid ""
+"\n"
+"    Deleting this user will remove any associated auditlogs, maybe "
+"deactivate\n"
+"    their account instead?\n"
+"  "
+msgstr ""
+
+#: staff/templates/staff_userdetail.html:19
+msgid "Confirm Delete"
+msgstr ""
