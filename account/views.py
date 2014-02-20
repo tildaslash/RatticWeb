@@ -7,8 +7,7 @@ from models import UserProfileForm, LDAPPassChangeForm
 from django.views.decorators.debug import sensitive_post_parameters
 from django.contrib.auth.decorators import login_required
 from django.template.response import TemplateResponse
-
-import datetime
+from django.utils.timezone import now
 
 
 @login_required
@@ -17,7 +16,7 @@ def profile(request):
     keys = ApiKey.objects.filter(user=request.user)
 
     # Get a list of the users current sessions
-    sessions = request.user.session_set.filter(expire_date__gt=datetime.datetime.now())
+    sessions = request.user.session_set.filter(expire_date__gt=now())
 
     # Process the form if we have data coming in
     if request.method == 'POST':
