@@ -6,14 +6,16 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User, Group
 from django.conf import settings
-from models import UserForm, GroupForm, KeepassImportForm
-from cred.models import CredAudit, Cred, Tag
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext as _
 
 import datetime
 from django.utils.timezone import now
 from django.utils.timezone import utc
+
+from cred.icon import get_icon_list
+from cred.models import CredAudit, CredForm, Cred, Tag
+from models import UserForm, GroupForm, KeepassImportForm
 
 
 @staff_member_required
@@ -202,29 +204,80 @@ class UpdateUser(UpdateView):
 
 
 @staff_member_required
-def import_from_keepass(request):
+def upload_keepass(request):
+    # If data was submitted
     if request.method == 'POST':
         form = KeepassImportForm(request.user, request.POST, request.FILES)
+        # And it is valid
         if form.is_valid():
-            group = form.cleaned_data['group']
-            for e in form.cleaned_data['db']['entries']:
-                cred = Cred(
-                    title=e['title'],
-                    username=e['username'],
-                    password=e['password'],
-                    description=e['description'],
-                    group=group,
-                )
-                cred.save()
-                CredAudit(audittype=CredAudit.CREDADD, cred=cred, user=request.user).save()
-                for t in e['tags']:
-                    (tag, create) = Tag.objects.get_or_create(name=t)
-                    cred.tags.add(tag)
+            # Store the data in the session
+            data = {
+                    'group': form.cleaned_data['group'],
+                    'entries': form.cleaned_data['db']['entries'],
+            }
+            request.session['imported_data'] = data
 
-            return HttpResponseRedirect(reverse('staff.views.home'))
+            # Start the user processing entries
+            return HttpResponseRedirect(reverse('staff.views.process_import'))
     else:
         form = KeepassImportForm(request.user)
     return render(request, 'staff_keepassimport.html', {'form': form})
+
+
+def process_import(request):
+    # If there was no session data, return 404
+    if 'imported_data' not in request.session.keys():
+        raise Http404
+
+    # If there are no creds left to import
+    if len(request.session['imported_data']['entries']) == 0:
+        # Clear data and go back to staff home
+        del request.session['imported_data']
+        return HttpResponseRedirect(reverse('staff.views.home'))
+
+    # If we have a submission from the user
+    if request.method == 'POST':
+        form = CredForm(request.user, request.POST)
+        if form.is_valid():
+            # Save the new credential
+            form.save()
+
+            # Add an audit record
+            CredAudit(
+                    audittype=CredAudit.CREDADD,
+                    cred=form.instance,
+                    user=request.user,
+            ).save()
+
+            # Import another
+            return HttpResponseRedirect(reverse('staff.views.process_import'))
+
+    # If we didn't recieve any data
+    else:
+        # Get a new entry
+        newcred = request.session['imported_data']['entries'].pop()
+        request.session.save()
+
+        # Create all the tags
+        tlist = []
+        for t in newcred['tags']:
+            (tag, create) = Tag.objects.get_or_create(name=t)
+            tlist.append(tag)
+        newcred['tags'] = tlist
+
+        # Setup the group
+        newcred['group'] = request.session['imported_data']['group']
+
+        # Display the form
+        form = CredForm(request.user, newcred)
+
+    # Display the edit form
+    return render(request, 'staff_process_import.html', {
+        'form': form,
+        'action': reverse('staff.views.process_import'),
+        'icons': get_icon_list(),
+        'count': len(request.session['imported_data']['entries']),
+    })
 
 
 @staff_member_required

@@ -10,7 +10,8 @@ urlpatterns = patterns('staff.views',
     url(r'^audit-by-cred/(?P<cred_id>\d+)/$', 'audit_by_cred'),
     url(r'^audit-by-user/(?P<user_id>\d+)/$', 'audit_by_user'),
     url(r'^audit-by-days/(?P<days_ago>\d+)/$', 'audit_by_days'),
-    url(r'^keepass-import/$', 'import_from_keepass'),
+    url(r'^import/keepass/$', 'upload_keepass'),
+    url(r'^import/process/$', 'process_import'),
     url(r'^credundelete/(?P<cred_id>\d+)/$', 'credundelete'),
 )
 

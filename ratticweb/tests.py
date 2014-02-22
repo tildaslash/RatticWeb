@@ -1,5 +1,5 @@
 from django.test import TestCase
-from django.test import Client
+from user_sessions.utils.tests import Client
 from django.conf import settings
 from django.core.urlresolvers import reverse
 

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% load i18n %}
+{% load credicons %}
+
+{% block content %}
+
+{% include "staff_part_addgroupmodal.html" %}
+{% include "cred_part_passgenmodal.html" %}
+{% include "cred_part_logomodal.html" with icons=icons txtfield='iconname' imgfield='logodisplay' %}
+<h1>{% trans "Import" %}</h1>
+
+<p>{% blocktrans %}There are {{count}} passwords left to import. If you wish you can{% endblocktrans %} <a href="{% url 'staff.views.process_import' %}">{% trans "skip importing this password" %}</a>.</p>
+
+<form class="form-horizontal"  autocomplete="off" action="{{ action }}{% if next %}?next={{ next }}{% endif %}" method="post">{% csrf_token %}
+    {% for field in form %}
+        <div class="control-group">
+            {{ field.errors }}
+            <label class="control-label" for="{{ field.html_name }}">{{ field.label }}</label>
+            <div class="controls">
+            {% if field.html_name == 'iconname' %}
+              {% cred_icon field.value tagid='logodisplay' %}&nbsp;
+              <input type='hidden' name='{{ field.html_name }}' id='id_{{ field.html_name }}' value='{{ field.value }}' />
+              <a href="#logoModal" role="button" class="btn" id="choosebutton" data-toggle="modal">{% trans "Choose" %}</a>
+            {% elif field.html_name == 'password' %}
+              <div class="input-append">
+                <input id="id_password" name="password" value="{% if field.value %}{{ field.value }}{% endif %}" maxlength="250" type="password">
+                <button class="btn" id="passtoggle" type="button" onclick="togglepassinput()"><i class="icon-eye-open"></i></button>
+                <a class="btn" role="button" href="#passgenmodal" data-toggle="modal" id="genpass" ><i class="icon-repeat"></i></a>
+              </div>
+            {% else %}
+                {{ field }}
+            {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+    <div class="controls">
+        <input id="credsave" class="btn btn-primary" type="submit" value="{% trans "Submit" %}" />
+    </div>
+</form>
+{% endblock %}
+
