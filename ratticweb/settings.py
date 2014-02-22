@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse_lazy
 
 config = RawConfigParser()
 config.readfp(open('conf/defaults.cfg'))
-config.read(['conf/local.cfg', '/etc/ratticweb.cfg'])
+CONFIGURED_BY = config.read(['conf/local.cfg', '/etc/ratticweb.cfg'])
 
 
 def confget(section, var, default):
