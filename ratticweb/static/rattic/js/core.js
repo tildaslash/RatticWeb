@@ -75,44 +75,12 @@ function copycheckbox(allname, name){
     $('input[name="' + name + '"]').prop('checked', checkval);
 }
 
-function createGroup(name, successcallback, failurecallback) {
-    var data = JSON.stringify({
-        'name': name
-    });
-
-    return $.ajax({
-        url: url_root + 'api/v1/group/',
-        type: 'POST',
-        contentType: 'application/json',
-        beforeSend: function(jqXHR, settings) {
-           jqXHR.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
-        },
-        data: data,
-        dataType: 'json',
-        processData: false,
-        success: successcallback,
-        error: failurecallback,
-    })
+function createGroup(name, successCallback, failureCallback) {
+    return RATTIC.api.createGroup(name, successCallback, failureCallback);
 }
 
-function createTag(name, successcallback, failurecallback) {
-    var data = JSON.stringify({
-        'name': name
-    });
-
-    return $.ajax({
-        url: url_root + 'api/v1/tag/',
-        type: 'POST',
-        contentType: 'application/json',
-        beforeSend: function(jqXHR, settings) {
-           jqXHR.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
-        },
-        data: data,
-        dataType: 'json',
-        processData: false,
-        success: successcallback,
-        error: failurecallback,
-    })
+function createTag(name, successCallback, failureCallback) {
+    return RATTIC.api.createTag(name, successCallback, failureCallback);
 }
 
 function getCred(id, successcallback, failurecallback) {
