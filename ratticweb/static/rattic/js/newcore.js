@@ -3,6 +3,7 @@ var RATTIC = (function () {
     my.api = {};
 
     /********* Private Variables *********/
+    var credCache = [];
 
     /********* Private Methods **********/
 
@@ -52,6 +53,26 @@ var RATTIC = (function () {
         })
     }
 
+    function _apicallwait(object, method, data) {
+        if (method == 'GET') {
+            url = url_root + 'api/v1/' + object + '/' + data + '/';
+            data = undefined;
+        } else {
+            url = url_root + 'api/v1/' + object + '/';
+        }
+
+        return $.ajax({
+            url: url,
+            type: method,
+            contentType: 'application/json',
+            beforeSend: function(jqXHR, settings) {
+                jqXHR.setRequestHeader('X-CSRFToken', _getCsrf())
+            },
+            data: data,
+            async: false,
+        }).responseText
+    };
+
 
     /********* Public Variables *********/
 
@@ -63,7 +84,7 @@ var RATTIC = (function () {
         });
 
         return _apicall('group', 'POST', data, success, failure);
-    }
+    };
 
     /* Creates a Tag */
     my.api.createTag = function(name, success, failure) {
@@ -72,10 +93,25 @@ var RATTIC = (function () {
         });
 
         return _apicall('tag', 'POST', data, success, failure);
-    }
+    };
 
-    
-    
+    /* Gets a cred */
+    my.api.getCred = function(id, success, failure) {
+        if (typeof credCache[id] == undefined ) {
+            _apicall('cred',
+                     'GET',
+                     id,
+                     function(data) {
+                         credCache[id] = data;
+                         success(data);
+                     },
+                     failure
+                     );
+        } else {
+            return credCache[id];
+        }
+    };
+
     return my;
 }());
 
