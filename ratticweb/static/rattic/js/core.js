@@ -1,19 +1,3 @@
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
 function genpassword() {
     var canset = [];
     var mustset = [];
@@ -84,46 +68,11 @@ function createTag(name, successCallback, failureCallback) {
 }
 
 function getCred(id, successcallback, failurecallback) {
-    if ( typeof getCred.cred == 'undefined' ) {
-        getCred.cred = [];
-    }
-    if ( typeof getCred.cred[id] == 'undefined' ) {
-        $.ajax({
-            url: url_root + 'api/v1/cred/' + id + '/',
-            type: 'GET',
-            contentType: 'application/json',
-            beforeSend: function(jqXHR, settings) {
-               jqXHR.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
-            },
-            success: function(data){
-               getCred.cred[id] = data;
-               successcallback(data);
-            },
-            error: failurecallback,
-        })
-    } else {
-        successcallback(getCred.cred[id])
-    }
+    return RATTIC.api.getCred(id, successcallback, failurecallback);
 }
 
 function getCredWait(id) {
-    if ( typeof getCred.cred == 'undefined' ) {
-        getCred.cred = [];
-    }
-    if ( typeof getCred.cred[id] == 'undefined' ) {
-        getCred.cred[id] = $.parseJSON($.ajax({
-            url: url_root + 'api/v1/cred/' + id + '/',
-            type: 'GET',
-            contentType: 'application/json',
-            beforeSend: function(jqXHR, settings) {
-               jqXHR.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
-            },
-            async: false,
-        }).responseText);
-        return getCred.cred[id];
-    } else {
-        return getCred.cred[id]
-    }
+    return RATTIC.api.getCredWait(id);
 }
 
 function groupCreated(group) {

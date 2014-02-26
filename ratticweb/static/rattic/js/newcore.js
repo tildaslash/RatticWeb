@@ -61,7 +61,7 @@ var RATTIC = (function () {
             url = url_root + 'api/v1/' + object + '/';
         }
 
-        return $.ajax({
+        return $.parseJSON($.ajax({
             url: url,
             type: method,
             contentType: 'application/json',
@@ -70,7 +70,7 @@ var RATTIC = (function () {
             },
             data: data,
             async: false,
-        }).responseText
+        }).responseText);
     };
 
 
@@ -97,7 +97,7 @@ var RATTIC = (function () {
 
     /* Gets a cred */
     my.api.getCred = function(id, success, failure) {
-        if (typeof credCache[id] == undefined ) {
+        if (typeof credCache[id] == 'undefined' ) {
             _apicall('cred',
                      'GET',
                      id,
@@ -107,6 +107,15 @@ var RATTIC = (function () {
                      },
                      failure
                      );
+        } else {
+            success(credCache[id]);
+        }
+    };
+
+    my.api.getCredWait = function(id) {
+        if (typeof credCache[id] == 'undefined' ) {
+            credCache[id] = _apicallwait('cred', 'GET', id);
+            return credCache[id];
         } else {
             return credCache[id];
         }
