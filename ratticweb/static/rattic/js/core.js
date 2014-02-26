@@ -24,7 +24,7 @@ function credsearch(form) {
 
 function showpass(){
     if ( typeof showpass.password == 'undefined' ) {
-        getCred(credId, function(data){
+        RATTIC.api.getCred(credId, function(data){
             showpass.password = data['password'];
             $('span#password').text(showpass.password);
             showpass();
@@ -59,29 +59,13 @@ function copycheckbox(allname, name){
     $('input[name="' + name + '"]').prop('checked', checkval);
 }
 
-function createGroup(name, successCallback, failureCallback) {
-    return RATTIC.api.createGroup(name, successCallback, failureCallback);
-}
-
-function createTag(name, successCallback, failureCallback) {
-    return RATTIC.api.createTag(name, successCallback, failureCallback);
-}
-
-function getCred(id, successcallback, failurecallback) {
-    return RATTIC.api.getCred(id, successcallback, failurecallback);
-}
-
-function getCredWait(id) {
-    return RATTIC.api.getCredWait(id);
-}
-
 function groupCreated(group) {
     $("select#id_group").append('<option value="' + group['id'] + '">' + group['name'] + '</option>');
     $("select#id_group").val(group['id']);
 }
 
 function createGroupModal() {
-    ajax = createGroup(
+    ajax = RATTIC.api.createGroup(
         $("input#groupname").val(),
         function(){
             $('#addGroup').modal('hide');
@@ -96,7 +80,7 @@ function createGroupModal() {
 }
 
 function createTagModal(close) {
-    ajax = createTag(
+    ajax = RATTIC.api.createTag(
         $("input#tagname").val(),
         function(){
             $('#newtagmodal').modal('hide');
@@ -167,7 +151,7 @@ $(document).ready(function(){
     });
 
     $('#password').on('mouseover', function(){
-        getCred(credId, function(data){
+        RATTIC.api.getCred(credId, function(data){
             if (FlashDetect.installed) {
                 $('button#copyclipboard').css({visibility: "visible"})
                 clip.glue($('button#copyclipboard'));
@@ -188,7 +172,7 @@ $(document).ready(function(){
         if (FlashDetect.installed) {
             switch (this.id) {
               case "copyclipboard":
-                client.setText(getCredWait(credId)['password'])
+                client.setText(RATTIC.api.getCredWait(credId)['password'])
                 break;
               case "copyuser":
                 client.setText($("span#username").text());
