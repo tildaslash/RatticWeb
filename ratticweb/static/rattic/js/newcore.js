@@ -35,10 +35,10 @@ var RATTIC = (function ($) {
     /* Generic API call to Rattic. Handles the CSRF token and callbacks */
     function _apicall(object, method, data, success, failure) {
         if (method == 'GET') {
-            url = url_root + 'api/v1/' + object + '/' + data + '/';
+            url = my.page.getURLRoot() + 'api/v1/' + object + '/' + data + '/';
             data = undefined;
         } else {
-            url = url_root + 'api/v1/' + object + '/';
+            url = my.page.getURLRoot() + 'api/v1/' + object + '/';
         }
 
         return $.ajax({
@@ -56,10 +56,10 @@ var RATTIC = (function ($) {
 
     function _apicallwait(object, method, data) {
         if (method == 'GET') {
-            url = url_root + 'api/v1/' + object + '/' + data + '/';
+            url = my.page.getURLRoot() + 'api/v1/' + object + '/' + data + '/';
             data = undefined;
         } else {
-            url = url_root + 'api/v1/' + object + '/';
+            url = my.page.getURLRoot() + 'api/v1/' + object + '/';
         }
 
         return $.parseJSON($.ajax({
@@ -111,6 +111,16 @@ var RATTIC = (function ($) {
     /********* Public Variables *********/
 
     /********* Public Methods *********/
+    /* Gets the cred for the page from the head */
+    my.page.getCredId = function() {
+        return $('head meta[name=cred_id]').attr('content');
+    }
+
+    /* Gets the the url root from the page */
+    my.page.getURLRoot = function() {
+        return $('head meta[name=url_root]').attr('content');
+    }
+
     /* Creates a Group */
     my.api.createGroup = function(name, success, failure) {
         var data = JSON.stringify({
@@ -128,11 +138,6 @@ var RATTIC = (function ($) {
 
         return _apicall('tag', 'POST', data, success, failure);
     };
-
-    /* Gets the cred for the page from the head */
-    my.page.getCredId = function() {
-        return $('head meta[name=cred_id]').attr('content');
-    }
 
     /* Gets a cred */
     my.api.getCred = function(id, success, failure) {
