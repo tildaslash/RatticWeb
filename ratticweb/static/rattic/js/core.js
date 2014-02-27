@@ -16,12 +16,6 @@ function genpassword() {
     $("input#id_password").val(make_password(passlength, canset, mustset));
 }
 
-function credsearch(form) {
-    var searchstr = form["box"].value
-    if (searchstr.length > 0) window.location = RATTIC.page.getURLRoot() + "cred/list-by-search/" + searchstr + "/";
-    return false;
-}
-
 function copycheckbox(allname, name){
     var checkval = $('input[name="' + allname + '"]').is(':checked');
     $('input[name="' + name + '"]').prop('checked', checkval);
@@ -90,6 +84,9 @@ $(document).ready(function(){
 
     // Setup the Chosen select boxes
     $(".chzn-select").chosen();
+
+    // Search boxes
+    RATTIC.controls.searchForm($('.rattic-cred-search'));
 
     // Show password button on the edit screen
     RATTIC.controls.passShowButton($('button.btn-pass-show'));

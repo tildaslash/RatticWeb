@@ -107,6 +107,15 @@ var RATTIC = (function ($) {
         }
     };
 
+    function _performCredSearch() {
+        searchstr = $(this).children('input[type=search]').val();
+
+        if (searchstr.length > 0)
+            window.location = my.page.getURLRoot() + "cred/list-by-search/" + searchstr + "/";
+
+        return false;
+    };
+
 
     /********* Public Variables *********/
 
@@ -171,6 +180,11 @@ var RATTIC = (function ($) {
         buttons.on('click', _passShowButtonClick);
         buttons.html('<i class="icon-eye-open"></i');
         buttons.data('status', 'hidden');
+    }
+
+    /* Creates a password show and hide button */
+    my.controls.searchForm = function(buttons) {
+        buttons.on('submit', _performCredSearch);
     }
 
     return my;
