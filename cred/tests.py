@@ -499,7 +499,7 @@ class JavascriptTests(LiveServerTestCase):
         # Check password is still hidden
         self.assertTrue('passhidden' in elempass.get_attribute('class'))
         # Click show button
-        self.selenium.find_element_by_id('showpass').click()
+        self.selenium.find_elements_by_xpath("//button[contains(concat(' ', @class, ' '), ' btn-pass-fetchcred ')]")[0].click()
         # Check password is visible
         self.assertTrue('passhidden' not in elempass.get_attribute('class'))
 
@@ -511,18 +511,19 @@ class JavascriptTests(LiveServerTestCase):
         self.waitforload()
         elempass = self.selenium.find_element_by_id('id_password')
         currpass = elempass.get_attribute('value')
+        showbutton = self.selenium.find_elements_by_xpath("//button[contains(concat(' ', @class, ' '), ' btn-pass-show ')]")[0]
         # Check password
         self.assertEqual(currpass, self.data.cred.password)
         # Check password is hidden
         WebDriverWait(self.selenium, timeout).until(
             lambda driver: driver.find_element_by_id('id_password').get_attribute('type') == 'password')
         # Click show button
-        self.selenium.find_element_by_id('passtoggle').click()
+        showbutton.click()
         # Check password is visible
         WebDriverWait(self.selenium, timeout).until(
             lambda driver: driver.find_element_by_id('id_password').get_attribute('type') == 'text')
         # Click hide button
-        self.selenium.find_element_by_id('passtoggle').click()
+        showbutton.click()
         # Check password is hidden
         WebDriverWait(self.selenium, timeout).until(
             lambda driver: driver.find_element_by_id('id_password').get_attribute('type') == 'password')
@@ -601,7 +602,7 @@ class JavascriptTests(LiveServerTestCase):
         self.waitforload()
         elempass = self.selenium.find_element_by_id('password')
         # Hover over password
-        self.selenium.find_element_by_id('showpass').click()
+        self.selenium.find_elements_by_xpath("//button[contains(concat(' ', @class, ' '), ' btn-pass-fetchcred ')]")[0].click()
         # Check password is fetched
         WebDriverWait(self.selenium, timeout).until(
             lambda driver: driver.find_element_by_id('password').text == self.data.injectcred.password)
