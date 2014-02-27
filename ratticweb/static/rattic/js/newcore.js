@@ -121,14 +121,19 @@ var RATTIC = (function ($) {
     /********* Public Variables *********/
 
     /********* Public Methods *********/
+    /* Get Meta information */
+    my.page.getMetaInfo = function(name) {
+        return $('head meta[name=' + rattic_meta_prefix + name + ']').attr('content');
+    }
+
     /* Gets the cred for the page from the head */
     my.page.getCredId = function() {
-        return $('head meta[name=' + rattic_meta_prefix + 'cred_id]').attr('content');
+        return my.page.getMetaInfo('cred_id');
     }
 
     /* Gets the the url root from the page */
     my.page.getURLRoot = function() {
-        return $('head meta[name=' + rattic_meta_prefix + 'url_root]').attr('content');
+        return my.page.getMetaInfo('url_root');
     }
 
     /* Creates a Group */
