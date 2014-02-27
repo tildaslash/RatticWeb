@@ -6,6 +6,7 @@ var RATTIC = (function ($) {
 
     /********* Private Variables *********/
     var credCache = [];
+    var rattic_meta_prefix = 'rattic_';
 
     /********* Private Methods **********/
     /* Gets a cookie from the browser. Only works for cookies that
@@ -122,12 +123,12 @@ var RATTIC = (function ($) {
     /********* Public Methods *********/
     /* Gets the cred for the page from the head */
     my.page.getCredId = function() {
-        return $('head meta[name=cred_id]').attr('content');
+        return $('head meta[name=' + rattic_meta_prefix + 'cred_id]').attr('content');
     }
 
     /* Gets the the url root from the page */
     my.page.getURLRoot = function() {
-        return $('head meta[name=url_root]').attr('content');
+        return $('head meta[name=' + rattic_meta_prefix + 'url_root]').attr('content');
     }
 
     /* Creates a Group */
