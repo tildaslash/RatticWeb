@@ -22,38 +22,6 @@ function credsearch(form) {
     return false;
 }
 
-function showpass(){
-    if ( typeof showpass.password == 'undefined' ) {
-        RATTIC.api.getCred(credId, function(data){
-            showpass.password = data['password'];
-            $('span#password').text(showpass.password);
-            showpass();
-        }, function(){});
-    } else {
-        $('span#password').removeClass('passhidden');
-        $('a#showpass').css('display', 'none');
-        $('a#hidepass').css('display', 'inline-block');
-    }
-}
-
-function hidepass(){
-    $('span#password').addClass('passhidden');
-    $('a#showpass').css('display', 'inline-block');
-    $('a#hidepass').css('display', 'none');
-}
-
-function togglepassinput(){
-    input = $('input#id_password');
-    button = $('button#passtoggle');
-    if (input.attr('type') == 'password') {
-        input.attr('type', 'text');
-        button.html('<i class="icon-eye-close"></i>');
-    } else {
-        input.attr('type', 'password');
-        button.html('<i class="icon-eye-open"></i>');
-    }
-}
-
 function copycheckbox(allname, name){
     var checkval = $('input[name="' + allname + '"]').is(':checked');
     $('input[name="' + name + '"]').prop('checked', checkval);
@@ -120,8 +88,27 @@ function updatebuttons() {
 
 $(document).ready(function(){
 
+    // Setup the Chosen select boxes
     $(".chzn-select").chosen();
 
+    // Show password button on the edit screen
+    RATTIC.controls.passShowButton($('button.btn-pass-show'));
+
+    // Fetch cred on details pages
+    $('button.btn-pass-fetchcred').on('show', function() {
+            target = $($(this).data('target'));
+            cred_id = RATTIC.page.getCredId();
+            RATTIC.api.getCred(cred_id, function(data) {
+                target.text(data['password']);
+            }, function(){});
+        }
+    );
+
+
+
+
+
+    // Unconverted things
     if ((typeof attachstaffbuttons != 'undefined') && attachstaffbuttons) {
         $("select#id_group").after('<a href="#addGroup" role="button" class="btn" data-toggle="modal" data-loading-text="Adding...">Add</a>');
 
@@ -151,7 +138,7 @@ $(document).ready(function(){
     });
 
     $('#password').on('mouseover', function(){
-        RATTIC.api.getCred(credId, function(data){
+        RATTIC.api.getCred(RATTIC.page.getCredId(), function(data){
             if (FlashDetect.installed) {
                 $('button#copyclipboard').css({visibility: "visible"})
                 clip.glue($('button#copyclipboard'));
@@ -166,13 +153,13 @@ $(document).ready(function(){
             $('button#' + this.id).css({visibility: "visible"});
         }
     });
-    
+
     /* When the copy button is clicked */
     clip.on( 'datarequested', function ( client, args ) {
         if (FlashDetect.installed) {
             switch (this.id) {
               case "copyclipboard":
-                client.setText(RATTIC.api.getCredWait(credId)['password'])
+                client.setText(RATTIC.api.getCredWait(RATTIC.page.getCredId())['password'])
                 break;
               case "copyuser":
                 client.setText($("span#username").text());

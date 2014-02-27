@@ -1,12 +1,13 @@
-var RATTIC = (function () {
+var RATTIC = (function ($) {
     var my = {};
     my.api = {};
+    my.controls = {};
+    my.page = {};
 
     /********* Private Variables *********/
     var credCache = [];
 
     /********* Private Methods **********/
-
     /* Gets a cookie from the browser. Only works for cookies that
      * are not set to httponly */
     function _getCookie(name) {
@@ -73,6 +74,39 @@ var RATTIC = (function () {
         }).responseText);
     };
 
+    function _passShowButtonClick() {
+        target = $($(this).data('target'));
+        switch ($(this).data('status')) {
+            case 'hidden':
+                _passShowButtonShow($(this), target);
+                break;
+            case 'shown':
+                _passShowButtonHide($(this), target);
+                break;
+        };
+        return false;
+    };
+
+    function _passShowButtonShow(button, target) {
+        button.trigger('show');
+        button.data('status', 'shown');
+        button.html('<i class="icon-eye-close"></i');
+        target.removeClass('passhidden');
+        if (target.prop('tagName') == 'INPUT') {
+            target.attr('type', 'text');
+        }
+    };
+
+    function _passShowButtonHide(button, target) {
+        button.trigger('hide');
+        button.data('status', 'hidden');
+        button.html('<i class="icon-eye-open"></i');
+        target.addClass('passhidden');
+        if (target.prop('tagName') == 'INPUT') {
+            target.attr('type', 'password');
+        }
+    };
+
 
     /********* Public Variables *********/
 
@@ -95,6 +129,11 @@ var RATTIC = (function () {
         return _apicall('tag', 'POST', data, success, failure);
     };
 
+    /* Gets the cred for the page from the head */
+    my.page.getCredId = function() {
+        return $('head meta[name=cred_id]').attr('content');
+    }
+
     /* Gets a cred */
     my.api.getCred = function(id, success, failure) {
         if (typeof credCache[id] == 'undefined' ) {
@@ -112,6 +151,7 @@ var RATTIC = (function () {
         }
     };
 
+    /* Gets a cred synchronous version */
     my.api.getCredWait = function(id) {
         if (typeof credCache[id] == 'undefined' ) {
             credCache[id] = _apicallwait('cred', 'GET', id);
@@ -121,6 +161,13 @@ var RATTIC = (function () {
         }
     };
 
+    /* Creates a password show and hide button */
+    my.controls.passShowButton = function(buttons) {
+        buttons.on('click', _passShowButtonClick);
+        buttons.html('<i class="icon-eye-open"></i');
+        buttons.data('status', 'hidden');
+    }
+
     return my;
-}());
+}(jQuery));
 
