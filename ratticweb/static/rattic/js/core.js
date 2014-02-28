@@ -16,11 +16,6 @@ function genpassword() {
     $("input#id_password").val(make_password(passlength, canset, mustset));
 }
 
-function copycheckbox(allname, name){
-    var checkval = $('input[name="' + allname + '"]').is(':checked');
-    $('input[name="' + name + '"]').prop('checked', checkval);
-}
-
 function groupCreated(group) {
     $("select#id_group").append('<option value="' + group['id'] + '">' + group['name'] + '</option>');
     $("select#id_group").val(group['id']);
@@ -68,18 +63,6 @@ function submitCredForm(action) {
     $('#credchecksubmitform')[0].submit();
 }
 
-function countcheckboxes(parentclass) {
-    return $(':checkbox:checked', parentclass).length
-}
-
-function updatebuttons() {
-    if (countcheckboxes('.credcheck') > 0) {
-        $('a.checkbutton').removeClass('disabled');
-    } else {
-        $('a.checkbutton').addClass('disabled');
-    }
-}
-
 $(document).ready(function(){
 
     // Setup the Chosen select boxes
@@ -101,6 +84,11 @@ $(document).ready(function(){
         }
     );
 
+    // Setup checkboxes that check all values
+    RATTIC.controls.checkAll($('input.rattic-checkall[type=checkbox]'));
+
+    // Setup buttons that require one checked box to be enabled
+    RATTIC.controls.checkEnabledButton($('.rattic-check-enabled'));
 
 
 

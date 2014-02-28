@@ -117,6 +117,32 @@ var RATTIC = (function ($) {
         return false;
     };
 
+    function _checkAllClick() {
+        me = $(this);
+        targets = $(me.data('target'));
+        mystatus = me.is(':checked');
+        targets.each(function() {
+            me = $(this);
+            if (me.prop('checked') != mystatus)
+                me.trigger('click');
+        });
+    };
+
+    function _countChecks(checkboxes) {
+        return checkboxes.filter(':checked').length;
+    };
+
+    function _enableButtonHandler() {
+        $.each($(this).data('linked'), function() {
+            button = $(this);
+            target = $(button.data('target'));
+            if (_countChecks(target) > 0) {
+                button.removeClass('disabled');
+            } else {
+                button.addClass('disabled');
+            }
+        });
+    };
 
     /********* Public Variables *********/
 
@@ -189,9 +215,27 @@ var RATTIC = (function ($) {
     }
 
     /* Creates a password show and hide button */
-    my.controls.searchForm = function(buttons) {
-        buttons.on('submit', _performCredSearch);
+    my.controls.searchForm = function(form) {
+        form.on('submit', _performCredSearch);
     }
+
+    /* Creates a checkbox that controls other checkboxes */
+    my.controls.checkAll = function(checkboxes) {
+        checkboxes.on('click', _checkAllClick);
+    }
+
+    /* A button that is enabled when at least one box is checked */
+    my.controls.checkEnabledButton = function(buttons) {
+        buttons.each(function() {
+            button = $(this);
+            target = $($(this).data('target'));
+            if (typeof target.data('linked') == "undefined") {
+                target.data('linked', []);
+                target.on('click', _enableButtonHandler);
+            }
+            target.data('linked').push(button);
+        });
+    };
 
     return my;
 }(jQuery));

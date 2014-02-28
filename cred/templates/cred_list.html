@@ -23,19 +23,19 @@
           <a class="btn" href="{% url "cred.views.add" %}">{% trans "Add New" %}</a>
         {% endif %}
         {% if buttons.delete %}
-          <a class="btn disabled checkbutton" href="javascript:void(0)" onclick="submitCredForm('{% url "cred.views.bulkdelete" %}')">{% trans "Delete" %}</a>
+          <button class="btn disabled rattic-check-enabled" data-target=".cred-list-check" onclick="submitCredForm('{% url "cred.views.bulkdelete" %}')">{% trans "Delete" %}</button>
         {% endif %}
         {% if buttons.undelete %}
-          <a class="btn disabled checkbutton" href="javascript:void(0)" onclick="submitCredForm('{% url "cred.views.bulkundelete" %}')">{% trans "Undelete" %}</a>
+          <button class="btn disabled rattic-check-enabled" data-target=".cred-list-check" onclick="submitCredForm('{% url "cred.views.bulkundelete" %}')">{% trans "Undelete" %}</button>
         {% endif %}
         {% if buttons.changeq %}
-          <a class="btn disabled checkbutton" href="javascript:void(0)" onclick="submitCredForm('{% url "cred.views.bulkaddtoqueue" %}')">{% trans "Add to Change Queue" %}</a>
+          <button class="btn disabled rattic-check-enabled" data-target=".cred-list-check" onclick="submitCredForm('{% url "cred.views.bulkaddtoqueue" %}')">{% trans "Add to Change Queue" %}</button>
         {% endif %}
       </td>
     </tr>
     <tr>
       <th>
-        <input onclick="copycheckbox('all', 'credcheck'); updatebuttons()" type="checkbox" name="all" value="" />
+        <input type="checkbox" name="all" value="" class="rattic-checkall" data-target=".list-checktarget" />
       </th>
       <th>
         {% if sort == 'title' %}
@@ -64,7 +64,7 @@
   <tbody>
     {% for c in credlist %}
     <tr class="{% if c.on_changeq %}warning{% endif %} {% if not c.is_latest %}info{% endif %}">
-      <td class="credcheck"><input type="checkbox" name="credcheck" value="{{ c.id }}" onclick="updatebuttons()" /></td>
+      <td class="credcheck"><input type="checkbox" name="credcheck" value="{{ c.id }}" class="list-checktarget cred-list-check" /></td>
       <td>{% cred_icon c.iconname %} <a href="{% url "cred.views.detail" c.id %}">{{ c.title|default:"(No Title)" }}</a></td>
       <td>{{ c.username }}</td>
       <td><a href="{% url "cred.views.list" "group" c.group.id %}">{{ c.group.name }}</a></td>
