@@ -3,6 +3,14 @@
 {% load i18n %}
 {% load credicons %}
 
+{% block headarea %}
+  {% if user.is_staff and not LDAP_ENABLED %}
+    <meta name="rattic_attach_new_group_buttons" content="true" />
+  {% else %}
+    <meta name="rattic_attach_new_group_buttons" content="false" />
+  {% endif %}
+{% endblock %}
+
 {% block content %}
 
 {% include "staff_part_addgroupmodal.html" %}

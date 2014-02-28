@@ -16,26 +16,6 @@ function genpassword() {
     $("input#id_password").val(make_password(passlength, canset, mustset));
 }
 
-function groupCreated(group) {
-    $("select#id_group").append('<option value="' + group['id'] + '">' + group['name'] + '</option>');
-    $("select#id_group").val(group['id']);
-}
-
-function createGroupModal() {
-    ajax = RATTIC.api.createGroup(
-        $("input#groupname").val(),
-        function(){
-            $('#addGroup').modal('hide');
-            if (ajax.status == 201) groupCreated(JSON.parse(ajax.responseText))
-        },
-        function(){
-            $('#addGroup').modal('hide');
-        }
-    );
-
-    return false;
-}
-
 function createTagModal(close) {
     ajax = RATTIC.api.createTag(
         $("input#tagname").val(),
@@ -90,19 +70,13 @@ $(document).ready(function(){
     // Setup buttons that require one checked box to be enabled
     RATTIC.controls.checkEnabledButton($('.rattic-check-enabled'));
 
+    // Add 'New Group' button next to group inputs if asked to
+    if (RATTIC.page.getMetaInfo('attach_new_group_buttons') == 'true')
+        RATTIC.controls.newGroupButton($('select#id_group'));
 
 
 
     // Unconverted things
-    if ((typeof attachstaffbuttons != 'undefined') && attachstaffbuttons) {
-        $("select#id_group").after('<a href="#addGroup" role="button" class="btn" data-toggle="modal" data-loading-text="Adding...">Add</a>');
-
-        $('#addGroup').on('show', function () {
-            $("input#groupname").val('');
-            $("button#saveGroupbutton").button('reset');
-        });
-    }
-
     clip = new ZeroClipboard()
 
     /* Mouse over the table cells */

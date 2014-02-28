@@ -144,6 +144,34 @@ var RATTIC = (function ($) {
         });
     };
 
+    function _createGroupFormClear() {
+        $("input#groupname").val('');
+        $("button#saveGroupbutton").button('reset');
+    };
+
+    function _groupCreated(group) {
+        $("select#id_group").append(
+                '<option value="' + group['id'] + '">' +
+                group['name'] +
+                '</option>');
+
+        $("select#id_group").val(group['id']);
+    };
+
+    function _createGroupClick() {
+        ajax = my.api.createGroup(
+                $("input#groupname").val(),
+                function(){
+                    $('#addGroup').modal('hide');
+                    if (ajax.status == 201) _groupCreated(JSON.parse(ajax.responseText))
+                },
+                function(){
+                    $('#addGroup').modal('hide');
+                });
+
+        return false;
+    };
+
     /********* Public Variables *********/
 
     /********* Public Methods *********/
@@ -236,6 +264,15 @@ var RATTIC = (function ($) {
             target.data('linked').push(button);
         });
     };
+
+    /* Adds a 'New Group' button to the group select box for staff */
+    my.controls.newGroupButton = function(selectboxes) {
+        selectboxes.after('<a href="#addGroup" role="button" class="btn" data-toggle="modal" data-loading-text="Adding...">New</a>');
+
+        $('#addGroup').on('show', _createGroupFormClear);
+        $('#saveGroupButton').on('click', _createGroupClick);
+    };
+
 
     return my;
 }(jQuery));

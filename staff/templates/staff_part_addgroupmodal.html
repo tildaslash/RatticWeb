@@ -1,9 +1,6 @@
 {% load url from future %}
 {% load i18n %}
 {% if user.is_staff and not LDAP_ENABLED %}
-<script>
-var attachstaffbuttons = true;
-</script>
 <div id="addGroup" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalAddGroup" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
@@ -14,7 +11,7 @@ var attachstaffbuttons = true;
     </div>
     <div class="modal-footer">
         <button class="btn btn-inverse" data-dismiss="modal" aria-hidden="true">{% trans "Cancel" %}</button>
-        <button class="btn btn-primary" id="saveGroupButton" onclick="return createGroupModal()">{% trans "Create" %}</button>
+        <button class="btn btn-primary" id="saveGroupButton">{% trans "Create" %}</button>
     </div>
 </div>
 {% endif %}
