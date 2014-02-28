@@ -128,6 +128,10 @@
     notify:
       - restart httpd
 
+  - name: Generate static content for checkout
+    django_manage: command=collectstatic virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
+    when: release == "vagrant"
+
   ### postgresql setup tasks
   - name: install postgresql
     action: yum name={{ item }} state=latest
