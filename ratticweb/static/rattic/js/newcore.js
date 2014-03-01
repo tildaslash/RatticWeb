@@ -7,6 +7,7 @@ var RATTIC = (function ($) {
     /********* Private Variables *********/
     var credCache = [];
     var rattic_meta_prefix = 'rattic_';
+    var clip = new ZeroClipboard();
 
     /********* Private Methods **********/
     /* Gets a cookie from the browser. Only works for cookies that
@@ -89,6 +90,7 @@ var RATTIC = (function ($) {
     };
 
     function _passShowButtonShow(button, target) {
+        target.trigger('getdata');
         button.trigger('show');
         button.data('status', 'shown');
         button.html('<i class="icon-eye-close"></i');
@@ -171,6 +173,58 @@ var RATTIC = (function ($) {
 
         return false;
     };
+
+    function _setVisibility(item, state) {
+        if (state == true) state = 'visible';
+        if (state == false) state = 'hidden';
+        $(item).css({visibility: state});
+    };
+
+    function _hideCopyButton() {
+        me = $(this);
+        hideTimeoutId = window.setTimeout(_hideCopyButtonTimer, 100);
+        me.data('hideTimeoutId', hideTimeoutId)
+    };
+
+    function _hideCopyButtonTimer() {
+        button = $($(me).data('copybutton'));
+        _setVisibility(button, false);
+        hideTimeoutId = -1;
+    }
+
+    function _showCopyButton() {
+        hideTimeoutId = $(this).data('hideTimeoutId');
+        if (hideTimeoutId != -1) {
+            window.clearTimeout(hideTimeoutId);
+            hideTimeoutId = -1;
+        }
+        button = $($(this).data('copybutton'));
+        target = $(button.data('copyfrom'));
+        target.trigger('getdatasync');
+        _setVisibility(button, true);
+        clip.glue(button);
+    };
+
+    function _copyButtonGetData(client) {
+        me = $(this);
+        target = $(me.data('copyfrom'));
+        target.trigger('getdatasync');
+        client.setText(target.text());
+    };
+
+    function _passfetcher() {
+        me = $(this);
+        cred_id = me.data('cred_id');
+        my.api.getCred(cred_id, function(data) {
+            me.text(data['password']);
+        }, function(){});
+    }
+
+    function _passfetchersync() {
+        me = $(this);
+        cred_id = me.data('cred_id');
+        me.text(my.api.getCredWait(cred_id)['password']);
+    }
 
     /********* Public Variables *********/
 
@@ -271,6 +325,39 @@ var RATTIC = (function ($) {
 
         $('#addGroup').on('show', _createGroupFormClear);
         $('#saveGroupButton').on('click', _createGroupClick);
+    };
+
+    /* Add copy buttons to table cells */
+    my.controls.tableCopyButtons = function(cells) {
+        if (!FlashDetect.installed) return false;
+
+        cells.each(function() {
+            // Get the players
+            me = $(this);
+            button = me.children('button');
+            text = me.children('span');
+
+            // Set data for callbacks
+            button.data('copyfrom', text);
+            button.data('copybutton', button);
+            me.data('copybutton', button);
+            text.data('copybutton', button);
+
+            // Apply callbacks
+            me.on('mouseleave', _hideCopyButton);
+            text.on('mouseover', _showCopyButton);
+            clip.on('mouseover', _showCopyButton);
+            clip.on('dataRequested', _copyButtonGetData);
+        });
+
+        return true;
+    };
+
+    /* Add data fetchers for the password spans */
+    my.controls.passwordFetcher = function(fetcher, id) {
+        fetcher.data('cred_id', id);
+        fetcher.on('getdata', _passfetcher);
+        fetcher.on('getdatasync', _passfetchersync);
     };
 
 

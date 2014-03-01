@@ -54,15 +54,8 @@ $(document).ready(function(){
     // Show password button on the edit screen
     RATTIC.controls.passShowButton($('button.btn-pass-show'));
 
-    // Fetch cred on details pages
-    $('button.btn-pass-fetchcred').on('show', function() {
-            target = $($(this).data('target'));
-            cred_id = RATTIC.page.getCredId();
-            RATTIC.api.getCred(cred_id, function(data) {
-                target.text(data['password']);
-            }, function(){});
-        }
-    );
+    // Enable the password fetcher
+    RATTIC.controls.passwordFetcher($('#password'), RATTIC.page.getCredId());
 
     // Setup checkboxes that check all values
     RATTIC.controls.checkAll($('input.rattic-checkall[type=checkbox]'));
@@ -74,58 +67,8 @@ $(document).ready(function(){
     if (RATTIC.page.getMetaInfo('attach_new_group_buttons') == 'true')
         RATTIC.controls.newGroupButton($('select#id_group'));
 
-
-
-    // Unconverted things
-    clip = new ZeroClipboard()
-
-    /* Mouse over the table cells */
-    $('#usertd').on('mouseleave', function(){
-        if (FlashDetect.installed) $('button#copyuser').css({visibility: 'hidden'})
-    });
-
-    $('#passtd').on('mouseleave', function(){
-        if (FlashDetect.installed) $('button#copyclipboard').css({visibility: 'hidden'})
-    });
-
-    /* Mouse over the words themseves */
-    $('#username').on('mouseover', function(){
-        if (FlashDetect.installed) {
-            $('button#copyuser').css({visibility: "visible"});
-            clip.glue($('button#copyuser'));
-        }
-    });
-
-    $('#password').on('mouseover', function(){
-        RATTIC.api.getCred(RATTIC.page.getCredId(), function(data){
-            if (FlashDetect.installed) {
-                $('button#copyclipboard').css({visibility: "visible"})
-                clip.glue($('button#copyclipboard'));
-            }
-            $('span#password').text(data['password']);
-        }, function(){})
-    });
-
-    /* When we mouse over the button itself */
-    clip.on('mouseover', function(client, args){
-        if (FlashDetect.installed) {
-            $('button#' + this.id).css({visibility: "visible"});
-        }
-    });
-
-    /* When the copy button is clicked */
-    clip.on( 'datarequested', function ( client, args ) {
-        if (FlashDetect.installed) {
-            switch (this.id) {
-              case "copyclipboard":
-                client.setText(RATTIC.api.getCredWait(RATTIC.page.getCredId())['password'])
-                break;
-              case "copyuser":
-                client.setText($("span#username").text());
-                break;
-            }
-        }
-    } );
+    // Add copy buttons to table cells
+    RATTIC.controls.tableCopyButtons($('td.rattic-copy-button'));
 
 });
 

@@ -42,17 +42,17 @@
 {% if cred.url %}<tr><th>{% trans "URL" %}</th><td><a href="{{ cred.url }}">{{ cred.url }}</a></td></tr>{% endif %}
 <tr>
   <th>{% trans "Username" %}</th>
-  <td id="usertd">
+  <td id="usertd" class="rattic-copy-button">
     {% if cred.username %}
       <span id="username">{{ cred.username }}</span>
-      <button class="btn btn-mini" data-clipboard-text="{{ cred.username }}" id="copyuser">{% trans "Copy" %}</button>
+      <button class="btn btn-mini" id="copyuser">{% trans "Copy" %}</button>
     {% endif %}
   </td>
 </tr>
 <tr>
   <th>{% trans "Password" %} <button class="btn btn-mini btn-pass-show btn-pass-fetchcred" data-target="#password"></button>
   </th>
-  <td id="passtd">
+  <td id="passtd" class="rattic-copy-button">
     <span id="password" class="passhidden">Fetching Password...</span>
     <button class="btn btn-mini" id="copyclipboard">{% trans "Copy" %}</button>
   </td>
