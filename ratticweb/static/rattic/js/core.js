@@ -37,12 +37,6 @@ function createTagModal(close) {
     return false;
 }
 
-function submitCredForm(action) {
-    if (countcheckboxes('.credcheck') == 0) return false;
-    $('#credchecksubmitform')[0].action = action;
-    $('#credchecksubmitform')[0].submit();
-}
-
 $(document).ready(function(){
 
     // Setup the Chosen select boxes
@@ -70,5 +64,7 @@ $(document).ready(function(){
     // Add copy buttons to table cells
     RATTIC.controls.tableCopyButtons($('td.rattic-copy-button'));
 
+    // Buttons that have an action set and submit a form
+    RATTIC.controls.formSubmitButton($('button.rattic-form-submit'));
 });
 

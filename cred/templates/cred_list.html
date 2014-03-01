@@ -23,13 +23,13 @@
           <a class="btn" href="{% url "cred.views.add" %}">{% trans "Add New" %}</a>
         {% endif %}
         {% if buttons.delete %}
-          <button class="btn disabled rattic-check-enabled" data-target=".cred-list-check" onclick="submitCredForm('{% url "cred.views.bulkdelete" %}')">{% trans "Delete" %}</button>
+          <button class="btn disabled rattic-check-enabled rattic-form-submit" data-target=".cred-list-check" data-action="{% url "cred.views.bulkdelete" %}">{% trans "Delete" %}</button>
         {% endif %}
         {% if buttons.undelete %}
-          <button class="btn disabled rattic-check-enabled" data-target=".cred-list-check" onclick="submitCredForm('{% url "cred.views.bulkundelete" %}')">{% trans "Undelete" %}</button>
+          <button class="btn disabled rattic-check-enabled rattic-form-submit" data-target=".cred-list-check" data-action="{% url "cred.views.bulkundelete" %}">{% trans "Undelete" %}</button>
         {% endif %}
         {% if buttons.changeq %}
-          <button class="btn disabled rattic-check-enabled" data-target=".cred-list-check" onclick="submitCredForm('{% url "cred.views.bulkaddtoqueue" %}')">{% trans "Add to Change Queue" %}</button>
+          <button class="btn disabled rattic-check-enabled rattic-form-submit" data-target=".cred-list-check" data-action="{% url "cred.views.bulkaddtoqueue" %}">{% trans "Add to Change Queue" %}</button>
         {% endif %}
       </td>
     </tr>

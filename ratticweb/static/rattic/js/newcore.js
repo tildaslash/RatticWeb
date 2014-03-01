@@ -218,12 +218,21 @@ var RATTIC = (function ($) {
         my.api.getCred(cred_id, function(data) {
             me.text(data['password']);
         }, function(){});
-    }
+    };
 
     function _passfetchersync() {
         me = $(this);
         cred_id = me.data('cred_id');
         me.text(my.api.getCredWait(cred_id)['password']);
+    };
+
+    function _formSubmitClick() {
+        me = $(this);
+        if (me.hasClass('disabled')) return false;
+
+        form = me.parents('form:first');
+        form.attr('action', me.data('action'));
+        form.submit();
     }
 
     /********* Public Variables *********/
@@ -360,6 +369,10 @@ var RATTIC = (function ($) {
         fetcher.on('getdatasync', _passfetchersync);
     };
 
+    /* Buttons that change a forms action, then submit it */
+    my.controls.formSubmitButton = function(buttons) {
+        buttons.on('click', _formSubmitClick);
+    }
 
     return my;
 }(jQuery));
