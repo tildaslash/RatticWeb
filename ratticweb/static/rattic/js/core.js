@@ -1,7 +1,14 @@
 $(document).ready(function(){
-
     // Setup the Chosen select boxes
     $(".chzn-select").chosen();
+
+    // Start collecting random numbers
+    sjcl.random.startCollectors();
+
+    // Setup ZeroClipboard
+    ZeroClipboard.setDefaults({
+        moviePath: RATTIC.page.getURLRoot() + 'static/zeroclipboard/1.2.3/ZeroClipboard.swf'
+    });
 
     // Search boxes
     RATTIC.controls.searchForm($('.rattic-cred-search'));

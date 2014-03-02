@@ -4,7 +4,6 @@ from django.test import TestCase, Client, LiveServerTestCase
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.test.utils import override_settings
-from django.conf import settings
 
 from models import Cred, Tag
 from ratticweb.tests import TestData
@@ -555,9 +554,8 @@ class JavascriptTests(LiveServerTestCase):
         # Validate the logo is shown correctly
         logodisplay = self.selenium.find_element_by_id('logodisplay')
         logoclasses = logodisplay.get_attribute('class')
-        spritelocation = settings.STATIC_URL + settings.CRED_ICON_SPRITE
         self.assertIn(icondata['css-class'], logoclasses)
-        self.assertIn('rattic-icon-clickable', logoclasses)
+        self.assertNotIn('rattic-icon-clickable', logoclasses)
         # Save the credential
         logodisplay.submit()
         self.waitforload()

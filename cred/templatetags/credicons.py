@@ -27,7 +27,7 @@ def cred_icon(iconname, txtfield=None, imgfield=None, tagid=None):
     if txtfield is not None or imgfield is not None:
         classes.append('rattic-icon-clickable')
 
-    tag =  '<img '
+    tag = '<img '
     tag += 'src="%s" ' % blankimg
     tag += 'data-icon-name="%s" ' % data['filename']
     if tagid is not None:
@@ -42,4 +42,3 @@ def cred_icon(iconname, txtfield=None, imgfield=None, tagid=None):
     tag += '>'
 
     return tag
-

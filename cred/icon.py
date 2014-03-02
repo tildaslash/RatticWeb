@@ -38,7 +38,7 @@ def build_layout(images):
 def build_css_class(data):
     bgurl = settings.STATIC_URL + settings.CRED_ICON_SPRITE
 
-    css =  '/* ' + data['filename'] + '*/\n'
+    css = '/* ' + data['filename'] + '*/\n'
     css += '.' + data['css-class'] + ' {\n'
     css += '    height: %spx;\n' % data['height']
     css += '    width: %spx;\n' % data['width']
