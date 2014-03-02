@@ -1,4 +1,4 @@
-var RATTIC = (function ($) {
+var RATTIC = (function ($, ZeroClipboard) {
     var my = {};
     my.api = {};
     my.controls = {};
@@ -7,7 +7,6 @@ var RATTIC = (function ($) {
     /********* Private Variables *********/
     var credCache = [];
     var rattic_meta_prefix = 'rattic_';
-    var clip = new ZeroClipboard();
     var pass_settings = {
       "lcasealpha": {
         "description": "Lowercase Alphabet",
@@ -40,6 +39,25 @@ var RATTIC = (function ($) {
         "set": " "
       }
     };
+
+    /********* Page Methods **********/
+    /* Get Meta information */
+    my.page.getMetaInfo = function(name) {
+        return $('head meta[name=' + rattic_meta_prefix + name + ']').attr('content');
+    }
+
+    /* Gets the cred for the page from the head */
+    my.page.getCredId = function() {
+        return my.page.getMetaInfo('cred_id');
+    }
+
+    /* Gets the the url root from the page */
+    my.page.getURLRoot = function() {
+        return my.page.getMetaInfo('url_root');
+    }
+
+    /* Setup ZeroClipboard */
+    ZeroClipboard.config( { moviePath: my.page.getURLRoot() + 'static/zeroclipboard/1.3.2/ZeroClipboard.swf' } );
 
     /********* Private Methods **********/
     /* Gets a cookie from the browser. Only works for cookies that
@@ -252,6 +270,7 @@ var RATTIC = (function ($) {
         }
         button = $($(this).data('copybutton'));
         target = $(button.data('copyfrom'));
+        clip = button.data('clip');
         target.trigger('getdatasync');
         _setVisibility(button, true);
         clip.glue(button);
@@ -346,7 +365,6 @@ var RATTIC = (function ($) {
     };
 
     function _clickableIconClick() {
-        console.log('clickable')
         me = $(this);
         iconname = me.data('icon-name');
         txtfield = $(me.data('txt-field'));
@@ -357,27 +375,11 @@ var RATTIC = (function ($) {
         newtag.attr('class', me.attr('class'));
         newtag.removeClass('rattic-icon-clickable');
         imgfield.replaceWith(newtag);
-        console.log('done')
     };
 
     /********* Public Variables *********/
 
     /********* Public Methods *********/
-    /* Get Meta information */
-    my.page.getMetaInfo = function(name) {
-        return $('head meta[name=' + rattic_meta_prefix + name + ']').attr('content');
-    }
-
-    /* Gets the cred for the page from the head */
-    my.page.getCredId = function() {
-        return my.page.getMetaInfo('cred_id');
-    }
-
-    /* Gets the the url root from the page */
-    my.page.getURLRoot = function() {
-        return my.page.getMetaInfo('url_root');
-    }
-
     /* Creates a Group */
     my.api.createGroup = function(name, success, failure) {
         var data = JSON.stringify({
@@ -475,10 +477,12 @@ var RATTIC = (function ($) {
             me = $(this);
             button = me.children('button');
             text = me.children('span');
+            clip = new ZeroClipboard(button);
 
             // Set data for callbacks
             button.data('copyfrom', text);
             button.data('copybutton', button);
+            button.data('clip', clip);
             me.data('copybutton', button);
             text.data('copybutton', button);
 
@@ -519,5 +523,5 @@ var RATTIC = (function ($) {
     };
 
     return my;
-}(jQuery));
+}(jQuery, ZeroClipboard));
 
