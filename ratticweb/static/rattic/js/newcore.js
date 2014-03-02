@@ -8,6 +8,38 @@ var RATTIC = (function ($) {
     var credCache = [];
     var rattic_meta_prefix = 'rattic_';
     var clip = new ZeroClipboard();
+    var pass_settings = {
+      "lcasealpha": {
+        "description": "Lowercase Alphabet",
+        "candefault": true,
+        "mustdefault": false,
+        "set": "abcdefghijklmnopqrstuvwxyz"
+      },
+      "ucasealpha": {
+        "description": "Upper Alphabet",
+        "candefault": true,
+        "mustdefault": false,
+        "set": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      },
+      "numbers": {
+        "description": "Numbers",
+        "candefault": true,
+        "mustdefault": false,
+        "set": "0123456789"
+      },
+      "special": {
+        "description": "Special",
+        "candefault": false,
+        "mustdefault": false,
+        "set": "!@#$%^&*()_-+=:;\"',.<>?/\|"
+      },
+      "spaces": {
+        "description": "Spaces",
+        "candefault": false,
+        "mustdefault": false,
+        "set": " "
+      }
+    };
 
     /********* Private Methods **********/
     /* Gets a cookie from the browser. Only works for cookies that
@@ -253,7 +285,65 @@ var RATTIC = (function ($) {
         form = me.parents('form:first');
         form.attr('action', me.data('action'));
         form.submit();
-    }
+    };
+
+    function _makePassword(length, can, must) {
+        var pass = "";
+        var canset = "";
+
+        // get chars we must have    
+        for (var x = 0; x < must.length; x++) {
+            pass += _randomString(1, pass_settings[must[x]]['set']);
+        }
+
+        // get chars we can have    
+        for (var x = 0; x < can.length; x++) {
+            canset += pass_settings[can[x]]['set'];
+        }
+
+        // Make the rest of the password with 'can' chars
+        pass += _randomString(length - pass.length, canset);
+
+        // Shuffle the password
+        pass = pass.split("");
+        for (var x = 0; x < pass.length; x++) {
+            var num = Math.abs(sjcl.random.randomWords(1)[0] % pass.length);
+            var tmp = pass[num];
+            pass[num] = pass[x];
+            pass[x] = tmp;
+        }
+
+        return pass.join("");
+    };
+
+    function _randomString(length, sourcechars) {
+        if (sourcechars.length == 0) return "";
+
+        var charcount = sourcechars.length;
+        var strout = "";
+
+        for (var x = 0; x < length; x++) {
+            var charnum = Math.abs(sjcl.random.randomWords(1)[0]) % charcount;
+            strout += sourcechars[charnum];
+        }
+
+        return strout;
+    };
+
+    function _genPassClick() {
+        me = $(this);
+        input = $(me.data('input'));
+        var canset = [];
+        var mustset = [];
+        var passlength = parseInt($("#txt_length").val());
+
+        for(var key in pass_settings) {
+            if ($('#chk_must_' + key).is(":checked")) mustset.push(key);
+            if ($('#chk_can_' + key).is(":checked")) canset.push(key);
+        }
+
+        input.val(_makePassword(passlength, canset, mustset));
+    };
 
     /********* Public Variables *********/
 
@@ -397,6 +487,15 @@ var RATTIC = (function ($) {
     /* Buttons that change a forms action, then submit it */
     my.controls.formSubmitButton = function(buttons) {
         buttons.on('click', _formSubmitClick);
+    };
+
+    /* Add functionality to the password generator form */
+    my.controls.genPasswordModal = function(form) {
+        button = $(form.data('button'));
+        input = $(form.data('input'));
+        button.data('form', form);
+        button.data('input', input);
+        button.on('click', _genPassClick);
     };
 
     return my;

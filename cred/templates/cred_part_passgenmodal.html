@@ -4,7 +4,7 @@
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h3>{% trans "Password Generator" %}</h3>
   </div>
-  <div class="modal-body">
+  <div data-button="#genpassconfirm" data-input="input#id_password" class="modal-body rattic-password-generator">
     <table class="table table-striped table-bordered table-condensed">
       <tr><th>{% trans "Must Have" %}</th><th>{% trans "Can Have" %}</th><th>{% trans "Description" %}</th></tr>
       <tr>
@@ -37,6 +37,6 @@
   </div>
   <div class="modal-footer">
     <button href="#" class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Cancel" %}</button>
-    <a href="#" onclick="$('#passgenmodal').modal('hide'); genpassword()" id="genpassconfirm" class="btn btn-primary">{% trans "Generate" %}</a>
+    <a href="#" data-dismiss="modal" id="genpassconfirm" class="btn btn-primary">{% trans "Generate" %}</a>
   </div>
 </div>

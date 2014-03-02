@@ -1,21 +1,3 @@
-function genpassword() {
-    var canset = [];
-    var mustset = [];
-    var passlength = parseInt($("#txt_length").val());
-
-    for(var key in pass_settings) {
-        if ($('#chk_must_' + key).is(":checked")) {
-            mustset.push(key);
-        }
-
-        if ($('#chk_can_' + key).is(":checked")) {
-            canset.push(key);
-        }
-    }
-
-    $("input#id_password").val(make_password(passlength, canset, mustset));
-}
-
 $(document).ready(function(){
 
     // Setup the Chosen select boxes
@@ -48,5 +30,8 @@ $(document).ready(function(){
 
     // Buttons that have an action set and submit a form
     RATTIC.controls.formSubmitButton($('button.rattic-form-submit'));
+
+    // Add functionality to the password generator form
+    RATTIC.controls.genPasswordModal($('.rattic-password-generator'));
 });
 
