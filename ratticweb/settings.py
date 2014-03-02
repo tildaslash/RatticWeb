@@ -94,6 +94,7 @@ MIDDLEWARE_CLASSES = (
     'account.middleware.PasswordExpirer',
     'ratticweb.middleware.DisableClientSideCachingMiddleware',
     'ratticweb.middleware.XUACompatibleMiddleware',
+    'ratticweb.middleware.CSPMiddleware',
 
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -204,7 +205,7 @@ DEBUG = confgetbool('ratticweb', 'debug', False)
 TEMPLATE_DEBUG = DEBUG
 TIME_ZONE = config.get('ratticweb', 'timezone')
 SECRET_KEY = config.get('ratticweb', 'secretkey')
-ALLOWED_HOSTS = [config.get('ratticweb', 'hostname'), ]
+ALLOWED_HOSTS = [config.get('ratticweb', 'hostname'), 'localhost']
 
 try:
     PASSWORD_EXPIRY = timedelta(days=int(config.get('ratticweb', 'passwordexpirydays')))

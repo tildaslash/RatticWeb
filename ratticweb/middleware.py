@@ -1,4 +1,5 @@
 from django.utils.cache import patch_cache_control
+from django.conf import settings
 
 
 class DisableClientSideCachingMiddleware(object):
@@ -25,4 +26,15 @@ class XUACompatibleMiddleware(object):
     """
     def process_response(self, request, response):
         response['X-UA-Compatible'] = 'IE=edge,chrome=1'
+        return response
+
+
+class CSPMiddleware(object):
+    """
+    Adds a Content-Security-Policy header to the response. This header
+    makes browsers refuse to load content from domains that are not Rattic.
+    """
+    def process_response(self, request, response):
+        policy = 'default-src ' + ' '.join(settings.ALLOWED_HOSTS)
+        response['Content-Security-Policy'] = 'Content-Security-Policy: "%s"' % policy
         return response
