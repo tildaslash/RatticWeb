@@ -33,5 +33,8 @@ $(document).ready(function(){
 
     // Add functionality to the password generator form
     RATTIC.controls.genPasswordModal($('.rattic-password-generator'));
+
+    // Add functionality to clickable icons
+    RATTIC.controls.clickableIcons($('.rattic-icon-clickable'));
 });
 

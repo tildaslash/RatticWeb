@@ -182,9 +182,11 @@ SESSION_ENGINE = 'user_sessions.backends.db'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 PUBLIC_HELP_WIKI_BASE = 'https://github.com/tildaslash/RatticWeb/wiki/'
 CRED_ICON_JSON = 'db/icons.json'
+CRED_ICON_CSS = 'ratticweb/static/rattic/css/icons.css'
 CRED_ICON_SPRITE = 'rattic/img/sprite.png'
 CRED_ICON_BASEDIR = 'rattic/img/credicons'
 CRED_ICON_CLEAR = 'rattic/img/clear.gif'
+CRED_ICON_DEFAULT = 'Key.png'
 
 LOGIN_REDIRECT_URL = RATTIC_ROOT_URL + "cred/list/"
 LOGIN_URL = RATTIC_ROOT_URL + "account/login/"

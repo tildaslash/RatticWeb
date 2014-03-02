@@ -15,7 +15,7 @@
 
 {% include "staff_part_addgroupmodal.html" %}
 {% include "cred_part_passgenmodal.html" %}
-{% include "cred_part_logomodal.html" with icons=icons txtfield='iconname' imgfield='logodisplay' %}
+{% include "cred_part_logomodal.html" with icons=icons txtfield='#id_iconname' imgfield='#logodisplay' %}
 
 <form class="form-horizontal"  autocomplete="off" action="{{ action }}{% if next %}?next={{ next }}{% endif %}" method="post">{% csrf_token %}
     {% for field in form %}
@@ -24,7 +24,7 @@
             <label class="control-label" for="{{ field.html_name }}">{{ field.label }}</label>
             <div class="controls">
             {% if field.html_name == 'iconname' %}
-              {% cred_icon field.value tagid='logodisplay' %}&nbsp;
+              {% cred_icon field.value tagid="logodisplay" %}&nbsp;
               <input type='hidden' name='{{ field.html_name }}' id='id_{{ field.html_name }}' value='{{ field.value }}' />
               <a href="#logoModal" role="button" class="btn" id="choosebutton" data-toggle="modal">{% trans "Choose" %}</a>
             {% elif field.html_name == 'password' %}

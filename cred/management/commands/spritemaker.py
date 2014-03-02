@@ -8,15 +8,18 @@ from cred.icon import make_sprite
 
 
 class Command(BaseCommand):
-    help = 'Ensures there exists a user named "admin" with the password "rattic"'
+    help = 'Creates sprite files'
 
     def handle(self, *args, **options):
         basepath = os.path.join('cred', 'static', settings.CRED_ICON_BASEDIR)
         spritepath = os.path.join('cred', 'static', settings.CRED_ICON_SPRITE)
         jsonpath = os.path.join('cred', settings.CRED_ICON_JSON)
+        csspath = os.path.join(settings.CRED_ICON_CSS)
 
-        (data, sprite) = make_sprite(basepath)
+        (data, sprite, css) = make_sprite(basepath)
 
         sprite.save(spritepath)
         with open(jsonpath, 'w') as jsonfile:
             jsonfile.write(json.dumps(data))
+        with open(csspath, 'w') as cssfile:
+            cssfile.write(css)

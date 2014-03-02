@@ -5,6 +5,7 @@
 This takes two variables:
 icons - Which is a list of all icons and their locations.
 txtfield - The name of the field to put the chosen icon name in.
+imgfield - The name of the field to put the chosen icon in after its clicked.
 {% endcomment %}
 
 <div id='logoModal' class="modal hide fade">
@@ -15,7 +16,7 @@ txtfield - The name of the field to put the chosen icon name in.
     <div class="modal-body">
         <div style="width: 540px">
             {% for icon in icons %}
-                {% cred_icon icon callback='logocallback' tagname='logomodalimg' tagnumber=forloop.counter %}
+                {% cred_icon icon txtfield imgfield %}
             {% endfor %}
         </div>
     </div>
@@ -23,19 +24,4 @@ txtfield - The name of the field to put the chosen icon name in.
         <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
     </div>
 </div>
-
-<script>
-function logocallback(chosenicon, clickedtag) {
-{% if txtfield %}
-  $('input#id_{{ txtfield }}').val(chosenicon);
-{% endif %}
-{% if imgfield %}
-  newtag = $('#' + clickedtag).clone()
-  newtag.attr('id', 'icon_tmpid').removeAttr('onclick')
-  $('img#{{ imgfield }}').replaceWith(newtag)
-  newtag.attr('id', '{{ imgfield }}')
-{% endif %}
-  $('#logoModal').modal('hide');
-}
-</script>
 

@@ -536,29 +536,28 @@ class JavascriptTests(LiveServerTestCase):
         self.waitforload()
         elemlogo = self.selenium.find_element_by_id('id_iconname')
         currlogo = elemlogo.get_attribute('value')
+        otherimg = self.selenium.find_element_by_xpath('.//*[@id=\'logoModal\']/div[2]/div/img[8]')
         # Check Logo
         self.assertEqual(currlogo, self.data.cred.iconname)
         # Click change logo button
         self.selenium.find_element_by_id('choosebutton').click()
         # Wait for dialog
         WebDriverWait(self.selenium, timeout).until(
-            lambda driver: driver.find_element_by_id('logomodalimg_3').is_displayed())
+            lambda driver: otherimg.is_displayed())
         # Pick the third logo
-        self.selenium.find_element_by_id('logomodalimg_3').click()
+        otherimg.click()
         # Wait for dialog to go
         WebDriverWait(self.selenium, timeout).until(
-            lambda driver: not driver.find_element_by_id('logomodalimg_3').is_displayed())
+            lambda driver: not otherimg.is_displayed())
         # Check the new iconname is in the list
         iconname = self.selenium.find_element_by_id('id_iconname').get_attribute('value')
         icondata = get_icon_data()[iconname]
         # Validate the logo is shown correctly
         logodisplay = self.selenium.find_element_by_id('logodisplay')
-        logocss = logodisplay.get_attribute('style')
+        logoclasses = logodisplay.get_attribute('class')
         spritelocation = settings.STATIC_URL + settings.CRED_ICON_SPRITE
-        self.assertRegexpMatches(logocss, r'width:\W+' + str(icondata['width']) + r'px;')
-        self.assertRegexpMatches(logocss, r'height:\W+' + str(icondata['height']) + r'px;')
-        self.assertRegexpMatches(logocss, r'background:\W+url\("' + spritelocation + r'"\)\W+repeat\W+scroll\W+-?'
-                                          + str(icondata['xoffset']) + r'px\W+-?' + str(icondata['yoffset']) + r'px\W+transparent;')
+        self.assertIn(icondata['css-class'], logoclasses)
+        self.assertIn('rattic-icon-clickable', logoclasses)
         # Save the credential
         logodisplay.submit()
         self.waitforload()

@@ -345,6 +345,21 @@ var RATTIC = (function ($) {
         input.val(_makePassword(passlength, canset, mustset));
     };
 
+    function _clickableIconClick() {
+        console.log('clickable')
+        me = $(this);
+        iconname = me.data('icon-name');
+        txtfield = $(me.data('txt-field'));
+        imgfield = $(me.data('img-field'));
+
+        txtfield.val(iconname);
+        newtag = imgfield.clone();
+        newtag.attr('class', me.attr('class'));
+        newtag.removeClass('rattic-icon-clickable');
+        imgfield.replaceWith(newtag);
+        console.log('done')
+    };
+
     /********* Public Variables *********/
 
     /********* Public Methods *********/
@@ -496,6 +511,11 @@ var RATTIC = (function ($) {
         button.data('form', form);
         button.data('input', input);
         button.on('click', _genPassClick);
+    };
+
+    /* Add functionality to the password generator form */
+    my.controls.clickableIcons = function(icons) {
+        icons.on('click', _clickableIconClick);
     };
 
     return my;
