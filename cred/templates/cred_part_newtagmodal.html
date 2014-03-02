@@ -9,7 +9,7 @@
       <label for="tagname">{% trans "Tag Name:" %}</label> <input autocomplete="off" type="text" id="tagname" />
   </div>
   <div class="modal-footer">
-    <a href="#" onclick="createTagModal(false)" id="newtagconfirm" class="btn">{% trans "Create Another" %}</a>
-    <a href="#" onclick="createTagModal(true)" id="newtagconfirm" class="btn btn-primary">{% trans "Create" %}</a>
+    <a href="#" data-input="#tagname" data-message="#tagcreatedmessage" class="btn rattic-new-tag">{% trans "Create Another" %}</a>
+    <a href="#" data-input="#tagname" data-dismiss="modal" class="btn btn-primary rattic-new-tag">{% trans "Create" %}</a>
   </div>
 </div>

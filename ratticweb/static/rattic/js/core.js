@@ -16,27 +16,6 @@ function genpassword() {
     $("input#id_password").val(make_password(passlength, canset, mustset));
 }
 
-function createTagModal(close) {
-    ajax = RATTIC.api.createTag(
-        $("input#tagname").val(),
-        function(){
-            $('#newtagmodal').modal('hide');
-        },
-        function(){
-            if (ajax.status == 201 && close) {
-                $('#newtagmodal').modal('hide');
-                document.location.reload();
-            }
-            if (ajax.status == 201 && !close) {
-                $('p#tagcreatedmessage').text($('input#tagname').val() + " has been created");
-                $("input#tagname").val('');
-            } 
-        }
-    );
-
-    return false;
-}
-
 $(document).ready(function(){
 
     // Setup the Chosen select boxes
@@ -60,6 +39,9 @@ $(document).ready(function(){
     // Add 'New Group' button next to group inputs if asked to
     if (RATTIC.page.getMetaInfo('attach_new_group_buttons') == 'true')
         RATTIC.controls.newGroupButton($('select#id_group'));
+
+    // Add functionality to the 'New Tag' buttons
+    RATTIC.controls.newTagButton($('.rattic-new-tag'));
 
     // Add copy buttons to table cells
     RATTIC.controls.tableCopyButtons($('td.rattic-copy-button'));

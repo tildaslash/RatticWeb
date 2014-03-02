@@ -174,6 +174,26 @@ var RATTIC = (function ($) {
         return false;
     };
 
+    function _newTagClick() {
+        me = $(this);
+        input = $($(this).data('input'));
+        inputval = input.val();
+        message = $($(this).data('message'));
+        ajax = RATTIC.api.createTag(
+                inputval,
+                function(){
+                    if (ajax.status == 201) {
+                        input.val('');
+                        if (me.data('dismiss') == 'modal') {
+                            document.location.reload();
+                        } else {
+                            message.text(inputval + ' has been created.')
+                        }
+                    }
+                },
+                function(){});
+    };
+
     function _setVisibility(item, state) {
         if (state == true) state = 'visible';
         if (state == false) state = 'hidden';
@@ -336,6 +356,11 @@ var RATTIC = (function ($) {
         $('#saveGroupButton').on('click', _createGroupClick);
     };
 
+    /* Adds functionality for the 'New Tag' button */
+    my.controls.newTagButton = function(tagbuttons) {
+        tagbuttons.on('click', _newTagClick);
+    };
+
     /* Add copy buttons to table cells */
     my.controls.tableCopyButtons = function(cells) {
         if (!FlashDetect.installed) return false;
@@ -372,7 +397,7 @@ var RATTIC = (function ($) {
     /* Buttons that change a forms action, then submit it */
     my.controls.formSubmitButton = function(buttons) {
         buttons.on('click', _formSubmitClick);
-    }
+    };
 
     return my;
 }(jQuery));
