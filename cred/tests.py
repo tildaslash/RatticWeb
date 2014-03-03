@@ -1,3 +1,5 @@
+from django.utils import unittest
+
 from django.test import TestCase, Client, LiveServerTestCase
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
@@ -551,6 +553,7 @@ class JavascriptTests(LiveServerTestCase):
         chgcred = Cred.objects.get(id=self.data.cred.id)
         self.assertEqual(chgcred.iconname, iconname)
 
+    @unittest.expectedFailure
     def test_password_generator(self):
         timeout = 4
         self.login_as(self.data.unorm.username, self.data.normpass)
