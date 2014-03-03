@@ -35,7 +35,6 @@ class CSPMiddleware(object):
     makes browsers refuse to load content from domains that are not Rattic.
     """
     def process_response(self, request, response):
-        policy = 'default-src %s' % ' '.join(settings.ALLOWED_HOSTS)
-        policy += "; style-src 'unsafe-inline' %s" % ' '.join(settings.ALLOWED_HOSTS)
+        policy = "default-src 'self';style-src 'self' 'unsafe-inline'"
         response['Content-Security-Policy'] = policy
         return response
