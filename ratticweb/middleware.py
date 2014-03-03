@@ -36,5 +36,6 @@ class CSPMiddleware(object):
     """
     def process_response(self, request, response):
         policy = 'default-src %s' % ' '.join(settings.ALLOWED_HOSTS)
+        policy += "; style-src 'unsafe-inline' %s" % ' '.join(settings.ALLOWED_HOSTS)
         response['Content-Security-Policy'] = policy
         return response
