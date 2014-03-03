@@ -6,11 +6,11 @@
 
 {% block title %}{{ cred.title }} - {% trans "Rattic" %}{% endblock %}
 
-{% block content %}
-<script>
-  var credId = {{ cred.id }};
-</script>
+{% block headarea %}
+<meta name="rattic_cred_id" content="{{ cred.id }}" />
+{% endblock %}
 
+{% block content %}
 <h1>{% cred_icon cred.iconname %} {{ cred.title }}</h1>
 {% if delete %}
 <div class="alert alert-error">{% blocktrans %}You are about to delete this password. A staff member will be required if you want to undelete it.{% endblocktrans %}</div>
@@ -42,19 +42,18 @@
 {% if cred.url %}<tr><th>{% trans "URL" %}</th><td><a href="{{ cred.url }}">{{ cred.url }}</a></td></tr>{% endif %}
 <tr>
   <th>{% trans "Username" %}</th>
-  <td id="usertd">
+  <td id="usertd" class="rattic-copy-button">
     {% if cred.username %}
       <span id="username">{{ cred.username }}</span>
-      <button class="btn btn-mini" data-clipboard-text="{{ cred.username }}" id="copyuser">{% trans "Copy" %}</button>
+      <button class="btn btn-mini" id="copyuser">{% trans "Copy" %}</button>
     {% endif %}
   </td>
 </tr>
 <tr>
-  <th>{% trans "Password" %} <a id="hidepass" onclick="hidepass()" class="btn btn-mini"><i class="icon-eye-close"></i></a>
-    <a id="showpass" onclick="showpass()" class="btn btn-mini"><i class="icon-eye-open"></i></a>
+  <th>{% trans "Password" %} <button class="btn btn-mini btn-pass-show btn-pass-fetchcred" data-target="#password"></button>
   </th>
-  <td id="passtd">
-    <span id="password" class="passhidden">XX XX XXX XXX</span>
+  <td id="passtd" class="rattic-copy-button">
+    <span id="password" class="passhidden">Fetching Password...</span>
     <button class="btn btn-mini" id="copyclipboard">{% trans "Copy" %}</button>
   </td>
 </tr>
