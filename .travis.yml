@@ -12,6 +12,7 @@ env:
 install:
   - "sudo apt-get update"
   - "sudo apt-get install -qq slapd ldap-utils"
+  - "sudo apt-get update -qq firefox"
   - pip install -r requirements-mysql.txt --use-mirrors --download-cache $HOME/.pip-cache/
 before_script:
   - "pushd docs/ldap; DEBUG=true ./startldap.sh; popd"

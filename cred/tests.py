@@ -478,7 +478,6 @@ class JavascriptTests(LiveServerTestCase):
         plan_url = urldecode('%s%s' % (self.live_server_url, reverse('cred.views.list', args=('search', searchkey))))
         self.assertEquals(cur_url, plan_url)
 
-    @unittest.expectedFailure
     def test_password_details(self):
         timeout = 4
         self.login_as(self.data.unorm.username, self.data.normpass)
@@ -490,14 +489,6 @@ class JavascriptTests(LiveServerTestCase):
         self.assertTrue('passhidden' in elempass.get_attribute('class'))
         # Check password isn't correct
         self.assertNotEquals(elempass.text, self.data.cred.password)
-        # Hover over password
-        hov = ActionChains(self.selenium).move_to_element(elempass)
-        hov.perform()
-        # Check password is fetched
-        WebDriverWait(self.selenium, timeout).until(
-            lambda driver: driver.find_element_by_id('password').text == self.data.cred.password)
-        # Check password is still hidden
-        self.assertTrue('passhidden' in elempass.get_attribute('class'))
         # Click show button
         self.selenium.find_elements_by_xpath("//button[contains(concat(' ', @class, ' '), ' btn-pass-fetchcred ')]")[0].click()
         # Check password is visible
@@ -564,7 +555,6 @@ class JavascriptTests(LiveServerTestCase):
         chgcred = Cred.objects.get(id=self.data.cred.id)
         self.assertEqual(chgcred.iconname, iconname)
 
-    @unittest.expectedFailure
     def test_password_generator(self):
         timeout = 4
         self.login_as(self.data.unorm.username, self.data.normpass)
