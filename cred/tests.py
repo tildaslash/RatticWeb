@@ -1,5 +1,3 @@
-from django.utils import unittest
-
 from django.test import TestCase, Client, LiveServerTestCase
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
@@ -14,7 +12,6 @@ from url_decode import urldecode
 
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.firefox.webdriver import FirefoxProfile
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 
@@ -479,7 +476,6 @@ class JavascriptTests(LiveServerTestCase):
         self.assertEquals(cur_url, plan_url)
 
     def test_password_details(self):
-        timeout = 4
         self.login_as(self.data.unorm.username, self.data.normpass)
         self.selenium.get('%s%s' % (self.live_server_url,
             reverse('cred.views.detail', args=(self.data.cred.id,))))
