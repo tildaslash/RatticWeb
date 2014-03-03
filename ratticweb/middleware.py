@@ -1,5 +1,4 @@
 from django.utils.cache import patch_cache_control
-from django.conf import settings
 
 
 class DisableClientSideCachingMiddleware(object):
