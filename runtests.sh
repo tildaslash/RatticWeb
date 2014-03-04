@@ -11,13 +11,16 @@ function runtest() {
     command="$2"
 
     echo -n "Running $name...  "
-    OUT="$($command 2>&1)"
+    output="$(mktemp)"
+    $command 2>&1 > $output
     if [ $? -eq 0 ]; then
         echo 'Success'
+        rm $output
     else
         echo 'Failure'
-	echo $OUT
-	exit 1
+        cat $output
+        rm $output
+        exit 1
    fi
 }
 
