@@ -255,11 +255,9 @@ var RATTIC = (function ($, ZeroClipboard) {
         button = $($(me).data('copybutton'));
         hideTimeoutId = window.setTimeout(_hideCopyButtonTimer.bind(undefined, button), 250);
         button.data('hideTimeoutId', hideTimeoutId);
-        console.log('hiding timer set', hideTimeoutId);
     };
 
     function _hideCopyButtonTimer(button) {
-        console.log('hiding timer fired', hideTimeoutId);
         _setVisibility(button, false);
         button.data('hideTimeoutId', -1);
     }
@@ -269,9 +267,7 @@ var RATTIC = (function ($, ZeroClipboard) {
         if (typeof button.data('hideTimeoutId') === "undefined")
             button.data('hideTimeoutId', -1);
         hideTimeoutId = button.data('hideTimeoutId');
-        console.log('show copy', button, hideTimeoutId);
         if (hideTimeoutId != -1) {
-            console.log('cencelling hide', hideTimeoutId);
             window.clearTimeout(hideTimeoutId);
             button.data('hideTimeoutId', -1);
         }
