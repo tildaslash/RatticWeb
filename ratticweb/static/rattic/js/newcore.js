@@ -252,23 +252,29 @@ var RATTIC = (function ($, ZeroClipboard) {
 
     function _hideCopyButton() {
         me = $(this);
-        hideTimeoutId = window.setTimeout(_hideCopyButtonTimer, 100);
-        me.data('hideTimeoutId', hideTimeoutId)
+        button = $($(me).data('copybutton'));
+        hideTimeoutId = window.setTimeout(_hideCopyButtonTimer.bind(undefined, button), 250);
+        button.data('hideTimeoutId', hideTimeoutId);
+        console.log('hiding timer set', hideTimeoutId);
     };
 
-    function _hideCopyButtonTimer() {
-        button = $($(me).data('copybutton'));
+    function _hideCopyButtonTimer(button) {
+        console.log('hiding timer fired', hideTimeoutId);
         _setVisibility(button, false);
-        hideTimeoutId = -1;
+        button.data('hideTimeoutId', -1);
     }
 
     function _showCopyButton() {
-        hideTimeoutId = $(this).data('hideTimeoutId');
-        if (hideTimeoutId != -1) {
-            window.clearTimeout(hideTimeoutId);
-            hideTimeoutId = -1;
-        }
         button = $($(this).data('copybutton'));
+        if (typeof button.data('hideTimeoutId') === "undefined")
+            button.data('hideTimeoutId', -1);
+        hideTimeoutId = button.data('hideTimeoutId');
+        console.log('show copy', button, hideTimeoutId);
+        if (hideTimeoutId != -1) {
+            console.log('cencelling hide', hideTimeoutId);
+            window.clearTimeout(hideTimeoutId);
+            button.data('hideTimeoutId', -1);
+        }
         target = $(button.data('copyfrom'));
         clip = button.data('clip');
         target.trigger('getdatasync');
