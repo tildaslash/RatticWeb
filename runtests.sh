@@ -6,7 +6,6 @@
 
 lint_only=0
 tests_only=0
-force_show_output=0
 
 unit_test_args=""
 unit_test_command="./manage.py test"
@@ -25,7 +24,6 @@ for var in $@; do
       "--nose-help")
          unit_test_command="$unit_test_command --help"
          tests_only=1
-         force_show_output=1
          ;;
       "--help")
          echo "./runtests [--tests-only] [--without-selenium] [--help] [--nose-help]"
@@ -42,17 +40,12 @@ function runtest() {
     command="$2"
 
     echo -n "Running $name ($command)...  "
-    output="$(mktemp)"
-    ENABLE_TESTS=1 $command 2>&1 > $output
+    ENABLE_TESTS=1 $command
 
     if [ $? -eq 0 ]; then
         echo 'Success'
-        (( $force_show_output == 1 )) && cat $output
-        rm $output
     else
         echo 'Failure'
-        cat $output
-        rm $output
         exit 1
    fi
 }
