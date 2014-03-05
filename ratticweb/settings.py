@@ -1,8 +1,8 @@
 from datetime import timedelta
 from ConfigParser import RawConfigParser, NoOptionError
 import ldap
+import os
 from django_auth_ldap.config import LDAPSearch
-from django.core.urlresolvers import reverse_lazy
 
 config = RawConfigParser()
 config.readfp(open('conf/defaults.cfg'))
@@ -143,6 +143,9 @@ INSTALLED_APPS = (
     'south',
     'tastypie',
 ) + LOCAL_APPS
+
+if os.environ.get("ENABLE_TESTS") == "1":
+    INSTALLED_APPS += ('django_nose', )
 
 TEST_RUNNER = 'tests.runner.ExcludeAppsTestSuiteRunner'
 

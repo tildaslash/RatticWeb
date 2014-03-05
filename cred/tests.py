@@ -1,9 +1,8 @@
-from django.utils import unittest
-
 from django.test import TestCase, Client, LiveServerTestCase
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.test.utils import override_settings
+from django.utils.unittest import SkipTest
 
 from models import Cred, Tag
 from ratticweb.tests import TestData
@@ -11,11 +10,15 @@ from ratticweb.tests import TestData
 from cred.icon import get_icon_data
 
 from url_decode import urldecode
+import random
+import time
 
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.firefox.webdriver import FirefoxProfile
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
+
+from testconfig import config
 
 
 class CredAccessTest(TestCase):
@@ -439,6 +442,9 @@ class JavascriptTests(LiveServerTestCase):
 
     @classmethod
     def setUpClass(cls):
+        if config.get("no_selenium"):
+            raise SkipTest("Told not to run selenium tests")
+
         ffp = FirefoxProfile()
         ffp.native_events_enabled = True
         cls.selenium = WebDriver(ffp)
@@ -553,7 +559,6 @@ class JavascriptTests(LiveServerTestCase):
         chgcred = Cred.objects.get(id=self.data.cred.id)
         self.assertEqual(chgcred.iconname, iconname)
 
-    @unittest.expectedFailure
     def test_password_generator(self):
         timeout = 4
         self.login_as(self.data.unorm.username, self.data.normpass)
@@ -569,6 +574,12 @@ class JavascriptTests(LiveServerTestCase):
         self.assertEqual(currpass, self.data.cred.password)
         # Show Dialog
         self.selenium.find_element_by_id('genpass').click()
+        # Inject some entropy so we can generate randomness on travis-ci
+        start = time.time()
+        while self.selenium.execute_script("return sjcl.random.isReady()") == 0:
+            self.selenium.execute_script("sjcl.random.addEntropy({0}, 1, 'tests')".format(random.randint(0, 30000)))
+            if time.time() - start > 10:
+                raise Exception("Failed to seed the test!")
         # Wait for dialog
         WebDriverWait(self.selenium, timeout).until(
             lambda driver: driver.find_element_by_id('genpassconfirm').is_displayed())

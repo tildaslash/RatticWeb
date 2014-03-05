@@ -1,0 +1,5 @@
+mock
+nose
+django_nose
+nose-testconfig
+
