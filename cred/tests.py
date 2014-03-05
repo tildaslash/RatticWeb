@@ -1,5 +1,3 @@
-from django.utils import unittest
-
 from django.test import TestCase, Client, LiveServerTestCase
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
@@ -559,7 +557,6 @@ class JavascriptTests(LiveServerTestCase):
         chgcred = Cred.objects.get(id=self.data.cred.id)
         self.assertEqual(chgcred.iconname, iconname)
 
-    @unittest.expectedFailure
     def test_password_generator(self):
         timeout = 4
         self.login_as(self.data.unorm.username, self.data.normpass)
@@ -575,6 +572,8 @@ class JavascriptTests(LiveServerTestCase):
         self.assertEqual(currpass, self.data.cred.password)
         # Show Dialog
         self.selenium.find_element_by_id('genpass').click()
+        # Inject some entropy so we can generate randomness on travis-ci
+        self.selenium.execute_script("sjcl.random.addEntropy(1000, 1, 'tests')")
         # Wait for dialog
         WebDriverWait(self.selenium, timeout).until(
             lambda driver: driver.find_element_by_id('genpassconfirm').is_displayed())
