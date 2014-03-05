@@ -1,8 +1,8 @@
-from django.test.simple import DjangoTestSuiteRunner
+from django_nose import NoseTestSuiteRunner
 from django.conf import settings
 
 
-class ExcludeAppsTestSuiteRunner(DjangoTestSuiteRunner):
+class ExcludeAppsTestSuiteRunner(NoseTestSuiteRunner):
     """Override the default django 'test' command, exclude from testing
     apps which we know will fail."""
 

@@ -13,22 +13,22 @@ install:
   - "sudo apt-get update"
   - "sudo apt-get install -qq slapd ldap-utils"
   - pip install -r requirements-mysql.txt --use-mirrors --download-cache $HOME/.pip-cache/
+  - pip install -r requirements-dev.txt --use-mirrors --download-cache $HOME/.pip-cache/
 before_script:
   - "pushd docs/ldap; DEBUG=true ./startldap.sh; popd"
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
-  - "./pyflakes.sh"
-  - "pep8 --exclude=migrations,lib --ignore=E501,E225,E128,E124 ."
+  - ./runtests.sh --lint-only
   - mysql -e 'create database IF NOT EXISTS rattic;'
   - "xdpyinfo"
   - "firefox -v"
 script:
   - echo -e '[ratticweb]\nsecretkey = blah!' > conf/local.cfg
-  - python manage.py test
+  - ./runtests.sh --tests-only
   - cp docs/travis/ldap.cfg conf/local.cfg
-  - python manage.py test
+  - ./runtests.sh --tests-only
   - cp docs/travis/mysql.cfg conf/local.cfg
   - python manage.py syncdb --noinput
   - python manage.py migrate
-  - python manage.py test
+  - ./runtests.sh --tests-only
 

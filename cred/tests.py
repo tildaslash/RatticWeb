@@ -4,6 +4,7 @@ from django.test import TestCase, Client, LiveServerTestCase
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.test.utils import override_settings
+from django.utils.unittest import SkipTest
 
 from models import Cred, Tag
 from ratticweb.tests import TestData
@@ -16,6 +17,8 @@ from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.firefox.webdriver import FirefoxProfile
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
+
+from testconfig import config
 
 
 class CredAccessTest(TestCase):
@@ -439,6 +442,9 @@ class JavascriptTests(LiveServerTestCase):
 
     @classmethod
     def setUpClass(cls):
+        if config.get("no_selenium"):
+            raise SkipTest("Told not to run selenium tests")
+
         ffp = FirefoxProfile()
         ffp.native_events_enabled = True
         cls.selenium = WebDriver(ffp)

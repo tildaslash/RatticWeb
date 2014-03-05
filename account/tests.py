@@ -1,6 +1,6 @@
 from django.test import TestCase, LiveServerTestCase, Client
 from django.test.utils import override_settings
-from django.utils.unittest import skipIf
+from django.utils.unittest import skipIf, SkipTest
 from django.utils.timezone import now
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
@@ -11,6 +11,8 @@ from datetime import timedelta
 
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
+
+from testconfig import config
 
 from account.models import ApiKey
 
@@ -97,6 +99,9 @@ class JavascriptTests(LiveServerTestCase):
 
     @classmethod
     def setUpClass(cls):
+        if config.get("no_selenium"):
+            raise SkipTest("Told not to run selenium tests")
+
         cls.selenium = WebDriver()
         super(JavascriptTests, cls).setUpClass()
 
