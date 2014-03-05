@@ -10,6 +10,8 @@ from ratticweb.tests import TestData
 from cred.icon import get_icon_data
 
 from url_decode import urldecode
+import random
+import time
 
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.firefox.webdriver import FirefoxProfile
@@ -573,7 +575,11 @@ class JavascriptTests(LiveServerTestCase):
         # Show Dialog
         self.selenium.find_element_by_id('genpass').click()
         # Inject some entropy so we can generate randomness on travis-ci
-        self.selenium.execute_script("sjcl.random.addEntropy(1000, 1, 'tests')")
+        start = time.time()
+        while self.selenium.execute_script("return sjcl.random.isReady()") == 0:
+            self.selenium.execute_script("sjcl.random.addEntropy({0}, 1, 'tests')".format(random.randint(0, 30000)))
+            if time.time() - start > 10:
+                raise Exception("Failed to seed the test!")
         # Wait for dialog
         WebDriverWait(self.selenium, timeout).until(
             lambda driver: driver.find_element_by_id('genpassconfirm').is_displayed())
