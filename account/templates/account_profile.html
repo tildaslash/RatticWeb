@@ -12,12 +12,12 @@
 
 {# If the user has a token #}
 {% if default_device %}
-<tr><th>{% trans "Two Factor Auth" %}</th><td>{% trans "Enabled"%} <a href="{% url 'two_factor:disable' %}" class="btn btn-mini btn-danger">{% trans "Disable" %}</a></td></tr>
+<tr><th>{% trans "Two Factor Auth" %}</th><td>{% trans "Enabled"%} <a href="{% url 'tfa_disable' %}" class="btn btn-mini btn-danger">{% trans "Disable" %}</a></td></tr>
 <tr><th>{% trans "Backup Codes Left" %}</th><td>{{ backup_codes }}</td></tr>
 
 {# If the user hasn't made a token yet #}
 {% else %}
-<tr><th>{% trans "Two Factor Auth" %}</th><td>{% trans "Disabled" %} <a href="{% url 'two_factor:setup' %}" class="btn btn-mini">{% trans "Enable now" %}</a></td></tr>
+<tr><th>{% trans "Two Factor Auth" %}</th><td>{% trans "Disabled" %} <a href="{% url 'tfa_setup' %}" class="btn btn-mini">{% trans "Enable now" %}</a></td></tr>
 
 {% endif %}
 <tr><th>{% trans "Last Password Change" %}</th><td>{{ user.profile.password_changed }}</td></tr>
