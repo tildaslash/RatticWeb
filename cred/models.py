@@ -68,8 +68,8 @@ class Cred(models.Model):
     METADATA = ('description', 'descriptionmarkdown', 'group', 'tags', 'iconname')
     objects = SearchManager()
 
-    title = models.CharField(max_length=64)
-    url = models.URLField(blank=True, null=True)
+    title = models.CharField(max_length=64, db_index=True)
+    url = models.URLField(blank=True, null=True, db_index=True)
     username = models.CharField(max_length=250, blank=True, null=True)
     password = models.CharField(max_length=250)
     descriptionmarkdown = models.BooleanField(default=False, verbose_name=_('Markdown Description'))
@@ -77,8 +77,8 @@ class Cred(models.Model):
     group = models.ForeignKey(Group)
     tags = models.ManyToManyField(Tag, related_name='child_creds', blank=True, null=True, default=None)
     iconname = models.CharField(default='Key.png', max_length=64, verbose_name='Icon')
-    is_deleted = models.BooleanField(default=False)
-    latest = models.ForeignKey('Cred', related_name='history', blank=True, null=True)
+    is_deleted = models.BooleanField(default=False, db_index=True)
+    latest = models.ForeignKey('Cred', related_name='history', blank=True, null=True, db_index=True)
     created = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):

@@ -85,6 +85,10 @@ class CredResource(ModelResource):
         excludes = ['username', 'is_deleted']
         authentication = MultiAuthentication(SessionAuthentication(), MultiApiKeyAuthentication())
         authorization = CredAuthorization()
+        filtering = {
+                'title': ('exact', 'contains', 'icontains'),
+                'url': ('exact', 'startswith', ),
+        }
 
 
 class TagResource(ModelResource):
