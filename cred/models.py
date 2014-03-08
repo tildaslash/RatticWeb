@@ -140,7 +140,7 @@ class CredForm(ModelForm):
         exclude = ('is_deleted', 'latest')
         widgets = {
             # Use chosen for the tag field
-            'tags': SelectMultiple(attrs={'class': 'chzn-select'}),
+            'tags': SelectMultiple(attrs={'class': 'selectize-multiple'}),
         }
 
 

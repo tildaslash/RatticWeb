@@ -512,8 +512,8 @@ var RATTIC = (function ($, ZeroClipboard) {
 
     /* Add functionality to the password generator form */
     my.controls.genPasswordModal = function(form) {
-        button = $(form.data('button'));
-        input = $(form.data('input'));
+        var button = $(form.data('button'));
+        var input = $(form.data('input'));
         button.data('form', form);
         button.data('input', input);
         button.on('click', _genPassClick);
@@ -528,12 +528,6 @@ var RATTIC = (function ($, ZeroClipboard) {
 }(jQuery, ZeroClipboard));
 
 $(document).ready(function(){
-    // Setup the Chosen select boxes
-    $(".chzn-select").chosen();
-
-    // Start collecting random numbers
-    sjcl.random.startCollectors();
-
     // Search boxes
     RATTIC.controls.searchForm($('.rattic-cred-search'));
 
@@ -567,5 +561,14 @@ $(document).ready(function(){
 
     // Add functionality to clickable icons
     RATTIC.controls.clickableIcons($('.rattic-icon-clickable'));
+
+    // New Selectize controls
+    $('.selectize-multiple').selectize({
+        plugins: ['remove_button'],
+        create: false,
+    });
+
+    // Start collecting random numbers
+    sjcl.random.startCollectors();
 });
 

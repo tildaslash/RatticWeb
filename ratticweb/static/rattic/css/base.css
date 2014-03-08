@@ -7,6 +7,10 @@ div.copybutton {
   display: inline;
 }
 
+.selectize-input {
+  width: 220px;
+}
+
 /* CSS rules to hide/unhide the password */
 .textshadow span#password {
   color: transparent;

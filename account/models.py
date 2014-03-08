@@ -63,7 +63,7 @@ class UserProfileForm(ModelForm):
         model = UserProfile
         exclude = ('user', 'password_changed',)
         widgets = {
-            'favourite_tags': SelectMultiple(attrs={'class': 'chzn-select'}),
+            'favourite_tags': SelectMultiple(attrs={'class': 'selectize-multiple'}),
         }
 
 # Attach the UserProfile object to the User

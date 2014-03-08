@@ -18,7 +18,7 @@ class UserForm(forms.ModelForm):
         super(UserForm, self).__init__(*args, **kwargs)
         # Use checkboxes for groups
         #self.fields["groups"].widget = forms.CheckboxSelectMultiple()
-        self.fields["groups"].widget = forms.SelectMultiple(attrs={'class': 'chzn-select'})
+        self.fields["groups"].widget = forms.SelectMultiple(attrs={'class': 'selectize-multiple'})
         self.fields["groups"].queryset = Group.objects.all()
 
     def clean(self):
