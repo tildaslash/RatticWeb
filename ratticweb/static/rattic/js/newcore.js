@@ -379,6 +379,18 @@ var RATTIC = (function ($, ZeroClipboard) {
         imgfield.replaceWith(newtag);
     };
 
+    function _newTagEntered(tagname, callback) {
+        var successcall = _newTagSuccess.bind(undefined, callback);
+        ajax = my.api.createTag(tagname, successcall, function(){});
+    };
+
+    function _newTagSuccess(callback, data, stext, ajax) {
+        callback({
+            value: data.id,
+            text: data.name,
+        });
+    };
+
     /********* Public Variables *********/
 
     /********* Public Methods *********/
@@ -524,6 +536,14 @@ var RATTIC = (function ($, ZeroClipboard) {
         icons.on('click', _clickableIconClick);
     };
 
+    /* Make the tag select boxes be awesome */
+    my.controls.tagSelectors = function(selectors) {
+        selectors.selectize({
+            plugins: ['remove_button'],
+            create: _newTagEntered,
+        });
+    };
+
     return my;
 }(jQuery, ZeroClipboard));
 
@@ -561,6 +581,9 @@ $(document).ready(function(){
 
     // Add functionality to clickable icons
     RATTIC.controls.clickableIcons($('.rattic-icon-clickable'));
+
+    // Add functionality to the tag controls
+    RATTIC.controls.tagSelectors($('.rattic-tag-selector'));
 
     // New Selectize controls
     $('.selectize-multiple').selectize({

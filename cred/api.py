@@ -81,6 +81,7 @@ class CredResource(ModelResource):
 
     class Meta:
         queryset = Cred.objects.filter(is_deleted=False, latest=None)
+        always_return_data = True
         resource_name = 'cred'
         excludes = ['username', 'is_deleted']
         authentication = MultiAuthentication(SessionAuthentication(), MultiApiKeyAuthentication())
@@ -100,6 +101,7 @@ class TagResource(ModelResource):
 
     class Meta:
         queryset = Tag.objects.all()
+        always_return_data = True
         resource_name = 'tag'
         authentication = MultiAuthentication(SessionAuthentication(), MultiApiKeyAuthentication())
         authorization = TagAuthorization()
