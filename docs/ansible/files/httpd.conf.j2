@@ -2,7 +2,7 @@ NameVirtualHost *:80
 <VirtualHost *:80>
    ServerName {{ ansible_fqdn }}
    ServerAlias {{ ansible_hostname }}
-   Redirect permanent / https://{{ ansible_fqdn }}/
+   Redirect permanent / https://{{ ansible_fqdn }}{{urlroot}}
 </VirtualHost>
 
 Alias /robots.txt /opt/apps/RatticWeb/static/robots.txt
@@ -10,8 +10,8 @@ Alias /favicon.ico /opt/apps/Ratticweb/static/favicon.ico
 
 AliasMatch ^/([^/]*\.css) /opt/apps/RatticWeb/static/styles/$1
 
-Alias /media/ /opt/apps/RatticWeb/media/
-Alias /static/ /opt/apps/RatticWeb/static/
+Alias {{urlroot}}media/ /opt/apps/RatticWeb/media/
+Alias {{urlroot}}static/ /opt/apps/RatticWeb/static/
 
 <Directory /opt/apps/RatticWeb/static>
 Order deny,allow

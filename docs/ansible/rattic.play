@@ -2,6 +2,7 @@
 - hosts: rattic
   vars:
     release: "v0.16"
+    urlroot: "/myurl/"
     db_name: rattic
     db_user: rattic
     db_passwd: allthepass
@@ -185,9 +186,8 @@
     notify:
       - restart httpd
 
-
   - name: setup RatticWeb
-    action: template src=files/local.cfg dest=/etc/ratticweb.cfg owner=root group=apache mode=640
+    action: template src=files/local.cfg.j2 dest=/etc/ratticweb.cfg owner=root group=apache mode=640
     notify: restart httpd
 
   - name: copy iptables
