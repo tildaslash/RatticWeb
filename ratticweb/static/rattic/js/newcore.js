@@ -56,8 +56,13 @@ var RATTIC = (function ($, ZeroClipboard) {
         return my.page.getMetaInfo('url_root');
     }
 
+    /* Gets the the url root from the page */
+    my.page.getStaticURL = function(file) {
+        return my.page.getMetaInfo('url_root') + 'static/' + file;
+    }
+
     /* Setup ZeroClipboard */
-    ZeroClipboard.config( { moviePath: my.page.getURLRoot() + 'static/zeroclipboard/1.3.2/ZeroClipboard.swf' } );
+    ZeroClipboard.config( { moviePath: my.page.getStaticURL('zeroclipboard/1.3.2/ZeroClipboard.swf') } );
 
     /********* Private Methods **********/
     /* Gets a cookie from the browser. Only works for cookies that
@@ -548,6 +553,10 @@ var RATTIC = (function ($, ZeroClipboard) {
 }(jQuery, ZeroClipboard));
 
 $(document).ready(function(){
+    // Setup Icons
+    $('.rattic-icon').css('background-image', 
+        'url(' + RATTIC.page.getStaticURL('rattic/img/sprite.png') + ')');
+
     // Search boxes
     RATTIC.controls.searchForm($('.rattic-cred-search'));
 

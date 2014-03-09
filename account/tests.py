@@ -116,7 +116,7 @@ class JavascriptTests(LiveServerTestCase):
             lambda driver: driver.find_element_by_tag_name('body'))
 
     def test_login(self):
-        self.selenium.get('%s%s' % (self.live_server_url, '/'))
+        self.selenium.get('%s%s' % (self.live_server_url, reverse('home')))
         self.waitforload()
         username_input = self.selenium.find_element_by_name("username")
         username_input.send_keys(self.unorm.username)
@@ -127,7 +127,7 @@ class JavascriptTests(LiveServerTestCase):
         self.waitforload()
 
     def test_login_wrongpass(self):
-        self.selenium.get('%s%s' % (self.live_server_url, '/'))
+        self.selenium.get('%s%s' % (self.live_server_url, reverse('home')))
         self.waitforload()
         username_input = self.selenium.find_element_by_name("username")
         username_input.send_keys(self.unorm.username)
@@ -142,7 +142,7 @@ class JavascriptTests(LiveServerTestCase):
     def test_login_disabled(self):
         self.unorm.is_active = False
         self.unorm.save()
-        self.selenium.get('%s%s' % (self.live_server_url, '/'))
+        self.selenium.get('%s%s' % (self.live_server_url, reverse('home')))
         self.waitforload()
         username_input = self.selenium.find_element_by_name("username")
         username_input.send_keys(self.unorm.username)

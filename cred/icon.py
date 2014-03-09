@@ -36,13 +36,11 @@ def build_layout(images):
 
 
 def build_css_class(data):
-    bgurl = settings.STATIC_URL + settings.CRED_ICON_SPRITE
-
     css = '/* ' + data['filename'] + '*/\n'
     css += '.' + data['css-class'] + ' {\n'
     css += '    height: %spx;\n' % data['height']
     css += '    width: %spx;\n' % data['width']
-    css += '    background: url(%s) -%spx -%spx;\n' % (bgurl, data['xoffset'], data['yoffset'])
+    css += '    background-position: -%spx -%spx;\n' % (data['xoffset'], data['yoffset'])
     css += '}\n\n'
 
     return css

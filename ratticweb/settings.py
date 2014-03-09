@@ -1,5 +1,6 @@
 from datetime import timedelta
 from ConfigParser import RawConfigParser, NoOptionError
+from urlparse import urljoin
 import ldap
 import os
 from django_auth_ldap.config import LDAPSearch
@@ -103,10 +104,9 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'ratticweb.urls'
 
 # Urls
-RATTIC_ROOT_URL = confget('ratticweb', 'urlroot', '/')
-MEDIA_URL = RATTIC_ROOT_URL +'media/'
-STATIC_URL = RATTIC_ROOT_URL +'static/'
-
+RATTIC_ROOT_URL = config.get('ratticweb', 'urlroot')
+MEDIA_URL = urljoin(RATTIC_ROOT_URL, 'media/')
+STATIC_URL = urljoin(RATTIC_ROOT_URL, 'static/')
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'ratticweb.wsgi.application'
@@ -192,8 +192,8 @@ CRED_ICON_BASEDIR = 'rattic/img/credicons'
 CRED_ICON_CLEAR = 'rattic/img/clear.gif'
 CRED_ICON_DEFAULT = 'Key.png'
 
-LOGIN_REDIRECT_URL = RATTIC_ROOT_URL + "cred/list/"
-LOGIN_URL = RATTIC_ROOT_URL + "account/login/"
+LOGIN_REDIRECT_URL = urljoin(RATTIC_ROOT_URL, "cred/list/")
+LOGIN_URL = urljoin(RATTIC_ROOT_URL, "account/login/")
 
 AUTH_LDAP_USER_ATTR_MAP = {"email": "mail", }
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {}

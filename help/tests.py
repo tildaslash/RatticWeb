@@ -31,9 +31,10 @@ class HelpTests(TestCase):
             self.assertTemplateUsed(resp, 'help_markdown.html')
 
     def test_help_markdown(self):
+        helplink = reverse('help.views.markdown', args=('Test_Link',))
         with self.settings(HELP_SYSTEM_FILES=self.tmpdir):
             resp = self.client.get(reverse('help.views.markdown', args=('Test',)))
-            self.assertContains(resp, "<p><a class=\"wikilink\" href=\"/help/Test_Link/\">Test Link</a></p>",
+            self.assertContains(resp, '<p><a class="wikilink" href="' + helplink + '">Test Link</a></p>',
                     html=True, count=1)
             self.assertEqual(resp.context['file'], self.testfile)
             self.assertTemplateUsed(resp, 'help_markdown.html')

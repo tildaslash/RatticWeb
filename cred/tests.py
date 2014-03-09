@@ -461,7 +461,7 @@ class JavascriptTests(LiveServerTestCase):
             lambda driver: driver.find_element_by_tag_name('body'))
 
     def login_as(self, username, password):
-        self.selenium.get('%s%s' % (self.live_server_url, '/'))
+        self.selenium.get('%s%s' % (self.live_server_url, reverse('home')))
         self.waitforload()
         username_input = self.selenium.find_element_by_name("username")
         username_input.send_keys(username)
