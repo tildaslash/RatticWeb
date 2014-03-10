@@ -2,7 +2,7 @@
 - hosts: rattic
   vars:
     release: "v0.16"
-    urlroot: "/myurl/"
+    urlroot: "/"
     db_name: rattic
     db_user: rattic
     db_passwd: allthepass
