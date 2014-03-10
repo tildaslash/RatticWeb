@@ -70,9 +70,6 @@
     git: repo=git://github.com/tildaslash/RatticWeb.git dest=/opt/apps/RatticWeb force=no version={{ release }}
     when: release != "vagrant"
     notify:
-      - sync db
-      - migrate db
-      - generate static
       - restart httpd
 
   - name: link to external RatticWeb
@@ -81,7 +78,6 @@
 
   - name: create static dir
     action: file dest=/opt/apps/RatticWeb/static state=directory
-    notify: generate static
 
   - name: encrypt swap
     action: lineinfile dest=/etc/crypttab regexp="^swap" line="swap /dev/VolGroup/lv_swap /dev/urandom swap,cipher=aes-cbc-essiv:sha256"
@@ -111,8 +107,6 @@
     action: mysql_db db={{db_name}} state=present
     when: db_platform == "mysql"
     notify:
-      - migrate db
-      - sync db
       - create initial user
 
   - name: remove MySQL test database
@@ -176,8 +170,6 @@
     when: db_platform == "postgres"
     sudo_user: postgres
     notify:
-      - migrate db
-      - sync db
       - create initial user
 
   - name: Setup virtualenv (pgsql)
@@ -194,8 +186,16 @@
     action: copy src=files/iptables dest=/etc/sysconfig/iptables
     notify: restart iptables
 
+  - name: generate static
+    django_manage: command=collectstatic virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
+
+  - name: sync db
+    django_manage: command=syncdb virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
+
+  - name: migrate db
+    django_manage: command=migrate virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
+
   handlers:
-    ### these restart handlers need to happen before "sync db"
   - name: restart mysql
     action: service name=mysqld state=restarted
   - name: reload mysql
@@ -205,12 +205,6 @@
   - name: reload postgresql
     action: service name=postgresql state=reloaded
 
-  - name: generate static
-    django_manage: command=collectstatic virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
-  - name: sync db
-    django_manage: command=syncdb virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
-  - name: migrate db
-    django_manage: command=migrate virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
   - name: create initial user
     django_manage: command=demosetup virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
 
