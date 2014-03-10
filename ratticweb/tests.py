@@ -192,13 +192,14 @@ class BackupManagementCommandTest(TestCase):
     @mock.patch("ratticweb.management.commands.backup.Command.validate_options")
     @mock.patch("ratticweb.management.commands.backup.backup")
     def test_it_calls_backup(self, fake_backup, fake_validate_options):
+        gpg_home = mock.Mock(name="gpg_home")
         backup_dir = mock.Mock(name="backup_dir")
         recipients = mock.Mock(name="recipients")
         default_db = mock.Mock(name="default_db")
-        with override_settings(BACKUP_DIR=backup_dir, BACKUP_RECIPIENTS=recipients, DATABASES={'default': default_db}):
+        with override_settings(BACKUP_DIR=backup_dir, BACKUP_RECIPIENTS=recipients, DATABASES={'default': default_db}, BACKUP_GPG_HOME=gpg_home):
             call_command("backup")
             fake_validate_options.assert_called_once_with(backup_dir, recipients)
-            fake_backup.assert_called_once_with(default_db, recipients, backup_dir)
+            fake_backup.assert_called_once_with(default_db, recipients, backup_dir, gpg_home=gpg_home)
 
     @mock.patch("ratticweb.management.commands.backup.Command.validate_options")
     @mock.patch("ratticweb.management.commands.backup.backup")
@@ -209,7 +210,7 @@ class BackupManagementCommandTest(TestCase):
         with override_settings(BACKUP_DIR=backup_dir, BACKUP_RECIPIENTS=recipients, DATABASES={'default': default_db}):
             call_command("backup")
             fake_validate_options.assert_called_once_with(backup_dir, recipients)
-            fake_backup.assert_called_once_with(default_db, ["things", "and", "stuff"], backup_dir)
+            fake_backup.assert_called_once_with(default_db, ["things", "and", "stuff"], backup_dir, gpg_home=None)
 
     @mock.patch("ratticweb.management.commands.backup.Command.validate_options")
     @mock.patch("ratticweb.management.commands.backup.backup")
@@ -243,12 +244,13 @@ class RestoreManagementCommandTest(TestCase):
 
     @mock.patch("ratticweb.management.commands.backup.restore")
     def it_calls_restore(self, fake_restore):
+        gpg_home = mock.Mock(name="gpg_home")
         default_db = mock.Mock(name="default_db")
         restore_from = mock.Mock(name="restore_from")
 
-        with override_settings(DATABASES={'default': default_db}):
+        with override_settings(DATABASES={'default': default_db}, BACKUP_GPG_HOME=gpg_home):
             call_command("restore", restore_from=restore_from)
-            fake_restore.assert_called_once_with(default_db, restore_from)
+            fake_restore.assert_called_once_with(default_db, restore_from, gpg_home=gpg_home)
 
     @mock.patch("ratticweb.management.commands.backup.restore")
     def it_converts_FailedBackup_errors_into_CommandError(self, fake_restore):

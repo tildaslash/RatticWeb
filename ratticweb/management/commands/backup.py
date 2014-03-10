@@ -24,6 +24,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """Get necessary options from settings and give to the backup command"""
+        gpg_home = getattr(settings, "BACKUP_GPG_HOME", None)
         backup_dir = getattr(settings, "BACKUP_DIR", None)
         recipients = getattr(settings, "BACKUP_RECIPIENTS", None)
         self.validate_options(backup_dir, recipients)
@@ -33,6 +34,6 @@ class Command(BaseCommand):
             recipients = recipients.split(",")
 
         try:
-            backup(settings.DATABASES['default'], recipients, backup_dir)
+            backup(settings.DATABASES['default'], recipients, backup_dir, gpg_home=gpg_home)
         except FailedBackup as error:
             raise CommandError(error)

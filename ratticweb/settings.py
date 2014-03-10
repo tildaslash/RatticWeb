@@ -226,6 +226,7 @@ SECRET_KEY = config.get('ratticweb', 'secretkey')
 ALLOWED_HOSTS = [config.get('ratticweb', 'hostname'), 'localhost']
 
 BACKUP_DIR = confget("encryption", "backup_dir", None)
+BACKUP_GPG_HOME = confget("encryption", "backup_gpg_home", None)
 BACKUP_RECIPIENTS = confget("encryption", "backup_recipients", None)
 
 try:
