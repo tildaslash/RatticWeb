@@ -1,6 +1,11 @@
 from django_nose import NoseTestSuiteRunner
 from django.conf import settings
 
+# South debug logs are irritating
+import logging
+south_logger=logging.getLogger('south')
+south_logger.setLevel(logging.INFO)
+
 
 class ExcludeAppsTestSuiteRunner(NoseTestSuiteRunner):
     """Override the default django 'test' command, exclude from testing
