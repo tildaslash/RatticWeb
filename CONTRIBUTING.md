@@ -2,7 +2,7 @@
 
 First off, thank you! RatticDB like any open source project lives and dies by its contributors. We really appreciate the help, from the smallest issue, to a pull request saving me a tonne of work and even security issues. If there is anything that we can do to make this process easier, let us know.
 
-If you have any issues using GitHub to submit issues, or you have any questions please email us at [rattic@tildaslash.com](mailto:rattic@tildaslash.com). We want your submission and we are happy to help. This is a good option if you want your commit/issue to be anonymous, you ned a little help, or simply have a question.
+If you have any issues using GitHub to submit issues, or you have any questions please email us at [rattic@tildaslash.com](mailto:rattic@tildaslash.com). We want your submission and we are happy to help. This is a good option if you want your commit/issue to be anonymous, you need a little help, or simply have a question.
 
 ## Raising an issue
 
