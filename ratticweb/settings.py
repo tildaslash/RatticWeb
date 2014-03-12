@@ -157,6 +157,11 @@ TEST_RUNNER = 'tests.runner.ExcludeAppsTestSuiteRunner'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'console_format': {
+            'format': '%(asctime)s [%(levelname)s] %(message)s'
+        }
+    },
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
@@ -167,6 +172,11 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'console_format'
         }
     },
     'loggers': {
@@ -174,6 +184,11 @@ LOGGING = {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,
+        },
+        'db_backup': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
         },
     }
 }
@@ -209,6 +224,10 @@ TEMPLATE_DEBUG = DEBUG
 TIME_ZONE = config.get('ratticweb', 'timezone')
 SECRET_KEY = config.get('ratticweb', 'secretkey')
 ALLOWED_HOSTS = [config.get('ratticweb', 'hostname'), 'localhost']
+
+BACKUP_DIR = confget("encryption", "backup_dir", None)
+BACKUP_GPG_HOME = confget("encryption", "backup_gpg_home", None)
+BACKUP_RECIPIENTS = confget("encryption", "backup_recipients", None)
 
 try:
     PASSWORD_EXPIRY = timedelta(days=int(config.get('ratticweb', 'passwordexpirydays')))
