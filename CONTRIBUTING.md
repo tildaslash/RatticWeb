@@ -6,7 +6,7 @@ If you have any issues using GitHub to submit issues, or you have any questions 
 
 ## Raising an issue
 
-If you are raising a security issue please email [rattic@tildaslash.com](mailto:rattic@tildaslash.com) with a decription of the issue. We treat security issues with ultimate importance and would rather have patches available before we release information that may lead to exploits. Please help us by reporting such issues to us privately.
+If you are raising a security issue please email [rattic@tildaslash.com](mailto:rattic@tildaslash.com) with a description of the issue. We treat security issues with ultimate importance and would rather have patches available before we release information that may lead to exploits. Please help us by reporting such issues to us privately.
 
 We are pretty relaxed when it comes to issues. Just make your best effort to describe the issue and how to reproduce it. The important thing is to be succinct and to stick around to answer any questions we may have. Try to either replicate instructions on how to replicate the issue in either the development server, or in the Vagrant environment.
 
