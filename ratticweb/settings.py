@@ -225,9 +225,9 @@ TIME_ZONE = config.get('ratticweb', 'timezone')
 SECRET_KEY = config.get('ratticweb', 'secretkey')
 ALLOWED_HOSTS = [config.get('ratticweb', 'hostname'), 'localhost']
 
-BACKUP_DIR = confget("encryption", "backup_dir", None)
-BACKUP_GPG_HOME = confget("encryption", "backup_gpg_home", None)
-BACKUP_RECIPIENTS = confget("encryption", "backup_recipients", None)
+BACKUP_DIR = confget("backup", "backup_dir", None)
+BACKUP_GPG_HOME = confget("backup", "backup_gpg_home", None)
+BACKUP_RECIPIENTS = confget("backup", "backup_recipients", None)
 
 try:
     PASSWORD_EXPIRY = timedelta(days=int(config.get('ratticweb', 'passwordexpirydays')))
