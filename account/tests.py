@@ -1,6 +1,6 @@
-from django.test import TestCase, LiveServerTestCase, Client
+from django.test import TestCase, Client
 from django.test.utils import override_settings
-from django.utils.unittest import skipIf, SkipTest
+from django.utils.unittest import skipIf
 from django.utils.timezone import now
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
@@ -8,11 +8,6 @@ from django.core.management import call_command
 from django.conf import settings
 
 from datetime import timedelta
-
-from selenium.webdriver.firefox.webdriver import WebDriver
-from selenium.webdriver.support.wait import WebDriverWait
-
-from testconfig import config
 
 from account.models import ApiKey
 
@@ -90,68 +85,39 @@ class AccountCommandTests(TestCase):
         self.assertTrue(u.is_staff)
 
 
-class JavascriptTests(LiveServerTestCase):
+class AccountMiddlewareTests(TestCase):
     def setUp(self):
         self.unorm = User(username='norm', email='norm@example.com')
         self.unorm.set_password('password')
         self.normpass = 'password'
         self.unorm.save()
 
-    @classmethod
-    def setUpClass(cls):
-        if config.get("no_selenium"):
-            raise SkipTest("Told not to run selenium tests")
-
-        cls.selenium = WebDriver()
-        super(JavascriptTests, cls).setUpClass()
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.selenium.quit()
-        super(JavascriptTests, cls).tearDownClass()
-
-    def waitforload(self):
-        timeout = 2
-        WebDriverWait(self.selenium, timeout).until(
-            lambda driver: driver.find_element_by_tag_name('body'))
-
     def test_login(self):
-        self.selenium.get('%s%s' % (self.live_server_url, reverse('home')))
-        self.waitforload()
-        username_input = self.selenium.find_element_by_name("username")
-        username_input.send_keys(self.unorm.username)
-        password_input = self.selenium.find_element_by_name("password")
-        password_input.send_keys(self.normpass)
-        self.selenium.find_element_by_xpath('//input[@value="Login"]').click()
-        self.assertEquals(self.selenium.current_url, '%s%s' % (self.live_server_url, reverse('cred.views.list')))
-        self.waitforload()
+        c = Client()
+        resp = c.post(reverse('django.contrib.auth.views.login'), {
+            'username': 'norm',
+            'password': 'password',
+        })
+        self.assertRedirects(resp, reverse('cred.views.list'), status_code=302, target_status_code=200)
+        self.assertTemplateNotUsed(resp, 'account_login.html')
 
     def test_login_wrongpass(self):
-        self.selenium.get('%s%s' % (self.live_server_url, reverse('home')))
-        self.waitforload()
-        username_input = self.selenium.find_element_by_name("username")
-        username_input.send_keys(self.unorm.username)
-        password_input = self.selenium.find_element_by_name("password")
-        password_input.send_keys(self.normpass + 'wrongpass')
-        self.selenium.find_element_by_xpath('//input[@value="Login"]').click()
-        self.assertEquals(self.selenium.current_url, '%s%s' % (self.live_server_url, reverse('django.contrib.auth.views.login')))
-        self.waitforload()
-        self.selenium.find_element_by_id('loginfailed')
+        c = Client()
+        resp = c.post(reverse('django.contrib.auth.views.login'), {
+            'username': 'norm',
+            'password': 'wrongpassword',
+        }, follow=False)
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'account_login.html')
 
     @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_login_disabled(self):
         self.unorm.is_active = False
         self.unorm.save()
-        self.selenium.get('%s%s' % (self.live_server_url, reverse('home')))
-        self.waitforload()
-        username_input = self.selenium.find_element_by_name("username")
-        username_input.send_keys(self.unorm.username)
-        password_input = self.selenium.find_element_by_name("password")
-        password_input.send_keys(self.normpass)
-        self.selenium.find_element_by_xpath('//input[@value="Login"]').click()
-        self.assertEquals(self.selenium.current_url, '%s%s' % (self.live_server_url, reverse('django.contrib.auth.views.login')))
-        self.waitforload()
-        self.selenium.find_element_by_id('loginfailed')
-
-
-JavascriptTests = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(JavascriptTests)
+        c = Client()
+        resp = c.post(reverse('django.contrib.auth.views.login'), {
+            'username': 'norm',
+            'password': 'wrongpassword',
+        }, follow=False)
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, 'account_login.html')
