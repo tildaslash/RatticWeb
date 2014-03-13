@@ -22,11 +22,13 @@ sed -i "s|XXX_SCHEMA_LOCATION_XXX|${SCHEMABASE}|" ${LDAPBASE}/slapd.conf
 
 nohup slapd -d3 -f ${LDAPBASE}/slapd.conf -h 'ldap://localhost:3389/' &> ${LDAPBASE}/slapd.log &
 
-# Give LDAP a few seconds to start
-sleep 3
+# Wait for LDAP to start listening
+while ! nc -vz localhost 3389; do sleep 1; done
 
 if [ ! -z "$DEBUG" ]; then
+  echo "###### LDAP Server debug log ######"
   cat ${LDAPBASE}/slapd.log
+  echo "###### End LDAP Server debug log ######"
 fi
 
 ldapadd -x -D 'cn=manager,dc=example,dc=com' -w testpass -H 'ldap://localhost:3389/' -f initial.ldif > /dev/null
