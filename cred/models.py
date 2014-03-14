@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64, db_index=True)
 
     def __unicode__(self):
         return self.name
