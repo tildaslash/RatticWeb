@@ -33,6 +33,7 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
     viewdict['buttons']['add'] = True
     viewdict['buttons']['delete'] = True
     viewdict['buttons']['changeq'] = True
+    viewdict['buttons']['tagger'] = True
 
     # Get every cred the user has access to
     cred_list = Cred.objects.accessible(request.user)
@@ -62,6 +63,7 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
         viewdict['buttons']['add'] = False
         viewdict['buttons']['delete'] = False
         viewdict['buttons']['changeq'] = False
+        viewdict['buttons']['tagger'] = False
 
     elif cfilter == 'changeadvice':
         if not request.user.is_staff:
@@ -84,6 +86,7 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
         viewdict['buttons']['add'] = False
         viewdict['buttons']['delete'] = True
         viewdict['buttons']['changeq'] = True
+        viewdict['buttons']['tagger'] = False
         viewdict['alerts'].append(alert)
 
     elif cfilter == 'special' and value == 'all':
@@ -95,6 +98,7 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
         viewdict['buttons']['add'] = False
         viewdict['buttons']['undelete'] = True
         viewdict['buttons']['changeq'] = False
+        viewdict['buttons']['tagger'] = False
 
     elif cfilter == 'special' and value == 'changeq':
         q = Cred.objects.filter(credchangeq__in=CredChangeQ.objects.all())
@@ -103,6 +107,7 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
         viewdict['buttons']['add'] = False
         viewdict['buttons']['delete'] = False
         viewdict['buttons']['changeq'] = False
+        viewdict['buttons']['tagger'] = False
 
     else:
         raise Http404
@@ -331,6 +336,19 @@ def bulkaddtoqueue(request):
         if c.is_accessible_by(request.user) and c.latest is None:
             CredAudit(audittype=CredAudit.CREDSCHEDCHANGE, cred=c, user=request.user).save()
             CredChangeQ.objects.add_to_changeq(c)
+
+    redirect = request.POST.get('next', reverse('cred.views.list'))
+    return HttpResponseRedirect(redirect)
+
+
+@login_required
+def bulktagcred(request):
+    tochange = Cred.objects.filter(id__in=request.POST.getlist('credcheck'))
+    tag = get_object_or_404(Tag, pk=request.POST.get('tag'))
+    for c in tochange:
+        if c.is_accessible_by(request.user) and c.latest is None:
+            CredAudit(audittype=CredAudit.CREDMETACHANGE, cred=c, user=request.user).save()
+            c.tags.add(tag)
 
     redirect = request.POST.get('next', reverse('cred.views.list'))
     return HttpResponseRedirect(redirect)

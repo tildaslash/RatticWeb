@@ -7,8 +7,18 @@ div.copybutton {
   display: inline;
 }
 
+/* Override some of the selectize defaults */
 .selectize-input {
   width: 220px;
+}
+
+.selectize-control {
+  display: inline-block;
+}
+
+.rattic-single-tag-selector .selectize-input {
+  overflow: initial;
+  padding: 3px 10px;
 }
 
 /* CSS rules to hide/unhide the password */

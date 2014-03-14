@@ -89,14 +89,33 @@ var RATTIC = (function ($, ZeroClipboard) {
         return _getCookie('csrftoken');
     }
 
-    /* Generic API call to Rattic. Handles the CSRF token and callbacks */
-    function _apicall(object, method, data, success, failure) {
-        if (method == 'GET') {
+    /* Build an API URL */
+    function _apiurl(object, method, data, options) {
+        /* Build the base URL */
+        if (method == 'GET' && typeof data != 'undefined') {
             url = my.page.getURLRoot() + 'api/v1/' + object + '/' + data + '/';
-            data = undefined;
         } else {
             url = my.page.getURLRoot() + 'api/v1/' + object + '/';
         }
+
+        /* Build the query string */
+        if (typeof options != 'undefined') {
+            qsbits = [];
+            for (var key in options) {
+                qsbit = [key, options[key]].join('=');
+                qsbits.push(qsbit);
+            }
+            url += '?' + qsbits.join('&');
+        }
+
+        return url;
+    }
+
+    /* Generic API call to Rattic. Handles the CSRF token and callbacks */
+    function _apicall(object, method, data, success, failure, options) {
+        url = _apiurl(object, method, data, options);
+
+        if (method == 'GET') data = undefined;
 
         return $.ajax({
             url: url,
@@ -112,12 +131,9 @@ var RATTIC = (function ($, ZeroClipboard) {
     }
 
     function _apicallwait(object, method, data) {
-        if (method == 'GET') {
-            url = my.page.getURLRoot() + 'api/v1/' + object + '/' + data + '/';
-            data = undefined;
-        } else {
-            url = my.page.getURLRoot() + 'api/v1/' + object + '/';
-        }
+        url = _apiurl(object, method, data, options);
+
+        if (method == 'GET') data = undefined;
 
         return $.parseJSON($.ajax({
             url: url,
@@ -189,14 +205,34 @@ var RATTIC = (function ($, ZeroClipboard) {
         return checkboxes.filter(':checked').length;
     };
 
+    function _disablebuttons(button) {
+        if (button.hasClass('btn')) {
+            button.addClass('disabled');
+        } else if (button.hasClass('selectized')) {
+            button[0].selectize.disable();
+        } else {
+            button.hide();
+        }
+    };
+
+    function _enablebuttons(button) {
+        if (button.hasClass('btn')) {
+            button.removeClass('disabled');
+        } else if (button.hasClass('selectized')) {
+            button[0].selectize.enable();
+        } else {
+            button.show();
+        }
+    };
+
     function _enableButtonHandler() {
         $.each($(this).data('linked'), function() {
             button = $(this);
             target = $(button.data('target'));
             if (_countChecks(target) > 0) {
-                button.removeClass('disabled');
+                _enablebuttons(button);
             } else {
-                button.addClass('disabled');
+                _disablebuttons(button);
             }
         });
     };
@@ -280,7 +316,6 @@ var RATTIC = (function ($, ZeroClipboard) {
         clip = button.data('clip');
         target.trigger('getdatasync');
         _setVisibility(button, true);
-        clip.glue(button);
     };
 
     function _copyButtonGetData(client) {
@@ -304,9 +339,13 @@ var RATTIC = (function ($, ZeroClipboard) {
         me.text(my.api.getCredWait(cred_id)['password']);
     };
 
-    function _formSubmitClick() {
-        me = $(this);
-        if (me.hasClass('disabled')) return false;
+    function _parentFormSubmit() {
+        if (this.hasOwnProperty('$input')) {
+            me = this.$input;
+        } else {
+            me = $(this);
+            if (me.hasClass('disabled')) return false;
+        }
 
         form = me.parents('form:first');
         form.attr('action', me.data('action'));
@@ -390,10 +429,18 @@ var RATTIC = (function ($, ZeroClipboard) {
     };
 
     function _newTagSuccess(callback, data, stext, ajax) {
-        callback({
-            value: data.id,
-            text: data.name,
-        });
+        callback(data);
+    };
+
+    function _singleTagLoad(query, callback) {
+        my.api.searchTag(query,
+            function(data) {
+                callback(data['objects']);
+            },
+            function() {
+                callback();
+            }
+        );
     };
 
     /********* Public Variables *********/
@@ -415,6 +462,13 @@ var RATTIC = (function ($, ZeroClipboard) {
         });
 
         return _apicall('tag', 'POST', data, success, failure);
+    };
+
+    /* Creates a Tag */
+    my.api.searchTag = function(search, success, failure) {
+        return _apicall('tag', 'GET', undefined, success, failure, {
+            'name__contains': search
+        });
     };
 
     /* Gets a cred */
@@ -524,7 +578,7 @@ var RATTIC = (function ($, ZeroClipboard) {
 
     /* Buttons that change a forms action, then submit it */
     my.controls.formSubmitButton = function(buttons) {
-        buttons.on('click', _formSubmitClick);
+        buttons.on('click', _parentFormSubmit);
     };
 
     /* Add functionality to the password generator form */
@@ -544,9 +598,27 @@ var RATTIC = (function ($, ZeroClipboard) {
     /* Make the tag select boxes be awesome */
     my.controls.tagSelectors = function(selectors) {
         selectors.selectize({
+            valueField: 'id',
+            labelField: 'name',
+            searchField: 'name',
             plugins: ['remove_button'],
             create: _newTagEntered,
         });
+    };
+
+    /* Make the tag select boxes be awesome */
+    my.controls.singleTagSelectors = function(selectors) {
+        var s = selectors.selectize({
+            valueField: 'id',
+            labelField: 'name',
+            searchField: 'name',
+            preload: true,
+            load: _singleTagLoad,
+            create: _newTagEntered,
+            onChange: _parentFormSubmit,
+        });
+
+        s[0].selectize.disable();
     };
 
     return my;
@@ -591,14 +663,17 @@ $(document).ready(function(){
     // Add functionality to clickable icons
     RATTIC.controls.clickableIcons($('.rattic-icon-clickable'));
 
-    // Add functionality to the tag controls
+    // Tag selectors that can create tags
     RATTIC.controls.tagSelectors($('.rattic-tag-selector'));
 
-    // New Selectize controls
+    // Tags selectors that cannot create new tags
     $('.selectize-multiple').selectize({
         plugins: ['remove_button'],
         create: false,
     });
+
+    // Tag selectors for single tags
+    RATTIC.controls.singleTagSelectors($('.rattic-single-tag-selector'));
 
     // Start collecting random numbers
     sjcl.random.startCollectors();

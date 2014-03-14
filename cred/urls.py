@@ -24,6 +24,7 @@ urlpatterns = patterns('cred.views',
     url(r'^addtoqueue/bulk/$', 'bulkaddtoqueue'),
     url(r'^delete/bulk/$', 'bulkdelete'),
     url(r'^undelete/bulk/$', 'bulkundelete'),
+    url(r'^addtag/bulk/$', 'bulktagcred'),
 
     # Tags
     url(r'^tag/$', 'tags'),

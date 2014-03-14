@@ -31,6 +31,9 @@
         {% if buttons.changeq %}
           <button class="btn disabled rattic-check-enabled rattic-form-submit" data-target=".cred-list-check" data-action="{% url "cred.views.bulkaddtoqueue" %}">{% trans "Add to Change Queue" %}</button>
         {% endif %}
+        {% if buttons.tagger %}
+          <select name="tag" class="rattic-single-tag-selector rattic-check-enabled" data-target=".cred-list-check" placeholder="Apply a Tag" data-action="{% url "cred.views.bulktagcred" %}" tabindex="-1"></select>
+        {% endif %}
       </td>
     </tr>
     <tr>
