@@ -95,13 +95,15 @@ class CredResource(ModelResource):
 class TagResource(ModelResource):
     creds = fields.ToManyField(CredResource,
         attribute=lambda bundle: Cred.objects.accessible(bundle.request.user).filter(tags=bundle.obj),
-        full=True,
         null=True,
     )
 
     class Meta:
         queryset = Tag.objects.all()
         always_return_data = True
+        filtering = {
+                'name': ('exact', 'contains', 'icontains', 'startswith', 'istartswith'),
+        }
         resource_name = 'tag'
         authentication = MultiAuthentication(SessionAuthentication(), MultiApiKeyAuthentication())
         authorization = TagAuthorization()
