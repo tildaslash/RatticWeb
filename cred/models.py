@@ -87,6 +87,8 @@ class Cred(models.Model):
             old.id = None
             old.latest = self
             old.save()
+            for t in self.tags.all():
+                old.tags.add(t)
         except Cred.DoesNotExist:
             # This just means its new cred, ignore it
             pass
