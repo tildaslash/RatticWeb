@@ -618,7 +618,7 @@ var RATTIC = (function ($, ZeroClipboard) {
             onChange: _parentFormSubmit,
         });
 
-        s[0].selectize.disable();
+        if (s.length > 0) s[0].selectize.disable();
     };
 
     return my;
