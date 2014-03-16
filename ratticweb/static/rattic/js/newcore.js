@@ -520,6 +520,7 @@ var RATTIC = (function ($, ZeroClipboard) {
         buttons.each(function() {
             button = $(this);
             target = $($(this).data('target'));
+            if (target.length == 0) return;
             if (typeof target.data('linked') == "undefined") {
                 target.data('linked', []);
                 target.on('click', _enableButtonHandler);
