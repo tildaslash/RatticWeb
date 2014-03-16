@@ -6,6 +6,9 @@ import boto
 
 from db_backup.errors import FailedBackup
 
+from contextlib import contextmanager
+import urlparse
+import tempfile
 import logging
 import os
 
@@ -26,13 +29,40 @@ class BackupStorage(object):
             source = <some_action>
             storage.send_from(source)
 
+    Or if retreiving:
+
+        with BackupStorage.from_address("s3://my_amazing_bucket/some/key/to/a_file.gpg") as contenst_filename:
+            # contents_filename is the path to where the contents were put onto disk
+            <some_action with contents_filename>
+
     It will raise a FailedBackup exception if the S3 bucket doesn't exist
     As part of entry into the context manager
     """
-    def __init__(self):
+
+    @classmethod
+    @contextmanager
+    def from_address(cls, s3_address):
+        info = urlparse.urlparse(s3_address)
+        if info.scheme != "s3":
+            raise FailedBackup("Trying to restore from a non s3 address ({0})".format(s3_address))
+
+        key_name = info.path
+        bucket_location = info.netloc.split(":")[0]
+
+        tmp_file = None
+        try:
+            tmp_file = tempfile.NamedTemporaryFile(delete=False).name
+            with BackupStorage(bucket_location) as storage:
+                storage.get_from_s3(key_name, storage.bucket, tmp_file)
+                yield tmp_file
+        finally:
+            if tmp_file and os.path.exists(tmp_file):
+                os.remove(tmp_file)
+
+    def __init__(self, bucket_location=None):
         self.bucket = None
         self.has_storage = False
-        self.bucket_location = None
+        self.bucket_location = bucket_location
 
     def __enter__(self):
         """Make sure our storage is fine and yield self as the storage helper"""
@@ -48,7 +78,9 @@ class BackupStorage(object):
 
     def validate_destination(self):
         """Make sure our s3 bucket exists"""
-        self.bucket_location = settings.BACKUP_S3_BUCKET
+        if not self.bucket_location:
+            self.bucket_location = settings.BACKUP_S3_BUCKET
+
         if self.bucket_location:
             log.info("Connecting to aws")
             conn = S3Connection()
@@ -77,3 +109,10 @@ class BackupStorage(object):
         key = Key(destination_bucket)
         key.key = key_name
         key.set_contents_from_filename(source)
+
+    def get_from_s3(self, key_name, source_bucket, destination):
+        """Get contents from some key into the provided destination"""
+        key = source_bucket.get_key(key_name)
+        if not key:
+            raise FailedBackup("Cannot find key {0} in bucket {1}".format(key_name, source_bucket.name))
+        key.get_contents_to_filename(destination)

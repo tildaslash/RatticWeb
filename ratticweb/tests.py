@@ -295,6 +295,7 @@ class RestoreManagementCommandTest(TestCase):
         gpg_home = mock.Mock(name="gpg_home")
         default_db = mock.Mock(name="default_db")
         restore_from = mock.Mock(name="restore_from")
+        restore_from.startswith.return_value = False
 
         fake_exists.side_effect = lambda p: True
 
@@ -302,6 +303,7 @@ class RestoreManagementCommandTest(TestCase):
             call_command("restore", restore_from=restore_from)
             fake_restore.assert_called_once_with(default_db, restore_from, gpg_home=gpg_home)
             fake_exists.assert_called_once_with(restore_from)
+            restore_from.startswith.assert_called_once_with("s3://")
 
     @mock.patch("os.path.exists")
     @mock.patch("ratticweb.management.commands.restore.restore")
@@ -309,6 +311,7 @@ class RestoreManagementCommandTest(TestCase):
         default_db = mock.Mock(name="default_db")
         restore_from = mock.Mock(name="restore_from")
         fake_exists.side_effect = lambda p: True
+        restore_from.startswith.return_value = False
 
         error_message = str(uuid.uuid1())
         error = FailedBackup(error_message)
@@ -319,6 +322,56 @@ class RestoreManagementCommandTest(TestCase):
                 # call_command results in the CommandError being caught and propagated as SystemExit
                 self.command.handle(restore_from=restore_from)
             fake_exists.assert_called_once_with(restore_from)
+            restore_from.startswith.assert_called_once_with("s3://")
+
+    @mock.patch("ratticweb.management.commands.restore.restore")
+    def test_uses_restore_location_context_manager(self, fake_restore):
+        gpg_home = mock.Mock(name="gpg_home")
+        default_db = mock.Mock(name="default_db")
+        restore_from = mock.Mock(name="restore_from")
+        restore_from_normalized = mock.Mock(name="restore_from_normalized")
+
+        restore_location_cm = mock.MagicMock(name="restore_location_cm")
+        restore_location_cm.__enter__.return_value = restore_from_normalized
+        restore_location = mock.Mock(return_value=restore_location_cm)
+
+        with override_settings(DATABASES={'default': default_db}, BACKUP_GPG_HOME=gpg_home):
+            with mock.patch.object(self.command, "restore_location", restore_location):
+                self.command.handle(restore_from=restore_from)
+
+            restore_location.assert_called_once_with(restore_from)
+            fake_restore.assert_called_once_with(default_db, restore_from_normalized, gpg_home=gpg_home)
+
+    @mock.patch("ratticweb.management.commands.restore.BackupStorage")
+    def test_restore_location_treats_location_as_s3_address_if_starts_with_s3_scheme(self, FakeBackupStorage):
+        filename = mock.Mock("filename")
+
+        backup_storage_cm = mock.MagicMock(name="backup_storage_cm")
+        backup_storage_cm.__enter__.return_value = filename
+        FakeBackupStorage.from_address.return_value = backup_storage_cm
+
+        restore_from = mock.Mock(name="restore_from")
+        restore_from.startswith.return_value = True
+
+        with self.command.restore_location(restore_from) as result:
+            self.assertIs(result, filename)
+
+    def test_restore_location_returns_location_as_is_if_not_s3_and_exists(self):
+        with a_temp_file() as filename:
+            with self.command.restore_location(filename) as result:
+                self.assertIs(result, filename)
+
+    def test_restore_location_complains_if_no_restore_location_provided(self):
+        with self.assertRaisesRegexp(CommandError, "Please specify --restore-from.+"):
+            with self.command.restore_location(None):
+                assert False, "Should have complained"
+
+    def test_restore_location_complains_if_location_doesnt_exist(self):
+        with a_temp_file() as filename:
+            os.remove(filename)
+            with self.assertRaisesRegexp(CommandError, "Specified backup file \([^\)]+\) doesn't exist"):
+                with self.command.restore_location(filename):
+                    assert False, "Should have complained"
 
 
 class BackupStorageTest(TestCase):
@@ -405,3 +458,48 @@ class BackupStorageTest(TestCase):
                 self.storage.send_from(source, os.path.dirname(source))
 
             self.assertEqual(boto.connect_s3().get_bucket(bucket_name).get_key(os.path.basename(source)).get_contents_as_string(), contents)
+
+    @mock_s3
+    def test_getting_from_s3(self):
+        contents = """
+        Stuff and things
+        blah
+        """
+
+        key_name = str(uuid.uuid1())
+        bucket_name = str(uuid.uuid1())
+
+        conn = boto.connect_s3()
+        conn.create_bucket(bucket_name)
+
+        key = boto.s3.key.Key(conn.get_bucket(bucket_name))
+        key.key = key_name
+        key.set_contents_from_string(contents)
+
+        with a_temp_file() as location:
+            self.storage.get_from_s3(key_name, boto.connect_s3().get_bucket(bucket_name), location)
+            with open(location) as fle:
+                self.assertEqual(fle.read(), contents)
+
+    @mock_s3
+    def test_getting_from_an_address(self):
+        contents = """
+        Stuff and things
+        blah
+        """
+
+        bucket_name = str(uuid.uuid1())
+        key_name = os.path.join(str(uuid.uuid1()), str(uuid.uuid1()), str(uuid.uuid1()))
+
+        conn = boto.connect_s3()
+        conn.create_bucket(bucket_name)
+
+        key = boto.s3.key.Key(conn.get_bucket(bucket_name))
+        key.key = key_name
+        key.set_contents_from_string(contents)
+
+        with BackupStorage.from_address("s3://{0}/{1}".format(bucket_name, key_name)) as filename:
+            with open(filename) as fle:
+                self.assertEqual(fle.read(), contents)
+
+        assert not os.path.exists(filename)
