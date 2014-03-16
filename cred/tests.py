@@ -5,7 +5,7 @@ from django.test.utils import override_settings
 from django.utils.unittest import SkipTest
 
 from models import Cred, Tag
-from ratticweb.tests import TestData
+from ratticweb.tests.helper import TestData
 
 from cred.icon import get_icon_data
 
