@@ -2,6 +2,7 @@ from django.contrib.auth.models import User, Group
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 from importloaders import keepass
+from keepassdb.exc import AuthenticationError, InvalidDatabase
 
 
 class UserForm(forms.ModelForm):
@@ -57,13 +58,13 @@ class KeepassImportForm(forms.Form):
         try:
             db = keepass(cleaned_data['file'], cleaned_data['password'])
             cleaned_data['db'] = db
-        except ValueError:
+        except AuthenticationError:
             msg = _('Could not read keepass file, the password you gave may not be correct.')
             self._errors['file'] = self.error_class([msg])
             del cleaned_data['file']
             del cleaned_data['password']
-        except IOError:
-            msg = _('Could not read keepass file, was that a valid keepass file?')
+        except InvalidDatabase:
+            msg = _('That file does not appear to be a valid KeePass file.')
             self._errors['file'] = self.error_class([msg])
             del cleaned_data['file']
             del cleaned_data['password']

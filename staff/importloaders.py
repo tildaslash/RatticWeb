@@ -1,4 +1,4 @@
-from lib.keepass import kpdb
+from keepassdb import Database
 
 
 def keepass(filep, password):
@@ -6,16 +6,16 @@ def keepass(filep, password):
     entries = []
     groupstack = []
 
-    db = kpdb.Database(filep, password)
+    db = Database(filep, password)
 
-    _walkkeepass(groups, entries, groupstack, db.hierarchy())
+    _walkkeepass(groups, entries, groupstack, db.root)
 
     return {'tags': groups, 'entries': entries}
 
 
 def _walkkeepass(groups, entries, groupstack, root):
-    for n in root.nodes:
-        t = n.name()
+    for n in root.children:
+        t = n.title
         groupstack.append(t)
         groups.append(t)
         for e in n.entries:
