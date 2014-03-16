@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
+from ratticweb.management.commands.storage import BackupStorage
 from db_backup.errors import FailedBackup
 from db_backup.commands import backup
 
@@ -34,6 +35,8 @@ class Command(BaseCommand):
             recipients = recipients.split(",")
 
         try:
-            backup(settings.DATABASES['default'], recipients, backup_dir, gpg_home=gpg_home)
+            with BackupStorage() as storage:
+                destination = backup(settings.DATABASES['default'], recipients, backup_dir, gpg_home=gpg_home)
+                storage.send_from(destination, backup_dir)
         except FailedBackup as error:
             raise CommandError(error)

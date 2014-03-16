@@ -9,15 +9,18 @@ from django.contrib.auth.models import User, Group
 from django.core.management.base import CommandError
 from cred.models import Tag, Cred, CredChangeQ, CredAudit
 
+from ratticweb.management.commands.backup import BackupStorage, Command as BackupCommand
 from ratticweb.management.commands.restore import Command as RestoreCommand
-from ratticweb.management.commands.backup import Command as BackupCommand
 from db_backup.errors import FailedBackup
 
 from contextlib import contextmanager
+from moto import mock_s3
 import tempfile
+import logging
 import shutil
 import uuid
 import mock
+import boto
 import os
 
 
@@ -34,11 +37,14 @@ def a_temp_directory():
 
 
 @contextmanager
-def a_temp_file():
+def a_temp_file(contents=None):
     """Yield us a temporary file to play with"""
     fle = None
     try:
         fle = tempfile.NamedTemporaryFile(delete=False).name
+        if contents:
+            with open(fle, "w") as the_file:
+                the_file.write(contents)
         yield fle
     finally:
         if fle and os.path.exists(fle):
@@ -180,53 +186,91 @@ class BackupManagementCommandTest(TestCase):
                 with self.assertRaisesRegexp(CommandError, "Recipients list needs to be a list of strings.+"):
                     self.command.validate_options(backup_dir, recipients)
 
+    @mock.patch("ratticweb.management.commands.backup.BackupStorage")
     @mock.patch("ratticweb.management.commands.backup.Command.validate_options")
     @mock.patch("ratticweb.management.commands.backup.backup")
-    def test_it_validates_options(self, fake_backup, fake_validate_options):
+    def test_it_validates_options(self, fake_backup, fake_validate_options, FakeBackupStorage):
         backup_dir = mock.Mock(name="backup_dir")
         recipients = mock.Mock(name="recipients")
+        FakeBackupStorage.return_value = mock.MagicMock(spec=BackupStorage)
         with override_settings(BACKUP_DIR=backup_dir, BACKUP_RECIPIENTS=recipients):
             call_command("backup")
             fake_validate_options.assert_called_once_with(backup_dir, recipients)
 
+    @mock.patch("ratticweb.management.commands.backup.BackupStorage")
     @mock.patch("ratticweb.management.commands.backup.Command.validate_options")
     @mock.patch("ratticweb.management.commands.backup.backup")
-    def test_it_calls_backup(self, fake_backup, fake_validate_options):
+    def test_it_calls_backup(self, fake_backup, fake_validate_options, FakeBackupStorage):
         gpg_home = mock.Mock(name="gpg_home")
         backup_dir = mock.Mock(name="backup_dir")
         recipients = mock.Mock(name="recipients")
         default_db = mock.Mock(name="default_db")
+        FakeBackupStorage.return_value = mock.MagicMock(spec=BackupStorage)
         with override_settings(BACKUP_DIR=backup_dir, BACKUP_RECIPIENTS=recipients, DATABASES={'default': default_db}, BACKUP_GPG_HOME=gpg_home):
             call_command("backup")
             fake_validate_options.assert_called_once_with(backup_dir, recipients)
             fake_backup.assert_called_once_with(default_db, recipients, backup_dir, gpg_home=gpg_home)
 
+    @mock.patch("ratticweb.management.commands.backup.BackupStorage")
     @mock.patch("ratticweb.management.commands.backup.Command.validate_options")
     @mock.patch("ratticweb.management.commands.backup.backup")
-    def test_it_splits_recipients_by_comma_if_a_string(self, fake_backup, fake_validate_options):
+    def test_it_splits_recipients_by_comma_if_a_string(self, fake_backup, fake_validate_options, FakeBackupStorage):
         backup_dir = mock.Mock(name="backup_dir")
         recipients = "things,and,stuff"
         default_db = mock.Mock(name="default_db")
+        FakeBackupStorage.return_value = mock.MagicMock(spec=BackupStorage)
         with override_settings(BACKUP_DIR=backup_dir, BACKUP_RECIPIENTS=recipients, DATABASES={'default': default_db}):
             call_command("backup")
             fake_validate_options.assert_called_once_with(backup_dir, recipients)
             fake_backup.assert_called_once_with(default_db, ["things", "and", "stuff"], backup_dir, gpg_home=None)
 
+    @mock.patch("ratticweb.management.commands.backup.BackupStorage")
     @mock.patch("ratticweb.management.commands.backup.Command.validate_options")
     @mock.patch("ratticweb.management.commands.backup.backup")
-    def test_it_converts_FailedBackup_errors_to_CommandError(self, fake_backup, fake_validate_options):
+    def test_it_converts_FailedBackup_errors_to_CommandError(self, fake_backup, fake_validate_options, FakeBackupStorage):
         backup_dir = mock.Mock(name="backup_dir")
         recipients = mock.Mock(name="recipients")
         default_db = mock.Mock(name="default_db")
+        backup_storage = mock.MagicMock(spec=BackupStorage)
 
         error_message = str(uuid.uuid1())
         error = FailedBackup(error_message)
         fake_backup.side_effect = error
 
+        error_message2 = str(uuid.uuid1())
+        error2 = FailedBackup(error_message2)
+        FakeBackupStorage.return_value = backup_storage
+
         with override_settings(BACKUP_DIR=backup_dir, BACKUP_RECIPIENTS=recipients, DATABASES={'default': default_db}):
+            # call_command results in the CommandError being caught and propagated as SystemExit
+
             with self.assertRaisesRegexp(CommandError, error_message):
-                # call_command results in the CommandError being caught and propagated as SystemExit
                 self.command.handle()
+
+            # And make sure it catches exceptions from the storage context manager
+            backup_storage.__enter__.side_effect = error2
+            with self.assertRaisesRegexp(CommandError, error_message2):
+                self.command.handle()
+
+    @mock.patch("ratticweb.management.commands.backup.BackupStorage")
+    @mock.patch("ratticweb.management.commands.backup.Command.validate_options")
+    @mock.patch("ratticweb.management.commands.backup.backup")
+    def test_it_sends_backup_to_storage(self, fake_backup, fake_validate_options, FakeBackupStorage):
+        default_db = mock.Mock(name="default_db")
+        recipients = mock.Mock(name="recipients")
+        backup_dir = mock.Mock(name="backup_dir")
+
+        backup_storage = mock.MagicMock(spec=BackupStorage)
+        backup_storage_obj = mock.Mock(name="backup_storage")
+        backup_storage.__enter__ = mock.Mock(return_value=backup_storage_obj)
+        FakeBackupStorage.return_value = backup_storage
+
+        destination = mock.Mock(name="destination")
+        fake_backup.return_value = destination
+
+        with override_settings(BACKUP_DIR=backup_dir, BACKUP_RECIPIENTS=recipients, DATABASES={'default': default_db}):
+            call_command("backup")
+            backup_storage_obj.send_from.assert_called_once_with(destination, backup_dir)
 
 
 class RestoreManagementCommandTest(TestCase):
@@ -275,3 +319,89 @@ class RestoreManagementCommandTest(TestCase):
                 # call_command results in the CommandError being caught and propagated as SystemExit
                 self.command.handle(restore_from=restore_from)
             fake_exists.assert_called_once_with(restore_from)
+
+
+class BackupStorageTest(TestCase):
+    def setUp(self):
+        self.storage = BackupStorage()
+
+        # Only want the logs to show if the tests fail
+        logging.getLogger("db_backup").handlers = []
+
+    def test_says_no_storage_after_initialization(self):
+        self.assertIs(self.storage.bucket, None)
+        self.assertIs(self.storage.has_storage, False)
+        self.assertIs(self.storage.bucket_location, None)
+
+    def test_validates_on_enter(self):
+        validate_destination = mock.Mock(name="validate_destination")
+        with mock.patch.object(self.storage, "validate_destination", validate_destination):
+            with self.storage as storage:
+                self.assertIs(storage, self.storage)
+                self.storage.validate_destination.assert_called_once()
+
+    @mock.patch("ratticweb.management.commands.storage.S3Connection")
+    def test_doesnt_connect_to_s3_if_no_BACKUP_S3_BUCKET_setting(self, FakeS3Connection):
+        with override_settings(BACKUP_S3_BUCKET=None):
+            self.storage.validate_destination()
+        FakeS3Connection.assert_not_called()
+
+    @mock_s3
+    def test_complains_if_no_bucket(self):
+        with self.assertRaisesRegexp(FailedBackup, "Please first create the s3 bucket.+"):
+            with override_settings(BACKUP_S3_BUCKET="bucket_location"):
+                self.storage.validate_destination()
+
+        self.assertIs(self.storage.has_storage, False)
+
+    @mock.patch("ratticweb.management.commands.storage.S3Connection")
+    def test_complains_if_forbidden_bucket(self, FakeS3Connection):
+        error = boto.exception.S3ResponseError(403, "Forbidden")
+        conn = mock.Mock(name="connection")
+        conn.get_bucket.side_effect = error
+        FakeS3Connection.return_value = conn
+
+        with self.assertRaises(boto.exception.S3ResponseError):
+            with override_settings(BACKUP_S3_BUCKET="blah"):
+                self.storage.validate_destination()
+
+        conn.get_bucket.assert_called_once_with("blah")
+        self.assertIs(self.storage.has_storage, False)
+
+    @mock_s3
+    def test_sets_has_storage_if_successfully_finds_bucket(self):
+        bucket_name = str(uuid.uuid1())
+        conn = boto.connect_s3()
+        conn.create_bucket(bucket_name)
+
+        with override_settings(BACKUP_S3_BUCKET=bucket_name):
+            self.storage.validate_destination()
+
+        self.assertIs(self.storage.has_storage, True)
+        self.assertIs(self.storage.bucket_location, bucket_name)
+        self.assertIs(type(self.storage.bucket), boto.s3.bucket.Bucket)
+
+    def test_send_from_does_nothing_if_no_has_storage(self):
+        upload_to_s3 = mock.Mock(name="upload_to_s3")
+        self.assertIs(self.storage.has_storage, False)
+        with mock.patch.object(self.storage, "upload_to_s3", upload_to_s3):
+            self.storage.send_from("/one/two/three.gpg", "/one/")
+            self.storage.upload_to_s3.assert_not_called()
+
+    @mock_s3
+    def test_send_from_does_send_to_s3_if_has_storage(self):
+        contents = """
+        Stuff and things
+        blah
+        """
+
+        bucket_name = str(uuid.uuid1())
+        conn = boto.connect_s3()
+        conn.create_bucket(bucket_name)
+
+        with a_temp_file(contents) as source:
+            with override_settings(BACKUP_S3_BUCKET=bucket_name):
+                self.storage.validate_destination()
+                self.storage.send_from(source, os.path.dirname(source))
+
+            self.assertEqual(boto.connect_s3().get_bucket(bucket_name).get_key(os.path.basename(source)).get_contents_as_string(), contents)

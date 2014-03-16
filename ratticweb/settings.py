@@ -188,7 +188,7 @@ LOGGING = {
         'db_backup': {
             'handlers': ['console'],
             'level': 'INFO',
-            'propagate': False,
+            'propagate': True,
         },
     }
 }
@@ -227,6 +227,7 @@ ALLOWED_HOSTS = [config.get('ratticweb', 'hostname'), 'localhost']
 
 BACKUP_DIR = confget("backup", "backup_dir", None)
 BACKUP_GPG_HOME = confget("backup", "backup_gpg_home", None)
+BACKUP_S3_BUCKET = confget("backup", "backup_s3_bucket", None)
 BACKUP_RECIPIENTS = confget("backup", "backup_recipients", None)
 
 try:
