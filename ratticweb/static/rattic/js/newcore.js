@@ -130,7 +130,7 @@ var RATTIC = (function ($, ZeroClipboard) {
         })
     }
 
-    function _apicallwait(object, method, data) {
+    function _apicallwait(object, method, data, options) {
         url = _apiurl(object, method, data, options);
 
         if (method == 'GET') data = undefined;
