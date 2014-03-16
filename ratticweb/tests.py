@@ -233,29 +233,38 @@ class RestoreManagementCommandTest(TestCase):
     def setUp(self):
         self.command = RestoreCommand()
 
-    def it_complains_if_no_restore_from_specified(self):
+    def test_complains_if_no_restore_from_specified(self):
         with self.assertRaisesRegexp(CommandError, "Please specify --restore-from.+"):
             self.command.handle(restore_from=None)
 
-    def it_complains_if_restore_from_doesnt_exist(self):
+    def test_complains_if_restore_from_doesnt_exist(self):
         with a_temp_file() as restore_from:
+            if os.path.exists(restore_from):
+                os.remove(restore_from)
+
             with self.assertRaisesRegexp(CommandError, "Specified backup file \({0}\) doesn't exist".format(restore_from)):
                 self.command.handle(restore_from=restore_from)
 
-    @mock.patch("ratticweb.management.commands.backup.restore")
-    def it_calls_restore(self, fake_restore):
+    @mock.patch("os.path.exists")
+    @mock.patch("ratticweb.management.commands.restore.restore")
+    def test_calls_restore(self, fake_restore, fake_exists):
         gpg_home = mock.Mock(name="gpg_home")
         default_db = mock.Mock(name="default_db")
         restore_from = mock.Mock(name="restore_from")
 
+        fake_exists.side_effect = lambda p: True
+
         with override_settings(DATABASES={'default': default_db}, BACKUP_GPG_HOME=gpg_home):
             call_command("restore", restore_from=restore_from)
             fake_restore.assert_called_once_with(default_db, restore_from, gpg_home=gpg_home)
+            fake_exists.assert_called_once_with(restore_from)
 
-    @mock.patch("ratticweb.management.commands.backup.restore")
-    def it_converts_FailedBackup_errors_into_CommandError(self, fake_restore):
+    @mock.patch("os.path.exists")
+    @mock.patch("ratticweb.management.commands.restore.restore")
+    def test_converts_FailedBackup_errors_into_CommandError(self, fake_restore, fake_exists):
         default_db = mock.Mock(name="default_db")
         restore_from = mock.Mock(name="restore_from")
+        fake_exists.side_effect = lambda p: True
 
         error_message = str(uuid.uuid1())
         error = FailedBackup(error_message)
@@ -265,3 +274,4 @@ class RestoreManagementCommandTest(TestCase):
             with self.assertRaisesRegexp(CommandError, error_message):
                 # call_command results in the CommandError being caught and propagated as SystemExit
                 self.command.handle(restore_from=restore_from)
+            fake_exists.assert_called_once_with(restore_from)
