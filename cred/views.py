@@ -8,9 +8,44 @@ from django.db.models import Q
 from django.utils.translation import ugettext as _
 
 from models import Cred, CredForm, CredAudit, TagForm, Tag, CredChangeQ
+from forms import ExportForm
+from exporters import export_keepass
 from cred.icon import get_icon_list
 
 from django.contrib.auth.models import User, Group
+
+
+@login_required
+def download(request):
+    if request.method == 'POST':  # If the form has been submitted...
+
+        # ContactForm was defined in the the previous section
+        form = ExportForm(request.POST)  # A form bound to the POST data
+        if form.is_valid():  # All validation rules pass
+
+            # Get the creds to export
+            creds = Cred.objects.accessible(request.user)
+
+            # Make the Audit logs
+            auditlogs = []
+            for c in creds:
+                auditlogs.append(CredAudit(
+                    audittype=CredAudit.CREDEXPORT,
+                    cred=c,
+                    user=request.user,
+                ))
+
+            # Create all Audit logs at once
+            CredAudit.objects.bulk_create(auditlogs)
+
+            # Give the Keepass file to the user
+            return export_keepass(creds, form.cleaned_data['password'])
+    else:
+        form = ExportForm()  # An unbound form
+
+    return render(request, 'cred_export.html', {
+        'form': form,
+    })
 
 
 @login_required
@@ -90,7 +125,7 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
         viewdict['alerts'].append(alert)
 
     elif cfilter == 'special' and value == 'all':
-        pass
+        viewdict['buttons']['export'] = True
 
     elif cfilter == 'special' and value == 'trash':
         cred_list = Cred.objects.accessible(request.user, deleted=True).filter(is_deleted=True)
@@ -133,6 +168,9 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
 
     # Get variables to give the template
     viewdict['credlist'] = cred
+
+    # Create the form for exporting
+    viewdict['exportform'] = ExportForm()
 
     return render(request, 'cred_list.html', viewdict)
 

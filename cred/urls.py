@@ -11,6 +11,9 @@ urlpatterns = patterns('cred.views',
     # Search dialog for mobile
     url(r'^search/$', 'search'),
 
+    # Export views
+    url(r'^export/keepass/$', 'download'),
+
     # Single cred views
     url(r'^detail/(?P<cred_id>\d+)/$', 'detail'),
     url(r'^edit/(?P<cred_id>\d+)/$', 'edit'),

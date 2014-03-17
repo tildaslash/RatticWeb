@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% load i18n %}
+
+{% block content %}
+<h1>Export to Keepass</h1>
+<form class="form-horizontal" action="" method="post">{% csrf_token %}
+    {% for field in form %}
+        <div class="control-group">
+            {{ field.errors }}
+            <label class="control-label" for="{{ field.html_name }}">{{ field.label }}</label>
+            <div class="controls">
+                {{ field }}
+            </div>
+        </div>
+    {% endfor %}
+    <div class="controls">
+        <input class="btn-primary" type="submit" value="{% trans "Submit" %}" />
+    </div>
+</form>
+{% endblock %}
+

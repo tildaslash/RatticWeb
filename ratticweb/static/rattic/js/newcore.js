@@ -622,6 +622,13 @@ var RATTIC = (function ($, ZeroClipboard) {
         if (s.length > 0) s[0].selectize.disable();
     };
 
+    my.controls.formSubmitById = function(button) {
+        button.on('click', function() {
+            me = $(this);
+            target = $(me.data('form'));
+            target.submit();
+        });
+    };
     return my;
 }(jQuery, ZeroClipboard));
 
@@ -666,6 +673,9 @@ $(document).ready(function(){
 
     // Tag selectors that can create tags
     RATTIC.controls.tagSelectors($('.rattic-tag-selector'));
+
+    // Button that submits a form indicated by a data attribute
+    RATTIC.controls.formSubmitById($('.rattic-form-submit-by-id'));
 
     // Tags selectors that cannot create new tags
     $('.selectize-multiple').selectize({

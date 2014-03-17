@@ -1,0 +1,37 @@
+{% load url from future %}
+{% load i18n %}
+
+{% include "cred_part_passgenmodal.html" %}
+
+<iframe name="hidden_iframe" class="hidden"></iframe>
+<div id="exportmodal" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>{% trans "Export to Keepass" %}</h3>
+  </div>
+  <div class="modal-body">
+    <p>{% blocktrans %}Please enter the password you would like the Keepass file to be encrypted with.{% endblocktrans %}</p>
+    <form id="exportform" class="form-horizontal" target="hidden_iframe" action="{% url "cred.views.download" %}" method="post">{% csrf_token %}
+        {% for field in exportform %}
+            <div class="control-group">
+                {{ field.errors }}
+                <label class="control-label" for="{{ field.html_name }}">{{ field.label }}</label>
+                <div class="controls">
+                  {% if field.html_name == 'password' %}
+                    <div class="input-append">
+                      <input id="id_password" name="password" value="{% if field.value %}{{ field.value }}{% endif %}" maxlength="250" type="password">
+                      <button class="btn btn-pass-show" data-target="#id_password"></button>
+                    </div>
+                  {% else %}
+                      {{ field }}
+                  {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </form>
+  </div>
+  <div class="modal-footer">
+    <a href="#" data-form="#exportform" data-input="#tagname" data-dismiss="modal" class="btn btn-primary rattic-form-submit-by-id">{% trans "Export" %}</a>
+  </div>
+</div>
+

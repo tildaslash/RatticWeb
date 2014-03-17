@@ -46,14 +46,14 @@ class SearchManager(models.Manager):
             # Get a list of changes done
             Q(cred__group__in=grouplist, audittype=CredAudit.CREDCHANGE) |
             # Combined with a list of views from this user
-            Q(cred__group__in=grouplist, audittype__in=[CredAudit.CREDVIEW, CredAudit.CREDPASSVIEW, CredAudit.CREDADD], user=user)
+            Q(cred__group__in=grouplist, audittype__in=[CredAudit.CREDVIEW, CredAudit.CREDPASSVIEW, CredAudit.CREDADD, CredAudit.CREDEXPORT], user=user)
         ).order_by('time', 'id')
 
         # Go through each entry in time order
         tochange = []
         for l in logs:
             # If this user viewed the password then change it
-            if l.audittype in (CredAudit.CREDVIEW, CredAudit.CREDPASSVIEW, CredAudit.CREDADD):
+            if l.audittype in (CredAudit.CREDVIEW, CredAudit.CREDPASSVIEW, CredAudit.CREDADD, CredAudit.CREDEXPORT):
                 tochange.append(l.cred.id)
             # If there was a change done not by this user, dont change it
             if l.audittype == CredAudit.CREDCHANGE and l.user != user:
@@ -155,6 +155,7 @@ class CredAudit(models.Model):
     CREDCHANGE = 'C'
     CREDMETACHANGE = 'M'
     CREDVIEW = 'V'
+    CREDEXPORT = 'X'
     CREDPASSVIEW = 'P'
     CREDDELETE = 'D'
     CREDSCHEDCHANGE = 'S'
@@ -163,6 +164,7 @@ class CredAudit(models.Model):
         (CREDCHANGE, _('Changed')),
         (CREDMETACHANGE, _('Only Metadata Changed')),
         (CREDVIEW, _('Only Details Viewed')),
+        (CREDEXPORT, _('Exported')),
         (CREDDELETE, _('Deleted')),
         (CREDSCHEDCHANGE, _('Scheduled For Change')),
         (CREDPASSVIEW, _('Password Viewed')),
