@@ -48,8 +48,12 @@ class TestData:
 
     def login(self, username, password):
         c = Client()
-        loginurl = reverse('django.contrib.auth.views.login')
-        c.post(loginurl, {'username': username, 'password': password})
+        loginurl = reverse('login')
+        c.post(loginurl, {
+            'auth-username': username,
+            'auth-password': password,
+            'rattic_tfa_login_view-current_step': 'auth',
+        })
 
         return c
 
