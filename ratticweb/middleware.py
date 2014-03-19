@@ -37,3 +37,17 @@ class CSPMiddleware(object):
         policy = "default-src 'self';style-src 'self' 'unsafe-inline'"
         response['Content-Security-Policy'] = policy
         return response
+
+
+class HSTSMiddleware(object):
+    """
+    If a requests arrives via a secured channel, this tells the browser to
+    only use secure connections to request further pages. This makes it much
+    harder to strip SSL from the site.
+
+    See: http://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security
+    """
+    def process_response(self, request, response):
+        if request.is_secure():
+            response['Strict-Transport-Security'] = 'max-age=31536000'
+        return response

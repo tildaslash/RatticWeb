@@ -1,9 +1,9 @@
-from datetime import timedelta
 from ConfigParser import RawConfigParser, NoOptionError
 from urlparse import urljoin
 import ldap
 import os
 from django_auth_ldap.config import LDAPSearch
+from datetime import timedelta
 
 config = RawConfigParser()
 config.readfp(open('conf/defaults.cfg'))
@@ -96,6 +96,7 @@ MIDDLEWARE_CLASSES = (
     'ratticweb.middleware.DisableClientSideCachingMiddleware',
     'ratticweb.middleware.XUACompatibleMiddleware',
     'ratticweb.middleware.CSPMiddleware',
+    'ratticweb.middleware.HSTSMiddleware',
 
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
