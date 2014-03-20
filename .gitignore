@@ -7,4 +7,4 @@ conf/local.cfg
 .vagrant
 vagrant_ansible_inventory_rattic
 static/*
-docs/ansible/rattic/secret
+docs/ansible/creds/*

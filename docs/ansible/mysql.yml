@@ -1,0 +1,29 @@
+  ### mysql setup tasks
+  - name: install mysql
+    action: yum name={{ item }} state=latest
+    notify:
+      - restart mysql
+    with_items:
+      - mysql-server
+      - mysql-devel
+      - mysql
+      - MySQL-python
+
+  - name: Setup virtualenv (mysql)
+    pip: requirements=/opt/apps/RatticWeb/requirements-mysql.txt virtualenv=/opt/apps/RatticWeb.venv
+    notify:
+      - restart httpd
+
+  - name: set mysql to start
+    action: service name=mysqld state=started enabled=yes
+
+  - name: create MySQL database
+    action: mysql_db db={{db_name}} state=present
+    notify:
+      - create initial user
+
+  - name: remove MySQL test database
+    action: mysql_db db=test state=absent
+
+  - name: create MySQL user
+    action: mysql_user name={{db_user}} password={{db_passwd}} priv={{db_name}}.*:ALL state=present

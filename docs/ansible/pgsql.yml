@@ -1,0 +1,26 @@
+  - name: install postgresql
+    action: yum name={{ item }} state=latest
+    notify:
+      - restart postgresql
+    with_items:
+      - postgresql-server
+      - postgresql-devel
+      - python-psycopg2
+
+  - name: initdb for postgresql
+    command: /etc/init.d/postgresql initdb creates=/var/lib/pgsql/data/postgresql.conf
+  - name: set PostgreSQL to start
+    action: service name=postgresqld state=started enabled=yes
+
+  - name: create PostgreSQL user
+    action: postgresql_user name={{db_user}} password={{db_passwd}} encrypted=false state=present
+
+  - name: create PostgreSQL database
+    action: postgresql_db name={{db_name}} owner={{db_user}} state=present
+    notify:
+      - create initial user
+
+  - name: Setup virtualenv (pgsql)
+    pip: requirements=/opt/apps/RatticWeb/requirements-pgsql.txt virtualenv=/opt/apps/RatticWeb.venv
+    notify:
+      - restart httpd

@@ -88,95 +88,11 @@
   - name: set apache to start
     action: service name=httpd state=started enabled=yes
 
-  ### mysql setup tasks
-  - name: install mysql
-    action: yum name={{ item }} state=latest
-    notify:
-      - restart mysql
-    with_items:
-      - mysql-server
-      - mysql-devel
-      - mysql
-      - MySQL-python
-
-  - name: set mysql to start
-    action: service name=mysqld state=started enabled=yes
+  - include: "mysql.yml"
     when: db_platform == "mysql"
 
-  - name: create MySQL database
-    action: mysql_db db={{db_name}} state=present
-    when: db_platform == "mysql"
-    notify:
-      - create initial user
-
-  - name: remove MySQL test database
-    action: mysql_db db=test state=absent
-    when: db_platform == "mysql"
-
-  - name: create MySQL user
-    action: mysql_user name={{db_user}} password={{db_passwd}} priv={{db_name}}.*:ALL state=present
-    when: db_platform == "mysql"
-
-  - name: Setup virtualenv (mysql)
-    pip: requirements=/opt/apps/RatticWeb/requirements-mysql.txt virtualenv=/opt/apps/RatticWeb.venv
-    when: db_platform == "mysql"
-    notify:
-      - restart httpd
-
-  - name: Generate static content for checkout
-    django_manage: command=collectstatic virtualenv=/opt/apps/RatticWeb.venv app_path=/opt/apps/RatticWeb
-    when: release == "vagrant"
-
-  ### postgresql setup tasks
-  - name: install postgresql
-    action: yum name={{ item }} state=latest
-    when: db_platform == "postgres"
-    notify:
-      - restart postgresql
-    with_items:
-      - postgresql-server
-      - postgresql-devel
-      - python-psycopg2
-
-  - name: initdb for postgresql
-    command: /etc/init.d/postgresql initdb creates=/var/lib/pgsql/data/postgresql.conf
-    when: db_platform == "postgres"
-
-  - name: configure pg_hba.conf
-    action: lineinfile
-      dest=/var/lib/pgsql/data/pg_hba.conf
-      state=present
-      "line={{ item }}"
-      "insertbefore=^# TYPE"
-    when: db_platform == "postgres"
-    with_items:
-      - "local   rattic   rattic                trust"
-      - "host    rattic   rattic   127.0.0.0/8  trust"
-      - "host    rattic   rattic   ::1/128      trust"
-    notify:
-      - restart postgresql
-
-  - name: set PostgreSQL to start
-    action: service name=postgresql state=started enabled=yes
-    when: db_platform == "postgres"
-
-  - name: create PostgreSQL user
-    action: postgresql_user name={{db_user}} password={{db_passwd}} encrypted=false state=present
-    when: db_platform == "postgres"
-    sudo_user: postgres
-
-  - name: create PostgreSQL database
-    action: postgresql_db name={{db_name}} owner={{db_user}} state=present
-    when: db_platform == "postgres"
-    sudo_user: postgres
-    notify:
-      - create initial user
-
-  - name: Setup virtualenv (pgsql)
-    pip: requirements=/opt/apps/RatticWeb/requirements-pgsql.txt virtualenv=/opt/apps/RatticWeb.venv
-    when: db_platform == "postgres"
-    notify:
-      - restart httpd
+  - include: "pgsql.yml"
+    when: db_platform == "postgresql"
 
   - name: setup RatticWeb
     action: template src=files/local.cfg.j2 dest=/etc/ratticweb.cfg owner=root group=apache mode=640
