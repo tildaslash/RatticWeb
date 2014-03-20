@@ -51,3 +51,16 @@ class HSTSMiddleware(object):
         if request.is_secure():
             response['Strict-Transport-Security'] = 'max-age=31536000'
         return response
+
+
+class DisableContentTypeSniffing(object):
+    """
+    This Middleware adds a custom header to disable IE8's Content-Type
+    sniffing. The Sniffing in IE8 can cause certain files to be interpreted
+    with a different Content-Type than the server indicated. This can cause
+    security issues and since RatticDB always sends the intended Content-Type
+    it can be disabled.
+    """
+    def process_response(self, request, response):
+        response['X-Content-Type-Options'] = 'nosniff'
+        return response

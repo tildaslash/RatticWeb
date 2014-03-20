@@ -97,6 +97,7 @@ MIDDLEWARE_CLASSES = (
     'ratticweb.middleware.XUACompatibleMiddleware',
     'ratticweb.middleware.CSPMiddleware',
     'ratticweb.middleware.HSTSMiddleware',
+    'ratticweb.middleware.DisableContentTypeSniffing',
 
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
