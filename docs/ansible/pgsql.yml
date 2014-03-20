@@ -9,8 +9,9 @@
 
   - name: initdb for postgresql
     command: /etc/init.d/postgresql initdb creates=/var/lib/pgsql/data/postgresql.conf
+
   - name: set PostgreSQL to start
-    action: service name=postgresqld state=started enabled=yes
+    action: service name=postgresql state=started enabled=yes
 
   - name: create PostgreSQL user
     action: postgresql_user name={{db_user}} password={{db_passwd}} encrypted=false state=present

@@ -92,7 +92,7 @@
     when: db_platform == "mysql"
 
   - include: "pgsql.yml"
-    when: db_platform == "postgresql"
+    when: db_platform == "postgres"
 
   - name: setup RatticWeb
     action: template src=files/local.cfg.j2 dest=/etc/ratticweb.cfg owner=root group=apache mode=640
