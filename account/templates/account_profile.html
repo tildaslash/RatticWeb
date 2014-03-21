@@ -53,14 +53,18 @@
       <th>&nbsp;</th>
       <th>{% trans "Device" %}</th>
       <th>{% trans "IP Address" %}</th>
+      <th>{% trans "Last Activity" %}</th>
     </tr>
   </thead>
   <tbody>
     {% for s in sessions %}
       <tr>
-        <td>&nbsp;</td>
+        <td>
+            <form style="display: inline" action="{% url 'kill_session' s.session_key %}" method="post">{% csrf_token %}<button href="" class="btn btn-danger btn-mini">Logout</button></form>
+        </td>
         <td>{{ s.user_agent|device }}</td>
         <td>{{ s.ip }}</td>
+        <td>{{ s.last_activity|timesince }} {% if session_key == s.session_key %}{% trans "(This Session)" %}{% endif %}</td>
       </tr>
     {% endfor %}
   </tbody>

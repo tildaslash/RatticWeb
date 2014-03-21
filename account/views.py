@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.template.response import TemplateResponse
 from django.utils.timezone import now
 
+from user_sessions.views import SessionDeleteView
+
 
 @login_required
 def profile(request):
@@ -17,6 +19,9 @@ def profile(request):
 
     # Get a list of the users current sessions
     sessions = request.user.session_set.filter(expire_date__gt=now())
+
+    # Get the current session key
+    session_key = request.session.session_key
 
     # Process the form if we have data coming in
     if request.method == 'POST':
@@ -30,6 +35,7 @@ def profile(request):
     return render(request, 'account_profile.html', {
         'keys': keys,
         'sessions': sessions,
+        'session_key': session_key,
         'form': form,
         'user': request.user,
     })
@@ -96,3 +102,8 @@ def ldap_password_change(request,
         context.update(extra_context)
     return TemplateResponse(request, template_name, context,
                             current_app=current_app)
+
+
+class RatticSessionDeleteView(SessionDeleteView):
+    def get_success_url(self):
+        return reverse('account.views.profile')

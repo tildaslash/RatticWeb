@@ -52,6 +52,21 @@ class AccountViewTests(TestCase):
         user = response.context['user']
         self.assertEqual(user.profile.items_per_page, self.testitems)
 
+    def test_session_kill(self):
+        # Get the current session key
+        oldkey = self.client.cookies[settings.SESSION_COOKIE_NAME].value
+
+        # Kill the current session
+        response = self.client.post(reverse('kill_session', args=(oldkey,)))
+
+        # Check the response redirected to the login page
+        profileurl = reverse('account.views.profile')
+        self.assertRedirects(response, profileurl, 302, 302)
+
+        # Check we have a new session
+        newkey = self.client.cookies[settings.SESSION_COOKIE_NAME].value
+        self.assertNotEqual(oldkey, newkey)
+
     @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_disable_during_login(self):
         response = self.client.get(reverse('account.views.profile'))

@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 from django.conf import settings
-from views import profile, newapikey, deleteapikey
+from views import profile, newapikey, deleteapikey, RatticSessionDeleteView
 
 urlpatterns = patterns('',
     url(r'^profile/$', profile, {}),
@@ -12,6 +12,8 @@ urlpatterns = patterns('',
 
     url(r'^logout/$', 'django.contrib.auth.views.logout', {
         'next_page': settings.RATTIC_ROOT_URL}),
+
+    url(r'^killsession/(?P<pk>\w+)/', RatticSessionDeleteView.as_view(), name='kill_session')
 )
 
 # URLs we don't want enabled with LDAP
