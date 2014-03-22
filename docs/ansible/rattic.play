@@ -25,7 +25,7 @@
       fail=yes
 
   - name: Build a secret key
-    set_fact: secret={{ lookup('password', inventory_hostname + '/secret length=25') }}
+    set_fact: secret={{ lookup('password', 'creds/' + inventory_hostname + '/secret length=25') }}
 
   - name: setup EPEL
     action: command rpm -ivh http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm creates=/etc/yum.repos.d/epel.repo
