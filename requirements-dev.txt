@@ -3,4 +3,7 @@ moto
 nose
 django_nose
 nose-testconfig
+selenium
+pep8
+pyflakes
 
