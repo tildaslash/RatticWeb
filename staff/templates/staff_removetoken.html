@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load url from future %}
+
+{% block content %}
+<h1>Disable Two Factor</h1>
+<p>Are you sure you wish to remove Two Factor Authentication from 
+{{ user.username }}?</p>
+<form method="post">
+{% csrf_token %}
+<input class="btn btn-danger" type="submit" value="Confirm" />
+</form>
+{% endblock %}
+

@@ -1,19 +1,26 @@
 from django.conf.urls import patterns, url
 from django.conf import settings
+
 from views import profile, newapikey, deleteapikey, RatticSessionDeleteView
+from views import RatticTFADisableView, RatticTFABackupTokensView
+from views import RatticTFASetupView, RatticTFALoginView
 
 urlpatterns = patterns('',
-    url(r'^profile/$', profile, {}),
+    url(r'^$', profile, {}),
     url(r'^newapikey/$', newapikey, {}),
     url(r'^deleteapikey/(?P<key_id>\d+)/$', deleteapikey, {}),
-
-    url(r'^login/$', 'django.contrib.auth.views.login', {
-        'template_name': 'account_login.html'}),
 
     url(r'^logout/$', 'django.contrib.auth.views.logout', {
         'next_page': settings.RATTIC_ROOT_URL}),
 
-    url(r'^killsession/(?P<pk>\w+)/', RatticSessionDeleteView.as_view(), name='kill_session')
+    # View to kill other sessions with
+    url(r'^killsession/(?P<pk>\w+)/', RatticSessionDeleteView.as_view(), name='kill_session'),
+
+    # Two Factor Views
+    url(r'^login/$', RatticTFALoginView.as_view(), name='login'),
+    url(r'^two_factor/disable/$', RatticTFADisableView.as_view(), name='tfa_disable'),
+    url(r'^two_factor/backup/$', RatticTFABackupTokensView.as_view(), name='tfa_backup'),
+    url(r'^two_factor/setup/$', RatticTFASetupView.as_view(), name='tfa_setup'),
 )
 
 # URLs we don't want enabled with LDAP

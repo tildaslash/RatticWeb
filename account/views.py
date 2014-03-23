@@ -10,12 +10,18 @@ from django.template.response import TemplateResponse
 from django.utils.timezone import now
 
 from user_sessions.views import SessionDeleteView
+from two_factor.utils import default_device
+from two_factor.views import DisableView, BackupTokensView, SetupView, LoginView
 
 
 @login_required
 def profile(request):
     # Get a list of the users API Keys
     keys = ApiKey.objects.filter(user=request.user)
+    try:
+        backup_tokens = request.user.staticdevice_set.all()[0].token_set.count()
+    except IndexError:
+        backup_tokens = 0
 
     # Get a list of the users current sessions
     sessions = request.user.session_set.filter(expire_date__gt=now())
@@ -38,6 +44,8 @@ def profile(request):
         'session_key': session_key,
         'form': form,
         'user': request.user,
+        'default_device': default_device(request.user),
+        'backup_tokens': backup_tokens,
     })
 
 
@@ -107,3 +115,21 @@ def ldap_password_change(request,
 class RatticSessionDeleteView(SessionDeleteView):
     def get_success_url(self):
         return reverse('account.views.profile')
+
+
+class RatticTFADisableView(DisableView):
+    template_name = 'account_tfa_disable.html'
+    redirect_url = 'account.views.profile'
+
+
+class RatticTFABackupTokensView(BackupTokensView):
+    template_name = 'account_tfa_backup_tokens.html'
+    redirect_url = 'tfa_backup'
+
+
+class RatticTFASetupView(SetupView):
+    redirect_url = 'account.views.profile'
+
+
+class RatticTFALoginView(LoginView):
+    template_name = 'account_tfa_login.html'

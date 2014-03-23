@@ -33,8 +33,6 @@ MANAGERS = ADMINS
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
-SITE_ID = 1
-
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = True
@@ -132,7 +130,6 @@ INSTALLED_APPS = (
     # External apps
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
@@ -210,7 +207,7 @@ CRED_ICON_CLEAR = 'rattic/img/clear.gif'
 CRED_ICON_DEFAULT = 'Key.png'
 
 LOGIN_REDIRECT_URL = urljoin(RATTIC_ROOT_URL, "cred/list/")
-LOGIN_URL = urljoin(RATTIC_ROOT_URL, "account/login/")
+LOGIN_URL = RATTIC_ROOT_URL
 
 AUTH_LDAP_USER_ATTR_MAP = {"email": "mail", }
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {}

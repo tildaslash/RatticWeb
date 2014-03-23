@@ -8,6 +8,7 @@ from django.contrib.auth.models import User, Group
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext as _
+from django_otp import user_has_device, devices_for_user
 
 import datetime
 from django.utils.timezone import now
@@ -38,7 +39,11 @@ def userdetail(request, uid):
                 args=('changeadvice', user.id)))
     credlogs = CredAudit.objects.filter(user=user, cred__group__in=request.user.groups.all())[:5]
     morelink = reverse('staff.views.audit_by_user', args=(user.id,))
-    return render(request, 'staff_userdetail.html', {'viewuser': user, 'credlogs': credlogs, 'morelink': morelink})
+    return render(request, 'staff_userdetail.html', {
+        'viewuser': user,
+        'credlogs': credlogs,
+        'morelink': morelink,
+        'hastoken': user_has_device(user)})
 
 
 @staff_member_required
@@ -304,3 +309,22 @@ def credundelete(request, cred_id):
     CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
 
     return render(request, 'cred_detail.html', {'cred': cred, 'lastchange': lastchange, 'action': reverse('cred.views.delete', args=(cred_id,)), 'undelete': True})
+
+
+@staff_member_required
+def removetoken(request, uid):
+    # Grab the user
+    user = get_object_or_404(User, pk=uid)
+
+    # Show confirm form on GET
+    if request.method != 'POST':
+        return render(request, 'staff_removetoken.html', {
+            'user': user,
+        })
+
+    # Delete all devices (backup, token and phone)
+    for dev in devices_for_user(user):
+        dev.delete()
+
+    # Redirect to the users detail page
+    return HttpResponseRedirect(reverse('staff.views.userdetail', args=(uid,)))

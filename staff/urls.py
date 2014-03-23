@@ -6,6 +6,7 @@ urlpatterns = patterns('staff.views',
     # Views in views.py
     url(r'^$', 'home'),
     url(r'^userdetail/(?P<uid>\d+)/$', 'userdetail'),
+    url(r'^removetoken/(?P<uid>\d+)/$', 'removetoken'),
     url(r'^groupdetail/(?P<gid>\d+)/$', 'groupdetail'),
     url(r'^audit-by-cred/(?P<cred_id>\d+)/$', 'audit_by_cred'),
     url(r'^audit-by-user/(?P<user_id>\d+)/$', 'audit_by_user'),

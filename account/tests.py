@@ -31,8 +31,12 @@ class AccountViewTests(TestCase):
 
         # Log them in
         self.client = Client()
-        loginurl = reverse('django.contrib.auth.views.login')
-        self.client.post(loginurl, {'username': self.username, 'password': self.password})
+        loginurl = reverse('login')
+        self.client.post(loginurl, {
+            'auth-username': self.username,
+            'auth-password': self.password,
+            'rattic_tfa_login_view-current_step': 'auth'
+        })
 
         # View the profile page to create an API key
         self.client.get(reverse('account.views.profile'))
@@ -109,30 +113,33 @@ class AccountMiddlewareTests(TestCase):
 
     def test_login(self):
         c = Client()
-        resp = c.post(reverse('django.contrib.auth.views.login'), {
-            'username': 'norm',
-            'password': 'password',
+        resp = c.post(reverse('login'), {
+            'auth-username': 'norm',
+            'auth-password': 'password',
+            'rattic_tfa_login_view-current_step': 'auth',
         })
         self.assertRedirects(resp, reverse('cred.views.list'), status_code=302, target_status_code=200)
-        self.assertTemplateNotUsed(resp, 'account_login.html')
+        self.assertTemplateNotUsed(resp, 'account_tfa_login.html')
 
     def test_login_wrongpass(self):
         c = Client()
-        resp = c.post(reverse('django.contrib.auth.views.login'), {
-            'username': 'norm',
-            'password': 'wrongpassword',
+        resp = c.post(reverse('login'), {
+            'auth-username': 'norm',
+            'auth-password': 'wrongpassword',
+            'rattic_tfa_login_view-current_step': 'auth',
         }, follow=False)
         self.assertEqual(resp.status_code, 200)
-        self.assertTemplateUsed(resp, 'account_login.html')
+        self.assertTemplateUsed(resp, 'account_tfa_login.html')
 
     @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_login_disabled(self):
         self.unorm.is_active = False
         self.unorm.save()
         c = Client()
-        resp = c.post(reverse('django.contrib.auth.views.login'), {
-            'username': 'norm',
-            'password': 'wrongpassword',
+        resp = c.post(reverse('login'), {
+            'auth-username': 'norm',
+            'auth-password': 'wrongpassword',
+            'rattic_tfa_login_view-current_step': 'auth',
         }, follow=False)
         self.assertEqual(resp.status_code, 200)
-        self.assertTemplateUsed(resp, 'account_login.html')
+        self.assertTemplateUsed(resp, 'account_tfa_login.html')
