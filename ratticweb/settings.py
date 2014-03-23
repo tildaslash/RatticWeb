@@ -227,11 +227,6 @@ TIME_ZONE = config.get('ratticweb', 'timezone')
 SECRET_KEY = config.get('ratticweb', 'secretkey')
 ALLOWED_HOSTS = [config.get('ratticweb', 'hostname'), 'localhost']
 
-BACKUP_DIR = confget("backup", "backup_dir", None)
-BACKUP_GPG_HOME = confget("backup", "backup_gpg_home", None)
-BACKUP_S3_BUCKET = confget("backup", "backup_s3_bucket", None)
-BACKUP_RECIPIENTS = confget("backup", "backup_recipients", None)
-
 try:
     PASSWORD_EXPIRY = timedelta(days=int(config.get('ratticweb', 'passwordexpirydays')))
 except NoOptionError:
@@ -255,6 +250,13 @@ DATABASES = {
         'PORT': confget('database', 'port', ''),
     }
 }
+
+# [backup]
+BACKUP_DIR = confget("backup", "dir", None)
+BACKUP_GPG_HOME = confget("backup", "gpg_home", None)
+BACKUP_S3_BUCKET = confget("backup", "s3_bucket", None)
+BACKUP_RECIPIENTS = confget("backup", "recipients", None)
+
 
 # [email]
 # SMTP Mail Opts
