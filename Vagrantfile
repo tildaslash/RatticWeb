@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
-  config.vm.box_url = "https://rattic.org/vagrant/centos_6.3_extra_vg_space.box"
+  config.vm.box_url = "http://rattic.org/vagrant/centos_6.3_extra_vg_space.box"
 
   config.vm.define "rattic" do |web|
     config.vm.network :forwarded_port, host: 8080, guest: 80
