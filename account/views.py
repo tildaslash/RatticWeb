@@ -128,6 +128,8 @@ class RatticTFABackupTokensView(BackupTokensView):
 
 
 class RatticTFASetupView(SetupView):
+    template_name = 'account_tfa_setup.html'
+    qrcode_url = 'tfa_qr'
     redirect_url = 'account.views.profile'
 
 

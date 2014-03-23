@@ -13,7 +13,8 @@
 {# If the user has a token #}
 {% if default_device %}
 <tr><th>{% trans "Two Factor Auth" %}</th><td>{% trans "Enabled"%} <a href="{% url 'tfa_disable' %}" class="btn btn-mini btn-danger">{% trans "Disable" %}</a></td></tr>
-<tr><th>{% trans "Backup Codes Left" %}</th><td>{{ backup_codes }}</td></tr>
+<tr><th>{% trans "Backup Codes Left" %}</th><td>{{ backup_tokens }}
+    <a href="{% url "tfa_backup" %}" class="btn btn-mini">{% trans "View Codes" %}</a></td></tr>
 
 {# If the user hasn't made a token yet #}
 {% else %}
