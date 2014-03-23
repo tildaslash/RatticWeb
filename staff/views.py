@@ -320,7 +320,7 @@ def removetoken(request, uid):
     if request.method != 'POST':
         return render(request, 'staff_removetoken.html', {
             'user': user,
-            })
+        })
 
     # Delete all devices (backup, token and phone)
     for dev in devices_for_user(user):

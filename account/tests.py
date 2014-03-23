@@ -36,7 +36,7 @@ class AccountViewTests(TestCase):
             'auth-username': self.username,
             'auth-password': self.password,
             'rattic_tfa_login_view-current_step': 'auth'
-            })
+        })
 
         # View the profile page to create an API key
         self.client.get(reverse('account.views.profile'))

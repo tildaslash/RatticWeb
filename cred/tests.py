@@ -419,7 +419,7 @@ class CredViewTests(TestCase):
             'auth-username': self.data.unorm.username,
             'auth-password': self.data.normpass,
             'rattic_tfa_login_view-current_step': 'auth',
-            }, follow=True)
+        }, follow=True)
         self.assertRedirects(resp, credurl, status_code=302, target_status_code=200)
 
     def test_invalid_icon(self):

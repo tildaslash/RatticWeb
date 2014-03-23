@@ -14,7 +14,7 @@ urlpatterns = patterns('',
         'next_page': settings.RATTIC_ROOT_URL}),
 
     # View to kill other sessions with
-    url(r'^killsession/(?P<pk>\w+)/', RatticSessionDeleteView.as_view(), name='kill_session')
+    url(r'^killsession/(?P<pk>\w+)/', RatticSessionDeleteView.as_view(), name='kill_session'),
 
     # Two Factor Views
     url(r'^login/$', RatticTFALoginView.as_view(), name='login'),
