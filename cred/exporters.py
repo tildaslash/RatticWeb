@@ -24,11 +24,11 @@ def export_keepass(creds, password):
 
         # Create the entry
         kpg.create_entry(
-                title=c.title,
-                username=c.username,
-                password=c.password,
-                url=c.url,
-                notes=desc,
+            title=c.title,
+            username=c.username,
+            password=c.password,
+            url=c.url,
+            notes=desc,
         )
 
     # Send the response

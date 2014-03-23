@@ -87,8 +87,8 @@ class CredResource(ModelResource):
         authentication = MultiAuthentication(SessionAuthentication(), MultiApiKeyAuthentication())
         authorization = CredAuthorization()
         filtering = {
-                'title': ('exact', 'contains', 'icontains'),
-                'url': ('exact', 'startswith', ),
+            'title': ('exact', 'contains', 'icontains'),
+            'url': ('exact', 'startswith', ),
         }
 
 
@@ -102,7 +102,7 @@ class TagResource(ModelResource):
         queryset = Tag.objects.all()
         always_return_data = True
         filtering = {
-                'name': ('exact', 'contains', 'icontains', 'startswith', 'istartswith'),
+            'name': ('exact', 'contains', 'icontains', 'startswith', 'istartswith'),
         }
         resource_name = 'tag'
         authentication = MultiAuthentication(SessionAuthentication(), MultiApiKeyAuthentication())

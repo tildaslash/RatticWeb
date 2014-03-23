@@ -73,11 +73,11 @@ class ImportTests(TestCase):
     def test_process_import_entry_import(self):
         # Setup session test data
         entry = {
-                'title': 'Test',
-                'username': 'dan',
-                'description': '',
-                'password': 'pass',
-                'tags': ['tag1', 'tag2'],
+            'title': 'Test',
+            'username': 'dan',
+            'description': '',
+            'password': 'pass',
+            'tags': ['tag1', 'tag2'],
         }
         entries = [entry, ]
         session = self.data.staff.session

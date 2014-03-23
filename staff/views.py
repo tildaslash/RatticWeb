@@ -212,8 +212,8 @@ def upload_keepass(request):
         if form.is_valid():
             # Store the data in the session
             data = {
-                    'group': form.cleaned_data['group'],
-                    'entries': form.cleaned_data['db']['entries'],
+                'group': form.cleaned_data['group'],
+                'entries': form.cleaned_data['db']['entries'],
             }
             request.session['imported_data'] = data
 
@@ -244,9 +244,9 @@ def process_import(request):
 
             # Add an audit record
             CredAudit(
-                    audittype=CredAudit.CREDADD,
-                    cred=form.instance,
-                    user=request.user,
+                audittype=CredAudit.CREDADD,
+                cred=form.instance,
+                user=request.user,
             ).save()
 
             # Import another
