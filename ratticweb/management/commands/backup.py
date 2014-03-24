@@ -14,12 +14,12 @@ class Command(BaseCommand):
     def validate_options(self, backup_dir, recipients):
         """Make sure our settings make sense"""
         if backup_dir is None:
-            raise CommandError("No backup directory has been specified (settings.BACKUP_DIR)")
+            raise CommandError("No backup directory has been specified.")
         if not os.path.exists(backup_dir):
             raise CommandError("Specified backup_dir ({0}) doesn't exist".format(backup_dir))
 
         if recipients is None:
-            raise CommandError("No recipients list has been specified (settings.BACKUP_RECIPIENTS)")
+            raise CommandError("No recipients list has been specified.")
         elif not isinstance(recipients, list) and not isinstance(recipients, tuple) and not isinstance(recipients, basestring):
             raise CommandError("Recipients list needs to be a list of strings or a comma separated string, not {0}".format(type(recipients)))
 
