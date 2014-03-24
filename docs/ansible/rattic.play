@@ -47,6 +47,8 @@
       - libselinux-python
       - gcc
       - python-devel
+      - libxml2-devel
+      - libxslt-devel
 
   - name: turn off selinux
     selinux: state=disabled

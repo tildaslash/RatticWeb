@@ -20,3 +20,4 @@ wsgiref==0.1.2
 keepassdb==0.2.1
 db_backup==0.1.1
 boto==2.26.1
+lxml=3.3.3
