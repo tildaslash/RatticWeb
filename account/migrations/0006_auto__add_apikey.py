@@ -7,6 +7,10 @@ from django.db import models
 
 class Migration(SchemaMigration):
 
+    depends_on = (
+        ('tastypie', '0002_add_apikey_index'),
+    )
+
     def forwards(self, orm):
         # Adding model 'ApiKey'
         db.create_table('account_apikey', (
