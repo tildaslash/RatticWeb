@@ -1,6 +1,6 @@
-
 {% extends "base.html" %}
 {% load url from future %}
+{% load static from staticfiles %}
 
 {% block content %}
 {% if form.errors %}
@@ -8,6 +8,7 @@
 {% endif %}
 <div class="pagination-centered hidden-phone">
     <h1>Welcome to Rattic</h1>
+    <img class="biglogo" alt="RatticDB Logo" src="{% static "rattic/img/rattic_logo_web.svg" %}">
     <p>It does passwords.</p> 
 </div>
 {% endblock %}
