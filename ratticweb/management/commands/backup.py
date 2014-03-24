@@ -37,6 +37,6 @@ class Command(BaseCommand):
         try:
             with BackupStorage() as storage:
                 destination = backup(settings.DATABASES['default'], recipients, backup_dir, gpg_home=gpg_home)
-                storage.send_from(destination, backup_dir)
+                storage.move_from(destination, backup_dir)
         except FailedBackup as error:
             raise CommandError(error)

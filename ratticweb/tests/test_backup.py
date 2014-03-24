@@ -122,4 +122,4 @@ class BackupManagementCommandTest(TestCase):
 
         with override_settings(BACKUP_DIR=backup_dir, BACKUP_RECIPIENTS=recipients, DATABASES={'default': default_db}):
             call_command("backup")
-            backup_storage_obj.send_from.assert_called_once_with(destination, backup_dir)
+            backup_storage_obj.move_from.assert_called_once_with(destination, backup_dir)

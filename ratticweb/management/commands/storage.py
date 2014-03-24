@@ -104,6 +104,15 @@ class BackupStorage(object):
             log.info("Uploading to s3://{0}/{1}".format(self.bucket_location, key_name))
             self.upload_to_s3(source, self.bucket, key_name)
 
+    def move_from(self, source, start):
+        """
+        Send to our storage from source. Remove when done.
+        The s3 key name is retrieved by finding the relative path from start to source
+        """
+        self.send_from(source, start)
+        log.info('Removing local file {0}'.format(source))
+        os.remove(source)
+
     def upload_to_s3(self, source, destination_bucket, key_name):
         """Upload the source to the destination bucket"""
         key = Key(destination_bucket)
