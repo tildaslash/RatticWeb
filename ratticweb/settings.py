@@ -254,7 +254,6 @@ BACKUP_GPG_HOME = confget("backup", "gpg_home", None)
 BACKUP_S3_BUCKET = confget("backup", "s3_bucket", None)
 BACKUP_RECIPIENTS = confget("backup", "recipients", None)
 
-
 # [email]
 # SMTP Mail Opts
 EMAIL_BACKEND = confget('email', 'backend', 'django.core.mail.backends.filebased.EmailBackend')
