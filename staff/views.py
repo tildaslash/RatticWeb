@@ -217,7 +217,7 @@ def upload_keepass(request):
         if form.is_valid():
             # Store the data in the session
             data = {
-                'group': form.cleaned_data['group'],
+                'group': form.cleaned_data['group'].id,
                 'entries': form.cleaned_data['db']['entries'],
             }
             request.session['imported_data'] = data
@@ -271,7 +271,12 @@ def process_import(request):
         newcred['tags'] = tlist
 
         # Setup the group
-        newcred['group'] = request.session['imported_data']['group']
+        groupid = request.session['imported_data']['group']
+        try:
+            newcred['group'] = Group.objects.get(pk=groupid)
+        except Group.DoesNotExist:
+            del request.session['imported_data']
+            raise Http404
 
         # Display the form
         form = CredForm(request.user, newcred)

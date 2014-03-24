@@ -41,7 +41,7 @@ class ImportTests(TestCase):
         data['entries'].sort()
 
         # Check the group matches
-        self.assertEqual(data['group'].id, self.gp.id)
+        self.assertEqual(data['group'], self.gp.id)
 
         # Check the right credentials are in there
         cred = data['entries'][0]
@@ -59,7 +59,7 @@ class ImportTests(TestCase):
         entries = []
         session = self.data.staff.session
         session['imported_data'] = {}
-        session['imported_data']['group'] = self.gp
+        session['imported_data']['group'] = self.gp.id
         session['imported_data']['entries'] = entries
         session.save()
 
@@ -82,7 +82,7 @@ class ImportTests(TestCase):
         entries = [entry, ]
         session = self.data.staff.session
         session['imported_data'] = {}
-        session['imported_data']['group'] = self.gp
+        session['imported_data']['group'] = self.gp.id
         session['imported_data']['entries'] = entries
         session.save()
 
