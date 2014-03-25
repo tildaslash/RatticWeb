@@ -50,9 +50,6 @@ def download(request):
 
 @login_required
 def list(request, cfilter='special', value='all', sortdir='ascending', sort='title', page=1):
-    # Static stuff
-    sortables = ('title', 'username', 'group', 'id', 'modified')
-
     # Setup basic stuff
     viewdict = {}
     viewdict['credtitle'] = _('All passwords')
@@ -148,10 +145,10 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
         raise Http404
 
     # Apply the sorting rules
-    if sortdir == 'ascending' and sort in sortables:
+    if sortdir == 'ascending' and sort in Cred.SORTABLES:
         cred_list = cred_list.order_by('latest', sort)
         viewdict['revsortdir'] = 'descending'
-    elif sortdir == 'descending' and sort in sortables:
+    elif sortdir == 'descending' and sort in Cred.SORTABLES:
         cred_list = cred_list.order_by('latest', '-' + sort)
         viewdict['revsortdir'] = 'ascending'
     else:

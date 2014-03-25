@@ -70,11 +70,12 @@ class SearchManager(models.Manager):
 
 class Cred(models.Model):
     METADATA = ('description', 'descriptionmarkdown', 'group', 'tags', 'iconname', 'latest', 'id', 'modified')
+    SORTABLES = ('title', 'username', 'group', 'id', 'modified')
     objects = SearchManager()
 
     title = models.CharField(max_length=64, db_index=True)
     url = models.URLField(blank=True, null=True, db_index=True)
-    username = models.CharField(max_length=250, blank=True, null=True)
+    username = models.CharField(max_length=250, blank=True, null=True, db_index=True)
     password = models.CharField(max_length=250)
     descriptionmarkdown = models.BooleanField(default=False, verbose_name=_('Markdown Description'))
     description = models.TextField(blank=True, null=True)
