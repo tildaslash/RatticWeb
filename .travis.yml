@@ -6,9 +6,6 @@ services: mysql
 cache:
   directories:
     - $HOME/.pip-cache/
-env:
-  - DJANGO=1.4.5
-  - DJANGO=1.5
 install:
   - "sudo apt-get update"
   - "sudo apt-get install -qq slapd ldap-utils"
