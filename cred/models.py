@@ -4,6 +4,10 @@ from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from django.forms import ModelForm, SelectMultiple
 from django.utils.translation import ugettext_lazy as _
+from django.forms.models import model_to_dict
+from django.utils.timezone import now
+
+from ratticweb.util import DictDiffer
 
 
 class Tag(models.Model):
@@ -65,7 +69,7 @@ class SearchManager(models.Manager):
 
 
 class Cred(models.Model):
-    METADATA = ('description', 'descriptionmarkdown', 'group', 'tags', 'iconname')
+    METADATA = ('description', 'descriptionmarkdown', 'group', 'tags', 'iconname', 'latest', 'id', 'modified')
     objects = SearchManager()
 
     title = models.CharField(max_length=64, db_index=True)
@@ -79,19 +83,43 @@ class Cred(models.Model):
     iconname = models.CharField(default='Key.png', max_length=64, verbose_name='Icon')
     is_deleted = models.BooleanField(default=False, db_index=True)
     latest = models.ForeignKey('Cred', related_name='history', blank=True, null=True, db_index=True)
+    modified = models.DateTimeField(db_index=True)
     created = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         try:
+            # Get a copy of the old object from the db
             old = Cred.objects.get(id=self.id)
+
+            # Reset the primary key so Django thinks its a new object
             old.id = None
+
+            # Set the latest on the old copy to the new copy
             old.latest = self
+
+            # Create it in the DB
             old.save()
+
+            # Add the tags to the old copy now that it exists
             for t in self.tags.all():
                 old.tags.add(t)
+
+            # Lets see what was changed
+            oldcred = model_to_dict(old)
+            newcred = model_to_dict(self)
+            diff = DictDiffer(newcred, oldcred).changed()
+
+            # Check if some non-metadata was changed
+            chg = set(diff) - set(Cred.METADATA)
+            cred_changed = len(chg) > 0
+
+            # If the creds were changed update the modify date
+            if cred_changed:
+                self.modified = now()
         except Cred.DoesNotExist:
-            # This just means its new cred, ignore it
-            pass
+            # This just means its new cred, set the initial modified time
+            self.modified = now()
+
         super(Cred, self).save(*args, **kwargs)
 
     def delete(self):
@@ -139,7 +167,7 @@ class CredForm(ModelForm):
     class Meta:
         model = Cred
         # These field are not user configurable
-        exclude = ('is_deleted', 'latest')
+        exclude = ('is_deleted', 'latest', 'modified')
         widgets = {
             # Use chosen for the tag field
             'tags': SelectMultiple(attrs={'class': 'rattic-tag-selector'}),

@@ -51,7 +51,7 @@ def download(request):
 @login_required
 def list(request, cfilter='special', value='all', sortdir='ascending', sort='title', page=1):
     # Static stuff
-    sortables = ('title', 'username', 'group', 'id')
+    sortables = ('title', 'username', 'group', 'id', 'modified')
 
     # Setup basic stuff
     viewdict = {}
