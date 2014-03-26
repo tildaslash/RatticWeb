@@ -61,7 +61,7 @@ class CredAccessTest(TestCase):
 
     def test_credlist_visible(self):
         self.assertTrue(self.c in Cred.objects.accessible(self.u))
-        self.assertTrue(not self.c in Cred.objects.accessible(self.f))
+        self.assertTrue(self.c not in Cred.objects.accessible(self.f))
 
     def test_deleted_access(self):
         self.assertTrue(self.d.is_accessible_by(self.s))
@@ -69,7 +69,7 @@ class CredAccessTest(TestCase):
 
     def test_deleted_visibility(self):
         self.assertTrue(self.d in Cred.objects.accessible(self.s, deleted=True))
-        self.assertTrue(not self.d in Cred.objects.accessible(self.u, deleted=True))
+        self.assertTrue(self.d not in Cred.objects.accessible(self.u, deleted=True))
 
 
 class CredDeleteTest(TestCase):
