@@ -33,11 +33,11 @@ objectClass: organizationalUnit
 ## Demonstration user
 dn: uid=admin,ou=user,ou=people,dc=example,dc=com
 objectClass: top
-objectClass: account
 objectClass: posixAccount
 objectClass: shadowAccount
 objectClass: inetOrgPerson
 cn: Rattic Admin
+sn: Admin
 uid: admin
 uidNumber: 3000
 gidNumber: 3000
@@ -49,11 +49,11 @@ userPassword: rattic
 ## Normal User
 dn: uid=norm,ou=user,ou=people,dc=example,dc=com
 objectClass: top
-objectClass: account
 objectClass: posixAccount
 objectClass: shadowAccount
 objectClass: inetOrgPerson
 cn: Normal User
+sn: User
 uid: norm
 mail: norm@example.com
 uidNumber: 3001
@@ -65,11 +65,11 @@ userPassword: password
 ## Staff User
 dn: uid=staff,ou=user,ou=people,dc=example,dc=com
 objectClass: top
-objectClass: account
 objectClass: posixAccount
 objectClass: shadowAccount
 objectClass: inetOrgPerson
 cn: Staff User
+sn: User
 uid: staff
 mail: staff@example.com
 uidNumber: 3002
@@ -81,11 +81,11 @@ userPassword: password
 ## Nobody
 dn: uid=nobody,ou=user,ou=people,dc=example,dc=com
 objectClass: top
-objectClass: account
 objectClass: posixAccount
 objectClass: shadowAccount
 objectClass: inetOrgPerson
 cn: Nobody
+sn: User
 uid: nobody
 mail: nobody@example.com
 uidNumber: 3003
