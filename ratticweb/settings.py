@@ -227,7 +227,7 @@ TIME_ZONE = config.get('ratticweb', 'timezone')
 SECRET_KEY = config.get('ratticweb', 'secretkey')
 ALLOWED_HOSTS = [config.get('ratticweb', 'hostname'), 'localhost']
 # Setup the loglevel
-LOGGING['loggers']['django.requests']['level'] = config.get('ratticweb', 'loglevel')
+LOGGING['loggers']['django.request']['level'] = config.get('ratticweb', 'loglevel')
 
 try:
     PASSWORD_EXPIRY = timedelta(days=int(config.get('ratticweb', 'passwordexpirydays')))
