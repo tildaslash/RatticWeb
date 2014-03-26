@@ -40,6 +40,7 @@ cn: Rattic Admin
 uid: admin
 uidNumber: 3000
 gidNumber: 3000
+mail: admin@example.com
 homeDirectory: /home/admin
 loginShell: /bin/bash
 userPassword: rattic
@@ -52,6 +53,7 @@ objectClass: posixAccount
 objectClass: shadowAccount
 cn: Normal User
 uid: norm
+mail: norm@example.com
 uidNumber: 3001
 gidNumber: 3001
 homeDirectory: /home/norm
@@ -66,6 +68,7 @@ objectClass: posixAccount
 objectClass: shadowAccount
 cn: Staff User
 uid: staff
+mail: staff@example.com
 uidNumber: 3002
 gidNumber: 3002
 homeDirectory: /home/staff
@@ -80,6 +83,7 @@ objectClass: posixAccount
 objectClass: shadowAccount
 cn: Nobody
 uid: nobody
+mail: nobody@example.com
 uidNumber: 3003
 gidNumber: 3003
 homeDirectory: /home/nobody
