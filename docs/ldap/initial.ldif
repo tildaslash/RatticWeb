@@ -36,6 +36,7 @@ objectClass: top
 objectClass: account
 objectClass: posixAccount
 objectClass: shadowAccount
+objectClass: inetOrgPerson
 cn: Rattic Admin
 uid: admin
 uidNumber: 3000
@@ -51,6 +52,7 @@ objectClass: top
 objectClass: account
 objectClass: posixAccount
 objectClass: shadowAccount
+objectClass: inetOrgPerson
 cn: Normal User
 uid: norm
 mail: norm@example.com
@@ -66,6 +68,7 @@ objectClass: top
 objectClass: account
 objectClass: posixAccount
 objectClass: shadowAccount
+objectClass: inetOrgPerson
 cn: Staff User
 uid: staff
 mail: staff@example.com
@@ -81,6 +84,7 @@ objectClass: top
 objectClass: account
 objectClass: posixAccount
 objectClass: shadowAccount
+objectClass: inetOrgPerson
 cn: Nobody
 uid: nobody
 mail: nobody@example.com
