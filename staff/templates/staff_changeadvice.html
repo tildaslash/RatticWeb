@@ -3,7 +3,7 @@
 {% load i18n %}
 
 {% block content %}
-<h2>{% blocktrans %}Changes for user: {{ viewuser.username }}{% endblocktrans %}</h2>
+<h2>{% blocktrans with username=viewuser.username %}Changes for user: {{ username }}{% endblocktrans %}</h2>
 <p>{% blocktrans %}We noticed that you are disabling a user account, or removing groups
 from a user. To help you RatticDB has analysed the auditlogs to see what
 passwords the user knows, and no longer has access to. We recommend that
