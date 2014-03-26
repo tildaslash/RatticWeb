@@ -4,6 +4,6 @@ nose
 django_nose
 nose-testconfig
 selenium
-pep8
+pep8==1.5.0
 pyflakes
 

@@ -29,10 +29,12 @@ urlpatterns = patterns('',
 # URLs we don't want enabled with LDAP
 if not settings.LDAP_ENABLED:
     urlpatterns += (
-        url(r'^reset/$', 'django.contrib.auth.views.password_reset', {
-            'post_reset_redirect': '/account/reset/done/',
-            'template_name': 'password_reset.html'
-            }, name="password_reset"),
+        url(r'^reset/$', 'django.contrib.auth.views.password_reset',
+            {
+                'post_reset_redirect': '/account/reset/done/',
+                'template_name': 'password_reset.html'
+            },
+            name="password_reset"),
 
         url(r'^reset/done/$', 'django.contrib.auth.views.password_reset_done', {
             'template_name': 'password_reset_done.html'}),
