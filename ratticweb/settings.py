@@ -185,7 +185,6 @@ LOGGING = {
         },
         'django.request': {
             'handlers': ['console'],
-            'level': 'ERROR',
             'propagate': True,
         },
         'db_backup': {
@@ -227,6 +226,8 @@ TEMPLATE_DEBUG = DEBUG
 TIME_ZONE = config.get('ratticweb', 'timezone')
 SECRET_KEY = config.get('ratticweb', 'secretkey')
 ALLOWED_HOSTS = [config.get('ratticweb', 'hostname'), 'localhost']
+# Setup the loglevel
+LOGGING['loggers']['django.requests']['level'] = config.get('ratticweb', 'loglevel')
 
 try:
     PASSWORD_EXPIRY = timedelta(days=int(config.get('ratticweb', 'passwordexpirydays')))
@@ -280,7 +281,7 @@ if LDAP_ENABLED:
     )
 
     # Setup the LDAP Logging
-    LOGGGING['loggers']['django_auth_ldap']['level'] = confget('ldap', 'loglevel', 'WARNING')
+    LOGGING['loggers']['django_auth_ldap']['level'] = confget('ldap', 'loglevel', 'WARNING')
 
     # Get config options for LDAP
     AUTH_LDAP_SERVER_URI = config.get('ldap', 'uri')
