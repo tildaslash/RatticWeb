@@ -3,7 +3,7 @@
 
 {% if user.is_authenticated %}
      <h4>{% trans "You" %}</h4>
-         <p>{% blocktrans %}Welcome {{ user.username|title }}.{% endblocktrans %}<p>
+         <p>{% blocktrans with username=user.username|title %}Welcome {{ username }}.{% endblocktrans %}<p>
          <a class="btn" href="{% url "account.views.profile" %}">{% trans "Profile" %}</a>
          <a class="btn btn-danger" href="{% url "django.contrib.auth.views.logout" %}">{% trans "Logout" %}</a>
      <h4><a href="{% url "cred.views.tags"  %}">{% trans "Tags" %}</a></h4>
