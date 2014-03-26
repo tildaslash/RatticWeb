@@ -280,7 +280,7 @@ if LDAP_ENABLED:
     )
 
     # Setup the LDAP Logging
-    LOGGGING['loggers']['django_auth_ldap']['level'] = config.get('ldap', 'uri', 'WARNING')
+    LOGGGING['loggers']['django_auth_ldap']['level'] = confget('ldap', 'loglevel', 'WARNING')
 
     # Get config options for LDAP
     AUTH_LDAP_SERVER_URI = config.get('ldap', 'uri')
