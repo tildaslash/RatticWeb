@@ -179,8 +179,12 @@ LOGGING = {
         }
     },
     'loggers': {
+        'django_auth_ldap': {
+            'handlers': ['console'],
+            'propagate': True,
+        },
         'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': ['console'],
             'level': 'ERROR',
             'propagate': True,
         },
@@ -274,6 +278,9 @@ if LDAP_ENABLED:
         'django_auth_ldap.backend.LDAPBackend',
         'django.contrib.auth.backends.ModelBackend',
     )
+
+    # Setup the LDAP Logging
+    LOGGGING['loggers']['django_auth_ldap']['level'] = config.get('ldap', 'uri', 'WARNING')
 
     # Get config options for LDAP
     AUTH_LDAP_SERVER_URI = config.get('ldap', 'uri')
