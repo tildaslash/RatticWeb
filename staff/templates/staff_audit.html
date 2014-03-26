@@ -4,10 +4,10 @@
 
 {% block content %}
 {% if type == 'cred' %}
-  <h2>{% blocktrans %}Audit Logs for password &apos;{{ cred.title }}&apos;{% endblocktrans %}</h2>
+  <h2>{% blocktrans with cred_title=cred.title %}Audit Logs for password &apos;{{ cred_title }}&apos;{% endblocktrans %}</h2>
 {% endif %}
 {% if type == 'user' %}
-  <h2>{% blocktrans %}Audit Logs for user &apos;{{ loguser.username }}&apos;{% endblocktrans %}</h2>
+  <h2>{% blocktrans with username=loguser.username %}Audit Logs for user &apos;{{ username }}&apos;{% endblocktrans %}</h2>
 {% endif %}
 {% if type == 'time' %}
   <h2>{% blocktrans %}Audit Logs going back {{ days_ago }} days ago{% endblocktrans %}</h2>
