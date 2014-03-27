@@ -10,7 +10,6 @@ from db_backup.errors import FailedBackup
 
 import uuid
 import mock
-import os
 
 
 class RestoreManagementCommandTest(TestCase):
@@ -21,36 +20,22 @@ class RestoreManagementCommandTest(TestCase):
         with self.assertRaisesRegexp(CommandError, "Please specify --restore-from.+"):
             self.command.handle(restore_from=None)
 
-    def test_complains_if_restore_from_doesnt_exist(self):
-        with a_temp_file() as restore_from:
-            if os.path.exists(restore_from):
-                os.remove(restore_from)
-
-            with self.assertRaisesRegexp(CommandError, "Specified backup file \({0}\) doesn't exist".format(restore_from)):
-                self.command.handle(restore_from=restore_from)
-
-    @mock.patch("os.path.exists")
     @mock.patch("ratticweb.management.commands.restore.restore")
-    def test_calls_restore(self, fake_restore, fake_exists):
+    def test_calls_restore(self, fake_restore):
         gpg_home = mock.Mock(name="gpg_home")
         default_db = mock.Mock(name="default_db")
         restore_from = mock.Mock(name="restore_from")
         restore_from.startswith.return_value = False
 
-        fake_exists.side_effect = lambda p: True
-
         with override_settings(DATABASES={'default': default_db}, BACKUP_GPG_HOME=gpg_home):
             call_command("restore", restore_from=restore_from)
             fake_restore.assert_called_once_with(default_db, restore_from, gpg_home=gpg_home)
-            fake_exists.assert_called_once_with(restore_from)
             restore_from.startswith.assert_called_once_with("s3://")
 
-    @mock.patch("os.path.exists")
     @mock.patch("ratticweb.management.commands.restore.restore")
-    def test_converts_FailedBackup_errors_into_CommandError(self, fake_restore, fake_exists):
+    def test_converts_FailedBackup_errors_into_CommandError(self, fake_restore):
         default_db = mock.Mock(name="default_db")
         restore_from = mock.Mock(name="restore_from")
-        fake_exists.side_effect = lambda p: True
         restore_from.startswith.return_value = False
 
         error_message = str(uuid.uuid1())
@@ -61,7 +46,6 @@ class RestoreManagementCommandTest(TestCase):
             with self.assertRaisesRegexp(CommandError, error_message):
                 # call_command results in the CommandError being caught and propagated as SystemExit
                 self.command.handle(restore_from=restore_from)
-            fake_exists.assert_called_once_with(restore_from)
             restore_from.startswith.assert_called_once_with("s3://")
 
     @mock.patch("ratticweb.management.commands.restore.restore")
@@ -105,10 +89,3 @@ class RestoreManagementCommandTest(TestCase):
         with self.assertRaisesRegexp(CommandError, "Please specify --restore-from.+"):
             with self.command.restore_location(None):
                 assert False, "Should have complained"
-
-    def test_restore_location_complains_if_location_doesnt_exist(self):
-        with a_temp_file() as filename:
-            os.remove(filename)
-            with self.assertRaisesRegexp(CommandError, "Specified backup file \([^\)]+\) doesn't exist"):
-                with self.command.restore_location(filename):
-                    assert False, "Should have complained"

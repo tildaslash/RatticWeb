@@ -7,7 +7,6 @@ from db_backup.commands import restore
 
 from contextlib import contextmanager
 from optparse import make_option
-import os
 
 
 class Command(BaseCommand):
@@ -33,9 +32,6 @@ class Command(BaseCommand):
         else:
             if not location:
                 raise CommandError("Please specify --restore-from as the location of the backup")
-
-            if not os.path.exists(location):
-                raise CommandError("Specified backup file ({0}) doesn't exist".format(location))
 
             yield location
 
