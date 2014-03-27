@@ -110,8 +110,9 @@ class BackupStorage(object):
         The s3 key name is retrieved by finding the relative path from start to source
         """
         self.send_from(source, start)
-        log.info('Removing local file {0}'.format(source))
-        os.remove(source)
+        if self.has_storage:
+            log.info('Removing local file {0}'.format(source))
+            os.remove(source)
 
     def upload_to_s3(self, source, destination_bucket, key_name):
         """Upload the source to the destination bucket"""
