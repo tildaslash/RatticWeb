@@ -1,14 +1,18 @@
 {% extends "base.html" %}
 {% load url from future %}
 {% load static from staticfiles %}
+{% load i18n %}
 
 {% block content %}
 {% if form.errors %}
-<div id="loginfailed" class="alert alert-error">Your username and password didn't match. Please try again.</div>
+<div id="loginfailed" class="alert alert-error">
+    {% blocktrans %}Your username and password didn't match. Please try again.{% endblocktrans %}
+</div>
 {% endif %}
-<div class="pagination-centered hidden-phone">
-    <h1>Welcome to Rattic</h1>
+<div class="pagination-centered">
+    <h1>{% trans "Welcome to Rattic" %}</h1>
     <img class="biglogo" alt="RatticDB Logo" src="{% static "rattic/img/rattic_logo_web.svg" %}">
-    <p>It does passwords.</p> 
+    <p>{% trans "It does passwords." %}</p>
+    <p class="visible-phone"><a class='btn btn-primary' href="{% url "login" %}" >{% trans "Login" %}</a></p>
 </div>
 {% endblock %}
