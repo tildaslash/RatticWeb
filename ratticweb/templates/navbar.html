@@ -33,30 +33,32 @@
 
         <ul class="nav hidden-desktop">
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">{% trans "Navigation" %} <b class="caret"></b></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">{% trans "Menu" %} <b class="caret"></b></a>
             <ul class="dropdown-menu" role="menu">
-              <li>
-                <a href="{% url "cred.views.search" %}">{% trans "Search" %}</a>
-              </li>
-              <li>
-                <a href="{% url "cred.views.tags" %}">{% trans "Tags" %}</a>
-              </li>
-              <li>
-                <a href="{{ cred_views_list }}">{% trans "All Passwords" %}</a>
-              </li>
               {% if user.is_authenticated %}
+                <li>
+                  <a href="{% url "cred.views.search" %}">{% trans "Search" %}</a>
+                </li>
+                <li>
+                  <a href="{% url "cred.views.tags" %}">{% trans "Tags" %}</a>
+                </li>
+                <li>
+                  <a href="{{ cred_views_list }}">{% trans "All Passwords" %}</a>
+                </li>
                 <li>
                   <a href="{{ cred_views_viewqueue }}">{% trans "Change Queue" %}{% if changeqcount > 0 %} <span class="badge">{{ changeqcount }}</span>{% endif %}</a>
                 </li>
-              {% endif %}
-              {% if user.is_staff %}
-                <li>
-                  <a href="{{ staff_views_home }}">{% trans "Staff Management" %}</a>
-                </li>
-              {% endif %}
-              {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                  <li>
+                    <a href="{{ staff_views_home }}">{% trans "Staff Management" %}</a>
+                  </li>
+                {% endif %}
                 <li>
                   <a href="{% url "django.contrib.auth.views.logout" %}">{% trans "Logout" %}</a>
+                </li>
+              {% else %}
+                <li>
+                  <a href="{% url 'login' %}">{% trans "Login" %}</a>
                 </li>
               {% endif %}
               {% if helplinks %}
