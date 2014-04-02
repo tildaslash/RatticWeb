@@ -21,3 +21,4 @@ keepassdb==0.2.1
 db_backup==0.1.3
 boto==2.26.1
 lxml==3.3.3
+celery>=3.1,<3.2
