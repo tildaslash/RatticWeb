@@ -141,6 +141,8 @@ INSTALLED_APPS = (
     'two_factor',
     'south',
     'tastypie',
+    'kombu.transport.django',
+    'djcelery',
 ) + LOCAL_APPS
 
 if os.environ.get("ENABLE_TESTS") == "1":
@@ -199,9 +201,16 @@ LOGGING = {
 # Custom app settings #
 #######################
 
+# URLs
+PUBLIC_HELP_WIKI_BASE = 'https://github.com/tildaslash/RatticWeb/wiki/'
+LOGIN_REDIRECT_URL = urljoin(RATTIC_ROOT_URL, "cred/list/")
+LOGIN_URL = RATTIC_ROOT_URL
+
+# django-user-sessions
 SESSION_ENGINE = 'user_sessions.backends.db'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-PUBLIC_HELP_WIKI_BASE = 'https://github.com/tildaslash/RatticWeb/wiki/'
+
+# Icon configuration
 CRED_ICON_JSON = 'db/icons.json'
 CRED_ICON_CSS = 'ratticweb/static/rattic/css/icons.css'
 CRED_ICON_SPRITE = 'rattic/img/sprite.png'
@@ -209,12 +218,16 @@ CRED_ICON_BASEDIR = 'rattic/img/credicons'
 CRED_ICON_CLEAR = 'rattic/img/clear.gif'
 CRED_ICON_DEFAULT = 'Key.png'
 
-LOGIN_REDIRECT_URL = urljoin(RATTIC_ROOT_URL, "cred/list/")
-LOGIN_URL = RATTIC_ROOT_URL
-
+# django-auth-ldap
 AUTH_LDAP_USER_ATTR_MAP = {"email": "mail", }
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {}
 AUTH_LDAP_MIRROR_GROUPS=True
+
+# celery
+BROKER_URL = 'django://'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 
 ###############################
 # External environment config #
