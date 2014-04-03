@@ -239,6 +239,7 @@ TEMPLATE_DEBUG = DEBUG
 TIME_ZONE = config.get('ratticweb', 'timezone')
 SECRET_KEY = config.get('ratticweb', 'secretkey')
 ALLOWED_HOSTS = [config.get('ratticweb', 'hostname'), 'localhost']
+HOSTNAME = config.get('ratticweb', 'hostname')
 # Setup the loglevel
 LOGGING['loggers']['django.request']['level'] = config.get('ratticweb', 'loglevel')
 
@@ -282,6 +283,18 @@ EMAIL_HOST_USER = config.get('email', 'user')
 EMAIL_HOST_PASSWORD = config.get('email', 'password')
 EMAIL_USE_TLS = confgetbool('email', 'usetls', False)
 DEFAULT_FROM_EMAIL = config.get('email', 'from_email')
+
+# [scheduler]
+CELERYBEAT_SCHEDULE = {}
+
+chgqreminder = int(config.get('scheduler', 'change_queue_reminder_period'))
+if chgqreminder > 0:
+    CELERYBEAT_SCHEDULE['send-change-queue-reminder-email'] = {
+        'task': 'cred.tasks.change_queue_emails',
+        'schedule': timedelta(days=chgqreminder),
+    }
+
+CELERY_TIMEZONE = TIME_ZONE
 
 # [ldap]
 LDAP_ENABLED = 'ldap' in config.sections()
