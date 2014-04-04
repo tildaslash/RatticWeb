@@ -34,14 +34,19 @@ if not settings.LDAP_ENABLED:
                 'post_reset_redirect': '/account/reset/done/',
                 'template_name': 'password_reset.html'
             },
-            name="password_reset"),
+            name="password_reset"
+        ),
 
         url(r'^reset/done/$', 'django.contrib.auth.views.password_reset_done', {
-            'template_name': 'password_reset_done.html'}),
+            'template_name': 'password_reset_done.html'},
+            name="password_reset_done"
+        ),
 
-        url(r'^reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', 'django.contrib.auth.views.password_reset_confirm', {
+        url(r'^reset/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/$', 'django.contrib.auth.views.password_reset_confirm', {
             'post_reset_redirect': '/',
-            'template_name': 'password_reset_confirm.html'}),
+            'template_name': 'password_reset_confirm.html'},
+            name="password_reset_confirm"
+        ),
 
         url(r'^changepass/$', 'django.contrib.auth.views.password_change', {
             'post_change_redirect': '/account/profile/',
