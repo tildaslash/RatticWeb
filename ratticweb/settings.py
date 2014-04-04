@@ -261,14 +261,14 @@ BACKUP_RECIPIENTS = confget("backup", "recipients", None)
 
 # [email]
 # SMTP Mail Opts
-EMAIL_BACKEND = confget('email', 'backend', 'django.core.mail.backends.filebased.EmailBackend')
-EMAIL_FILE_PATH = confget('email', 'filepath', '/tmp/ratticweb-messages')
-EMAIL_HOST = confget('email', 'host', '')
-EMAIL_PORT = confget('email', 'port', '')
-EMAIL_HOST_USER = confget('email', 'user', '')
-EMAIL_HOST_PASSWORD = confget('email', 'password', '')
-
+EMAIL_BACKEND = config.get('email', 'backend')
+EMAIL_FILE_PATH = config.get('email', 'filepath')
+EMAIL_HOST = config.get('email', 'host')
+EMAIL_PORT = config.get('email', 'port')
+EMAIL_HOST_USER = config.get('email', 'user')
+EMAIL_HOST_PASSWORD = config.get('email', 'password')
 EMAIL_USE_TLS = confgetbool('email', 'usetls', False)
+DEFAULT_FROM_EMAIL = config.get('email', 'from_email')
 
 # [ldap]
 LDAP_ENABLED = 'ldap' in config.sections()
