@@ -8,3 +8,4 @@ conf/local.cfg
 vagrant_ansible_inventory_rattic
 static/*
 docs/ansible/creds/*
+celerybeat-schedule
