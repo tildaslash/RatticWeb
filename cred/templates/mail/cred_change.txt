@@ -1,0 +1,14 @@
+Hello {{ user.username }},
+
+You are recieving this email because there are some passwords that require
+changing. Simply follow the links and change these passwords in order to
+prevent these emails.
+
+Passwords:
+{% for cred in creds %}
+  * {{ cred.title }} - https://{{ host }}{% url "cred.views.detail" cred.id %}
+{% endfor %}
+
+Thanks,
+RatticDB
+
