@@ -372,7 +372,7 @@ var RATTIC = (function ($, ZeroClipboard) {
         // Shuffle the password
         pass = pass.split("");
         for (var x = 0; x < pass.length; x++) {
-            var num = Math.abs(sjcl.random.randomWords(1)[0] % pass.length);
+            var num = x + Math.abs(sjcl.random.randomWords(1)[0] % (pass.length - x));
             var tmp = pass[num];
             pass[num] = pass[x];
             pass[x] = tmp;
