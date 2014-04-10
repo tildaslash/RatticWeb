@@ -23,3 +23,20 @@ class DictDiffer(object):
 
     def unchanged(self):
         return set(o for o in self.intersect if self.past_dict[o] == self.current_dict[o])
+
+
+def _get_contents(thefile):
+    try:
+        # Read the file
+        contents = thefile.read()
+
+        # Be kind, rewind
+        thefile.seek(0)
+
+        return contents
+    except ValueError:
+        return None
+
+
+def field_file_compare(current, past):
+    return _get_contents(current) == _get_contents(past)

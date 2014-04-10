@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.forms.models import model_to_dict
 from django.utils.timezone import now
 
-from ratticweb.util import DictDiffer
+from ratticweb.util import DictDiffer, field_file_compare
 
 
 class Tag(models.Model):
@@ -69,10 +69,12 @@ class SearchManager(models.Manager):
 
 
 class Cred(models.Model):
-    METADATA = ('description', 'descriptionmarkdown', 'group', 'tags', 'iconname', 'latest', 'id', 'modified')
+    METADATA = ('description', 'descriptionmarkdown', 'group', 'tags', 'iconname', 'latest', 'id', 'modified', 'attachment_name')
     SORTABLES = ('title', 'username', 'group', 'id', 'modified')
+    APP_SET = ('is_deleted', 'latest', 'modified', 'attachment_name')
     objects = SearchManager()
 
+    # User changable fields
     title = models.CharField(max_length=64, db_index=True)
     url = models.URLField(blank=True, null=True, db_index=True)
     username = models.CharField(max_length=250, blank=True, null=True, db_index=True)
@@ -82,10 +84,14 @@ class Cred(models.Model):
     group = models.ForeignKey(Group)
     tags = models.ManyToManyField(Tag, related_name='child_creds', blank=True, null=True, default=None)
     iconname = models.CharField(default='Key.png', max_length=64, verbose_name='Icon')
+    attachment = models.FileField(null=True, blank=True, upload_to='not required')
+
+    # Application controlled fields
     is_deleted = models.BooleanField(default=False, db_index=True)
     latest = models.ForeignKey('Cred', related_name='history', blank=True, null=True, db_index=True)
     modified = models.DateTimeField(db_index=True)
     created = models.DateTimeField(auto_now_add=True)
+    attachment_name = models.CharField(max_length=64, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         try:
@@ -110,8 +116,14 @@ class Cred(models.Model):
             newcred = model_to_dict(self)
             diff = DictDiffer(newcred, oldcred).changed()
 
+            # Ohhhkaaay, so the attachment field looks like its changed every
+            # time, so we do a deep comparison, if the files match we remove
+            # it from the list of changed fields.
+            if field_file_compare(oldcred['attachment'], newcred['attachment']):
+                diff = diff - set(('attachment', ))
+
             # Check if some non-metadata was changed
-            chg = set(diff) - set(Cred.METADATA)
+            chg = diff - set(Cred.METADATA)
             cred_changed = len(chg) > 0
 
             # If the creds were changed update the modify date
@@ -165,10 +177,18 @@ class CredForm(ModelForm):
         # Make the URL invalid message a bit more clear
         self.fields['url'].error_messages['invalid'] = _("Please enter a valid HTTP/HTTPS URL")
 
+    def save(self, *args, **kwargs):
+        # Get the filename from the file object
+        if self.cleaned_data['attachment'] is not None:
+            self.instance.attachment_name = self.cleaned_data['attachment'].name
+
+        # Call save upstream to save the object
+        super(CredForm, self).save(*args, **kwargs)
+
     class Meta:
         model = Cred
         # These field are not user configurable
-        exclude = ('is_deleted', 'latest', 'modified')
+        exclude = Cred.APP_SET
         widgets = {
             # Use chosen for the tag field
             'tags': SelectMultiple(attrs={'class': 'rattic-tag-selector'}),

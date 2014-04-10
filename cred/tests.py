@@ -105,6 +105,40 @@ class CredDeleteTest(TestCase):
         self.assertTrue(test)
 
 
+class CredAttachmentTest(TestCase):
+    def setUp(self):
+        self.data = TestData()
+
+    def test_upload_cred(self):
+        # Load the edit form
+        resp = self.data.norm.get(
+            reverse('cred.views.edit', args=(self.data.cred.id, ))
+        )
+        self.assertEqual(resp.status_code, 200)
+
+        # Get the data from the form to submit
+        form = resp.context['form']
+        post = form.initial
+        del post['url']
+
+        # Open a test file and upload it
+        with open('docs/keepass/test2.kdb', 'r') as fp:
+            post['attachment'] = fp
+
+            resp = self.data.norm.post(
+                reverse('cred.views.edit', args=(self.data.cred.id, )),
+                post
+            )
+            self.assertEqual(resp.status_code, 302)
+
+        # Get a new copy of the cred from the DB
+        cred = Cred.objects.get(pk=self.data.cred.id)
+
+        # Check it matches the test file
+        with open('docs/keepass/test2.kdb', 'r') as fp:
+            self.assertEqual(fp.read(), cred.attachment.read())
+
+
 class CredHistoryTest(TestCase):
     def setUp(self):
         g = Group(name='h')
@@ -368,6 +402,7 @@ class CredViewTests(TestCase):
             if i.value() is not None:
                 post[i.name] = i.value()
         post['title'] = 'New Title'
+        del post['attachment']
         resp = self.data.norm.post(reverse('cred.views.edit', args=(self.data.cred.id,)), post, follow=True)
         self.assertEqual(resp.status_code, 200)
         newcred = Cred.objects.get(id=self.data.cred.id)

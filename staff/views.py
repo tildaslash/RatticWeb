@@ -242,7 +242,7 @@ def process_import(request):
 
     # If we have a submission from the user
     if request.method == 'POST':
-        form = CredForm(request.user, request.POST)
+        form = CredForm(request.user, request.POST, request.FILES)
         if form.is_valid():
             # Save the new credential
             form.save()

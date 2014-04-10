@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -205,9 +206,34 @@ def detail(request, cred_id):
 
 
 @login_required
+def downloadattachment(request, cred_id):
+    # Get the credential
+    cred = get_object_or_404(Cred, pk=cred_id)
+
+    # Check user has perms
+    if not cred.is_accessible_by(request.user):
+        raise Http404
+
+    # Make sure there is an attachment
+    if cred.attachment is None:
+        raise Http404
+
+    # Write the audit log, as a password view
+    CredAudit(audittype=CredAudit.CREDPASSVIEW, cred=cred, user=request.user).save()
+
+    # Send the result back in a way that prevents the browser from executing it,
+    # forces a download, and names it the same as when it was uploaded.
+    response = HttpResponse(mimetype='application/octet-stream')
+    response.write(cred.attachment.read())
+    response['Content-Disposition'] = 'attachment; filename="%s"' % cred.attachment_name
+    response['Content-Length'] = response.tell()
+    return response
+
+
+@login_required
 def add(request):
     if request.method == 'POST':
-        form = CredForm(request.user, request.POST)
+        form = CredForm(request.user, request.POST, request.FILES)
         if form.is_valid():
             form.save()
             CredAudit(audittype=CredAudit.CREDADD, cred=form.instance, user=request.user).save()
@@ -227,24 +253,32 @@ def edit(request, cred_id):
         raise Http404
 
     next = request.GET.get('next', None)
+
     # Check user has perms
     if not cred.is_accessible_by(request.user):
         raise Http404
+
     if request.method == 'POST':
-        form = CredForm(request.user, request.POST, instance=cred)
+        form = CredForm(request.user, request.POST, request.FILES, instance=cred)
+
         if form.is_valid():
             # Assume metedata change
             chgtype = CredAudit.CREDMETACHANGE
+
             # Unless something thats not metadata changes
             for c in form.changed_data:
                 if c not in Cred.METADATA:
                     chgtype = CredAudit.CREDCHANGE
+
             # Clear pre-existing change queue items
             if chgtype == CredAudit.CREDCHANGE:
                 CredChangeQ.objects.filter(cred=cred).delete()
+
             # Create audit log
             CredAudit(audittype=chgtype, cred=cred, user=request.user).save()
             form.save()
+
+            # If we dont have anywhere to go, go to the details page
             if next is None:
                 return HttpResponseRedirect(reverse('cred.views.detail', args=(cred.id,)))
             else:

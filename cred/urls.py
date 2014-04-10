@@ -16,6 +16,7 @@ urlpatterns = patterns('cred.views',
 
     # Single cred views
     url(r'^detail/(?P<cred_id>\d+)/$', 'detail'),
+    url(r'^detail/(?P<cred_id>\d+)/download/$', 'downloadattachment'),
     url(r'^edit/(?P<cred_id>\d+)/$', 'edit'),
     url(r'^delete/(?P<cred_id>\d+)/$', 'delete'),
     url(r'^add/$', 'add'),

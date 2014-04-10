@@ -12,7 +12,7 @@
 
 <p>{% blocktrans %}There are {{count}} passwords left to import. If you wish you can{% endblocktrans %} <a href="{% url 'staff.views.process_import' %}">{% trans "skip importing this password" %}</a>.</p>
 
-<form class="form-horizontal"  autocomplete="off" action="{{ action }}{% if next %}?next={{ next }}{% endif %}" method="post">{% csrf_token %}
+<form class="form-horizontal" enctype="multipart/form-data" autocomplete="off" action="{{ action }}{% if next %}?next={{ next }}{% endif %}" method="post">{% csrf_token %}
     {% for field in form %}
         <div class="control-group">
             {{ field.errors }}

@@ -143,6 +143,7 @@ INSTALLED_APPS = (
     'tastypie',
     'kombu.transport.django',
     'djcelery',
+    'database_files',
 ) + LOCAL_APPS
 
 if os.environ.get("ENABLE_TESTS") == "1":
@@ -228,6 +229,9 @@ BROKER_URL = 'django://'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+
+# uploads
+DEFAULT_FILE_STORAGE = 'database_files.storage.DatabaseStorage'
 
 ###############################
 # External environment config #

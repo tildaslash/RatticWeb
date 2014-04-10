@@ -17,7 +17,7 @@
 {% include "cred_part_passgenmodal.html" %}
 {% include "cred_part_logomodal.html" with icons=icons txtfield='#id_iconname' imgfield='#logodisplay' %}
 
-<form class="form-horizontal"  autocomplete="off" action="{{ action }}{% if next %}?next={{ next }}{% endif %}" method="post">{% csrf_token %}
+<form class="form-horizontal" enctype="multipart/form-data" autocomplete="off" action="{{ action }}{% if next %}?next={{ next }}{% endif %}" method="post">{% csrf_token %}
     {% for field in form %}
         <div class="control-group">
             {{ field.errors }}
