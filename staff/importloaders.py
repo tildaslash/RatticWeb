@@ -25,6 +25,7 @@ def _walkkeepass(groups, entries, groupstack, root):
                     'username': e.username,
                     'password': e.password,
                     'description': e.notes,
+                    'url': e.url,
                     'tags': list(groupstack)
                 })
         _walkkeepass(groups, entries, groupstack, n)

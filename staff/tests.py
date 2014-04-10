@@ -77,6 +77,7 @@ class ImportTests(TestCase):
             'username': 'dan',
             'description': '',
             'password': 'pass',
+            'url': 'http://example.com/',
             'tags': ['tag1', 'tag2'],
         }
         entries = [entry, ]
