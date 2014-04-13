@@ -6,8 +6,10 @@ from django.forms import ModelForm, SelectMultiple
 from django.utils.translation import ugettext_lazy as _
 from django.forms.models import model_to_dict
 from django.utils.timezone import now
+from django.conf import settings
 
 from ratticweb.util import DictDiffer, field_file_compare
+from fields import SizedFileField
 
 
 class Tag(models.Model):
@@ -84,7 +86,7 @@ class Cred(models.Model):
     group = models.ForeignKey(Group)
     tags = models.ManyToManyField(Tag, related_name='child_creds', blank=True, null=True, default=None)
     iconname = models.CharField(default='Key.png', max_length=64, verbose_name='Icon')
-    attachment = models.FileField(null=True, blank=True, upload_to='not required')
+    attachment = SizedFileField(max_upload_size=settings.RATTIC_MAX_ATTACHMENT_SIZE, null=True, blank=True, upload_to='not required')
 
     # Application controlled fields
     is_deleted = models.BooleanField(default=False, db_index=True)

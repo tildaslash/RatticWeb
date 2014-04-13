@@ -244,6 +244,7 @@ TIME_ZONE = config.get('ratticweb', 'timezone')
 SECRET_KEY = config.get('ratticweb', 'secretkey')
 ALLOWED_HOSTS = [config.get('ratticweb', 'hostname'), 'localhost']
 HOSTNAME = config.get('ratticweb', 'hostname')
+RATTIC_MAX_ATTACHMENT_SIZE = int(config.get('ratticweb', 'max_attachment_size'))
 # Setup the loglevel
 LOGGING['loggers']['django.request']['level'] = config.get('ratticweb', 'loglevel')
 
