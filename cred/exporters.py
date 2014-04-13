@@ -23,7 +23,7 @@ def export_keepass(creds, password):
         desc = str(c.description) + tags
 
         # Create the entry
-        kpg.create_entry(
+        e = kpg.create_entry(
             title=c.title,
             username=c.username,
             password=c.password,
@@ -31,8 +31,12 @@ def export_keepass(creds, password):
             notes=desc,
         )
 
+        if c.attachment:
+            e.binary_desc = c.attachment_name
+            e.binary = c.attachment.read()
+
     # Send the response
-    response = HttpResponse(mimetype='application/x-keepass')
+    response = HttpResponse(content_type='application/x-keepass')
     db.save(response, password=password)
     response['Content-Disposition'] = 'attachment; filename=RatticExport.kdb'
     response['Content-Length'] = response.tell()
