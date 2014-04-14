@@ -45,9 +45,12 @@ class ImportTests(TestCase):
 
         # Check the right credentials are in there
         cred = data['entries'][0]
+        attcred = data['entries'][3]
         self.assertEqual(cred['title'], 'dans id')
         self.assertEqual(cred['password'], 'CeidAcHuhy')
         self.assertEqual(sorted(cred['tags']), sorted(['Internet', 'picasa.com']))
+        self.assertEqual(attcred['filename'], 'test.txt')
+        self.assertEqual(attcred['filecontent'], 'This is a test file.\n')
 
     def test_process_import_no_data(self):
         # With no data we expect a 404
@@ -79,6 +82,8 @@ class ImportTests(TestCase):
             'password': 'pass',
             'url': 'http://example.com/',
             'tags': ['tag1', 'tag2'],
+            'filename': None,
+            'filecontent': '',
         }
         entries = [entry, ]
         session = self.data.staff.session

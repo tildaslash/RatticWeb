@@ -9,6 +9,7 @@ from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext as _
 from django_otp import user_has_device, devices_for_user
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 import datetime
 from django.utils.timezone import now
@@ -242,10 +243,20 @@ def process_import(request):
 
     # If we have a submission from the user
     if request.method == 'POST':
-        form = CredForm(request.user, request.POST, request.FILES)
+        files = request.FILES
+
+        if 'imported_attachment' in request.session.keys() and 'attachment' not in files.keys():
+            fdata = request.session['imported_attachment']
+            sfile = SimpleUploadedFile(fdata['filename'], bytes(fdata['content']))
+            files['attachment'] = sfile
+
+        form = CredForm(request.user, request.POST, files)
         if form.is_valid():
             # Save the new credential
             form.save()
+
+            if 'imported_attachment' in request.session.keys():
+                del request.session['imported_attachment']
 
             # Add an audit record
             CredAudit(
@@ -277,6 +288,15 @@ def process_import(request):
         except Group.DoesNotExist:
             del request.session['imported_data']
             raise Http404
+
+        # Move any attachment temporarily
+        if newcred['filename']:
+            request.session['imported_attachment'] = {
+                'filename': newcred['filename'],
+                'content': newcred['filecontent'],
+            }
+            del newcred['filename']
+            del newcred['filecontent']
 
         # Display the form
         form = CredForm(request.user, newcred)

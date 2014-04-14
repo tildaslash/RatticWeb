@@ -26,7 +26,9 @@ def _walkkeepass(groups, entries, groupstack, root):
                     'password': e.password,
                     'description': e.notes,
                     'url': e.url,
-                    'tags': list(groupstack)
+                    'tags': list(groupstack),
+                    'filecontent': e.binary,
+                    'filename': e.binary_desc,
                 })
         _walkkeepass(groups, entries, groupstack, n)
         groupstack.pop()
