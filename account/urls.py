@@ -49,7 +49,7 @@ if not settings.LDAP_ENABLED:
         ),
 
         url(r'^changepass/$', 'django.contrib.auth.views.password_change', {
-            'post_change_redirect': '/account/profile/',
+            'post_change_redirect': '/account/',
             'template_name': 'account_changepass.html'}, name='password_change')
     )
 

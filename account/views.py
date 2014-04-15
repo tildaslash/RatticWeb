@@ -83,7 +83,7 @@ def deleteapikey(request, key_id):
 @login_required
 def ldap_password_change(request,
                     template_name='account_changepass.html',
-                    post_change_redirect='/account/profile/',
+                    post_change_redirect='/account/',
                     password_change_form=LDAPPassChangeForm,
                     current_app=None, extra_context=None):
     import ldap

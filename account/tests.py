@@ -93,6 +93,29 @@ class AccountViewTests(TestCase):
         resp = self.client.get(reverse('account.views.profile'))
         self.assertEqual(resp.status_code, 200)
 
+    @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
+    def test_change_password(self):
+        # Load the password change page
+        response = self.client.get(reverse('django.contrib.auth.views.password_change'))
+        self.assertEqual(response.status_code, 200)
+
+        # Prepare the POST data
+        post = {
+            'old_password': self.password,
+            'new_password1': 'newpassword',
+            'new_password2': 'newpassword',
+        }
+        response = self.client.post(
+            reverse('django.contrib.auth.views.password_change'),
+            post,
+            follow=True,
+        )
+
+        # Check we got a 200 response and the password got changed
+        self.assertEqual(response.status_code, 200)
+        user = User.objects.get(username=self.username)
+        self.assertTrue(user.check_password('newpassword'))
+
 
 class AccountCommandTests(TestCase):
     def test_command_demosetup(self):
