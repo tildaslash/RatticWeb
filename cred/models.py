@@ -10,6 +10,8 @@ from django.conf import settings
 
 from ratticweb.util import DictDiffer, field_file_compare
 from fields import SizedFileField
+from widgets import CredAttachmentInput
+from storage import CredAttachmentStorage
 
 
 class Tag(models.Model):
@@ -86,7 +88,7 @@ class Cred(models.Model):
     group = models.ForeignKey(Group)
     tags = models.ManyToManyField(Tag, related_name='child_creds', blank=True, null=True, default=None)
     iconname = models.CharField(default='Key.png', max_length=64, verbose_name='Icon')
-    attachment = SizedFileField(max_upload_size=settings.RATTIC_MAX_ATTACHMENT_SIZE, null=True, blank=True, upload_to='not required')
+    attachment = SizedFileField(storage=CredAttachmentStorage(), max_upload_size=settings.RATTIC_MAX_ATTACHMENT_SIZE, null=True, blank=True, upload_to='not required')
 
     # Application controlled fields
     is_deleted = models.BooleanField(default=False, db_index=True)
@@ -181,7 +183,7 @@ class CredForm(ModelForm):
 
     def save(self, *args, **kwargs):
         # Get the filename from the file object
-        if self.cleaned_data['attachment'] is not None:
+        if self.cleaned_data['attachment']:
             self.instance.attachment_name = self.cleaned_data['attachment'].name
 
         # Call save upstream to save the object
@@ -194,6 +196,7 @@ class CredForm(ModelForm):
         widgets = {
             # Use chosen for the tag field
             'tags': SelectMultiple(attrs={'class': 'rattic-tag-selector'}),
+            'attachment': CredAttachmentInput,
         }
 
 

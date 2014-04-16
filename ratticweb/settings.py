@@ -230,9 +230,6 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 
-# uploads
-DEFAULT_FILE_STORAGE = 'database_files.storage.DatabaseStorage'
-
 ###############################
 # External environment config #
 ###############################
