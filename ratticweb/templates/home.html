@@ -11,7 +11,7 @@
 {% endif %}
 <div class="pagination-centered">
     <h1>{% trans "Welcome to Rattic" %}</h1>
-    <img class="biglogo" alt="RatticDB Logo" src="{% static "rattic/img/rattic_logo_web.svg" %}">
+    <img class="biglogo" alt="RatticDB Logo" src="{% static rattic_logo %}">
     <p>{% trans "It does passwords." %}</p>
     <p class="visible-phone"><a class='btn btn-primary' href="{% url "login" %}" >{% trans "Login" %}</a></p>
 </div>
