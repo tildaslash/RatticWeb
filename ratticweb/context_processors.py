@@ -11,7 +11,7 @@ def base_template_reqs(request):
         'ALLOWPWCHANGE': not (settings.LDAP_ENABLED
             and not settings.AUTH_LDAP_ALLOW_PASSWORD_CHANGE),
         'rattic_icon': 'rattic/img/rattic_icon_normal.png',
-        'rattic_logo': 'rattic/img/rattic_logo_normal.svg',
+        'rattic_logo': 'rattic/img/rattic_logo_easter.svg',
     }
 
     if settings.HELP_SYSTEM_FILES:
