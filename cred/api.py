@@ -81,6 +81,9 @@ class CredResource(ModelResource):
         # Add a value indicating if something is on the change queue
         bundle.data['on_changeq'] = bundle.obj.on_changeq()
 
+        # The attachment field is irrelevant, hide it
+        del bundle.data['attachment']
+
         # Unless you are viewing the details for a cred, hide the password
         if self.get_resource_uri(bundle) != bundle.request.path:
             del bundle.data['password']
