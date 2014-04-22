@@ -70,13 +70,21 @@ class TagAuthorization(Authorization):
 
 class CredResource(ModelResource):
     def get_object_list(self, request):
+        # Only show latest, not deleted and accessible credentials
         return Cred.objects.accessible(request.user, historical=True, deleted=True)
 
     def dehydrate(self, bundle):
+        # Workaround for this tastypie issue:
+        # https://github.com/toastdriven/django-tastypie/issues/201
         bundle.data['username'] = bundle.obj.username
+
+        # Add a value indicating if something is on the change queue
         bundle.data['on_changeq'] = bundle.obj.on_changeq()
+
+        # Unless you are viewing the details for a cred, hide the password
         if self.get_resource_uri(bundle) != bundle.request.path:
             del bundle.data['password']
+
         return bundle
 
     class Meta:
@@ -93,6 +101,7 @@ class CredResource(ModelResource):
 
 
 class TagResource(ModelResource):
+    # When showing a tag, show all the creds under it, that we are allowed to see
     creds = fields.ToManyField(CredResource,
         attribute=lambda bundle: Cred.objects.accessible(bundle.request.user).filter(tags=bundle.obj),
         null=True,
