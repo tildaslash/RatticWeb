@@ -173,6 +173,12 @@ class Cred(models.Model):
 
 class CredForm(ModelForm):
     def __init__(self, requser, *args, **kwargs):
+        # Check if a new attachment was uploaded
+        if len(args) > 0 and args[1].get('attachment', None) is not None:
+            self.changed_attachment = True
+        else:
+            self.changed_attachment = False
+
         super(CredForm, self).__init__(*args, **kwargs)
 
         # Limit the group options to groups that the user is in
@@ -183,7 +189,7 @@ class CredForm(ModelForm):
 
     def save(self, *args, **kwargs):
         # Get the filename from the file object
-        if self.cleaned_data['attachment']:
+        if self.changed_attachment:
             self.instance.attachment_name = self.cleaned_data['attachment'].name
 
         # Call save upstream to save the object

@@ -299,7 +299,7 @@ def process_import(request):
             del newcred['filecontent']
 
         # Display the form
-        form = CredForm(request.user, newcred)
+        form = CredForm(request.user, newcred, {})
 
     # Display the edit form
     return render(request, 'staff_process_import.html', {
