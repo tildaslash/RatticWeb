@@ -45,7 +45,7 @@ class GroupForm(forms.ModelForm):
 
 class KeepassImportForm(forms.Form):
     file = forms.FileField()
-    password = forms.CharField(max_length=50)
+    password = forms.CharField(max_length=50, widget=forms.PasswordInput)
     group = forms.ModelChoiceField(queryset=Group.objects.all())
 
     def __init__(self, requser, *args, **kwargs):
