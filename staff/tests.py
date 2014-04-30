@@ -267,3 +267,4 @@ class StaffViewTests(TestCase):
         self.assertFalse(cred.is_deleted)
 
 StaffViewTests = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(StaffViewTests)
+ImportTests = override_settings(PASSWORD_HASHERS=('django.contrib.auth.hashers.MD5PasswordHasher',))(ImportTests)
