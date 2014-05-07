@@ -3,14 +3,21 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
+from django.utils import timezone
 
 
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Make a timezone aware default
+        pass_chg_default = timezone.make_aware(
+            datetime.datetime.now(),
+            timezone.get_current_timezone()
+        )
+
         # Adding field 'UserProfile.password_changed'
         db.add_column('account_userprofile', 'password_changed',
-                      self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now),
+                      self.gf('django.db.models.fields.DateTimeField')(default=pass_chg_default),
                       keep_default=False)
 
 

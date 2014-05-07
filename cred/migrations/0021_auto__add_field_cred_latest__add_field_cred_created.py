@@ -3,11 +3,17 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
-
+from django.utils import timezone
 
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Make a timezone aware default
+        created_default = timezone.make_aware(
+            datetime.datetime(2013, 3, 14, 0, 0),
+            timezone.get_current_timezone()
+        )
+
         # Adding field 'Cred.latest'
         db.add_column('cred_cred', 'latest',
                       self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='history', null=True, to=orm['cred.Cred']),
@@ -15,7 +21,7 @@ class Migration(SchemaMigration):
 
         # Adding field 'Cred.created'
         db.add_column('cred_cred', 'created',
-                      self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, default=datetime.datetime(2013, 3, 14, 0, 0), blank=True),
+                      self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, default=created_default, blank=True),
                       keep_default=False)
 
 
