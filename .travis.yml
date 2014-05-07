@@ -2,30 +2,34 @@ language: python
 python:
   - "2.6"
   - "2.7"
-services: mysql
 cache:
   directories:
     - $HOME/.pip-cache/
 install:
-  - "sudo apt-get update"
-  - "sudo apt-get install -qq slapd ldap-utils"
-  - pip install -r requirements-mysql.txt --use-mirrors --download-cache $HOME/.pip-cache/
-  - pip install -r requirements-dev.txt --use-mirrors --download-cache $HOME/.pip-cache/
+  - sudo apt-get update
+  - sudo apt-get install -qq slapd ldap-utils
+  - pip install -r requirements-mysql.txt -r requirements-dev.txt --use-mirrors --download-cache $HOME/.pip-cache/
+  - pip install -r requirements-pgsql.txt --use-mirrors --download-cache $HOME/.pip-cache/
 before_script:
-  - "pushd docs/ldap; DEBUG=true ./startldap.sh; popd"
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
+  - pushd docs/ldap; DEBUG=true ./startldap.sh; popd
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
   - ./runtests.sh --lint-only
   - mysql -e 'create database IF NOT EXISTS rattic;'
-  - "xdpyinfo"
-  - "firefox -v"
+  - psql -c 'create database rattic;' -U postgres
 script:
   - echo -e '[ratticweb]\nsecretkey = blah!' > conf/local.cfg
   - ./runtests.sh --tests-only
+
   - cp docs/travis/ldap.cfg conf/local.cfg
   - ./runtests.sh --tests-only
+
   - cp docs/travis/mysql.cfg conf/local.cfg
   - python manage.py syncdb --noinput
   - python manage.py migrate
   - ./runtests.sh --tests-only
 
+  - cp docs/travis/pgsql.cfg conf/local.cfg
+  - python manage.py syncdb --noinput
+  - python manage.py migrate
+  - ./runtests.sh --tests-only
