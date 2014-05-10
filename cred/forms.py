@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from django.forms import ModelForm, SelectMultiple
+from django.forms import ModelForm, SelectMultiple, Select
 
 from models import Cred, Tag, Group
 from widgets import CredAttachmentInput
@@ -46,5 +46,6 @@ class CredForm(ModelForm):
         widgets = {
             # Use chosen for the tag field
             'tags': SelectMultiple(attrs={'class': 'rattic-tag-selector'}),
+            'group': Select(attrs={'class': 'rattic-group-selector'}),
             'attachment': CredAttachmentInput,
         }

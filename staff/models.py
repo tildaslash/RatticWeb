@@ -14,13 +14,9 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'is_active', 'is_staff', 'groups')
-
-    def __init__(self, *args, **kwargs):
-        super(UserForm, self).__init__(*args, **kwargs)
-        # Use checkboxes for groups
-        # self.fields["groups"].widget = forms.CheckboxSelectMultiple()
-        self.fields["groups"].widget = forms.SelectMultiple(attrs={'class': 'selectize-multiple'})
-        self.fields["groups"].queryset = Group.objects.all()
+        widgets = {
+            'groups': forms.SelectMultiple(attrs={'class': 'rattic-group-selector'}),
+        }
 
     def clean(self):
         # Check the passwords given match
@@ -46,7 +42,10 @@ class GroupForm(forms.ModelForm):
 class KeepassImportForm(forms.Form):
     file = forms.FileField()
     password = forms.CharField(max_length=50, widget=forms.PasswordInput)
-    group = forms.ModelChoiceField(queryset=Group.objects.all())
+    group = forms.ModelChoiceField(
+        queryset=Group.objects.all(),
+        widget=forms.Select(attrs={'class': 'rattic-group-selector'}),
+    )
 
     def __init__(self, requser, *args, **kwargs):
         super(KeepassImportForm, self).__init__(*args, **kwargs)

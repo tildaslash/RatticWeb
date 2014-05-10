@@ -237,34 +237,6 @@ var RATTIC = (function ($, ZeroClipboard) {
         });
     };
 
-    function _createGroupFormClear() {
-        $("input#groupname").val('');
-        $("button#saveGroupbutton").button('reset');
-    };
-
-    function _groupCreated(group) {
-        $("select#id_group").append(
-                '<option value="' + group['id'] + '">' +
-                group['name'] +
-                '</option>');
-
-        $("select#id_group").val(group['id']);
-    };
-
-    function _createGroupClick() {
-        ajax = my.api.createGroup(
-                $("input#groupname").val(),
-                function(){
-                    $('#addGroup').modal('hide');
-                    if (ajax.status == 201) _groupCreated(JSON.parse(ajax.responseText))
-                },
-                function(){
-                    $('#addGroup').modal('hide');
-                });
-
-        return false;
-    };
-
     function _newTagClick() {
         me = $(this);
         input = $($(this).data('input'));
@@ -432,6 +404,15 @@ var RATTIC = (function ($, ZeroClipboard) {
         callback(data);
     };
 
+    function _newGroupEntered(groupname, callback) {
+        var successcall = _newGroupSuccess.bind(undefined, callback);
+        ajax = my.api.createGroup(groupname, successcall, function(){});
+    };
+
+    function _newGroupSuccess(callback, data, stext, ajax) {
+        callback(data);
+    };
+
     function _singleTagLoad(query, callback) {
         my.api.searchTag(query,
             function(data) {
@@ -529,14 +510,6 @@ var RATTIC = (function ($, ZeroClipboard) {
         });
     };
 
-    /* Adds a 'New Group' button to the group select box for staff */
-    my.controls.newGroupButton = function(selectboxes) {
-        selectboxes.after('<a href="#addGroup" role="button" class="btn" data-toggle="modal" data-loading-text="Adding...">New</a>');
-
-        $('#addGroup').on('show', _createGroupFormClear);
-        $('#saveGroupButton').on('click', _createGroupClick);
-    };
-
     /* Adds functionality for the 'New Tag' button */
     my.controls.newTagButton = function(tagbuttons) {
         tagbuttons.on('click', _newTagClick);
@@ -608,6 +581,25 @@ var RATTIC = (function ($, ZeroClipboard) {
     };
 
     /* Make the tag select boxes be awesome */
+    my.controls.groupSelectors = function(selectors) {
+        options = {
+            valueField: 'id',
+            labelField: 'name',
+            searchField: 'name',
+            plugins: ['remove_button'],
+        };
+
+        /* Staff members can create groups */
+        if (my.page.getMetaInfo('user_staff') == 'true') {
+            options.create = _newGroupEntered;
+        }
+
+        console.log(options, selectors);
+
+        selectors.selectize(options);
+    };
+
+    /* Make the tag select boxes be awesome */
     my.controls.singleTagSelectors = function(selectors) {
         var s = selectors.selectize({
             valueField: 'id',
@@ -652,10 +644,6 @@ $(document).ready(function(){
     // Setup buttons that require one checked box to be enabled
     RATTIC.controls.checkEnabledButton($('.rattic-check-enabled'));
 
-    // Add 'New Group' button next to group inputs if asked to
-    if (RATTIC.page.getMetaInfo('attach_new_group_buttons') == 'true')
-        RATTIC.controls.newGroupButton($('select#id_group'));
-
     // Add functionality to the 'New Tag' buttons
     RATTIC.controls.newTagButton($('.rattic-new-tag'));
 
@@ -673,6 +661,9 @@ $(document).ready(function(){
 
     // Tag selectors that can create tags
     RATTIC.controls.tagSelectors($('.rattic-tag-selector'));
+
+    // A Group selector that will create for staff members
+    RATTIC.controls.groupSelectors($('.rattic-group-selector'));
 
     // Button that submits a form indicated by a data attribute
     RATTIC.controls.formSubmitById($('.rattic-form-submit-by-id'));
