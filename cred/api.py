@@ -6,7 +6,8 @@ from tastypie.resources import ModelResource
 from tastypie.authorization import Authorization
 from tastypie.exceptions import Unauthorized
 
-from cred.models import Cred, Tag, CredAudit, TagForm
+from cred.models import Cred, Tag, CredAudit
+from cred.forms import TagForm
 
 
 class CredAuthorization(Authorization):

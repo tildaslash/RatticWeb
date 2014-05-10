@@ -16,7 +16,8 @@ from django.utils.timezone import now
 from django.utils.timezone import utc
 
 from cred.icon import get_icon_list
-from cred.models import CredAudit, CredForm, Cred, Tag
+from cred.models import CredAudit, Cred, Tag
+from cred.forms import CredForm
 from models import UserForm, GroupForm, KeepassImportForm
 
 

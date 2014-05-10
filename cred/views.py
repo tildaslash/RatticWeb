@@ -8,8 +8,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.utils.translation import ugettext as _
 
-from models import Cred, CredForm, CredAudit, TagForm, Tag, CredChangeQ
-from forms import ExportForm
+from models import Cred, CredAudit, Tag, CredChangeQ
+from forms import ExportForm, CredForm, TagForm
 from exporters import export_keepass
 from cred.icon import get_icon_list
 

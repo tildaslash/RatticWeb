@@ -2,7 +2,6 @@ from django.db import models
 from django.db.models import Q
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
-from django.forms import ModelForm, SelectMultiple
 from django.utils.translation import ugettext_lazy as _
 from django.forms.models import model_to_dict
 from django.utils.timezone import now
@@ -10,7 +9,6 @@ from django.conf import settings
 
 from ratticweb.util import DictDiffer, field_file_compare
 from fields import SizedFileField
-from widgets import CredAttachmentInput
 from storage import CredAttachmentStorage
 
 
@@ -22,11 +20,6 @@ class Tag(models.Model):
 
     def visible_count(self, user):
         return Cred.objects.accessible(user).filter(tags=self).count()
-
-
-class TagForm(ModelForm):
-    class Meta:
-        model = Tag
 
 
 class CredIconAdmin(admin.ModelAdmin):
@@ -171,41 +164,6 @@ class Cred(models.Model):
         return self.title
 
 
-class CredForm(ModelForm):
-    def __init__(self, requser, *args, **kwargs):
-        # Check if a new attachment was uploaded
-        if len(args) > 0 and args[1].get('attachment', None) is not None:
-            self.changed_attachment = True
-        else:
-            self.changed_attachment = False
-
-        super(CredForm, self).__init__(*args, **kwargs)
-
-        # Limit the group options to groups that the user is in
-        self.fields['group'].queryset = Group.objects.filter(user=requser)
-
-        # Make the URL invalid message a bit more clear
-        self.fields['url'].error_messages['invalid'] = _("Please enter a valid HTTP/HTTPS URL")
-
-    def save(self, *args, **kwargs):
-        # Get the filename from the file object
-        if self.changed_attachment:
-            self.instance.attachment_name = self.cleaned_data['attachment'].name
-
-        # Call save upstream to save the object
-        super(CredForm, self).save(*args, **kwargs)
-
-    class Meta:
-        model = Cred
-        # These field are not user configurable
-        exclude = Cred.APP_SET
-        widgets = {
-            # Use chosen for the tag field
-            'tags': SelectMultiple(attrs={'class': 'rattic-tag-selector'}),
-            'attachment': CredAttachmentInput,
-        }
-
-
 class CredAdmin(admin.ModelAdmin):
     list_display = ('title', 'username', 'group')
 
@@ -261,6 +219,12 @@ class CredChangeQ(models.Model):
 
 class CredChangeQAdmin(admin.ModelAdmin):
     list_display = ('cred', 'time')
+
+
+class CredAttachment(models.Model):
+    name = models.CharField(max_length=64)
+    size = models.BigIntegerField()
+    contents = models.BinaryField()
 
 
 admin.site.register(CredAudit, CredAuditAdmin)
