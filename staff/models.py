@@ -7,8 +7,18 @@ from keepassdb.exc import AuthenticationError, InvalidDatabase
 
 class UserForm(forms.ModelForm):
     # We want two password input boxes
-    newpass = forms.CharField(widget=forms.PasswordInput, required=False, max_length=32, min_length=8)
-    confirmpass = forms.CharField(widget=forms.PasswordInput, required=False, max_length=32, min_length=8)
+    newpass = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'btn-password-visibility'}),
+        required=False,
+        max_length=32,
+        min_length=8
+    )
+    confirmpass = forms.CharField(
+        widget=forms.PasswordInput,
+        required=False,
+        max_length=32,
+        min_length=8
+    )
 
     # Define our model
     class Meta:
@@ -41,7 +51,10 @@ class GroupForm(forms.ModelForm):
 
 class KeepassImportForm(forms.Form):
     file = forms.FileField()
-    password = forms.CharField(max_length=50, widget=forms.PasswordInput)
+    password = forms.CharField(
+        max_length=50,
+        widget=forms.PasswordInput(attrs={'class': 'btn-password-visibility'})
+    )
     group = forms.ModelChoiceField(
         queryset=Group.objects.all(),
         widget=forms.Select(attrs={'class': 'rattic-group-selector'}),
