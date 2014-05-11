@@ -17,13 +17,7 @@
             {{ field.errors }}
             <label class="control-label" for="{{ field.html_name }}">{{ field.label }}</label>
             <div class="controls">
-            {% if field.html_name == 'iconname' %}
-              {% cred_icon field.value tagid='logodisplay' %}&nbsp;
-              <input type='hidden' name='{{ field.html_name }}' id='id_{{ field.html_name }}' value='{{ field.value }}' />
-              <a href="#logoModal" role="button" class="btn" id="choosebutton" data-toggle="modal">{% trans "Choose" %}</a>
-            {% else %}
-                {{ field }}
-            {% endif %}
+              {{ field }}
             </div>
         </div>
     {% endfor %}

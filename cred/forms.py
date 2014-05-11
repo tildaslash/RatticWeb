@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.forms import ModelForm, SelectMultiple, Select, PasswordInput
 
 from models import Cred, Tag, Group
-from widgets import CredAttachmentInput
+from widgets import CredAttachmentInput, CredIconChooser
 
 
 class ExportForm(forms.Form):
@@ -49,4 +49,5 @@ class CredForm(ModelForm):
             'group': Select(attrs={'class': 'rattic-group-selector'}),
             'password': PasswordInput(render_value=True, attrs={'class': 'btn-password-generator btn-password-visibility'}),
             'attachment': CredAttachmentInput,
+            'iconname': CredIconChooser,
         }
