@@ -595,7 +595,7 @@ class JavascriptTests(LiveServerTestCase):
         self.waitforload()
         elempass = self.selenium.find_element_by_id('id_password')
         currpass = elempass.get_attribute('value')
-        showbutton = self.selenium.find_elements_by_xpath("//button[contains(concat(' ', @class, ' '), ' btn-pass-show ')]")[0]
+        showbutton = self.selenium.find_elements_by_xpath("//button[contains(concat(' ', @class, ' '), ' btn-password-visibility ')]")[0]
         # Check password
         self.assertEqual(currpass, self.data.cred.password)
         # Check password is hidden

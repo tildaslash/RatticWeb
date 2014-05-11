@@ -147,6 +147,7 @@ var RATTIC = (function ($, ZeroClipboard) {
         }).responseText);
     };
 
+    /* When the password button is clicked */
     function _passShowButtonClick() {
         target = $($(this).data('target'));
         switch ($(this).data('status')) {
@@ -160,21 +161,23 @@ var RATTIC = (function ($, ZeroClipboard) {
         return false;
     };
 
+    /* If we are going to show the password */
     function _passShowButtonShow(button, target) {
         target.trigger('getdata');
         button.trigger('show');
         button.data('status', 'shown');
-        button.html('<i class="icon-eye-close"></i');
+        button.html('<i class="icon-eye-close"></i>');
         target.removeClass('passhidden');
         if (target.prop('tagName') == 'INPUT') {
             target.attr('type', 'text');
         }
     };
 
+    /* If we were asked to hide the password */
     function _passShowButtonHide(button, target) {
         button.trigger('hide');
         button.data('status', 'hidden');
-        button.html('<i class="icon-eye-open"></i');
+        button.html('<i class="icon-eye-open"></i>');
         target.addClass('passhidden');
         if (target.prop('tagName') == 'INPUT') {
             target.attr('type', 'password');
@@ -424,6 +427,16 @@ var RATTIC = (function ($, ZeroClipboard) {
         );
     };
 
+    function _wrapInputAppend(input) {
+        /* If we are not already wrapped */
+        if (!$(input).parents('div').first().hasClass('input-append')) {
+            /* Create a div and move everything inside */
+            var div = $(document.createElement('div'));
+            div.addClass('input-append');
+            input.wrap(div);
+        }
+    };
+
     /********* Public Variables *********/
 
     /********* Public Methods *********/
@@ -479,11 +492,54 @@ var RATTIC = (function ($, ZeroClipboard) {
         }
     };
 
-    /* Creates a password show and hide button */
-    my.controls.passShowButton = function(buttons) {
-        buttons.on('click', _passShowButtonClick);
-        buttons.html('<i class="icon-eye-open"></i');
-        buttons.data('status', 'hidden');
+    /* Adds a show/hide button to an input */
+    my.controls.passInputShowHideButton = function(inputs) {
+        inputs.each(function() {
+            me = $(this);
+
+            /* Make the button look attached */
+            _wrapInputAppend(me);
+
+            /* Create our button */
+            button = $(document.createElement('button'));
+            button.addClass('btn btn-password-visibility');
+            button.html('<i class="icon-eye-open"></i>');
+            button.data('status', 'hidden');
+            button.data('target', me);
+            button.on('click', _passShowButtonClick);
+
+            /* Add the button after the password input */
+            me.after(button);
+        });
+    }
+
+    /* Makes a button show or hide a span */
+    my.controls.spanShowHideButton = function(inputs) {
+        inputs.html('<i class="icon-eye-open"></i>');
+        inputs.data('status', 'hidden');
+        inputs.on('click', _passShowButtonClick);
+    };
+
+    /* Adds a show/hide button to an input */
+    my.controls.addPasswordGenerator = function(inputs) {
+        inputs.each(function() {
+            me = $(this);
+
+            /* Make the button look attached */
+            _wrapInputAppend(me);
+
+            /* Create our button */
+            button = $(document.createElement('a'));
+            button.addClass('btn');
+            button.html('<i class="icon-repeat"></i>')
+            button.attr('data-toggle', 'modal');
+            button.attr('id', 'genpass');
+            button.attr('role', 'button');
+            button.attr('href', '#passgenmodal');
+
+            /* Add the button after the password input */
+            me.after(button);
+        });
     }
 
     /* Creates a password show and hide button */
@@ -594,8 +650,6 @@ var RATTIC = (function ($, ZeroClipboard) {
             options.create = _newGroupEntered;
         }
 
-        console.log(options, selectors);
-
         selectors.selectize(options);
     };
 
@@ -632,8 +686,14 @@ $(document).ready(function(){
     // Search boxes
     RATTIC.controls.searchForm($('.rattic-cred-search'));
 
-    // Show password button on the edit screen
-    RATTIC.controls.passShowButton($('button.btn-pass-show'));
+    // Password generator buttons
+    RATTIC.controls.addPasswordGenerator($('input.btn-password-generator'));
+
+    // Password Show/Hide buttons on password inputs
+    RATTIC.controls.passInputShowHideButton($('input.btn-password-visibility'));
+
+    // Password Show/Hide button on the details page
+    RATTIC.controls.spanShowHideButton($('.btn-password-show-hide'));
 
     // Enable the password fetcher
     RATTIC.controls.passwordFetcher($('#password'), RATTIC.page.getCredId());
