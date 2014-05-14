@@ -13,7 +13,7 @@ from storage import CredAttachmentStorage
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=64, db_index=True)
+    name = models.CharField(max_length=64, unique=True)
 
     def __unicode__(self):
         return self.name
