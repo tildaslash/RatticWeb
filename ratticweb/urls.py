@@ -5,6 +5,10 @@ from cred.api import CredResource, TagResource
 from staff.api import GroupResource
 from django.conf import settings
 
+# Configure the error handlers
+handler500 = 'ratticweb.views.handle500'
+handler404 = 'ratticweb.views.handle404'
+
 # Setup the API
 v1_api = Api(api_name='v1')
 v1_api.register(CredResource())

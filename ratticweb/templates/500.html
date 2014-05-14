@@ -2,8 +2,9 @@
 {% load url from future %}
 
 {% block content %}
-<h1>500 - Something went Splork! :(</h1>
-<p>You broke it! Server was unable to process this request.</p>
+<h1>500 - {% trans "Something went Splork!" %} :(</h1>
+<p>{% blocktrans %}Something went wrong and the server was unable to process this request. Check your servers error logs for more details.{% endblocktrans %}</p>
+<p>{% blocktrans %}If you would like to report an issue with RatticDB please visit{% endblocktrans %} <a href="https://github.com/tildaslash/RatticWeb/issues/new">{% trans "Github Issues" %}</a>.</p>
 
 {% endblock %}
 

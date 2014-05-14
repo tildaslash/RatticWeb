@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load i18n %}
 
 {% block content %}
-<h1>404 - Page not found</h1>
-<p>This is not the page you are looking for, contact your systems administrator if this persists</p>
+<h1>404 - {% trans "Page not found" %}</h1>
+<p>{% blocktrans %}This is not the page you are looking for, contact your systems administrator if you believe you have recieved this in error.{% endblocktrans %}</p>
 
 {% endblock %}
 
