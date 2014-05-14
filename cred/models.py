@@ -221,12 +221,6 @@ class CredChangeQAdmin(admin.ModelAdmin):
     list_display = ('cred', 'time')
 
 
-class CredAttachment(models.Model):
-    name = models.CharField(max_length=64)
-    size = models.BigIntegerField()
-    contents = models.BinaryField()
-
-
 admin.site.register(CredAudit, CredAuditAdmin)
 admin.site.register(Cred, CredAdmin)
 admin.site.register(Tag)
