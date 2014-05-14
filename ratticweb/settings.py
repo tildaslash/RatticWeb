@@ -130,6 +130,7 @@ LOCAL_APPS = (
 INSTALLED_APPS = (
     # External apps
     'django.contrib.auth',
+    'django.contrib.sessions',
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.staticfiles',
