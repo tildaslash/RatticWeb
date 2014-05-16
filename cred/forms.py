@@ -7,7 +7,9 @@ from widgets import CredAttachmentInput, CredIconChooser
 
 
 class ExportForm(forms.Form):
-    password = forms.CharField(widget=forms.PasswordInput())
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': 'btn-password-visibility'}
+    ))
 
 
 class TagForm(ModelForm):

@@ -17,14 +17,7 @@
                 {{ field.errors }}
                 <label class="control-label" for="{{ field.html_name }}">{{ field.label }}</label>
                 <div class="controls">
-                  {% if field.html_name == 'password' %}
-                    <div class="input-append">
-                      <input id="id_password" name="password" value="{% if field.value %}{{ field.value }}{% endif %}" maxlength="250" type="password">
-                      <button class="btn btn-pass-show" data-target="#id_password"></button>
-                    </div>
-                  {% else %}
-                      {{ field }}
-                  {% endif %}
+                    {{ field }}
                 </div>
             </div>
         {% endfor %}
