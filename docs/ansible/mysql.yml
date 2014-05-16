@@ -18,7 +18,7 @@
     action: service name=mysqld state=started enabled=yes
 
   - name: create MySQL database
-    action: mysql_db db={{db_name}} state=present
+    action: mysql_db db={{db_name}} encoding=utf8 state=present
     notify:
       - create initial user
 
