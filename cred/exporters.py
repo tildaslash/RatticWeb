@@ -20,7 +20,7 @@ def export_keepass(creds, password):
             tags += '['
             tags += t.name
             tags += '] '
-        desc = str(c.description) + tags
+        desc = unicode(c.description) + tags
 
         # Create the entry
         e = kpg.create_entry(

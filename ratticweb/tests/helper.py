@@ -1,3 +1,4 @@
+# -*- coding: latin-1 -*-
 from user_sessions.utils.tests import Client
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -100,15 +101,21 @@ class TestData:
         self.nobody = self.login(username='nobody', password='password')
 
     def setUpBasicData(self):
+        # Make a tag
         self.tag = Tag(name='tag')
         self.tag.save()
 
+        # Make a simple credential
         self.cred = Cred(title='secret', username='peh!', password='s3cr3t', group=self.group)
         self.cred.save()
+
+        # Make a cred that'll be tagged
         self.tagcred = Cred(title='tagged', password='t4gg3d', group=self.group)
         self.tagcred.save()
         self.tagcred.tags.add(self.tag)
         self.tagcred.save()
+
+        # A cred that attempts script injection
         self.injectcred = Cred(
             title='<script>document.write("BADTITLE!")</script>Bold!',
             username='<script>document.write("BADUNAME!")</script>Italics!',
@@ -116,8 +123,25 @@ class TestData:
             group=self.group
         )
         self.injectcred.save()
-        self.markdowncred = Cred(title='Markdown Cred', password='qwerty', group=self.group, description='# Test', descriptionmarkdown=True)
+
+        # A cred with markdown
+        self.markdowncred = Cred(
+            title='Markdown Cred',
+            password='qwerty',
+            group=self.group,
+            description='# Test',
+            descriptionmarkdown=True,
+        )
         self.markdowncred.save()
+
+        # Add a Unicode credential
+        self.unicodecred = Cred(
+            title='Unicode ‑ Cred',
+            password='Pchnąć',
+            group=self.group,
+            description='Γαζέες καὶ μυρτιὲς δὲν θὰ βρῶ πιὰ στὸ χρυσαφὶ ξέφωτο',
+        )
+        self.unicodecred.save()
 
         CredChangeQ.objects.add_to_changeq(self.cred)
 
