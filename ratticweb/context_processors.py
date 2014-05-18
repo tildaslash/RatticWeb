@@ -32,7 +32,7 @@ def logo_selector(request):
     time = tz.normalize(timezone.now())
 
     if ((time.hour > 20 and time.hour < 24) or
-       (time.hour > 0 and time.hour < 6)):
+       (time.hour >= 0 and time.hour < 6)):
         cntx['rattic_icon'] = 'rattic/img/rattic_icon_sleeping.png'
         cntx['rattic_logo'] = 'rattic/img/rattic_logo_sleeping.svg'
 
