@@ -225,89 +225,128 @@ def upload_keepass(request):
             request.session['imported_data'] = data
 
             # Start the user processing entries
-            return HttpResponseRedirect(reverse('staff.views.process_import'))
+            return HttpResponseRedirect(reverse('staff.views.import_overview'))
     else:
         form = KeepassImportForm(request.user)
     return render(request, 'staff_keepassimport.html', {'form': form})
 
 
-def process_import(request):
+@staff_member_required
+def import_overview(request):
     # If there was no session data, return 404
     if 'imported_data' not in request.session.keys():
         raise Http404
 
-    # If there are no creds left to import
-    if len(request.session['imported_data']['entries']) == 0:
-        # Clear data and go back to staff home
+    # Get the entries to import
+    entries = request.session['imported_data']['entries']
+
+    # If there is nothing left, go back home
+    if len(entries) == 0:
         del request.session['imported_data']
+        request.session.save()
         return HttpResponseRedirect(reverse('staff.views.home'))
 
-    # If we have a submission from the user
+    return render(request, 'staff_import_overview.html', {
+        'entries': entries,
+    })
+
+
+@staff_member_required
+def import_ignore(request, import_id):
+    # If there was no session data, return 404
+    if 'imported_data' not in request.session.keys():
+        raise Http404
+
+    # Get the entry we are concerned with
+    try:
+        del request.session['imported_data']['entries'][int(import_id)]
+        request.session.save()
+    except IndexError:
+        raise Http404
+
+    return HttpResponseRedirect(reverse('staff.views.import_overview'))
+
+
+@staff_member_required
+def import_process(request, import_id):
+    # If there was no session data, return 404
+    if 'imported_data' not in request.session.keys():
+        raise Http404
+
+    # Get the entry we are concerned with
+    try:
+        entry = request.session['imported_data']['entries'][int(import_id)]
+    except IndexError:
+        raise Http404
+
+    # Get the group
+    groupid = request.session['imported_data']['group']
+    try:
+        group = Group.objects.get(pk=groupid)
+    except Group.DoesNotExist:
+        del request.session['imported_data']
+        raise Http404
+
     if request.method == 'POST':
-        files = request.FILES
+        # Try and import what we have now
 
-        if 'imported_attachment' in request.session.keys() and 'attachment' not in files.keys():
-            fdata = request.session['imported_attachment']
-            sfile = SimpleUploadedFile(fdata['filename'], bytes(fdata['content']))
-            files['attachment'] = sfile
+        # Did the user upload a new attachment
+        if entry['filename'] and 'attachment' not in request.FILES.keys():
+            sfile = SimpleUploadedFile(entry['filename'], bytes(entry['filecontent']))
+            request.FILES['attachment'] = sfile
 
-        form = CredForm(request.user, request.POST, files)
+        # Build the form
+        form = CredForm(request.user, request.POST, request.FILES)
+
+        # Do we have enough data to save?
         if form.is_valid():
-            # Save the new credential
+
+            # Save the credential
             form.save()
 
-            if 'imported_attachment' in request.session.keys():
-                del request.session['imported_attachment']
-
-            # Add an audit record
+            # Write the audit log
             CredAudit(
                 audittype=CredAudit.CREDADD,
                 cred=form.instance,
                 user=request.user,
             ).save()
 
-            # Import another
-            return HttpResponseRedirect(reverse('staff.views.process_import'))
+            # Remove the entry we're importing
+            del request.session['imported_data']['entries'][int(import_id)]
+            request.session.save()
 
-    # If we didn't recieve any data
+            # Go back to the overview
+            return HttpResponseRedirect(reverse('staff.views.import_overview'))
+
     else:
-        # Get a new entry
-        newcred = request.session['imported_data']['entries'].pop()
-        request.session.save()
+        # Init the cred, and create the form
+        processed = dict(entry)
 
         # Create all the tags
         tlist = []
-        for t in newcred['tags']:
+        for t in processed['tags']:
             (tag, create) = Tag.objects.get_or_create(name=t)
             tlist.append(tag)
-        newcred['tags'] = tlist
+        processed['tags'] = tlist
 
         # Setup the group
-        groupid = request.session['imported_data']['group']
-        try:
-            newcred['group'] = Group.objects.get(pk=groupid)
-        except Group.DoesNotExist:
-            del request.session['imported_data']
-            raise Http404
+        processed['group'] = group
 
-        # Move any attachment temporarily
-        if newcred['filename']:
-            request.session['imported_attachment'] = {
-                'filename': newcred['filename'],
-                'content': newcred['filecontent'],
-            }
-            del newcred['filename']
-            del newcred['filecontent']
+        # If the icon is empty set it
+        if 'iconname' not in processed.keys():
+            processed['iconname'] = 'Key.png'
 
-        # Display the form
-        form = CredForm(request.user, newcred, {})
+        # Remove the attachment
+        if processed['filename']:
+            del processed['filename']
+            del processed['filecontent']
 
-    # Display the edit form
-    return render(request, 'staff_process_import.html', {
+        # Create the form
+        form = CredForm(request.user, processed, {})
+
+    return render(request, 'staff_import_process.html', {
         'form': form,
-        'action': reverse('staff.views.process_import'),
         'icons': get_icon_list(),
-        'count': len(request.session['imported_data']['entries']),
     })
 
 
