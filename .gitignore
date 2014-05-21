@@ -2,6 +2,7 @@ db/ratticdb
 *.pyc
 *.swp
 .coverage
+.idea
 build/rpm/out/*
 conf/local.cfg
 .vagrant
