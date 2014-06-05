@@ -44,4 +44,4 @@ class Command(BaseCommand):
             with self.restore_location(restore_from) as restore_location:
                 restore(settings.DATABASES['default'], restore_location, gpg_home=gpg_home)
         except FailedBackup as error:
-            raise CommandError(error)
+            raise CommandError("{0}: {1}".format(error.__class__.__name__, error))

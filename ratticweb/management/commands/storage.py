@@ -103,6 +103,7 @@ class BackupStorage(object):
         if self.has_storage:
             log.info("Uploading to s3://{0}/{1}".format(self.bucket_location, key_name))
             self.upload_to_s3(source, self.bucket, key_name)
+            log.info('Upload was successful')
 
     def move_from(self, source, start):
         """

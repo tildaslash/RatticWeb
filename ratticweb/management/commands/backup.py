@@ -39,4 +39,4 @@ class Command(BaseCommand):
                 destination = backup(settings.DATABASES['default'], recipients, backup_dir, gpg_home=gpg_home)
                 storage.move_from(destination, backup_dir)
         except FailedBackup as error:
-            raise CommandError(error)
+            raise CommandError("{0}: {1}".format(error.__class__.__name__, error))
