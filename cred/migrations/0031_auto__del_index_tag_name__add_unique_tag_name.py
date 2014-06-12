@@ -32,16 +32,10 @@ class Migration(SchemaMigration):
         # Adding unique constraint on 'Tag', fields ['name']
         db.create_unique(u'cred_tag', ['name'])
 
-        # Removing index on 'Tag', fields ['name']
-        db.delete_index(u'cred_tag', ['name'])
-
 
     def backwards(self, orm):
         # Removing unique constraint on 'Tag', fields ['name']
         db.delete_unique(u'cred_tag', ['name'])
-
-        # Adding index on 'Tag', fields ['name']
-        db.create_index(u'cred_tag', ['name'])
 
 
     models = {
