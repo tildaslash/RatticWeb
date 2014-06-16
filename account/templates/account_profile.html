@@ -22,7 +22,7 @@
 
 {% endif %}
 <tr><th>{% trans "Last Password Change" %}</th><td>{{ user.profile.password_changed }}</td></tr>
-<tr><th>{% trans "Groups" %}</th><td>{% for g in user.groups.all %}{{ g.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td></tr>
+<tr><th>{% trans "Groups" %}</th><td>{% for g in user.groups.all %}<a href="{% url "cred.views.list" "group" g.id %}">{{ g.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</td></tr>
 {% for field in form %}
 <tr><th>{{ field.label }}</th><td>{{ field }}</td></tr>
 {% endfor %}
