@@ -2,19 +2,25 @@
 {% load i18n %}
 
 {% if user.is_authenticated %}
-     <h4>{% trans "You" %}</h4>
-         <p>{% blocktrans with username=user.username|title %}Welcome {{ username }}.{% endblocktrans %}<p>
-         <a class="btn" href="{% url "account.views.profile" %}">{% trans "Profile" %}</a>
-         <a class="btn btn-danger" href="{% url "django.contrib.auth.views.logout" %}">{% trans "Logout" %}</a>
-     <h4><a href="{% url "cred.views.tags"  %}">{% trans "Tags" %}</a></h4>
-     {% if user.is_authenticated %}
-         {% for tag in user.profile.favourite_tags.all %}
-         <p><i class="icon-minus"></i> <a href="{% url "cred.views.list" "tag" tag.id %}">{{ tag.name }}</a></p>
-         {% empty %}
-         <p>{% blocktrans %}Add Favourite Tags on the {% endblocktrans %}
-         <a href="{% url 'account.views.profile' %}">{% trans "profile" %}</a> {% blocktrans %}page to see them here.{% endblocktrans %}</p>
-         {% endfor %}
-     {% endif %}
+    <h4>{% trans "You" %}</h4>
+        <p>{% blocktrans with username=user.username|title %}Welcome {{ username }}.{% endblocktrans %}<p>
+        <a class="btn" href="{% url "account.views.profile" %}">{% trans "Profile" %}</a>
+        <a class="btn btn-danger" href="{% url "django.contrib.auth.views.logout" %}">{% trans "Logout" %}</a>
+    <h4><a href="{% url "cred.views.tags"  %}">{% trans "Tags" %}</a></h4>
+    {% if user.is_authenticated %}
+        {% for tag in user.profile.favourite_tags.all %}
+        <p><i class="icon-minus"></i> <a href="{% url "cred.views.list" "tag" tag.id %}">{{ tag.name }}</a></p>
+        {% empty %}
+        <p>{% blocktrans %}Add Favourite Tags on the {% endblocktrans %}
+        <a href="{% url 'account.views.profile' %}">{% trans "profile" %}</a> {% blocktrans %}page to see them here.{% endblocktrans %}</p>
+        {% endfor %}
+        <h4>Groups</h4>
+        {% for g in user.groups.all %}
+        <p><i class="icon-minus"></i> <a href="{% url "cred.views.list" "group" g.id %}">{{ g.name }}</a></p>
+        {% empty %}
+        <p>{% blocktrans %}If you are a member of any groups, you will see them listed here. {% endblocktrans %}</p>
+        {% endfor %}
+    {% endif %}
 {% else %}
     <h4>Login</h4>
     <form class="form-inline" method="post" action="{% url "login" %}?next={{ next|default:'' }}">{% csrf_token %}
