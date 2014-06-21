@@ -79,46 +79,46 @@ class StaffViewTests(TestCase):
             User.objects.get(id=self.data.unobody.id)
 
     def test_audit_by_cred(self):
-        resp = self.data.staff.get(reverse('staff.views.audit_by_cred',
-            args=(self.data.cred.id,)))
+        resp = self.data.staff.get(reverse('staff.views.audit',
+            args=("cred", self.data.cred.id)))
         self.assertEqual(resp.status_code, 200)
-        cred = resp.context['cred']
+        cred = resp.context['item']
         loglist = resp.context['logs'].object_list
         self.assertEqual(self.data.cred.id, cred.id)
-        self.assertEqual(resp.context['type'], 'cred')
+        self.assertEqual(resp.context['by'], 'cred')
         self.assertIn(self.data.logadd, loglist)
         self.assertIn(self.data.logview, loglist)
 
     def test_audit_by_user(self):
-        resp = self.data.staff.get(reverse('staff.views.audit_by_user',
-            args=(self.data.ustaff.id,)))
+        resp = self.data.staff.get(reverse('staff.views.audit',
+            args=("user", self.data.ustaff.id)))
         self.assertEqual(resp.status_code, 200)
-        user = resp.context['loguser']
+        user = resp.context['item']
         loglist = resp.context['logs'].object_list
         self.assertEqual(self.data.ustaff.id, user.id)
-        self.assertEqual(resp.context['type'], 'user')
+        self.assertEqual(resp.context['by'], 'user')
         self.assertIn(self.data.logadd, loglist)
         self.assertIn(self.data.logview, loglist)
 
     def test_audit_by_days(self):
-        resp = self.data.staff.get(reverse('staff.views.audit_by_days',
-            args=(2,)))
+        resp = self.data.staff.get(reverse('staff.views.audit',
+            args=("days", 2)))
         self.assertEqual(resp.status_code, 200)
-        days_ago = resp.context['days_ago']
+        days_ago = resp.context['item']
         loglist = resp.context['logs'].object_list
-        self.assertEqual(int(days_ago), 2)
-        self.assertEqual(resp.context['type'], 'time')
+        self.assertEqual(days_ago, 2)
+        self.assertEqual(resp.context['by'], 'days')
         self.assertIn(self.data.logadd, loglist)
         self.assertIn(self.data.logview, loglist)
 
     def test_audit_by_largedays(self):
-        resp = self.data.staff.get(reverse('staff.views.audit_by_days',
-            args=(9999999999999,)))
+        resp = self.data.staff.get(reverse('staff.views.audit',
+            args=("days", 9999999999999)))
         self.assertEqual(resp.status_code, 200)
-        days_ago = resp.context['days_ago']
+        days_ago = resp.context['item']
         loglist = resp.context['logs'].object_list
-        self.assertEqual(int(days_ago), 9999999999999)
-        self.assertEqual(resp.context['type'], 'time')
+        self.assertEqual(days_ago, 9999999999999)
+        self.assertEqual(resp.context['by'], 'days')
         self.assertIn(self.data.logadd, loglist)
         self.assertIn(self.data.logview, loglist)
 

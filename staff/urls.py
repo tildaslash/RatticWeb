@@ -12,9 +12,7 @@ urlpatterns = patterns('staff.views',
     url(r'^groupdetail/(?P<gid>\d+)/$', 'groupdetail'),
 
     # Auditing
-    url(r'^audit-by-cred/(?P<cred_id>\d+)/$', 'audit_by_cred'),
-    url(r'^audit-by-user/(?P<user_id>\d+)/$', 'audit_by_user'),
-    url(r'^audit-by-days/(?P<days_ago>\d+)/$', 'audit_by_days'),
+    url(r'^audit-by-(?P<by>\w+)/(?P<byarg>\d+)/$', 'audit'),
 
     # Importing
     url(r'^import/keepass/$', 'upload_keepass'),

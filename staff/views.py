@@ -40,7 +40,7 @@ def userdetail(request, uid):
             return HttpResponseRedirect(reverse('cred.views.list',
                 args=('changeadvice', user.id)))
     credlogs = CredAudit.objects.filter(user=user, cred__group__in=request.user.groups.all())[:5]
-    morelink = reverse('staff.views.audit_by_user', args=(user.id,))
+    morelink = reverse('staff.views.audit', args=('user', user.id))
     return render(request, 'staff_userdetail.html', {
         'viewuser': user,
         'credlogs': credlogs,
@@ -101,11 +101,26 @@ def userdelete(request, uid):
 
 
 @staff_member_required
-def audit_by_cred(request, cred_id):
-    cred = get_object_or_404(Cred, pk=cred_id)
-    alllogs = CredAudit.objects.filter(cred=cred)
+def audit(request, by, byarg):
+    auditlog = CredAudit.objects.all()
+    item = None
 
-    paginator = Paginator(alllogs, request.user.profile.items_per_page)
+    if by == 'user':
+        item = get_object_or_404(User, pk=byarg)
+        auditlog = auditlog.filter(user=item)
+    elif by == 'cred':
+        item = get_object_or_404(Cred, pk=byarg)
+        auditlog = auditlog.filter(cred=item)
+    elif by == 'days':
+        item = int(byarg)
+        try:
+            delta = datetime.timedelta(days=int(byarg))
+            datefrom = now() - delta
+        except OverflowError:
+            datefrom = datetime.datetime(1970, 1, 1).replace(tzinfo=utc)
+        auditlog = auditlog.filter(time__gte=datefrom)
+
+    paginator = Paginator(auditlog, request.user.profile.items_per_page)
     page = request.GET.get('page')
 
     try:
@@ -115,47 +130,7 @@ def audit_by_cred(request, cred_id):
     except EmptyPage:
         logs = paginator.page(paginator.num_pages)
 
-    return render(request, 'staff_audit.html', {'logs': logs, 'type': 'cred', 'cred': cred})
-
-
-@staff_member_required
-def audit_by_user(request, user_id):
-    loguser = get_object_or_404(User, pk=user_id)
-    alllogs = CredAudit.objects.filter(user=loguser)
-
-    paginator = Paginator(alllogs, request.user.profile.items_per_page)
-    page = request.GET.get('page')
-
-    try:
-        logs = paginator.page(page)
-    except PageNotAnInteger:
-        logs = paginator.page(1)
-    except EmptyPage:
-        logs = paginator.page(paginator.num_pages)
-
-    return render(request, 'staff_audit.html', {'logs': logs, 'type': 'user', 'loguser': loguser})
-
-
-@staff_member_required
-def audit_by_days(request, days_ago):
-    try:
-        delta = datetime.timedelta(days=int(days_ago))
-        datefrom = now() - delta
-    except OverflowError:
-        datefrom = datetime.datetime(1970, 1, 1).replace(tzinfo=utc)
-    alllogs = CredAudit.objects.filter(time__gte=datefrom)
-
-    paginator = Paginator(alllogs, request.user.profile.items_per_page)
-    page = request.GET.get('page')
-
-    try:
-        logs = paginator.page(page)
-    except PageNotAnInteger:
-        logs = paginator.page(1)
-    except EmptyPage:
-        logs = paginator.page(paginator.num_pages)
-
-    return render(request, 'staff_audit.html', {'logs': logs, 'type': 'time', 'days_ago': days_ago})
+    return render(request, 'staff_audit.html', {'logs': logs, 'by': by, 'item': item, 'byarg': byarg})
 
 
 class NewUser(FormView):

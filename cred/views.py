@@ -193,7 +193,7 @@ def detail(request, cred_id):
 
     if request.user.is_staff:
         credlogs = cred.logs.all()[:5]
-        morelink = reverse('staff.views.audit_by_cred', args=(cred.id,))
+        morelink = reverse('staff.views.audit', args=('cred', cred.id))
     else:
         credlogs = None
         morelink = None

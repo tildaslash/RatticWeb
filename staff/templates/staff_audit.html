@@ -3,14 +3,14 @@
 {% load i18n %}
 
 {% block content %}
-{% if type == 'cred' %}
-  <h2>{% blocktrans with cred_title=cred.title %}Audit Logs for password &apos;{{ cred_title }}&apos;{% endblocktrans %}</h2>
+{% if by == 'cred' %}
+  <h2>{% blocktrans with cred_title=item.title %}Audit Logs for password &apos;{{ cred_title }}&apos;{% endblocktrans %}</h2>
 {% endif %}
-{% if type == 'user' %}
-  <h2>{% blocktrans with username=loguser.username %}Audit Logs for user &apos;{{ username }}&apos;{% endblocktrans %}</h2>
+{% if by == 'user' %}
+  <h2>{% blocktrans with username=item.username %}Audit Logs for user &apos;{{ username }}&apos;{% endblocktrans %}</h2>
 {% endif %}
-{% if type == 'time' %}
-  <h2>{% blocktrans %}Audit Logs going back {{ days_ago }} days ago{% endblocktrans %}</h2>
+{% if by == 'days' %}
+  <h2>{% blocktrans %}Audit Logs going back {{ item }} days ago{% endblocktrans %}</h2>
 {% endif %}
 <table class="table table-striped table-bordered table-condensed">
 <tr>
@@ -26,10 +26,10 @@
 {% for audit in logs %}
   <tr>
     <td>{{ audit.get_audittype_display }}</td>
-    {% if type != 'user' %}
+    {% if by != 'user' %}
       <td><a href="{% url 'staff.views.userdetail' audit.user.id %}">{{ audit.user.username }}</a></td>
     {% endif %}
-    {% if type != 'cred' %}
+    {% if vy != 'cred' %}
       <td><a href="{% url 'cred.views.detail' audit.cred.id %}">{{ audit.cred.title }}</a></td>
     {% endif %}
     <td>{{ audit.time }}</td>

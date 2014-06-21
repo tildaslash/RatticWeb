@@ -14,7 +14,7 @@
   {% endif %}
   <a class="btn" href="{% url "staff.views.upload_keepass" %}">{% trans "Import Keepass" %}</a>
   <a class="btn" href="{% url "cred.views.list" 'special' 'trash' %}">{% trans "View Trash" %}</a>
-  <a class="btn" href="{% url "staff.views.audit_by_days" 7 %}">{% trans "Audit One Week" %}</a>
+  <a class="btn" href="{% url "staff.views.audit" "days" 7 %}">{% trans "Audit One Week" %}</a>
 </div>
 
 <h2>{% trans "Users" %}</h2>
