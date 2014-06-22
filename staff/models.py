@@ -3,6 +3,15 @@ from django.utils.translation import ugettext_lazy as _
 from django import forms
 from importloaders import keepass
 from keepassdb.exc import AuthenticationError, InvalidDatabase
+from cred.models import CredAudit
+
+
+class AuditFilterForm(forms.Form):
+    hide = forms.MultipleChoiceField(
+        choices=CredAudit.CREDAUDITCHOICES,
+        widget=forms.CheckboxSelectMultiple,
+        initial=[],
+    )
 
 
 class UserForm(forms.ModelForm):

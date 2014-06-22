@@ -18,7 +18,7 @@ from django.utils.timezone import utc
 from cred.icon import get_icon_list
 from cred.models import CredAudit, Cred, Tag
 from cred.forms import CredForm
-from models import UserForm, GroupForm, KeepassImportForm
+from models import UserForm, GroupForm, KeepassImportForm, AuditFilterForm
 
 
 @staff_member_required
@@ -120,6 +120,14 @@ def audit(request, by, byarg):
             datefrom = datetime.datetime(1970, 1, 1).replace(tzinfo=utc)
         auditlog = auditlog.filter(time__gte=datefrom)
 
+    if request.method == 'POST':
+        form = AuditFilterForm(request.POST)
+    else:
+        form = AuditFilterForm()
+
+    if form.is_valid():
+        auditlog = auditlog.exclude(audittype__in=form.cleaned_data['hide'])
+
     paginator = Paginator(auditlog, request.user.profile.items_per_page)
     page = request.GET.get('page')
 
@@ -130,7 +138,13 @@ def audit(request, by, byarg):
     except EmptyPage:
         logs = paginator.page(paginator.num_pages)
 
-    return render(request, 'staff_audit.html', {'logs': logs, 'by': by, 'item': item, 'byarg': byarg})
+    return render(request, 'staff_audit.html', {
+        'filterform': form,
+        'logs': logs,
+        'by': by,
+        'item': item,
+        'byarg': byarg
+    })
 
 
 class NewUser(FormView):
