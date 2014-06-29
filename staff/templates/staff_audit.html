@@ -3,6 +3,9 @@
 {% load i18n %}
 
 {% block content %}
+
+{% include "staff_part_audit_filter.html" %}
+
 {% if by == 'cred' %}
   <h2>{% blocktrans with cred_title=item.title %}Audit Logs for password &apos;{{ cred_title }}&apos;{% endblocktrans %}</h2>
 {% endif %}
@@ -13,14 +16,14 @@
   <h2>{% blocktrans %}Audit Logs going back {{ item }} days ago{% endblocktrans %}</h2>
 {% endif %}
 
-<form method="POST">{% csrf_token %}
-    {{ filterform }}
-    <input id="credsave" class="btn btn-primary" type="submit" value="{% trans "Submit" %}" />
-</form>
-
 <table class="table table-striped table-bordered table-condensed">
 <tr>
-  <th>{% trans "Action" %}</th>
+
+    <th>
+        {% trans "Action" %}
+        <a href="#filterModal" data-toggle="modal"><i class="icon-filter"></i></a>
+    </th>
+
   {% if type != 'user' %}
     <th>{% trans "User" %}</th>
   {% endif %}

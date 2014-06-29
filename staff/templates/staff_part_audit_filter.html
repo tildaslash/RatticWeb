@@ -1,0 +1,15 @@
+<div id="filterModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Audit Filters</h3>
+  </div>
+  <div class="modal-body">
+    <form method="POST" id="filterform">{% csrf_token %}
+      {{ filterform }}
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button class="btn btn-primary rattic-form-submit-by-id" data-form="#filterform">Apply</button>
+  </div>
+</div>
