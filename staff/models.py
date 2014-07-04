@@ -9,7 +9,7 @@ from cred.models import CredAudit
 class AuditFilterForm(forms.Form):
     hide = forms.MultipleChoiceField(
         choices=CredAudit.CREDAUDITCHOICES,
-        widget=forms.CheckboxSelectMultiple,
+        widget=forms.SelectMultiple(attrs={'class': 'selectize-multiple'}),
         initial=[],
     )
 

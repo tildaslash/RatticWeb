@@ -83,6 +83,10 @@ img.biglogo {
     word-wrap: break-word;
 }
 
+/* Make the filter modal allow overflow of the selectize box */
+#filterModal .modal-body {
+    overflow-y: visible;
+}
 
 /************************
  * Sticky footer styles *
