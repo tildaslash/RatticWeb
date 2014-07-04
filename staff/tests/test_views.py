@@ -111,6 +111,20 @@ class StaffViewTests(TestCase):
         self.assertIn(self.data.logadd, loglist)
         self.assertIn(self.data.logview, loglist)
 
+    def test_audit_filtering(self):
+        post = {
+            'hide': 'A',
+        }
+        resp = self.data.staff.post(reverse('staff.views.audit',
+            args=("days", 2)), post)
+        self.assertEqual(resp.status_code, 200)
+        days_ago = resp.context['item']
+        loglist = resp.context['logs'].object_list
+        self.assertEqual(days_ago, 2)
+        self.assertEqual(resp.context['by'], 'days')
+        self.assertNotIn(self.data.logadd, loglist)
+        self.assertIn(self.data.logview, loglist)
+
     def test_audit_by_largedays(self):
         resp = self.data.staff.get(reverse('staff.views.audit',
             args=("days", 9999999999999)))
