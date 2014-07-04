@@ -409,6 +409,11 @@ var RATTIC = (function ($, ZeroClipboard) {
       if ($('#chk_can_' + key).is(":checked")) canset.push(key);
     }
 
+    if (passlength > 1000) {
+        $("#txt_length").val(1000);
+        passlength = 1000;
+    }
+
     input.val(_makePassword(passlength, canset, mustset));
   }
 
