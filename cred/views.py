@@ -290,7 +290,9 @@ def edit(request, cred_id):
     return render(request, 'cred_edit.html', {'form': form,
         'action': reverse('cred.views.edit', args=(cred.id,)),
         'next': next,
-        'icons': get_icon_list()})
+        'icons': get_icon_list(),
+        'cred': cred,
+    })
 
 
 @login_required

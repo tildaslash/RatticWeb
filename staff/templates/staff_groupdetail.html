@@ -4,7 +4,17 @@
 
 {% block content %}
 {% if delete %}
+<h1>{% trans "Delete Group" %}: {{ group.name }}</h1>
 <div class="alert alert-error">{% blocktrans %}Deleting this group will delete every password underneath it.{% endblocktrans %}</div>
+{% else %}
+<h1>{% trans "Group" %} {{ group.name }}</h1>
+{% if not LDAP_ENABLED %}
+<div class="btn-group">
+    <a class="btn" href="{% url "staff.views.groupedit" group.id %}">{% trans "Edit" %}</a>
+    <a class="btn btn-danger" href="{% url "staff.views.groupdelete" group.id %}">{% trans "Delete" %}</a> 
+</div>
+<br /><br />
+{% endif %}
 {% endif %}
 <table class="table table-striped table-bordered table-condensed">
 <tr><th>{% trans "Name" %}</th><td>{{ group.name }}</td></tr>

@@ -8,6 +8,8 @@
 {% include "cred_part_passgenmodal.html" %}
 {% include "cred_part_logomodal.html" with icons=icons txtfield='#id_iconname' imgfield='#logodisplay' %}
 
+<h1>{% if not cred.id %}{% trans "Create Password" %}{% else %}{% trans "Edit Password" %}: {{ cred.title }}{% endif %}</h1>
+
 <form class="form-horizontal" enctype="multipart/form-data" autocomplete="off" action="{{ action }}{% if next %}?next={{ next }}{% endif %}" method="post">{% csrf_token %}
     {% for field in form %}
         <div class="control-group">
