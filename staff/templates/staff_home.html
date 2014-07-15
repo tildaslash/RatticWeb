@@ -19,11 +19,18 @@
 
 <h2>{% trans "Users" %}</h2>
 <table class="table table-striped table-bordered table-condensed">
-  <tr><th>{% trans "Username" %}</th><th>{% trans "email" %}</th></tr>
+  <tr>
+    <th>{% trans "Username" %}</th>
+    <th>{% trans "email" %}</th>
+    <th>{% trans "Edit" %}</th>
+    <th>{% trans "Delete" %}</th>
+  </tr>
 {% for u in userlist %}
 <tr {% if not u.is_active %}class="error"{% endif %}>
   <td><a href="{% url "staff.views.userdetail" u.id %}">{{ u.username }}</a></td>
   <td>{{ u.email }}</td>
+  <td><a href="{% url "user_edit" u.id %}">{% trans "Edit" %}</a></td>
+  <td><a href="{% url "staff.views.userdelete" u.id %}">{% trans "Delete" %}</a></td>
 </tr>
 {% endfor %}
 </table>
