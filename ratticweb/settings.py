@@ -260,6 +260,11 @@ SECRET_KEY = config.get('ratticweb', 'secretkey')
 ALLOWED_HOSTS = [config.get('ratticweb', 'hostname'), 'localhost']
 HOSTNAME = config.get('ratticweb', 'hostname')
 RATTIC_MAX_ATTACHMENT_SIZE = int(config.get('ratticweb', 'max_attachment_size'))
+
+# Allow SSL termination outside RatticDB
+if confget('ratticweb', 'ssl_header', False):
+    SECURE_PROXY_SSL_HEADER = (config.get('ratticweb', 'ssl_header'), config.get('ratticweb', 'ssl_header_value'))
+
 # Setup the loglevel
 LOGGING['loggers']['django.request']['level'] = config.get('ratticweb', 'loglevel')
 
