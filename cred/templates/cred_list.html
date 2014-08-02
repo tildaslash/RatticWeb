@@ -7,7 +7,9 @@
 
 {% block content %}
 
-{% include "cred_part_export.html" %}
+{% if buttons.export and EXPORT_ENABLED %}
+    {% include "cred_part_export.html" %}
+{% endif %}
 
 {% if not hidecredlist %}
 <h1>{{ credtitle }}</h1>
@@ -37,7 +39,7 @@
         {% if buttons.tagger %}
           <select name="tag" class="rattic-single-tag-selector rattic-check-enabled" data-target=".cred-list-check" placeholder="Apply a Tag" data-action="{% url "cred.views.bulktagcred" %}" tabindex="-1"></select>
         {% endif %}
-        {% if buttons.export %}
+        {% if buttons.export and EXPORT_ENABLED %}
           <button class="btn" href="#exportmodal" data-toggle="modal">{% trans "Download Keepass" %}</button>
         {% endif %}
       </td>

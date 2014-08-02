@@ -260,6 +260,7 @@ SECRET_KEY = config.get('ratticweb', 'secretkey')
 ALLOWED_HOSTS = [config.get('ratticweb', 'hostname'), 'localhost']
 HOSTNAME = config.get('ratticweb', 'hostname')
 RATTIC_MAX_ATTACHMENT_SIZE = int(config.get('ratticweb', 'max_attachment_size'))
+RATTIC_DISABLE_EXPORT = config.getboolean('ratticweb', 'disable_export')
 
 # Allow SSL termination outside RatticDB
 if confget('ratticweb', 'ssl_header', False):

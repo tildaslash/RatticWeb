@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, url
+from django.conf import settings
 
 urlpatterns = patterns('cred.views',
     # New list views
@@ -10,9 +11,6 @@ urlpatterns = patterns('cred.views',
 
     # Search dialog for mobile
     url(r'^search/$', 'search'),
-
-    # Export views
-    url(r'^export/keepass/$', 'download'),
 
     # Single cred views
     url(r'^detail/(?P<cred_id>\d+)/$', 'detail'),
@@ -36,3 +34,9 @@ urlpatterns = patterns('cred.views',
     url(r'^tag/edit/(?P<tag_id>\d+)/$', 'tagedit'),
     url(r'^tag/delete/(?P<tag_id>\d+)/$', 'tagdelete'),
 )
+
+if not settings.RATTIC_DISABLE_EXPORT:
+    urlpatterns += patterns('cred.views',
+        # Export views
+        url(r'^export/keepass/$', 'download'),
+    )

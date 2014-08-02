@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.test.utils import override_settings
+from django.utils.unittest import skipIf
+from django.conf import settings
 
 from cStringIO import StringIO
 from keepassdb import Database
@@ -14,6 +16,7 @@ class CredExportTests(TestCase):
     def setUp(self):
         self.data = TestData()
 
+    @skipIf(settings.RATTIC_DISABLE_EXPORT, 'Cannot test disabled feature')
     def test_cred_export(self):
         # Grab the file
         data = {
