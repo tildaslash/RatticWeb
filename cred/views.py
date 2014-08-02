@@ -55,11 +55,11 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
     viewdict = {}
     viewdict['credtitle'] = _('All passwords')
     viewdict['alerts'] = []
-    viewdict['filter'] = str(cfilter).lower()
-    viewdict['value'] = str(value).lower()
-    viewdict['sort'] = str(sort).lower()
-    viewdict['sortdir'] = str(sortdir).lower()
-    viewdict['page'] = str(page).lower()
+    viewdict['filter'] = unicode(cfilter).lower()
+    viewdict['value'] = unicode(value).lower()
+    viewdict['sort'] = unicode(sort).lower()
+    viewdict['sortdir'] = unicode(sortdir).lower()
+    viewdict['page'] = unicode(page).lower()
 
     # Default buttons
     viewdict['buttons'] = {}

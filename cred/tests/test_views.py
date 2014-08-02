@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
 from django.test.utils import override_settings
@@ -115,6 +116,13 @@ class CredViewTests(TestCase):
         self.assertEqual(resp.status_code, 200)
         credlist = resp.context['credlist'].object_list
         self.assertTrue(self.data.tagcred in credlist)
+        self.assertTrue(self.data.cred not in credlist)
+
+    def test_list_by_search_unicode(self):
+        resp = self.data.norm.get(reverse('cred.views.list', args=('search', 'ö')))
+        self.assertEqual(resp.status_code, 200)
+        credlist = resp.context['credlist'].object_list
+        self.assertTrue(self.data.tagcred not in credlist)
         self.assertTrue(self.data.cred not in credlist)
 
     def test_detail_normal(self):
