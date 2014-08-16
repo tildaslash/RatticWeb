@@ -45,6 +45,9 @@ div.copybutton {
   visibility: hidden;
 }
 
+span#password {
+  font-family: monospace;
+}
 
 button#copyuser {
   visibility: hidden;
