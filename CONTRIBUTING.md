@@ -18,3 +18,13 @@ First setup your development environment using the [instructions in the Wiki](ht
 
 We are as relaxed with Pull Requests as we are with Issues. You should put your changes into a topic branch on your own fork, but we are not fussed if you want us to pull from your master branch. We do require you to submit code that passes our tests and Travis-CI will test it to make sure.
 
+# Contacting Us
+
+There are many ways to contact the developers of RatticDB. We will do our best to respond as soon as possible, but remember we do have day jobs which don't involve RatticDB so we may take some time to respond.
+
+If you want to talk to the developers and other users of RatticDB we have two options for you. You can either use the [Google Group Mailing List](https://groups.google.com/forum/#!forum/ratticdb) or you can chat with us using IRC in #RatticDB on Freenode. These are probably the quickest ways to get help as there are more people available to respond.
+
+If you need to get in touch with the RatticDB developers privately you can email us at [rattic@tildaslash.com](mailto:rattic@tildaslash.com). This must be used for any security issues to give us enough time to develop a patch and respond before publically releasing the details of the exploit.
+
+Finally you can talk to us via the [@RatticDB](http://www.twitter.com/ratticdb) Twitter account. For various reasons this is probably the most difficult way to get help but we will do our best.
+
