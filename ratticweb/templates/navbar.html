@@ -3,6 +3,7 @@
 {% load url_root from ratticweb %}
 {% load i18n %}
 {% url "cred.views.list" as cred_views_list %}
+{% url "cred.views.search" as cred_views_search %}
 {% url "cred.views.list" "special" "changeq" as cred_views_viewqueue %}
 {% url "staff.views.home" as staff_views_home %}
 {% url "help.views.home" as help_views_home %}
@@ -37,9 +38,6 @@
             <ul class="dropdown-menu" role="menu">
               {% if user.is_authenticated %}
                 <li>
-                  <a href="{% url "cred.views.search" %}">{% trans "Search" %}</a>
-                </li>
-                <li>
                   <a href="{% url "cred.views.tags" %}">{% trans "Tags" %}</a>
                 </li>
                 <li>
@@ -66,8 +64,13 @@
                   <a href="{{ help_views_home }}">{% trans "Help" %}</a>
                 </li>
               {% endif %}
-        </ul>
-      </li>
+            </ul>
+          </li>
+          {% if user.is_authenticated %}
+          <li {% if pageurl == cred_views_search %}class="active"{% endif %}>
+            <a href="{{ cred_views_search }}">{% trans "Search" %}</a>
+          </li>
+          {% endif %}
         </ul>
 
         <form class="navbar-search pull-right hidden-phone rattic-cred-search">
