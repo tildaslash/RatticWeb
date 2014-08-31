@@ -1,7 +1,7 @@
 RatticWeb
 =========
 
-Build Status: [![Build Status](https://travis-ci.org/tildaslash/RatticWeb.png?branch=master)](https://travis-ci.org/tildaslash/RatticWeb)
+Although Daniel Hall does not approve this kind of "security", and I generally agree with him, but implementing EncryptedCharField was way simpler than encrypting backup on backup media. With this patch password field will be encrypted on the fly with help from python-keyczar and django-extensions. You can implement this on your running setup, and passwords that are currently saved in plain text will remain in that state until you change them, while all newly added password will be encrypted using symmetric AES algorithm.
 
 RatticWeb is the website part of the Rattic password management solution, which allows you to easily manage your users and passwords.
 
