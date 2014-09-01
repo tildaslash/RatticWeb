@@ -324,6 +324,19 @@ if chgqreminder > 0:
 
 CELERY_TIMEZONE = TIME_ZONE
 
+# [ad]
+AD_ENABLED = 'ad' in config.sections()
+if AD_ENABLED:
+    AUTHENTICATION_BACKENDS = (
+        'account.authentication.ActiveDirectoryBackend',
+        'django.contrib.auth.backends.ModelBackend',
+    )
+    AD_DNS_NAME = config.get('ad', 'dns_name')
+    AD_DOMAIN = config.get('ad', 'domain')
+    AD_SEARCH_DN = config.get('ad', 'search_dn')
+    AD_LDAP_PORT = config.get('ad', 'ldap_port')
+
+
 # [ldap]
 LDAP_ENABLED = 'ldap' in config.sections()
 
