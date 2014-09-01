@@ -324,34 +324,29 @@ if chgqreminder > 0:
 
 CELERY_TIMEZONE = TIME_ZONE
 
-# [ad]
-AD_ENABLED = 'ad' in config.sections()
-if AD_ENABLED:
-    AUTHENTICATION_BACKENDS = (
-        'account.authentication.ActiveDirectoryBackend',
-        'django.contrib.auth.backends.ModelBackend',
-    )
-    AD_DNS_NAME = config.get('ad', 'dns_name')
-    AD_DOMAIN = config.get('ad', 'domain')
-    AD_SEARCH_DN = config.get('ad', 'search_dn')
-    AD_LDAP_PORT = config.get('ad', 'ldap_port')
-
-
 # [ldap]
+USE_LDAP_GROUPS = config.get('ldap', 'useldapgroups')
 LDAP_ENABLED = 'ldap' in config.sections()
 
 if LDAP_ENABLED:
-    # Add LDAP to the auth modules
-    AUTHENTICATION_BACKENDS = (
-        'django_auth_ldap.backend.LDAPBackend',
-        'django.contrib.auth.backends.ModelBackend',
-    )
+
+    if USE_LDAP_GROUPS:
+        AUTHENTICATION_BACKENDS = (
+            'django_auth_ldap.backend.LDAPBackend',
+            'django.contrib.auth.backends.ModelBackend',
+        )
+    else:
+        AUTHENTICATION_BACKENDS = (
+            'account.authentication.ActiveDirectoryBackend',
+            'django.contrib.auth.backends.ModelBackend',
+        )
 
     # Setup the LDAP Logging
     LOGGING['loggers']['django_auth_ldap']['level'] = confget('ldap', 'loglevel', 'WARNING')
 
     # Get config options for LDAP
     AUTH_LDAP_SERVER_URI = config.get('ldap', 'uri')
+    AUTH_LDAP_DOMAIN = config.get('ldap', 'domain')
     AUTH_LDAP_BIND_DN = confget('ldap', 'binddn', '')
     AUTH_LDAP_BIND_PASSWORD = confget('ldap', 'bindpw', '')
     AUTH_LDAP_USER_FLAGS_BY_GROUP['is_staff'] = confget('ldap', 'staff', '')

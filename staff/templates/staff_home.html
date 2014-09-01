@@ -8,7 +8,7 @@
 <h1>{% trans "Staff Manage" %}</h1>
 
 <div class="btn-group">
-  {% if not LDAP_ENABLED %}
+  {% if not USE_LDAP_GROUPS %}
     <a class="btn" href="{% url "user_add" %}">{% trans "Add User" %}</a>
     <a class="btn" href="{% url "staff.views.groupadd" %}">{% trans "Add Group" %}</a>
   {% endif %}
@@ -41,11 +41,11 @@
 
 <h2>{% trans "Access Groups" %}</h2>
 <table class="table table-striped table-bordered table-condensed">
-  <tr><th>{% trans "Name" %}</th>{% if not LDAP_ENABLED %}<th>{% trans "Edit" %}</th><th>{% trans "Delete" %}</th>{% endif %}</tr>
+  <tr><th>{% trans "Name" %}</th>{% if not USE_LDAP_GROUPS %}<th>{% trans "Edit" %}</th><th>{% trans "Delete" %}</th>{% endif %}</tr>
 {% for g in grouplist %}
 <tr>
   <td><a href="{% url "staff.views.groupdetail" g.id %}">{{ g.name }}</a></td>
-  {% if not LDAP_ENABLED %}
+  {% if not USE_LDAP_GROUPS %}
     <td><a href="{% url "staff.views.groupedit" g.id %}">{% trans "Edit" %}</a></td>
     <td><a href="{% url "staff.views.groupdelete" g.id %}">{% trans "Delete" %}</a></td>
   {% endif %}

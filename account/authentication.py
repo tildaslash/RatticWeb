@@ -31,11 +31,11 @@ class ADUser(object):
 
     @classmethod
     def get_ldap_url(cls):
-        return 'ldap://%s:%s' % (settings.AD_DNS_NAME, settings.AD_LDAP_PORT)
+        return settings.AUTH_LDAP_SERVER_URI
 
     def __init__(self, username):
         self.username = username
-        self.user_bind_name = "%s@%s" % (self.username, settings.AD_DOMAIN)
+        self.user_bind_name = "%s@%s" % (self.username, settings.AUTH_LDAP_DOMAIN)
         self.is_bound = False
         self.has_data = False
 
@@ -81,13 +81,13 @@ class ADUser(object):
         try:
             assert self.ldap_connection
             # NOTE: Something goes wrong in my case - ignoring this until solved :(
-            res = self.ldap_connection.search_ext_s(settings.AD_SEARCH_DN,
+            res = self.ldap_connection.search_ext_s(settings.AUTH_LDAP_DOMAIN,
                                                     ldap.SCOPE_SUBTREE,
                                                     "sAMAccountName=%s" % self.username,
                                                     self.AD_SEARCH_FIELDS)
             self.disconnect()
             if not res:
-                logger.error("AD auth ldap backend error by searching %s. No result." % settings.AD_SEARCH_DN)
+                logger.error("AD auth ldap backend error by searching %s. No result." % settings.AUTH_LDAP_USER_SEARCH)
                 return False
             assert len(res) >= 1, "Result should contain at least one element: %s" % res
             result = res[0][1]
