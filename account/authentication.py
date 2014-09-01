@@ -1,10 +1,11 @@
-from tastypie.authentication import ApiKeyAuthentication
-import ldap
 import logging
+
+from tastypie.authentication import ApiKeyAuthentication
 from django.contrib.auth.models import User
 from django.contrib.auth.backends import ModelBackend
 from django.conf import settings
 
+import ldap
 from account.models import ApiKey
 
 
@@ -21,14 +22,10 @@ class MultiApiKeyAuthentication(ApiKeyAuthentication):
         return True
 
 
-# ----------------------------------------
-# ActiveDirectoryBackend
-# ----------------------------------------
-#
-# From: http://www.djangosnippets.org/snippets/edit/1397/
-
 class ADUser(object):
-    # class level, makes "operational error" problem by search occurs less
+    """
+    https://djangosnippets.org/snippets/1397/
+    """
     ldap_connection = None
     AD_SEARCH_FIELDS = ['mail', 'givenName', 'sn', 'sAMAccountName']
 
@@ -84,7 +81,6 @@ class ADUser(object):
         try:
             assert self.ldap_connection
             # NOTE: Something goes wrong in my case - ignoring this until solved :(
-            #       {'info': '00000000: LdapErr: DSID-0C090627, comment: In order to perform this operation a successful bind must be completed on the connection., data 0, vece', 'desc': 'Operations error'}
             res = self.ldap_connection.search_ext_s(settings.AD_SEARCH_DN,
                                                     ldap.SCOPE_SUBTREE,
                                                     "sAMAccountName=%s" % self.username,
@@ -102,15 +98,15 @@ class ADUser(object):
 
         try:
             self.first_name = None
-            if result.has_key('givenName'):
+            if 'givenName' in result:
                 self.first_name = result['givenName'][0]
 
             self.last_name = None
-            if result.has_key('sn'):
+            if 'sn' in result:
                 self.last_name = result['sn'][0]
 
             self.email = None
-            if result.has_key('mail'):
+            if 'mail' in result:
                 self.email = result['mail'][0]
             self.has_data = True
         except Exception, e:
@@ -154,7 +150,6 @@ class ActiveDirectoryBackend(ModelBackend):
             user.first_name = aduser.first_name
             user.last_name = aduser.last_name
             user.email = aduser.email
-            #user.set_password(password)
             logger.warning("AD auth backend overwriting auth.User data with data from ldap for %s." % username)
         user.save()
         logger.info("AD auth backend check passed for %s" % username)
