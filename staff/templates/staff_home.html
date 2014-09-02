@@ -10,6 +10,9 @@
 <div class="btn-group">
   {% if not LDAP_ENABLED %}
     <a class="btn" href="{% url "user_add" %}">{% trans "Add User" %}</a>
+  {% endif %}
+
+  {% if not USE_LDAP_GROUPS %}
     <a class="btn" href="{% url "staff.views.groupadd" %}">{% trans "Add Group" %}</a>
   {% endif %}
   <a class="btn" href="{% url "staff.views.upload_keepass" %}">{% trans "Import Keepass" %}</a>
