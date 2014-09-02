@@ -8,7 +8,7 @@
 <h1>{% trans "Staff Manage" %}</h1>
 
 <div class="btn-group">
-  {% if not USE_LDAP_GROUPS %}
+  {% if not LDAP_ENABLED %}
     <a class="btn" href="{% url "user_add" %}">{% trans "Add User" %}</a>
     <a class="btn" href="{% url "staff.views.groupadd" %}">{% trans "Add Group" %}</a>
   {% endif %}

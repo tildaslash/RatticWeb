@@ -1,4 +1,4 @@
-#  ____ _____ ___  ____  _
+# ____ _____ ___  ____  _
 # / ___|_   _/ _ \|  _ \| |
 # \___ \ | || | | | |_) | |
 #  ___) || || |_| |  __/|_|
@@ -38,6 +38,7 @@ def confgetbool(section, var, default):
         return config.getboolean(section, var)
     except NoOptionError:
         return default
+
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -144,26 +145,26 @@ LOCAL_APPS = (
 )
 
 INSTALLED_APPS = (
-    # External apps
-    'django.contrib.auth',
-    'django.contrib.sessions',
-    'django.contrib.contenttypes',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.admin',
-    'django.contrib.admindocs',
-    'user_sessions',
-    'django_otp',
-    'django_otp.plugins.otp_static',
-    'django_otp.plugins.otp_totp',
-    'two_factor',
-    'django_extensions',
-    'south',
-    'tastypie',
-    'kombu.transport.django',
-    'djcelery',
-    'database_files',
-) + LOCAL_APPS
+                     # External apps
+                     'django.contrib.auth',
+                     'django.contrib.sessions',
+                     'django.contrib.contenttypes',
+                     'django.contrib.messages',
+                     'django.contrib.staticfiles',
+                     'django.contrib.admin',
+                     'django.contrib.admindocs',
+                     'user_sessions',
+                     'django_otp',
+                     'django_otp.plugins.otp_static',
+                     'django_otp.plugins.otp_totp',
+                     'two_factor',
+                     'django_extensions',
+                     'south',
+                     'tastypie',
+                     'kombu.transport.django',
+                     'djcelery',
+                     'database_files',
+                 ) + LOCAL_APPS
 
 if os.environ.get("ENABLE_TESTS") == "1":
     INSTALLED_APPS += ('django_nose', )
@@ -241,13 +242,13 @@ CRED_ICON_DEFAULT = 'Key.png'
 # django-auth-ldap
 AUTH_LDAP_USER_ATTR_MAP = {"email": "mail", }
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {}
-AUTH_LDAP_MIRROR_GROUPS=True
+AUTH_LDAP_MIRROR_GROUPS = True
 
 # celery
 BROKER_URL = 'django://'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_ACCEPT_CONTENT = ['json']
-CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 
 ###############################
 # External environment config #
@@ -325,38 +326,17 @@ if chgqreminder > 0:
 CELERY_TIMEZONE = TIME_ZONE
 
 # [ldap]
-USE_LDAP_GROUPS = config.get('ldap', 'useldapgroups')
 LDAP_ENABLED = 'ldap' in config.sections()
 
 if LDAP_ENABLED:
+    USE_LDAP_GROUPS = confgetbool('ldap', 'useldapgroups', False)
 
-    if USE_LDAP_GROUPS:
-        AUTHENTICATION_BACKENDS = (
-            'django_auth_ldap.backend.LDAPBackend',
-            'django.contrib.auth.backends.ModelBackend',
-        )
-    else:
-        AUTHENTICATION_BACKENDS = (
-            'account.authentication.ActiveDirectoryBackend',
-            'django.contrib.auth.backends.ModelBackend',
-        )
-
-    # Setup the LDAP Logging
+    #Below settings are common to both using local and LDAP groups
     LOGGING['loggers']['django_auth_ldap']['level'] = confget('ldap', 'loglevel', 'WARNING')
-
-    # Get config options for LDAP
     AUTH_LDAP_SERVER_URI = config.get('ldap', 'uri')
     AUTH_LDAP_DOMAIN = config.get('ldap', 'domain')
-    AUTH_LDAP_BIND_DN = confget('ldap', 'binddn', '')
-    AUTH_LDAP_BIND_PASSWORD = confget('ldap', 'bindpw', '')
-    AUTH_LDAP_USER_FLAGS_BY_GROUP['is_staff'] = confget('ldap', 'staff', '')
-
-    # Searching for things
-    AUTH_LDAP_USER_SEARCH = LDAPSearch(config.get('ldap', 'userbase'), ldap.SCOPE_SUBTREE, config.get('ldap', 'userfilter'))
-    AUTH_LDAP_GROUP_SEARCH = LDAPSearch(config.get('ldap', 'groupbase'), ldap.SCOPE_SUBTREE, config.get('ldap', 'groupfilter'))
-
-    # Groups type
-    AUTH_LDAP_GROUP_TYPE = getattr(__import__('django_auth_ldap').config, config.get('ldap', 'grouptype'))()
+    AUTH_LDAP_USER_SEARCH = LDAPSearch(config.get('ldap', 'userbase'), ldap.SCOPE_SUBTREE,
+                                       config.get('ldap', 'userfilter'))
 
     # Booleans
     AUTH_LDAP_ALLOW_PASSWORD_CHANGE = confgetbool('ldap', 'pwchange', False)
@@ -365,3 +345,27 @@ if LDAP_ENABLED:
         ldap.OPT_X_TLS_REQUIRE_CERT: confgetbool('ldap', 'requirecert', True),
         ldap.OPT_REFERRALS: confgetbool('ldap', 'referrals', False),
     }
+
+    #Settings that differ between using local groups and LDAP groups
+    if USE_LDAP_GROUPS:
+        #LDAP Backend
+        AUTHENTICATION_BACKENDS = (
+            'django_auth_ldap.backend.LDAPBackend',
+            'django.contrib.auth.backends.ModelBackend',
+        )
+        #Settings needed when using LDAP groups
+        AUTH_LDAP_BIND_DN = confget('ldap', 'binddn', '')
+        AUTH_LDAP_BIND_PASSWORD = confget('ldap', 'bindpw', '')
+        AUTH_LDAP_USER_FLAGS_BY_GROUP['is_staff'] = confget('ldap', 'staff', '')
+
+        # Searching for things, AUTH_LDAP_USER_SEARCH
+        AUTH_LDAP_GROUP_SEARCH = LDAPSearch(config.get('ldap', 'groupbase'), ldap.SCOPE_SUBTREE,
+                                            config.get('ldap', 'groupfilter'))
+        # Groups type
+        AUTH_LDAP_GROUP_TYPE = getattr(__import__('django_auth_ldap').config, config.get('ldap', 'grouptype'))()
+    else:
+        #We must use different auth backend when using local groups
+        AUTHENTICATION_BACKENDS = (
+            'account.authentication.ActiveDirectoryBackend',
+            'django.contrib.auth.backends.ModelBackend',
+        )
