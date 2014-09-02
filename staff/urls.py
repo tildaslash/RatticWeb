@@ -24,21 +24,22 @@ urlpatterns = patterns('staff.views',
     url(r'^credundelete/(?P<cred_id>\d+)/$', 'credundelete'),
 )
 
-# URLs that we don't want with LDAP
+# URLs we remove if using LDAP groups
 if not settings.USE_LDAP_GROUPS:
     urlpatterns += patterns('staff.views',
         # Group Management
         url(r'^groupadd/$', 'groupadd'),
         url(r'^groupedit/(?P<gid>\d+)/$', 'groupedit'),
         url(r'^groupdelete/(?P<gid>\d+)/$', 'groupdelete'),
+        url(r'^useredit/(?P<pk>\d+)/$', UpdateUser.as_view(), name="user_edit"),
+        url(r'^userdelete/(?P<uid>\d+)/$', 'userdelete'),
     )
 
-# User management is disabled only when LDAP config exists
+# User add is disabled only when LDAP config exists
 if not settings.LDAP_ENABLED:
     urlpatterns += patterns('staff.views',
         # User Management
         url(r'^useradd/$', NewUser.as_view(), name="user_add"),
-        url(r'^useredit/(?P<pk>\d+)/$', UpdateUser.as_view(), name="user_edit"),
-        url(r'^userdelete/(?P<uid>\d+)/$', 'userdelete'),
+
     )
 
