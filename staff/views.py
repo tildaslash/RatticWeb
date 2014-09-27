@@ -2,7 +2,6 @@ from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponseRedirect, Http404
 from django.views.generic.edit import UpdateView, FormView
-from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User, Group
 from django.conf import settings
@@ -19,16 +18,17 @@ from cred.icon import get_icon_list
 from cred.models import CredAudit, Cred, Tag
 from cred.forms import CredForm
 from models import UserForm, GroupForm, KeepassImportForm, AuditFilterForm
+from decorators import rattic_staff_required
 
 
-@staff_member_required
+@rattic_staff_required
 def home(request):
     userlist = User.objects.all()
     grouplist = Group.objects.all()
     return render(request, 'staff_home.html', {'userlist': userlist, 'grouplist': grouplist})
 
 
-@staff_member_required
+@rattic_staff_required
 def userdetail(request, uid):
     user = get_object_or_404(User, pk=uid)
     if settings.LDAP_ENABLED:
@@ -48,7 +48,7 @@ def userdetail(request, uid):
         'hastoken': user_has_device(user)})
 
 
-@staff_member_required
+@rattic_staff_required
 def groupadd(request):
     if request.method == 'POST':
         form = GroupForm(request.POST)
@@ -62,13 +62,13 @@ def groupadd(request):
     return render(request, 'staff_groupedit.html', {'form': form})
 
 
-@staff_member_required
+@rattic_staff_required
 def groupdetail(request, gid):
     group = get_object_or_404(Group, pk=gid)
     return render(request, 'staff_groupdetail.html', {'group': group})
 
 
-@staff_member_required
+@rattic_staff_required
 def groupedit(request, gid):
     group = get_object_or_404(Group, pk=gid)
     if request.method == 'POST':
@@ -82,7 +82,7 @@ def groupedit(request, gid):
     return render(request, 'staff_groupedit.html', {'group': group, 'form': form})
 
 
-@staff_member_required
+@rattic_staff_required
 def groupdelete(request, gid):
     group = get_object_or_404(Group, pk=gid)
     if request.method == 'POST':
@@ -91,7 +91,7 @@ def groupdelete(request, gid):
     return render(request, 'staff_groupdetail.html', {'group': group, 'delete': True})
 
 
-@staff_member_required
+@rattic_staff_required
 def userdelete(request, uid):
     user = get_object_or_404(User, pk=uid)
     if request.method == 'POST':
@@ -100,7 +100,7 @@ def userdelete(request, uid):
     return render(request, 'staff_userdetail.html', {'viewuser': user, 'delete': True})
 
 
-@staff_member_required
+@rattic_staff_required
 def audit(request, by, byarg):
     auditlog = CredAudit.objects.all()
     item = None
@@ -153,7 +153,7 @@ class NewUser(FormView):
     success_url = reverse_lazy('staff.views.home')
 
     # Staff access only
-    @method_decorator(staff_member_required)
+    @method_decorator(rattic_staff_required)
     def dispatch(self, *args, **kwargs):
         return super(NewUser, self).dispatch(*args, **kwargs)
 
@@ -172,7 +172,7 @@ class UpdateUser(UpdateView):
     success_url = reverse_lazy('staff.views.home')
 
     # Staff access only
-    @method_decorator(staff_member_required)
+    @method_decorator(rattic_staff_required)
     def dispatch(self, *args, **kwargs):
         return super(UpdateUser, self).dispatch(*args, **kwargs)
 
@@ -199,7 +199,7 @@ class UpdateUser(UpdateView):
         return super(UpdateUser, self).form_valid(form)
 
 
-@staff_member_required
+@rattic_staff_required
 def upload_keepass(request):
     # If data was submitted
     if request.method == 'POST':
@@ -220,7 +220,7 @@ def upload_keepass(request):
     return render(request, 'staff_keepassimport.html', {'form': form})
 
 
-@staff_member_required
+@rattic_staff_required
 def import_overview(request):
     # If there was no session data, return 404
     if 'imported_data' not in request.session.keys():
@@ -240,7 +240,7 @@ def import_overview(request):
     })
 
 
-@staff_member_required
+@rattic_staff_required
 def import_ignore(request, import_id):
     # If there was no session data, return 404
     if 'imported_data' not in request.session.keys():
@@ -256,7 +256,7 @@ def import_ignore(request, import_id):
     return HttpResponseRedirect(reverse('staff.views.import_overview'))
 
 
-@staff_member_required
+@rattic_staff_required
 def import_process(request, import_id):
     # If there was no session data, return 404
     if 'imported_data' not in request.session.keys():
@@ -339,7 +339,7 @@ def import_process(request, import_id):
     })
 
 
-@staff_member_required
+@rattic_staff_required
 def credundelete(request, cred_id):
     cred = get_object_or_404(Cred, pk=cred_id)
 
@@ -365,7 +365,7 @@ def credundelete(request, cred_id):
     return render(request, 'cred_detail.html', {'cred': cred, 'lastchange': lastchange, 'action': reverse('cred.views.delete', args=(cred_id,)), 'undelete': True})
 
 
-@staff_member_required
+@rattic_staff_required
 def removetoken(request, uid):
     # Grab the user
     user = get_object_or_404(User, pk=uid)
