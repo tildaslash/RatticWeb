@@ -377,7 +377,7 @@ if GOAUTH2_ENABLED:
     GOOGLE_OAUTH2_CLIENT_SECRET = config.get('goauth2', 'client_secret')
     GOOGLE_WHITE_LISTED_DOMAINS = [config.get('goauth2', 'domain')]
 
-    SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'
+    SOCIAL_AUTH_COMPLETE_URL_NAME = 'socialauth_complete'
     SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
 
     if confgetbool('goauth2', 'https_only', False):
