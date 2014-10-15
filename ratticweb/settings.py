@@ -162,6 +162,7 @@ INSTALLED_APPS = (
     'kombu.transport.django',
     'djcelery',
     'database_files',
+    'social_auth',
 ) + LOCAL_APPS
 
 if os.environ.get("ENABLE_TESTS") == "1":
