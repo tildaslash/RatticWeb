@@ -58,3 +58,8 @@ urlpatterns = patterns('',
 
 # Serve the static files from the right location in dev mode
 urlpatterns += staticfiles_urlpatterns()
+
+# social_auth plugin URLs
+urlpatterns += patterns('', 
+    url(r'', include('social_auth.urls')),
+)
