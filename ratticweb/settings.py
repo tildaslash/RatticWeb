@@ -369,9 +369,9 @@ if GOAUTH2_ENABLED:
     LOGIN_URL = '/login/google-oauth2/'
     LOGIN_REDIRECT_URL = urljoin(RATTIC_ROOT_URL, 'cred/list/?goauth2')
     LOGIN_ERROR_URL = '/login-error/'
-	
+
     SOCIAL_AUTH_RAISE_EXCEPTIONS = False
-    SOCIAL_AUTH_PROCESS_EXCEPTIONS = 'social_auth.utils.log_exceptions_to_messages' 
+    SOCIAL_AUTH_PROCESS_EXCEPTIONS = 'social_auth.utils.log_exceptions_to_messages'
 
     GOOGLE_OAUTH2_CLIENT_ID = config.get('goauth2', 'client_id')
     GOOGLE_OAUTH2_CLIENT_SECRET = config.get('goauth2', 'client_secret')
@@ -379,15 +379,15 @@ if GOAUTH2_ENABLED:
 
     SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'
     SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
-	
+
     if confgetbool('goauth2', 'https_only', False):
         SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
         SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-	
+
     SOCIAL_AUTH_GOOGLE_OAUTH2_IGNORE_DEFAULT_SCOPE = True
     SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
         'https://www.googleapis.com/auth/userinfo.email',
         'https://www.googleapis.com/auth/userinfo.profile'
     ]
-	
+
     SESSION_SERIALIZER='django.contrib.sessions.serializers.PickleSerializer'

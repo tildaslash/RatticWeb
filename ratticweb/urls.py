@@ -60,6 +60,6 @@ urlpatterns = patterns('',
 urlpatterns += staticfiles_urlpatterns()
 
 # social_auth plugin URLs
-urlpatterns += patterns('', 
+urlpatterns += patterns('',
     url(r'', include('social_auth.urls')),
 )
