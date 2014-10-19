@@ -380,9 +380,8 @@ if GOAUTH2_ENABLED:
     SOCIAL_AUTH_COMPLETE_URL_NAME = 'socialauth_complete'
     SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
 
-    if confgetbool('goauth2', 'https_only', False):
+    if confgetbool('goauth2', 'https_redirect', False):
         SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
-        SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
     SOCIAL_AUTH_GOOGLE_OAUTH2_IGNORE_DEFAULT_SCOPE = True
     SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
