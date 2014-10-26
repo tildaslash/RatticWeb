@@ -17,15 +17,34 @@ from django.contrib.auth.models import Group
 
 
 @login_required
-def download(request):
+def download(request, cfilter="special", value="all"):
     if request.method == 'POST':  # If the form has been submitted...
 
-        # ContactForm was defined in the the previous section
         form = ExportForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
 
             # Get the creds to export
-            creds = Cred.objects.accessible(request.user)
+            (search_object, creds) = cred_search(request.user, cfilter, value)
+            filename = 'RatticExport.kdb'
+
+            # Decide on the filename
+            if cfilter == 'tag':
+                filename = 'RatticExportTag-%s.kdb' % search_object.name
+
+            elif cfilter == 'group':
+                filename = 'RatticExportGroup-%s.kdb' % search_object.name
+
+            elif cfilter == 'search':
+                filename = 'RatticExportSearch-%s.kdb' % search_object
+
+            elif cfilter == 'special' and value == 'all':
+                filename = 'RatticExportAll.kdb'
+
+            elif cfilter == 'special' and value == 'trash':
+                filename = 'RatticExportTrash.kdb'
+
+            else:
+                raise Http404
 
             # Make the Audit logs
             auditlogs = []
@@ -40,7 +59,7 @@ def download(request):
             CredAudit.objects.bulk_create(auditlogs)
 
             # Give the Keepass file to the user
-            return export_keepass(creds, form.cleaned_data['password'])
+            return export_keepass(creds, form.cleaned_data['password'], filename)
     else:
         form = ExportForm()  # An unbound form
 
@@ -53,7 +72,7 @@ def download(request):
 def list(request, cfilter='special', value='all', sortdir='ascending', sort='title', page=1):
     # Setup basic stuff
     viewdict = {
-        'credtitle': _('ALL passwords'),
+        'credtitle': _('All passwords'),
         'alerts': [],
         'filter': unicode(cfilter).lower(),
         'value': unicode(value).lower(),
@@ -85,12 +104,15 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
     # Apply the filters
     if cfilter == 'tag':
         viewdict['credtitle'] = _('Passwords tagged with %(tagname)s') % {'tagname': search_object.name, }
+        viewdict['buttons']['export'] = True
 
     elif cfilter == 'group':
         viewdict['credtitle'] = _('Passwords in group %(groupname)s') % {'groupname': search_object.name, }
+        viewdict['buttons']['export'] = True
 
     elif cfilter == 'search':
         viewdict['credtitle'] = _('Passwords for search "%(searchstring)s"') % {'searchstring': search_object, }
+        viewdict['buttons']['export'] = True
 
     elif cfilter == 'history':
         viewdict['credtitle'] = _('Versions of: "%(credtitle)s"') % {'credtitle': search_object.title, }
@@ -120,6 +142,7 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
         viewdict['buttons']['undelete'] = True
         viewdict['buttons']['changeq'] = False
         viewdict['buttons']['tagger'] = False
+        viewdict['buttons']['export'] = True
 
     elif cfilter == 'special' and value == 'changeq':
         viewdict['credtitle'] = _('Passwords on the Change Queue')

@@ -11,7 +11,7 @@
   </div>
   <div class="modal-body">
     <p>{% blocktrans %}Please enter the password you would like the Keepass file to be encrypted with.{% endblocktrans %}</p>
-    <form id="exportform" class="form-horizontal" target="hidden_iframe" action="{% url "cred.views.download" %}" method="post">{% csrf_token %}
+    <form id="exportform" class="form-horizontal" target="hidden_iframe" action="{% url "cred.views.download" filter value  %}" method="post">{% csrf_token %}
         {% for field in exportform %}
             <div class="control-group">
                 {{ field.errors }}

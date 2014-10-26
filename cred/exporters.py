@@ -3,7 +3,7 @@ from keepassdb import Database
 
 
 # Returns a HTTPResponse object with a Keepass database in it
-def export_keepass(creds, password):
+def export_keepass(creds, password, filename='RatticExport.kdb'):
     db = Database()
     groups = {}
 
@@ -38,6 +38,6 @@ def export_keepass(creds, password):
     # Send the response
     response = HttpResponse(content_type='application/x-keepass')
     db.save(response, password=password)
-    response['Content-Disposition'] = 'attachment; filename=RatticExport.kdb'
+    response['Content-Disposition'] = 'attachment; filename=' + filename
     response['Content-Length'] = response.tell()
     return response
