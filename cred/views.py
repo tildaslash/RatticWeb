@@ -52,21 +52,24 @@ def download(request):
 @login_required
 def list(request, cfilter='special', value='all', sortdir='ascending', sort='title', page=1):
     # Setup basic stuff
-    viewdict = {}
-    viewdict['credtitle'] = _('All passwords')
-    viewdict['alerts'] = []
-    viewdict['filter'] = unicode(cfilter).lower()
-    viewdict['value'] = unicode(value).lower()
-    viewdict['sort'] = unicode(sort).lower()
-    viewdict['sortdir'] = unicode(sortdir).lower()
-    viewdict['page'] = unicode(page).lower()
+    viewdict = {
+        'credtitle': _('ALL passwords'),
+        'alerts': [],
+        'filter': unicode(cfilter).lower(),
+        'value': unicode(value).lower(),
+        'sort': unicode(sort).lower(),
+        'sortdir': unicode(sortdir).lower(),
+        'page': unicode(page).lower(),
 
-    # Default buttons
-    viewdict['buttons'] = {}
-    viewdict['buttons']['add'] = True
-    viewdict['buttons']['delete'] = True
-    viewdict['buttons']['changeq'] = True
-    viewdict['buttons']['tagger'] = True
+        # Default buttons
+        'buttons': {
+            'add': True,
+            'delete': True,
+            'changeq': True,
+            'tagger': True,
+            'export': False,
+        }
+    }
 
     # Get groups if required
     get_groups = request.GET.getlist('group')
