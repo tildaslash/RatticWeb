@@ -115,15 +115,15 @@ class CredViewTests(TestCase):
         resp = self.data.norm.get(reverse('cred.views.list', args=('search', 'tag')))
         self.assertEqual(resp.status_code, 200)
         credlist = resp.context['credlist'].object_list
-        self.assertTrue(self.data.tagcred in credlist)
-        self.assertTrue(self.data.cred not in credlist)
+        self.assertIn(self.data.tagcred, credlist)
+        self.assertNotIn(self.data.cred, credlist)
 
     def test_list_by_search_unicode(self):
         resp = self.data.norm.get(reverse('cred.views.list', args=('search', 'ö')))
         self.assertEqual(resp.status_code, 200)
         credlist = resp.context['credlist'].object_list
-        self.assertTrue(self.data.tagcred not in credlist)
-        self.assertTrue(self.data.cred not in credlist)
+        self.assertNotIn(self.data.tagcred, credlist)
+        self.assertNotIn(self.data.cred, credlist)
 
     def test_detail_normal(self):
         resp = self.data.norm.get(reverse('cred.views.detail', args=(self.data.cred.id,)))

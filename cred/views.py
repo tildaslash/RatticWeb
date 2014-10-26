@@ -5,15 +5,15 @@ from django.http import HttpResponse
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Q
 from django.utils.translation import ugettext as _
 
 from models import Cred, CredAudit, Tag, CredChangeQ
+from search import cred_search
 from forms import ExportForm, CredForm, TagForm
 from exporters import export_keepass
 from cred.icon import get_icon_list
 
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 
 
 @login_required
@@ -68,54 +68,40 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
     viewdict['buttons']['changeq'] = True
     viewdict['buttons']['tagger'] = True
 
-    # Get every cred the user has access to
-    cred_list = Cred.objects.accessible(request.user)
+    # Get groups if required
+    get_groups = request.GET.getlist('group')
+
+    if len(get_groups) > 0:
+        groups = Group.objects.filter(id__in=get_groups)
+    else:
+        groups = Group.objects.all()
+
+    # Perform the search
+    (search_object, cred_list) = cred_search(request.user, cfilter, value, sortdir, sort, groups)
 
     # Apply the filters
     if cfilter == 'tag':
-        tag = get_object_or_404(Tag, pk=value)
-        cred_list = cred_list.filter(tags=tag)
-        viewdict['credtitle'] = _('Passwords tagged with %(tagname)s') % {'tagname': tag.name, }
+        viewdict['credtitle'] = _('Passwords tagged with %(tagname)s') % {'tagname': search_object.name, }
 
     elif cfilter == 'group':
-        group = get_object_or_404(Group, pk=value)
-        if group not in request.user.groups.all():
-            raise Http404
-        cred_list = cred_list.filter(group=group)
-        viewdict['credtitle'] = _('Passwords in group %(groupname)s') % {'groupname': group.name, }
+        viewdict['credtitle'] = _('Passwords in group %(groupname)s') % {'groupname': search_object.name, }
 
     elif cfilter == 'search':
-        cred_list = cred_list.filter(title__icontains=value)
-        viewdict['credtitle'] = _('Passwords for search "%(searchstring)s"') % {'searchstring': value, }
+        viewdict['credtitle'] = _('Passwords for search "%(searchstring)s"') % {'searchstring': search_object, }
 
     elif cfilter == 'history':
-        cred = get_object_or_404(Cred, pk=value)
-        cred_list = Cred.objects.accessible(request.user,
-                historical=True).filter(Q(latest=value) | Q(id=value))
-        viewdict['credtitle'] = _('Versions of: "%(credtitle)s"') % {'credtitle': cred.title, }
+        viewdict['credtitle'] = _('Versions of: "%(credtitle)s"') % {'credtitle': search_object.title, }
         viewdict['buttons']['add'] = False
         viewdict['buttons']['delete'] = False
         viewdict['buttons']['changeq'] = False
         viewdict['buttons']['tagger'] = False
 
     elif cfilter == 'changeadvice':
-        if not request.user.is_staff:
-            raise Http404
-        user = get_object_or_404(User, pk=value)
-        get_groups = request.GET.getlist('group')
-
-        if len(get_groups) > 0:
-            groups = Group.objects.filter(id__in=get_groups)
-        else:
-            groups = Group.objects.all()
-
-        cred_list = Cred.objects.change_advice(user, groups)
-
         alert = {}
         alert['message'] = _("That user is now disabled. Here is a list of passwords that they have viewed that have not since been changed. You probably want to add them all to the change queue.")
         alert['type'] = 'info'
 
-        viewdict['credtitle'] = _('Changes required for "%(username)s"') % {'username': user.username}
+        viewdict['credtitle'] = _('Changes required for "%(username)s"') % {'username': search_object.username}
         viewdict['buttons']['add'] = False
         viewdict['buttons']['delete'] = True
         viewdict['buttons']['changeq'] = True
@@ -126,7 +112,6 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
         viewdict['buttons']['export'] = True
 
     elif cfilter == 'special' and value == 'trash':
-        cred_list = Cred.objects.accessible(request.user, deleted=True).filter(is_deleted=True)
         viewdict['credtitle'] = _('Passwords in the trash')
         viewdict['buttons']['add'] = False
         viewdict['buttons']['undelete'] = True
@@ -134,8 +119,6 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
         viewdict['buttons']['tagger'] = False
 
     elif cfilter == 'special' and value == 'changeq':
-        q = Cred.objects.filter(credchangeq__in=CredChangeQ.objects.all())
-        cred_list = cred_list.filter(id__in=q)
         viewdict['credtitle'] = _('Passwords on the Change Queue')
         viewdict['buttons']['add'] = False
         viewdict['buttons']['delete'] = False
@@ -146,11 +129,9 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
         raise Http404
 
     # Apply the sorting rules
-    if sortdir == 'ascending' and sort in Cred.SORTABLES:
-        cred_list = cred_list.order_by('latest', sort)
+    if sortdir == 'ascending':
         viewdict['revsortdir'] = 'descending'
-    elif sortdir == 'descending' and sort in Cred.SORTABLES:
-        cred_list = cred_list.order_by('latest', '-' + sort)
+    elif sortdir == 'descending':
         viewdict['revsortdir'] = 'ascending'
     else:
         raise Http404
