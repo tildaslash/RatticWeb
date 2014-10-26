@@ -1,4 +1,5 @@
 {% load url from future %}
+{% load static from staticfiles %}
 {% load i18n %}
 
 {% if user.is_authenticated %}
@@ -30,4 +31,7 @@
     {% if not LDAP_ENABLED %}<p><a href="{% url "django.contrib.auth.views.password_reset" %}">Forgotten password?</a></p>{% endif %}
     <input type="hidden" name="rattic_tfa_login_view-current_step" value="auth" />
     </form>
+    <div>
+        <a href="{% url 'socialauth_begin' 'google-oauth2' %}"><img alt="Google Sign-in" src="{% static "rattic/img/goauth.png" %}" /></a>
+    </div>
 {% endif %}
