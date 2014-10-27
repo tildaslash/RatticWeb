@@ -10,3 +10,4 @@ vagrant_ansible_inventory_rattic
 static/*
 docs/ansible/creds/*
 celerybeat-schedule
+django.mo
