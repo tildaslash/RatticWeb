@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import include, patterns, url
 from django.conf import settings
 
 from views import profile, newapikey, deleteapikey, RatticSessionDeleteView
@@ -24,6 +24,10 @@ urlpatterns = patterns('',
     url(r'^two_factor/backup/$', RatticTFABackupTokensView.as_view(), name='tfa_backup'),
     url(r'^two_factor/setup/$', RatticTFASetupView.as_view(), name='tfa_setup'),
     url(r'^two_factor/qr/$', QRGeneratorView.as_view(), name='tfa_qr'),
+)
+
+urlpatterns += patterns('',
+    url(r'', include('social_auth.urls')),
 )
 
 # URLs we don't want enabled with LDAP
