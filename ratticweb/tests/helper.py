@@ -1,4 +1,4 @@
-# -*- coding: latin-1 -*-
+# -*- coding: utf-8 -*-
 from user_sessions.utils.tests import Client
 from django.conf import settings
 from django.core.urlresolvers import reverse

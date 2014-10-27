@@ -22,7 +22,7 @@ class SizedFileField(FileField):
         try:
             # If the file is bigger than we expected, give an error
             if file._size > self.max_upload_size:
-                raise forms.ValidationError(_('File size must be under %s. Current file size is %s.') % (filesizeformat(self.max_upload_size), filesizeformat(data.size)))
+                raise forms.ValidationError(_('File size must be under %(maximumsize)s. Current file size is %(currentsize)s.') % {'maximumsize': filesizeformat(self.max_upload_size), 'currentsize': filesizeformat(data.size)})
         except AttributeError:
             pass
 
