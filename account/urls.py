@@ -26,9 +26,10 @@ urlpatterns = patterns('',
     url(r'^two_factor/qr/$', QRGeneratorView.as_view(), name='tfa_qr'),
 )
 
-urlpatterns += patterns('',
-    url(r'', include('social_auth.urls')),
-)
+if settings.GOAUTH2_ENABLED:
+    urlpatterns += patterns('',
+        url(r'', include('social_auth.urls')),
+    )
 
 # URLs we don't want enabled with LDAP
 if not settings.LDAP_ENABLED:
