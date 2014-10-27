@@ -161,7 +161,7 @@ class Cred(models.Model):
         return False
 
     def __unicode__(self):
-        return self.title
+        return self.title.encode('utf-8')
 
 
 class CredAdmin(admin.ModelAdmin):
