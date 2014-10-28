@@ -1,21 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # bato <francoisconil@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: RatticDB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-27 22:03+1100\n"
+"POT-Creation-Date: 2014-10-28 20:57+1100\n"
 "PO-Revision-Date: 2014-10-27 11:13+0000\n"
 "Last-Translator: Daniel Hall <daniel@danielhall.me>\n"
-"Language-Team: French (http://www.transifex.com/projects/p/ratticdb/language/fr/)\n"
+"Language-Team: French (http://www.transifex.com/projects/p/ratticdb/language/"
+"fr/)\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: account/models.py:27
@@ -25,6 +26,11 @@ msgstr "Ancien mot de passe"
 #: account/models.py:35
 msgid "Incorrect password"
 msgstr "Mot de passe incorrect"
+
+#: account/templates/account_changepass.html:4
+#: account/templates/password_reset_confirm.html:4
+msgid "Setting New password"
+msgstr "Enregistrer nouveau mot de passe"
 
 #: account/templates/account_changepass.html:7
 #: account/templates/password_reset_confirm.html:8
@@ -56,6 +62,10 @@ msgstr "Supprimer Clé API"
 #: ratticweb/templates/base.html:13 staff/templates/staff_home.html:5
 msgid "Rattic"
 msgstr "Rattic"
+
+#: account/templates/account_deleteapikey.html:10
+msgid "Please press confirm if you wish to delete this key"
+msgstr ""
 
 #: account/templates/account_deleteapikey.html:13
 #: account/templates/account_viewapikey.html:17
@@ -110,7 +120,8 @@ msgid "Your Account"
 msgstr "Votre compte"
 
 #: account/templates/account_profile.html:10
-#: cred/templates/cred_detail.html:44 staff/templates/staff_home.html:23
+#: cred/templates/cred_detail.html:44 ratticweb/templates/sidebar.html:28
+#: staff/templates/staff_home.html:23
 msgid "Username"
 msgstr "Utilisateur"
 
@@ -121,7 +132,7 @@ msgstr "Adresse email"
 
 #: account/templates/account_profile.html:15
 #: account/templates/account_profile.html:21
-msgid "Two Factor Auth"
+msgid "Two Factor Authentication"
 msgstr ""
 
 #: account/templates/account_profile.html:15
@@ -154,6 +165,7 @@ msgid "Last Password Change"
 msgstr "Mot de passe modifié le"
 
 #: account/templates/account_profile.html:25
+#: ratticweb/templates/sidebar.html:18
 #: staff/templates/staff_userdetail.html:33
 msgid "Groups"
 msgstr "Groupes"
@@ -242,7 +254,8 @@ msgid ""
 msgstr ""
 
 #: account/templates/account_tfa_login.html:5 ratticweb/templates/home.html:16
-#: ratticweb/templates/navbar.html:59
+#: ratticweb/templates/navbar.html:59 ratticweb/templates/sidebar.html:26
+#: ratticweb/templates/sidebar.html:30
 msgid "Login"
 msgstr "Connexion"
 
@@ -273,7 +286,8 @@ msgstr ""
 #: account/templates/account_tfa_login.html:21
 msgid ""
 "Use this form for entering backup tokens for logging in.\n"
-"      These tokens have been generated for you to print and keep safe. Please\n"
+"      These tokens have been generated for you to print and keep safe. "
+"Please\n"
 "      enter one of these backup tokens to login to your account."
 msgstr ""
 
@@ -335,7 +349,9 @@ msgstr "Attention!"
 msgid ""
 "This is the last chance that you will have to access the secret key. You "
 "should save it in a safe place now."
-msgstr "C'est la dernière fois que vous aurez accès à la clé maître. Vous devriez en faire une copie et la garder en lieu sûr."
+msgstr ""
+"C'est la dernière fois que vous aurez accès à la clé maître. Vous devriez en "
+"faire une copie et la garder en lieu sûr."
 
 #: account/templates/account_viewapikey.html:14
 msgid "Your new API key has been created."
@@ -356,7 +372,9 @@ msgstr "Réinitialiser mot de passe"
 #: account/templates/password_reset.html:8
 msgid ""
 "Please specify your email address to receive instructions for resetting it."
-msgstr "Veuillez spécifier votre adresse email pour recevoir les instructions nécessaires."
+msgstr ""
+"Veuillez spécifier votre adresse email pour recevoir les instructions "
+"nécessaires."
 
 #: account/templates/password_reset.html:15
 msgid "E-mail address"
@@ -372,15 +390,12 @@ msgstr "Réinitialisation du mot de passe est complète"
 
 #: account/templates/password_reset_complete.html:8
 msgid "Your password has been set. You may go ahead and log in now."
-msgstr "Votre mot de passe a été enregistré. Vous pouvez dorénavant vous connecter."
+msgstr ""
+"Votre mot de passe a été enregistré. Vous pouvez dorénavant vous connecter."
 
 #: account/templates/password_reset_complete.html:9
 msgid "Log in"
 msgstr "Connecter"
-
-#: account/templates/password_reset_confirm.html:4
-msgid "Setting New password"
-msgstr "Enregistrer nouveau mot de passe"
 
 #: account/templates/password_reset_confirm.html:17
 msgid "New password"
@@ -402,7 +417,9 @@ msgstr "Réinitialisation du mot de passe a échoué"
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used. Please request a new password reset."
-msgstr "Le lien pour réinitialiser le mot de passe n'est plus valide et a déjà été utilisé. Veuillez recommencer le la réinitialisation"
+msgstr ""
+"Le lien pour réinitialiser le mot de passe n'est plus valide et a déjà été "
+"utilisé. Veuillez recommencer le la réinitialisation"
 
 #: account/templates/password_reset_done.html:5
 msgid "Password reset successful"
@@ -413,16 +430,25 @@ msgid ""
 "We've e-mailed you instructions for setting\n"
 "your password to the e-mail address you submitted. You should be\n"
 "receiving it shortly."
-msgstr "Nous vous avons envoyé les instructions pour réinitialiser\nvotre mot de passe à l'adresse email fournie. Vous devriez\nbientôt les recevoir."
+msgstr ""
+"Nous vous avons envoyé les instructions pour réinitialiser\n"
+"votre mot de passe à l'adresse email fournie. Vous devriez\n"
+"bientôt les recevoir."
 
 #: account/templates/password_reset_email.html:4
 #, python-format
 msgid ""
 "\n"
-"You're receiving this e-mail because you requested a password reset for your user account at %(site_name)s.\n"
+"You're receiving this e-mail because you requested a password reset for your "
+"user account at %(site_name)s.\n"
 "\n"
 "Please go to the following page and choose a new password:\n"
-msgstr "\nVous avez reçu ce message parce que vous voulez réinitialiser votre mot de passe pour votre compte sur  %(site_name)s.\n\nVeuillez visiter la page suivante pour choisir un nouveau mot de passe.\n"
+msgstr ""
+"\n"
+"Vous avez reçu ce message parce que vous voulez réinitialiser votre mot de "
+"passe pour votre compte sur  %(site_name)s.\n"
+"\n"
+"Veuillez visiter la page suivante pour choisir un nouveau mot de passe.\n"
 
 #: account/templates/password_reset_email.html:12
 #, python-format
@@ -433,7 +459,13 @@ msgid ""
 "Thanks for using our site!\n"
 "\n"
 "The %(site_name)s team.\n"
-msgstr "\nVotre identifiant de connexion, pour rappel:  %(user.username)s\n\nMerci d'utiliser notre site!\n\nL'équipe  %(site_name)s.\n"
+msgstr ""
+"\n"
+"Votre identifiant de connexion, pour rappel:  %(user.username)s\n"
+"\n"
+"Merci d'utiliser notre site!\n"
+"\n"
+"L'équipe  %(site_name)s.\n"
 
 #: cred/fields.py:25
 #, python-format
@@ -508,10 +540,13 @@ msgstr "Versions de: \"%(credtitle)s\""
 
 #: cred/views.py:126
 msgid ""
-"That user is now disabled. Here is a list of passwords that they have viewed"
-" that have not since been changed. You probably want to add them all to the "
+"That user is now disabled. Here is a list of passwords that they have viewed "
+"that have not since been changed. You probably want to add them all to the "
 "change queue."
-msgstr "Cet utilisateur a été désactivé. Veuillez trouver la liste des mots de passe inchangés depuis la dernière fois que cet utilisateur y a eu accès. Il serait judicieux de les ajouter à la liste de mots de passe à modifier."
+msgstr ""
+"Cet utilisateur a été désactivé. Veuillez trouver la liste des mots de passe "
+"inchangés depuis la dernière fois que cet utilisateur y a eu accès. Il "
+"serait judicieux de les ajouter à la liste de mots de passe à modifier."
 
 #: cred/views.py:129
 #, python-format
@@ -538,16 +573,23 @@ msgstr "Choisir"
 msgid ""
 "You are about to delete this password. A staff member will be required if "
 "you want to undelete it."
-msgstr "Vous êtes sur le point de supprimer un mot de passe. Un administrateur sera nécessaire pour le restaurer."
+msgstr ""
+"Vous êtes sur le point de supprimer un mot de passe. Un administrateur sera "
+"nécessaire pour le restaurer."
 
 #: cred/templates/cred_detail.html:19
 msgid ""
-"This credential has been deleted and is in the trash can. It is only visible"
-" to staff. You can alter it if you wish, its history will still be recorded."
-" Click the undelete button to restore it. If you click the Delete "
-"Permanently button then the password, its entire history and all its audit "
-"logs will be removed."
-msgstr "Cet identifiant a été supprimé et est dans la corbeille. Seuls les administrateurs y ont accès. Vous pouvez le modifier à votre guise, et l'historique sera conservée. Appuyez sur \"restaurer\" pour annuler la suppression. Le mot de passe, son historique et tous les logs d'audit seront effacés si vous pressez \"Supprimer définitivement\""
+"This credential has been deleted and is in the trash can. It is only visible "
+"to staff. You can alter it if you wish, its history will still be recorded. "
+"Click the undelete button to restore it. If you click the Delete Permanently "
+"button then the password, its entire history and all its audit logs will be "
+"removed."
+msgstr ""
+"Cet identifiant a été supprimé et est dans la corbeille. Seuls les "
+"administrateurs y ont accès. Vous pouvez le modifier à votre guise, et "
+"l'historique sera conservée. Appuyez sur \"restaurer\" pour annuler la "
+"suppression. Le mot de passe, son historique et tous les logs d'audit seront "
+"effacés si vous pressez \"Supprimer définitivement\""
 
 #: cred/templates/cred_detail.html:22
 msgid "Hey there!"
@@ -573,7 +615,9 @@ msgstr "Modification nécessaire"
 msgid ""
 "This credential is on the change queue and should have its password changed "
 "as soon as possible."
-msgstr "Cet identifiant est dans la liste de mots de passe à modifier, et devrait être modifié dès que possible."
+msgstr ""
+"Cet identifiant est dans la liste de mots de passe à modifier, et devrait "
+"être modifié dès que possible."
 
 #: cred/templates/cred_detail.html:25
 msgid "Why not"
@@ -626,7 +670,7 @@ msgstr "Adresse"
 msgid "Copy"
 msgstr "Copier"
 
-#: cred/templates/cred_detail.html:54
+#: cred/templates/cred_detail.html:54 ratticweb/templates/sidebar.html:29
 msgid "Password"
 msgstr "Mot de Passe"
 
@@ -678,6 +722,11 @@ msgstr "Soumettre"
 #: cred/templates/cred_list.html:28 cred/templates/cred_taglist.html:8
 msgid "Add New"
 msgstr "Ajouter"
+
+#: cred/templates/cred_list.html:40
+#, fuzzy
+msgid "Apply a Tag"
+msgstr "Tous les tags"
 
 #: cred/templates/cred_list.html:43
 msgid "Download Keepass"
@@ -845,8 +894,8 @@ msgstr ""
 
 #: ratticweb/templates/404.html:7
 msgid ""
-"This is not the page you are looking for, contact your systems administrator"
-" if you believe you have recieved this in error."
+"This is not the page you are looking for, contact your systems administrator "
+"if you believe you have recieved this in error."
 msgstr ""
 
 #: ratticweb/templates/500.html:6
@@ -893,11 +942,18 @@ msgstr "Nous Contacter"
 
 #: ratticweb/templates/home.html:9
 msgid "Your username and password didn't match. Please try again."
-msgstr "Votre nom d'utilisateur et mot de passe ne correspondent pas. Veuillez réessayer."
+msgstr ""
+"Votre nom d'utilisateur et mot de passe ne correspondent pas. Veuillez "
+"réessayer."
 
 #: ratticweb/templates/home.html:13
 msgid "Welcome to Rattic"
 msgstr "Bienvenue sur Rattic"
+
+#: ratticweb/templates/home.html:14
+#, fuzzy
+msgid "RatticDB Logo"
+msgstr "RatticDB"
 
 #: ratticweb/templates/home.html:15
 msgid "It does passwords."
@@ -961,13 +1017,24 @@ msgstr "page où les voir"
 msgid "If you are a member of any groups, you will see them listed here. "
 msgstr ""
 
+#: ratticweb/templates/sidebar.html:31
+#, fuzzy
+msgid "Forgotten password?"
+msgstr "Mot de passe incorrect"
+
+#: ratticweb/templates/sidebar.html:36
+msgid "Google Sign-in"
+msgstr ""
+
 #: staff/models.py:47
 msgid "Passwords do not match"
 msgstr "Les mots de passe ne sont pas identiques"
 
 #: staff/models.py:83
 msgid "Could not read keepass file, the password you gave may not be correct."
-msgstr "Impossible de lire le fichier KeePass, le mot de passe fourni est peut être incorrect."
+msgstr ""
+"Impossible de lire le fichier KeePass, le mot de passe fourni est peut être "
+"incorrect."
 
 #: staff/models.py:88
 msgid "That file does not appear to be a valid KeePass file."
@@ -1001,7 +1068,17 @@ msgid ""
 "you add all these passwords to the change queue. To do this press the\n"
 "&quot;Add to Change Queue&quot; button, if you don't want to change some\n"
 "of the passwords, simply uncheck them first."
-msgstr "Vous être en train de désactiver un compte, ou supprimer des groupes\nd'un utilisateur. RatticDB a analysé les logs d'audit pour vous assister. Voici la liste\ndes mots de passe que cet utilisateur connaît et dont l'accès a été supprimé. \nIl est recommandé de les ajouter à la liste de mots de passe à modifier. Pour ce faire,\ncliquez sur le bouton \"ajouter à liste de mots de passe à modifier\". Si vous ne voulez\n pas ajouter certains mots de passe à la liste, veuillez les décocher."
+msgstr ""
+"Vous être en train de désactiver un compte, ou supprimer des groupes\n"
+"d'un utilisateur. RatticDB a analysé les logs d'audit pour vous assister. "
+"Voici la liste\n"
+"des mots de passe que cet utilisateur connaît et dont l'accès a été "
+"supprimé. \n"
+"Il est recommandé de les ajouter à la liste de mots de passe à modifier. "
+"Pour ce faire,\n"
+"cliquez sur le bouton \"ajouter à liste de mots de passe à modifier\". Si "
+"vous ne voulez\n"
+" pas ajouter certains mots de passe à la liste, veuillez les décocher."
 
 #: staff/templates/staff_groupdetail.html:7
 msgid "Delete Group"
@@ -1088,15 +1165,22 @@ msgstr "Importer depuis Keepass"
 msgid ""
 "We recommend that you import your keepass data into a\n"
 "seperate group, then adjust the group on each password as required."
-msgstr "Il est recommandé d'importer vos données KeePass dans un groupe \ndistinct, et de définir le groupe sur chaque mot de passe au besoin."
+msgstr ""
+"Il est recommandé d'importer vos données KeePass dans un groupe \n"
+"distinct, et de définir le groupe sur chaque mot de passe au besoin."
 
 #: staff/templates/staff_userdetail.html:8
 msgid ""
 "\n"
-"    Deleting this user will remove any associated auditlogs, maybe deactivate\n"
+"    Deleting this user will remove any associated auditlogs, maybe "
+"deactivate\n"
 "    their account instead?\n"
 "  "
-msgstr "\nSupprimer cet utilisateur effacera les logs d'audit associés. Peut être devriez vous\ndésactiver leur compte?"
+msgstr ""
+"\n"
+"Supprimer cet utilisateur effacera les logs d'audit associés. Peut être "
+"devriez vous\n"
+"désactiver leur compte?"
 
 #: staff/templates/staff_userdetail.html:19
 msgid "Confirm Delete"

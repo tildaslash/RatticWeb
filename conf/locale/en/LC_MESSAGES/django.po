@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-27 22:03+1100\n"
+"POT-Creation-Date: 2014-10-28 20:57+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,6 +23,11 @@ msgstr ""
 
 #: account/models.py:35
 msgid "Incorrect password"
+msgstr ""
+
+#: account/templates/account_changepass.html:4
+#: account/templates/password_reset_confirm.html:4
+msgid "Setting New password"
 msgstr ""
 
 #: account/templates/account_changepass.html:7
@@ -54,6 +59,10 @@ msgstr ""
 #: cred/templates/cred_detail.html:7 cred/templates/cred_list.html:6
 #: ratticweb/templates/base.html:13 staff/templates/staff_home.html:5
 msgid "Rattic"
+msgstr ""
+
+#: account/templates/account_deleteapikey.html:10
+msgid "Please press confirm if you wish to delete this key"
 msgstr ""
 
 #: account/templates/account_deleteapikey.html:13
@@ -109,7 +118,8 @@ msgid "Your Account"
 msgstr ""
 
 #: account/templates/account_profile.html:10
-#: cred/templates/cred_detail.html:44 staff/templates/staff_home.html:23
+#: cred/templates/cred_detail.html:44 ratticweb/templates/sidebar.html:28
+#: staff/templates/staff_home.html:23
 msgid "Username"
 msgstr ""
 
@@ -120,7 +130,7 @@ msgstr ""
 
 #: account/templates/account_profile.html:15
 #: account/templates/account_profile.html:21
-msgid "Two Factor Auth"
+msgid "Two Factor Authentication"
 msgstr ""
 
 #: account/templates/account_profile.html:15
@@ -153,6 +163,7 @@ msgid "Last Password Change"
 msgstr ""
 
 #: account/templates/account_profile.html:25
+#: ratticweb/templates/sidebar.html:18
 #: staff/templates/staff_userdetail.html:33
 msgid "Groups"
 msgstr ""
@@ -241,7 +252,8 @@ msgid ""
 msgstr ""
 
 #: account/templates/account_tfa_login.html:5 ratticweb/templates/home.html:16
-#: ratticweb/templates/navbar.html:59
+#: ratticweb/templates/navbar.html:59 ratticweb/templates/sidebar.html:26
+#: ratticweb/templates/sidebar.html:30
 msgid "Login"
 msgstr ""
 
@@ -376,10 +388,6 @@ msgstr ""
 
 #: account/templates/password_reset_complete.html:9
 msgid "Log in"
-msgstr ""
-
-#: account/templates/password_reset_confirm.html:4
-msgid "Setting New password"
 msgstr ""
 
 #: account/templates/password_reset_confirm.html:17
@@ -627,7 +635,7 @@ msgstr ""
 msgid "Copy"
 msgstr ""
 
-#: cred/templates/cred_detail.html:54
+#: cred/templates/cred_detail.html:54 ratticweb/templates/sidebar.html:29
 msgid "Password"
 msgstr ""
 
@@ -678,6 +686,10 @@ msgstr ""
 
 #: cred/templates/cred_list.html:28 cred/templates/cred_taglist.html:8
 msgid "Add New"
+msgstr ""
+
+#: cred/templates/cred_list.html:40
+msgid "Apply a Tag"
 msgstr ""
 
 #: cred/templates/cred_list.html:43
@@ -900,6 +912,10 @@ msgstr ""
 msgid "Welcome to Rattic"
 msgstr ""
 
+#: ratticweb/templates/home.html:14
+msgid "RatticDB Logo"
+msgstr ""
+
 #: ratticweb/templates/home.html:15
 msgid "It does passwords."
 msgstr ""
@@ -960,6 +976,14 @@ msgstr ""
 
 #: ratticweb/templates/sidebar.html:22
 msgid "If you are a member of any groups, you will see them listed here. "
+msgstr ""
+
+#: ratticweb/templates/sidebar.html:31
+msgid "Forgotten password?"
+msgstr ""
+
+#: ratticweb/templates/sidebar.html:36
+msgid "Google Sign-in"
 msgstr ""
 
 #: staff/models.py:47
