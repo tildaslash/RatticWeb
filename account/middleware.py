@@ -23,7 +23,7 @@ class PasswordExpirer:
             return
 
         # If they aren't currently trying to change their password
-        changepassurl = reverse('django.contrib.auth.views.password_change')
+        changepassurl = reverse('password_change')
         if request.method != 'GET' or request.path == changepassurl:
             return
 

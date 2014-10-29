@@ -28,7 +28,17 @@
 {% endfor %}
 </table>
 <input class="btn btn-primary" type="submit" name="submit" value="{% trans "Save Changes" %}" />
-{% if ALLOWPWCHANGE %}<a class="btn" href="{% url "password_change" %}">{% trans "Change password" %}</a>{% endif %}
+
+{% if ALLOWPWCHANGE %}
+    <a class="btn" href="{% url "password_change" %}">
+	    {% if user.has_usable_password %}
+	        {% trans "Change password" %}
+		{% else %}
+	        {% trans "Set Password" %}
+		{% endif %}
+    </a>
+{% endif %}
+
 </form>
 <h2>{% trans "API Keys" %}</h2>
 <table class="table table-striped table-bordered table-condensed">

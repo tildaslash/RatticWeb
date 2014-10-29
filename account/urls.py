@@ -33,7 +33,7 @@ if settings.GOAUTH2_ENABLED:
 
 # URLs we don't want enabled with LDAP
 if not settings.LDAP_ENABLED:
-    urlpatterns += (
+    urlpatterns += patterns('',
         url(r'^reset/$', 'django.contrib.auth.views.password_reset',
             {
                 'post_reset_redirect': '/account/reset/done/',
@@ -53,7 +53,7 @@ if not settings.LDAP_ENABLED:
             name="password_reset_confirm"
         ),
 
-        url(r'^changepass/$', 'django.contrib.auth.views.password_change', {
+        url(r'^changepass/$', 'account.views.rattic_change_password', {
             'post_change_redirect': '/account/',
             'template_name': 'account_changepass.html'}, name='password_change')
     )

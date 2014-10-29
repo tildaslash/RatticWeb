@@ -8,10 +8,24 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.contrib.auth.decorators import login_required
 from django.template.response import TemplateResponse
 from django.utils.timezone import now
+from django.contrib.auth.views import password_change
+from django.contrib.auth.forms import SetPasswordForm
 
 from user_sessions.views import SessionDeleteView
 from two_factor.utils import default_device
 from two_factor.views import DisableView, BackupTokensView, SetupView, LoginView
+
+
+@login_required
+def rattic_change_password(request, *args, **kwargs):
+    print request.user
+    if request.user.has_usable_password():
+        # If a user is changing their password
+        return password_change(request, *args, **kwargs)
+    else:
+        # If a user is setting an initial password
+        kwargs['password_change_form'] = SetPasswordForm
+        return password_change(request, *args, **kwargs)
 
 
 @login_required
