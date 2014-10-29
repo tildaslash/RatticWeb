@@ -87,7 +87,7 @@ class AccountViewTests(TestCase):
         profile.password_changed = now() - timedelta(days=6)
         profile.save()
         resp = self.client.get(reverse('account.views.profile'), follow=True)
-        self.assertRedirects(resp, reverse('django.contrib.auth.views.password_change'), status_code=302, target_status_code=200)
+        self.assertRedirects(resp, reverse('account.views.rattic_change_password'), status_code=302, target_status_code=200)
         profile.password_changed = now()
         profile.save()
         resp = self.client.get(reverse('account.views.profile'))
@@ -96,7 +96,7 @@ class AccountViewTests(TestCase):
     @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
     def test_change_password(self):
         # Load the password change page
-        response = self.client.get(reverse('django.contrib.auth.views.password_change'))
+        response = self.client.get(reverse('account.views.rattic_change_password'))
         self.assertEqual(response.status_code, 200)
 
         # Prepare the POST data
@@ -106,7 +106,34 @@ class AccountViewTests(TestCase):
             'new_password2': 'newpassword',
         }
         response = self.client.post(
-            reverse('django.contrib.auth.views.password_change'),
+            reverse('account.views.rattic_change_password'),
+            post,
+            follow=True,
+        )
+
+        # Check we got a 200 response and the password got changed
+        self.assertEqual(response.status_code, 200)
+        user = User.objects.get(username=self.username)
+        self.assertTrue(user.check_password('newpassword'))
+
+    @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
+    def test_initial_password(self):
+        # Clear the users password
+        user = User.objects.get(username=self.username)
+        user.set_unusable_password()
+        user.save()
+
+        # Load the password change page
+        response = self.client.get(reverse('account.views.rattic_change_password'))
+        self.assertEqual(response.status_code, 200)
+
+        # Prepare the POST data
+        post = {
+            'new_password1': 'newpassword',
+            'new_password2': 'newpassword',
+        }
+        response = self.client.post(
+            reverse('account.views.rattic_change_password'),
             post,
             follow=True,
         )
