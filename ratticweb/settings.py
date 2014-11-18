@@ -20,6 +20,7 @@ import ldap
 import os
 from django_auth_ldap.config import LDAPSearch
 from datetime import timedelta
+from django.utils.translation import ugettext_lazy as _
 
 config = RawConfigParser()
 config.readfp(open('conf/defaults.cfg'))
@@ -48,9 +49,13 @@ MANAGERS = ADMINS
 # The Internationalization Settings
 USE_I18N = True
 USE_L10N = True
-LANGUAGE_CODE = 'en-us'
 LOCALE_PATHS = (
     'conf/locale',
+)
+LANGUAGES = (
+    ('en', _('English')),
+    ('fr', _('French')),
+    ('de', _('German')),
 )
 
 # If you set this to False, Django will not use timezone-aware datetimes.

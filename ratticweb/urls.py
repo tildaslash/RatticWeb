@@ -27,6 +27,9 @@ base_urlpatterns = patterns('',
     # API
     url(r'^api/', include(v1_api.urls)),
 
+    # Language
+    (r'^i18n/', include('django.conf.urls.i18n')),
+
     # two Factor
     # url(r'^', include('two_factor.urls', namespace='two_factor')),
 )

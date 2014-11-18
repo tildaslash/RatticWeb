@@ -2,6 +2,10 @@
   width: 100%;
 }
 
+.no-display {
+  display: none;
+}
+
 div.copybutton {
   position: relative;
   display: inline;
