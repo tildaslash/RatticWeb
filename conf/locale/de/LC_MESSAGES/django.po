@@ -3,52 +3,54 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# bato <francoisconil@gmail.com>, 2014
+# Daniel Hall <daniel@danielhall.me>, 2014
+# Dirk_Florin <dirk.florin@actgruppe.de>, 2014
+# Dominik <littletapper@web.de>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: RatticDB\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-10-28 20:57+1100\n"
-"PO-Revision-Date: 2014-11-18 06:18+0000\n"
-"Last-Translator: bato <francoisconil@gmail.com>\n"
-"Language-Team: French (http://www.transifex.com/projects/p/ratticdb/language/fr/)\n"
+"PO-Revision-Date: 2014-11-03 22:01+0000\n"
+"Last-Translator: Dirk_Florin <dirk.florin@actgruppe.de>\n"
+"Language-Team: German (http://www.transifex.com/projects/p/ratticdb/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: account/models.py:27
 msgid "Old password"
-msgstr "Ancien mot de passe"
+msgstr "Altes Passwort"
 
 #: account/models.py:35
 msgid "Incorrect password"
-msgstr "Mot de passe incorrect"
+msgstr "Falsches Passwort"
 
 #: account/templates/account_changepass.html:4
 #: account/templates/password_reset_confirm.html:4
 msgid "Setting New password"
-msgstr "Enregistrer nouveau mot de passe"
+msgstr "Neues Passwort setzen"
 
 #: account/templates/account_changepass.html:7
 #: account/templates/password_reset_confirm.html:8
 msgid "Please enter your new password twice."
-msgstr "Veuillez entre votre nouveau mot de passe deux fois"
+msgstr "Bitte gebe dein neues Passwort zwei Mal ein."
 
 #: account/templates/account_changepass.html:8
 #: account/templates/password_reset_confirm.html:9
 msgid "So we can verify you typed it in correctly."
-msgstr "Pour vérifier la saisie."
+msgstr "Sodass wir verifizieren können, ob du es richtig eingegeben hast"
 
 #: account/templates/account_changepass.html:21
 msgid "Change Password"
-msgstr "Modifier mot de passe"
+msgstr "Passwort ändern"
 
 #: account/templates/account_deleteapikey.html:4
 #: account/templates/account_deleteapikey.html:7
 msgid "Delete API Key"
-msgstr "Supprimer Clé API"
+msgstr "API Schlüssel entfernen"
 
 #: account/templates/account_deleteapikey.html:4
 #: account/templates/account_newapikey.html:4
@@ -64,7 +66,7 @@ msgstr "Rattic"
 
 #: account/templates/account_deleteapikey.html:10
 msgid "Please press confirm if you wish to delete this key"
-msgstr "Veuillez confirmer la suppression de cette clé"
+msgstr "Bitte bestätige, falls du diesen Schlüssel wirklich entfernen möchtest"
 
 #: account/templates/account_deleteapikey.html:13
 #: account/templates/account_viewapikey.html:17
@@ -72,34 +74,34 @@ msgstr "Veuillez confirmer la suppression de cette clé"
 #: staff/templates/staff_groupdetail.html:20
 #: staff/templates/staff_home.html:44
 msgid "Name"
-msgstr "Nom"
+msgstr "Name"
 
 #: account/templates/account_deleteapikey.html:14
 #: cred/templates/cred_detail.html:70
 msgid "Created"
-msgstr "Créé"
+msgstr "Erstellt am"
 
 #: account/templates/account_deleteapikey.html:19
 #: cred/templates/cred_tagdelete.html:8
 msgid "Confirm"
-msgstr "Confirmer"
+msgstr "Bestätigen"
 
 #: account/templates/account_ldaperror.html:6
 msgid "LDAP Error"
-msgstr "Erreur LDAP"
+msgstr "LDAP Fehler"
 
 #: account/templates/account_ldaperror.html:7
 msgid "Your LDAP server returned the following error:"
-msgstr "Votre serveur LDAP a renvoyé l'erreur suivante:"
+msgstr "Dein LDAP Server gibt folgenden Fehler zurück:"
 
 #: account/templates/account_ldaperror.html:8
 #: cred/templates/cred_part_passgenmodal.html:9
 msgid "Description"
-msgstr "Description"
+msgstr "Beschreibung"
 
 #: account/templates/account_ldaperror.html:9
 msgid "Further Info"
-msgstr "Plus d'infos"
+msgstr "Weitere Informationen"
 
 #: account/templates/account_newapikey.html:4
 #: account/templates/account_newapikey.html:7
@@ -107,115 +109,115 @@ msgstr "Plus d'infos"
 #: account/templates/account_viewapikey.html:4
 #: account/templates/account_viewapikey.html:7
 msgid "New API Key"
-msgstr "Nouvelle Clé API"
+msgstr "Neuer API Schlüssel"
 
 #: account/templates/account_newapikey.html:20
 #: cred/templates/cred_part_newtagmodal.html:13
 msgid "Create"
-msgstr "Créer"
+msgstr "Erstellen"
 
 #: account/templates/account_profile.html:7
 msgid "Your Account"
-msgstr "Votre compte"
+msgstr "Accountname"
 
 #: account/templates/account_profile.html:10
 #: cred/templates/cred_detail.html:44 ratticweb/templates/sidebar.html:28
 #: staff/templates/staff_home.html:23
 msgid "Username"
-msgstr "Utilisateur"
+msgstr "Benutzername"
 
 #: account/templates/account_profile.html:11
 #: staff/templates/staff_userdetail.html:32
 msgid "Email"
-msgstr "Adresse email"
+msgstr "E-Mail"
 
 #: account/templates/account_profile.html:15
 #: account/templates/account_profile.html:21
 msgid "Two Factor Authentication"
-msgstr ""
+msgstr "Zwei-Faktor Authentifizierung"
 
 #: account/templates/account_profile.html:15
 msgid "Enabled"
-msgstr "Activé"
+msgstr "Aktiviert"
 
 #: account/templates/account_profile.html:15
 #: account/templates/account_tfa_disable.html:12
 msgid "Disable"
-msgstr ""
+msgstr "Deaktivieren"
 
 #: account/templates/account_profile.html:16
 msgid "Backup Codes Left"
-msgstr ""
+msgstr "Vorhandene Notfall Codes"
 
 #: account/templates/account_profile.html:17
 msgid "View Codes"
-msgstr ""
+msgstr "Codes anzeigen"
 
 #: account/templates/account_profile.html:21
 msgid "Disabled"
-msgstr ""
+msgstr "Deaktiviert"
 
 #: account/templates/account_profile.html:21
 msgid "Enable now"
-msgstr "Activer maintenant"
+msgstr "Jetzt aktivieren"
 
 #: account/templates/account_profile.html:24
 msgid "Last Password Change"
-msgstr "Mot de passe modifié le"
+msgstr "Letzte Passwortänderung"
 
 #: account/templates/account_profile.html:25
 #: ratticweb/templates/sidebar.html:18
 #: staff/templates/staff_userdetail.html:33
 msgid "Groups"
-msgstr "Groupes"
+msgstr "Gruppen"
 
 #: account/templates/account_profile.html:30
 msgid "Save Changes"
-msgstr "Enregistrer les modifications"
+msgstr "Änderungen speichern"
 
 #: account/templates/account_profile.html:31
 msgid "Change password"
-msgstr "Modifier mot de passe"
+msgstr "Passwort ändern"
 
 #: account/templates/account_profile.html:33
 msgid "API Keys"
-msgstr "Clés API"
+msgstr "API Schlüssel"
 
 #: account/templates/account_profile.html:41
 msgid "Key Name"
-msgstr "Nom de la clé"
+msgstr "Schlüsselname"
 
 #: account/templates/account_profile.html:42
 msgid "Date generated"
-msgstr "Date de création"
+msgstr "Generiertes Datum"
 
 #: account/templates/account_profile.html:57
 msgid "No API Keys available yet"
-msgstr "Pas de clés API disponibles pour l'instant"
+msgstr "Noch kein API Schlüssel vorhanden"
 
 #: account/templates/account_profile.html:61
 msgid "Current Sessions"
-msgstr "Sessions en cours"
+msgstr "Aktuelle Sitzung"
 
 #: account/templates/account_profile.html:66
 msgid "Device"
-msgstr "Appareil"
+msgstr "Gerät"
 
 #: account/templates/account_profile.html:67
 msgid "IP Address"
-msgstr "Adresse IP"
+msgstr "IP-Adresse"
 
 #: account/templates/account_profile.html:68
 msgid "Last Activity"
-msgstr ""
+msgstr "Letzte Aktivität"
 
 #: account/templates/account_profile.html:79
 msgid "(This Session)"
-msgstr ""
+msgstr "(Diese Sitzung)"
 
 #: account/templates/account_tfa_backup_tokens.html:5
 msgid "Backup Tokens"
-msgstr ""
+msgstr "Notfall Token"
 
 #: account/templates/account_tfa_backup_tokens.html:6
 msgid ""
@@ -224,99 +226,99 @@ msgid ""
 "      for login verification. If you've used up all your backup tokens, you\n"
 "      can generate a new set of backup tokens. Only the backup tokens shown\n"
 "      below will be valid."
-msgstr ""
+msgstr "Notfall Tokens können verwendet werden, wenn deine primäre sowie sekundäre \nTelefonnummer nicht zur Verfügung steht. Mit den unten aufgeführten Tokens \nkann die Anmeldung im Notfall verifiziert werden. Solltest du alle Notfall Tokens\naufgebraucht haben, so kannst du ganz einfach neue erstellen. Es werden nur\ngültige Notfall Tokens angezeigt."
 
 #: account/templates/account_tfa_backup_tokens.html:18
 msgid "Print these tokens and keep them somewhere safe."
-msgstr ""
+msgstr "Drucke diese Tokens aus und lege sie sicher ab."
 
 #: account/templates/account_tfa_backup_tokens.html:20
 msgid "You don't have any backup codes yet."
-msgstr ""
+msgstr "Du hast noch keine Notfall Tokens erstellt."
 
 #: account/templates/account_tfa_backup_tokens.html:25
 msgid "Back to Account Profile"
-msgstr ""
+msgstr "Zurück zum Profil"
 
 #: account/templates/account_tfa_backup_tokens.html:26
 msgid "Generate Tokens"
-msgstr ""
+msgstr "Notfall Token generieren"
 
 #: account/templates/account_tfa_disable.html:5
 msgid "Disable Two-factor Authentication"
-msgstr ""
+msgstr "Zwei-Faktor Authentifizierung deaktivieren"
 
 #: account/templates/account_tfa_disable.html:6
 msgid ""
 "You are about to disable two-factor authentication. This\n"
 "    compromises your account security, are you sure?"
-msgstr ""
+msgstr "Du bist dabei die Zwei-Faktor Authentifizierung zu deaktivieren. Dies kann die Sicherheit deines Accounts beeinflussen. Bist du dir sicher?"
 
 #: account/templates/account_tfa_login.html:5 ratticweb/templates/home.html:16
 #: ratticweb/templates/navbar.html:59 ratticweb/templates/sidebar.html:26
 #: ratticweb/templates/sidebar.html:30
 msgid "Login"
-msgstr "Connexion"
+msgstr "Login"
 
 #: account/templates/account_tfa_login.html:8
 msgid "Enter your credentials."
-msgstr ""
+msgstr "Bitte gebe deine Anmeldedaten ein."
 
 #: account/templates/account_tfa_login.html:11
 #: account/templates/account_tfa_setup.html:28
 msgid ""
 "We are calling your phone right now, please enter the\n"
 "        digits you hear."
-msgstr ""
+msgstr "Du wirst gleich einen Anruf erhalten. Bitte gebe die Nummern ein, die du hörst."
 
 #: account/templates/account_tfa_login.html:14
 #: account/templates/account_tfa_setup.html:31
 msgid ""
 "We sent you a text message, please enter the tokens we\n"
 "        sent."
-msgstr ""
+msgstr "Wir haben dir eine Textnachricht geschickt. Bitte gebe den Token ein, den wir dir zugeschickt haben."
 
 #: account/templates/account_tfa_login.html:17
 msgid ""
 "Please enter the tokens generated by your token\n"
 "        generator."
-msgstr ""
+msgstr "Bitte gebe den Token ein, den du mit deinem Token Generator erstellt hast."
 
 #: account/templates/account_tfa_login.html:21
 msgid ""
 "Use this form for entering backup tokens for logging in.\n"
 "      These tokens have been generated for you to print and keep safe. Please\n"
 "      enter one of these backup tokens to login to your account."
-msgstr ""
+msgstr "Benutze bitte dieses Formular, um deine Notfall Tokens einzutragen und dich einzuloggen.\nDiese Tokens wurden für Dich generiert, um sie sicher zu verwahren, bzw. auszudrucken. Bitte\ngib einen dieser Token ein, um dich in deinen Account einzuloggen."
 
 #: account/templates/account_tfa_login.html:33
 msgid "Or, alternatively, use one of your backup phones:"
-msgstr ""
+msgstr "Alternativ kannst du auch eines deiner Notfall-Telefone verwenden."
 
 #: account/templates/account_tfa_login.html:43
 msgid "As a last resort, you can use a backup token:"
-msgstr ""
+msgstr "Als letzte Möglichkeit kannst du deine Notfall Token benutzen:"
 
 #: account/templates/account_tfa_login.html:46
 msgid "Use Backup Token"
-msgstr ""
+msgstr "Notfall Token verwenden"
 
 #: account/templates/account_tfa_setup.html:5
 msgid "Enable Two-Factor Authentication"
-msgstr "Activer l'authentification à deux facteurs"
+msgstr "Zwei-Faktor-Authentifizierung aktivieren"
 
 #: account/templates/account_tfa_setup.html:7
 msgid ""
 "You are about to take your account security to the\n"
 "        next level. Follow the steps in this wizard to enable two-factor\n"
 "        authentication."
-msgstr "Vous êtes sur le point d'incrémenter la sécurité de\nvotre compte. Suivez les étapes de cet assistant pour activer\nl'authentification à deux facteurs"
+msgstr "Du bist dabei deine Accountsicherheit auf das nächste Level zu bringen. Folgende dem Assistenten um die Zwei-Faktor-Authentifizierung zu aktivieren."
 
 #: account/templates/account_tfa_setup.html:11
 msgid ""
 "Please select which authentication method you would\n"
 "        like to use."
-msgstr ""
+msgstr "Bitte wähle, welche Authentifizierung du nutzen möchtest."
 
 #: account/templates/account_tfa_setup.html:14
 msgid ""
@@ -324,104 +326,104 @@ msgid ""
 "        smartphone to scan the QR code below. For example, use Google\n"
 "        Authenticator. Then, enter the token generated by the app.\n"
 "        "
-msgstr ""
+msgstr "Um den Token Generator zu benutzen, bitte scanne den  angezeigten \nQR Code mit deinem Smartphone. Mit dem Google Authenthicator ist \ndies zum Beispiel möglich. Danach gib den von der App generierten Token ein."
 
 #: account/templates/account_tfa_setup.html:20
 msgid ""
 "Please enter the phone number you wish to receive the\n"
 "      text messages on. This number will be validated in the next step.\n"
 "      "
-msgstr ""
+msgstr "Bitte gebe die Telefonnummer an, an die wir die Textnachricht\nschicken sollen. Im nächsten Schritt wird diese überprüft."
 
 #: account/templates/account_tfa_setup.html:24
 msgid ""
 "Please enter the phone number you wish to be called on.\n"
 "      This number will be validated in the next step. "
-msgstr ""
+msgstr "Bitte gebe eine Telefonnummer an, unter der wir dich erreichen.\nIm nächsten Schritt wird diese überprüft."
 
 #: account/templates/account_viewapikey.html:10
 msgid "Warning!"
-msgstr "Attention!"
+msgstr "Warnung!"
 
 #: account/templates/account_viewapikey.html:11
 msgid ""
 "This is the last chance that you will have to access the secret key. You "
 "should save it in a safe place now."
-msgstr "C'est la dernière fois que vous aurez accès à la clé maître. Vous devriez en faire une copie et la garder en lieu sûr."
+msgstr "Das ist deine letzte Chance, um dir den Secret Key anzuschauen. Du solltest diesen ab jetzt an einem sicheren Ort aufbewahren."
 
 #: account/templates/account_viewapikey.html:14
 msgid "Your new API key has been created."
-msgstr "Votre nouvelle clé API a été créée"
+msgstr "Dein neuer API Schlüssel wurde erstellt."
 
 #: account/templates/account_viewapikey.html:18
 msgid "Secret Key"
-msgstr "Clé secrète"
+msgstr "Secret Key"
 
 #: account/templates/account_viewapikey.html:21
 msgid "Back to Profile"
-msgstr "Retour au Profil"
+msgstr "Zurück zum Profil"
 
 #: account/templates/password_reset.html:5
 msgid "Reset Password"
-msgstr "Réinitialiser mot de passe"
+msgstr "Passwort zurücksetzen"
 
 #: account/templates/password_reset.html:8
 msgid ""
 "Please specify your email address to receive instructions for resetting it."
-msgstr "Veuillez spécifier votre adresse email pour recevoir les instructions nécessaires."
+msgstr "Bitte gebe eine E-Mail Adresse an, um dir eine Anleitung für das Zurücksetzen deines Passwortes zu zu schicken."
 
 #: account/templates/password_reset.html:15
 msgid "E-mail address"
-msgstr "Adresse email"
+msgstr "E-Mailadresse"
 
 #: account/templates/password_reset.html:15
 msgid "Reset password"
-msgstr "Réinitialiser mot de passe"
+msgstr "Passwort zurücksetzen"
 
 #: account/templates/password_reset_complete.html:5
 msgid "Password reset complete"
-msgstr "Réinitialisation du mot de passe est complète"
+msgstr "Zurücksetzen des Passwortes erfolgreich"
 
 #: account/templates/password_reset_complete.html:8
 msgid "Your password has been set. You may go ahead and log in now."
-msgstr "Votre mot de passe a été enregistré. Vous pouvez dorénavant vous connecter."
+msgstr "Deine Passwort wurde gesetzt. Bitte melde dich erneut an."
 
 #: account/templates/password_reset_complete.html:9
 msgid "Log in"
-msgstr "Connecter"
+msgstr "Anmleden"
 
 #: account/templates/password_reset_confirm.html:17
 msgid "New password"
-msgstr "Nouveau mot de passe"
+msgstr "Neues Passwort"
 
 #: account/templates/password_reset_confirm.html:22
 msgid "Confirm password"
-msgstr "Confirmer le mot de passe"
+msgstr "Passwort bestätigen"
 
 #: account/templates/password_reset_confirm.html:27
 msgid "Change my password"
-msgstr "Modifier mon mot de passe"
+msgstr "Mein Passwort ändern"
 
 #: account/templates/password_reset_confirm.html:32
 msgid "Password reset unsuccessful"
-msgstr "Réinitialisation du mot de passe a échoué"
+msgstr "Änderung des Passworts nicht erfolgreich"
 
 #: account/templates/password_reset_confirm.html:33
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used. Please request a new password reset."
-msgstr "Le lien pour réinitialiser le mot de passe n'est plus valide et a déjà été utilisé. Veuillez recommencer le la réinitialisation"
+msgstr "Der Link zum Zurücksetzen des Passworts war ungültig. Möglicherweise wurde er bereits benutzt. Bitte fordere eine neue Passwort Zurücksetzung an."
 
 #: account/templates/password_reset_done.html:5
 msgid "Password reset successful"
-msgstr "Réinitialisation du mot de passe a succédé"
+msgstr "Änderung des Passworts erfolgreich"
 
 #: account/templates/password_reset_done.html:8
 msgid ""
 "We've e-mailed you instructions for setting\n"
 "your password to the e-mail address you submitted. You should be\n"
 "receiving it shortly."
-msgstr "Nous vous avons envoyé les instructions pour réinitialiser\nvotre mot de passe à l'adresse email fournie. Vous devriez\nbientôt les recevoir."
+msgstr "Wir haben dir gerade eine Nachricht zum Erstellen deines Passworts an die übermittelte E-Mail Adresse geschickt. Diese sollte in Kürze bei dir eingehen."
 
 #: account/templates/password_reset_email.html:4
 #, python-format
@@ -430,7 +432,7 @@ msgid ""
 "You're receiving this e-mail because you requested a password reset for your user account at %(site_name)s.\n"
 "\n"
 "Please go to the following page and choose a new password:\n"
-msgstr "\nVous avez reçu ce message parce que vous voulez réinitialiser votre mot de passe pour votre compte sur  %(site_name)s.\n\nVeuillez visiter la page suivante pour choisir un nouveau mot de passe.\n"
+msgstr "\nDu erhältst diese Email, da du die Zurücksetzung deines Passworts für deinen Account auf %(site_name)s angefordert hast.\n\nBitte besuche die folgende Seite und wähle dein neues Passwort:\n"
 
 #: account/templates/password_reset_email.html:12
 #, python-format
@@ -441,112 +443,112 @@ msgid ""
 "Thanks for using our site!\n"
 "\n"
 "The %(site_name)s team.\n"
-msgstr "\nVotre identifiant de connexion, pour rappel:  %(user.username)s\n\nMerci d'utiliser notre site!\n\nL'équipe  %(site_name)s.\n"
+msgstr "\nSolltest du deinen Benutzernamen vergessen haben: %(user.username)s\n\nVielen Dank, dass unseren Service benutzt.\n\nDein %(site_name)s Team.\n"
 
 #: cred/fields.py:25
 #, python-format
 msgid ""
 "File size must be under %(maximumsize)s. Current file size is "
 "%(currentsize)s."
-msgstr ""
+msgstr "Die Größte der Datei muss unter %(maximumsize)s sein. Aktuelle Größe betrifft %(currentsize)s."
 
 #: cred/forms.py:34
 msgid "Please enter a valid HTTP/HTTPS URL"
-msgstr "Veuillez entrer une adresse HTTP/HTTPS conforme"
+msgstr "Bitte gebe eine gültige HTTP/HTTPS URL an"
 
 #: cred/models.py:79
 msgid "Markdown Description"
-msgstr "Description Markdown"
+msgstr "Beschreibung hervorheben"
 
 #: cred/models.py:181
 msgid "Added"
-msgstr "Ajouté"
+msgstr "Hinzugefügt"
 
 #: cred/models.py:182
 msgid "Changed"
-msgstr "Modifié"
+msgstr "Geändert"
 
 #: cred/models.py:183
 msgid "Only Metadata Changed"
-msgstr "Seules les métadonnées ont été modifiées."
+msgstr "Nur Metadaten geändert"
 
 #: cred/models.py:184
 msgid "Only Details Viewed"
-msgstr "Seules les coordonnées ont été consultées"
+msgstr "Nur Details angezeigt"
 
 #: cred/models.py:185
 msgid "Exported"
-msgstr ""
+msgstr "Exportiert"
 
 #: cred/models.py:186
 msgid "Deleted"
-msgstr "Supprimé"
+msgstr "Gelöscht"
 
 #: cred/models.py:187
 msgid "Scheduled For Change"
-msgstr "Modification programmée"
+msgstr "Nächste Änderung"
 
 #: cred/models.py:188
 msgid "Password Viewed"
-msgstr "Mot de passe vu"
+msgstr "Passwort angezeigt"
 
 #: cred/views.py:75
 msgid "All passwords"
-msgstr "Tous les mots de passe"
+msgstr "Alle Passwörter"
 
 #: cred/views.py:106
 #, python-format
 msgid "Passwords tagged with %(tagname)s"
-msgstr "Mots de passe baliśes avec %(tagname)s"
+msgstr "Passwörter mit dem Tag %(tagname)s"
 
 #: cred/views.py:110
 #, python-format
 msgid "Passwords in group %(groupname)s"
-msgstr "Mots de passe dans le groupe %(groupname)s"
+msgstr "Passwörter in der Gruppe %(groupname)s"
 
 #: cred/views.py:114
 #, python-format
 msgid "Passwords for search \"%(searchstring)s\""
-msgstr "Mots de Passe correspondant à \"%(searchstring)s\""
+msgstr "Passwörter der Suche \"%(searchstring)s\""
 
 #: cred/views.py:118
 #, python-format
 msgid "Versions of: \"%(credtitle)s\""
-msgstr "Versions de: \"%(credtitle)s\""
+msgstr "Versionen von: \"%(credtitle)s\""
 
 #: cred/views.py:126
 msgid ""
 "That user is now disabled. Here is a list of passwords that they have viewed"
 " that have not since been changed. You probably want to add them all to the "
 "change queue."
-msgstr "Cet utilisateur a été désactivé. Veuillez trouver la liste des mots de passe inchangés depuis la dernière fois que cet utilisateur y a eu accès. Il serait judicieux de les ajouter à la liste de mots de passe à modifier."
+msgstr "Der Benutzer ist nun deaktiviert. Hier ist eine Auflistung der Passwörter, die der Benutzer angeschaut hat und welche noch nicht geändert wurden. Du solltest diese lieber auf in die Change Queue aufnehmen."
 
 #: cred/views.py:129
 #, python-format
 msgid "Changes required for \"%(username)s\""
-msgstr "Modifications nécessaires pour \"%(username)s\""
+msgstr "Veränderungen benötigt für \"%(username)s\""
 
 #: cred/views.py:140
 msgid "Passwords in the trash"
-msgstr "Mots de passe dans la corbeille"
+msgstr "Gelöschte Passwörter im Papierkorb"
 
 #: cred/views.py:148
 msgid "Passwords on the Change Queue"
-msgstr "Mots de passe dans la liste de mots de passe à modifier."
+msgstr "Passwörter in der Change Queue"
 
 #: cred/views.py:318 staff/views.py:352
 msgid "Unknown (Logs deleted)"
-msgstr "Inconnu (Logs effacés)"
+msgstr "Unbekannt (Keine Logs vorhanden)"
 
 #: cred/widgets.py:15
 msgid "Choose"
-msgstr "Choisir"
+msgstr "Wähle"
 
 #: cred/templates/cred_detail.html:16
 msgid ""
 "You are about to delete this password. A staff member will be required if "
 "you want to undelete it."
-msgstr "Vous êtes sur le point de supprimer un mot de passe. Un administrateur sera nécessaire pour le restaurer."
+msgstr "Du bist dabei das Passwort zu löschen. Im Falle einer Wiederherstellung benötigst du einen Administrator."
 
 #: cred/templates/cred_detail.html:19
 msgid ""
@@ -555,41 +557,41 @@ msgid ""
 " Click the undelete button to restore it. If you click the Delete "
 "Permanently button then the password, its entire history and all its audit "
 "logs will be removed."
-msgstr "Cet identifiant a été supprimé et est dans la corbeille. Seuls les administrateurs y ont accès. Vous pouvez le modifier à votre guise, et l'historique sera conservée. Appuyez sur \"restaurer\" pour annuler la suppression. Le mot de passe, son historique et tous les logs d'audit seront effacés si vous pressez \"Supprimer définitivement\""
+msgstr "Diese Anmeldeinformation wurde gelöscht und befindet sich nun im Mülleimer. Sie kann nur von den Administratoren eingesehen werden. Du kannst sie verändern, wenn du wünscht - trotzdem werden die Änderungen gespeichert. Klicke den \"Wiederherstellen\" Knopf, um es wiederherzustellen. Wenn du den \"Dauerhaft löschen\" Knopf drückst, wird das Passwort, seine Änderungen und die kompletten Audit Logs gelöscht."
 
 #: cred/templates/cred_detail.html:22
 msgid "Hey there!"
-msgstr "Bonjour!"
+msgstr "Servus"
 
 #: cred/templates/cred_detail.html:22
 msgid "This credential is an historical version."
-msgstr "Cet identifiant est une version antérieure."
+msgstr "Für diese Zugangsdaten liegt eine neue Version vor."
 
 #: cred/templates/cred_detail.html:22
 msgid "Click here"
-msgstr "Cliquez ici"
+msgstr "Hier klicken"
 
 #: cred/templates/cred_detail.html:22
 msgid "to see the latest version."
-msgstr "pour voir la dernière version."
+msgstr "um die letzte Version zu sehen."
 
 #: cred/templates/cred_detail.html:25
 msgid "Change Required"
-msgstr "Modification nécessaire"
+msgstr "Änderung erforderlich"
 
 #: cred/templates/cred_detail.html:25
 msgid ""
 "This credential is on the change queue and should have its password changed "
 "as soon as possible."
-msgstr "Cet identifiant est dans la liste de mots de passe à modifier, et devrait être modifié dès que possible."
+msgstr "Diese Anmeldedaten sind in einer Change Queue; das Passwort soll so schnell wie möglich geändert werden."
 
 #: cred/templates/cred_detail.html:25
 msgid "Why not"
-msgstr "Pourquoi ne pas"
+msgstr "Warum nicht"
 
 #: cred/templates/cred_detail.html:25
 msgid "do it now"
-msgstr "le faire maintenant"
+msgstr "mach es jetzt"
 
 #: cred/templates/cred_detail.html:25
 msgid "?"
@@ -601,11 +603,11 @@ msgstr "?"
 #: staff/templates/staff_home.html:44 staff/templates/staff_home.html.py:49
 #: staff/templates/staff_userdetail.html:22
 msgid "Edit"
-msgstr "Modifier"
+msgstr "Bearbeiten"
 
 #: cred/templates/cred_detail.html:30
 msgid "History"
-msgstr "Historique"
+msgstr "Historie"
 
 #: cred/templates/cred_detail.html:31 cred/templates/cred_detail.html.py:87
 #: cred/templates/cred_list.html:31 cred/templates/cred_taglist.html:18
@@ -614,44 +616,44 @@ msgstr "Historique"
 #: staff/templates/staff_home.html:44 staff/templates/staff_home.html.py:50
 #: staff/templates/staff_userdetail.html:24
 msgid "Delete"
-msgstr "Supprimer"
+msgstr "Löschen"
 
 #: cred/templates/cred_detail.html:33 cred/templates/cred_list.html:37
 #: staff/templates/staff_changeadvice.html:37
 msgid "Add to Change Queue"
-msgstr "Ajouter à la liste de mots de passe à modifier"
+msgstr "Zur Change Queue hinzufügen"
 
 #: cred/templates/cred_detail.html:36 cred/templates/cred_detail.html.py:92
 #: cred/templates/cred_list.html:34
 msgid "Undelete"
-msgstr "Restaurer"
+msgstr "Wiederherstellen"
 
 #: cred/templates/cred_detail.html:42
 msgid "URL"
-msgstr "Adresse"
+msgstr "URL"
 
 #: cred/templates/cred_detail.html:48 cred/templates/cred_detail.html.py:59
 msgid "Copy"
-msgstr "Copier"
+msgstr "Kopieren"
 
 #: cred/templates/cred_detail.html:54 ratticweb/templates/sidebar.html:29
 msgid "Password"
-msgstr "Mot de Passe"
+msgstr "Passwort"
 
 #: cred/templates/cred_detail.html:64
 msgid "Attachment"
-msgstr ""
+msgstr "Anhang"
 
 #: cred/templates/cred_detail.html:64
 msgid "Download"
-msgstr ""
+msgstr "Download"
 
 #: cred/templates/cred_detail.html:67 cred/templates/cred_list.html:67
 #: cred/templates/cred_list.html.py:69
 #: staff/templates/staff_changeadvice.html:21
 #: staff/templates/staff_groupdetail.html:10
 msgid "Group"
-msgstr "Groupe"
+msgstr "Gruppe"
 
 #: cred/templates/cred_detail.html:68 cred/templates/cred_list.html:72
 #: ratticweb/templates/navbar.html:41 ratticweb/templates/sidebar.html:10
@@ -661,19 +663,19 @@ msgstr "Tags"
 
 #: cred/templates/cred_detail.html:69
 msgid "Last Changed"
-msgstr ""
+msgstr "Letzte Änderung"
 
 #: cred/templates/cred_detail.html:75
 msgid "Description:"
-msgstr "Description:"
+msgstr "Beschreibung:"
 
 #: cred/templates/cred_edit.html:11
 msgid "Create Password"
-msgstr ""
+msgstr "Passwort erstellen"
 
 #: cred/templates/cred_edit.html:11
 msgid "Edit Password"
-msgstr ""
+msgstr "Passwort ändern"
 
 #: cred/templates/cred_edit.html:24 cred/templates/cred_export.html:18
 #: cred/templates/cred_tagedit.html:17 staff/templates/staff_groupedit.html:18
@@ -681,25 +683,25 @@ msgstr ""
 #: staff/templates/staff_keepassimport.html:30
 #: staff/templates/staff_useredit.html:18
 msgid "Submit"
-msgstr "Soumettre"
+msgstr "Senden"
 
 #: cred/templates/cred_list.html:28 cred/templates/cred_taglist.html:8
 msgid "Add New"
-msgstr "Ajouter"
+msgstr "Hinzufügen"
 
 #: cred/templates/cred_list.html:40
 msgid "Apply a Tag"
-msgstr ""
+msgstr "Mit einer Kennzeichnung versehen"
 
 #: cred/templates/cred_list.html:43
 msgid "Download Keepass"
-msgstr ""
+msgstr "KeePass herunterladen"
 
 #: cred/templates/cred_list.html:53 cred/templates/cred_list.html.py:55
 #: staff/templates/staff_changeadvice.html:19
 #: staff/templates/staff_import_overview.html:11
 msgid "Title"
-msgstr "Titre"
+msgstr "Titel"
 
 #: cred/templates/cred_list.html:60 cred/templates/cred_list.html.py:62
 #: cred/templates/credaudit_list.html:9 staff/templates/staff_audit.html:28
@@ -707,181 +709,181 @@ msgstr "Titre"
 #: staff/templates/staff_import_overview.html:12
 #: staff/templates/staff_userdetail.html:14
 msgid "User"
-msgstr "Utilisateur"
+msgstr "Benutzer"
 
 #: cred/templates/cred_list.html:92 cred/templates/cred_list.html.py:94
 #: staff/templates/staff_audit.html:53 staff/templates/staff_audit.html:55
 msgid "Prev"
-msgstr "Préc"
+msgstr "Zurück"
 
 #: cred/templates/cred_list.html:104 cred/templates/cred_list.html.py:106
 #: staff/templates/staff_audit.html:65 staff/templates/staff_audit.html:67
 msgid "Next"
-msgstr "Suiv"
+msgstr "Nächste"
 
 #: cred/templates/cred_list.html:114
 msgid "Matched Tags"
-msgstr "Tags correspondants"
+msgstr "Übereinstimmende Tags"
 
 #: cred/templates/cred_part_export.html:10
 msgid "Export to Keepass"
-msgstr ""
+msgstr "Nach KeePass exportieren"
 
 #: cred/templates/cred_part_export.html:13
 msgid ""
 "Please enter the password you would like the Keepass file to be encrypted "
 "with."
-msgstr ""
+msgstr "Bitte gebe das Kennwort an, mit dem die KeePass Datei verschlüsselt werden soll."
 
 #: cred/templates/cred_part_export.html:27
 msgid "Export"
-msgstr ""
+msgstr "Exportieren"
 
 #: cred/templates/cred_part_logomodal.html:14
 msgid "Icons"
-msgstr "Icones"
+msgstr "Icons"
 
 #: cred/templates/cred_part_logomodal.html:24
 msgid "Close"
-msgstr "Fermer"
+msgstr "Schließen"
 
 #: cred/templates/cred_part_newtagmodal.html:5
 msgid "Add New Tag"
-msgstr "Ajouter Tag"
+msgstr "Neuen Tag hinzufügen"
 
 #: cred/templates/cred_part_newtagmodal.html:9
 msgid "Tag Name:"
-msgstr "Tag:"
+msgstr "Tag Name:"
 
 #: cred/templates/cred_part_newtagmodal.html:12
 msgid "Create Another"
-msgstr "Créer un autre"
+msgstr "Weiteren erstellen"
 
 #: cred/templates/cred_part_passgenmodal.html:5
 msgid "Password Generator"
-msgstr "Générateur de mot de passe"
+msgstr "Passwort Generator"
 
 #: cred/templates/cred_part_passgenmodal.html:9
 msgid "Must Have"
-msgstr "doit contenir"
+msgstr "Muss beinhalten"
 
 #: cred/templates/cred_part_passgenmodal.html:9
 msgid "Can Have"
-msgstr "peut contenir"
+msgstr "Kann beinhalten"
 
 #: cred/templates/cred_part_passgenmodal.html:13
 msgid "Lowercase Alphabet"
-msgstr "minuscules"
+msgstr "Klein Buchstaben"
 
 #: cred/templates/cred_part_passgenmodal.html:18
 msgid "Uppercase Alphabet"
-msgstr "majuscules"
+msgstr "Groß Buchstaben"
 
 #: cred/templates/cred_part_passgenmodal.html:23
 msgid "Numbers"
-msgstr "chiffres"
+msgstr "Nummern"
 
 #: cred/templates/cred_part_passgenmodal.html:28
 msgid "Special"
-msgstr "caractères spéciaux"
+msgstr "Sonderzeichen"
 
 #: cred/templates/cred_part_passgenmodal.html:33
 msgid "Spaces"
-msgstr "espaces"
+msgstr "Leerzeichen"
 
 #: cred/templates/cred_part_passgenmodal.html:36
 msgid "Password Length"
-msgstr "Longueur du Mot de passe"
+msgstr "Passwortlänge"
 
 #: cred/templates/cred_part_passgenmodal.html:39
 msgid "Cancel"
-msgstr "Annuler"
+msgstr "Abbrechen"
 
 #: cred/templates/cred_part_passgenmodal.html:40
 msgid "Generate"
-msgstr "Générer "
+msgstr "Generieren"
 
 #: cred/templates/cred_search.html:9
 msgid "Type your Query"
-msgstr "Entrez votre requête"
+msgstr "Deine Suchanfrage"
 
 #: cred/templates/cred_search.html:10 ratticweb/templates/navbar.html:71
 #: ratticweb/templates/navbar.html.py:77
 msgid "Search"
-msgstr "Rechercher"
+msgstr "Suche"
 
 #: cred/templates/cred_tagdelete.html:7
 msgid "Deleting tag"
-msgstr "Supprimer tag"
+msgstr "Tag löschen"
 
 #: cred/templates/cred_taglist.html:9
 msgid "Count"
-msgstr "Compte"
+msgstr "Anzahl"
 
 #: cred/templates/cred_taglist.html:9
 #: staff/templates/staff_import_overview.html:10
 msgid "Actions"
-msgstr "Actions"
+msgstr "Aktion"
 
 #: cred/templates/cred_taglist.html:17
 msgid "Rename"
-msgstr "Renommer"
+msgstr "Umbennen"
 
 #: cred/templates/cred_tags.html:7
 msgid "All Tags"
-msgstr "Tous les tags"
+msgstr "Alle Tags"
 
 #: cred/templates/credaudit_list.html:3
 msgid "Audit Logs"
-msgstr "Logs d'audit"
+msgstr "Überprüfungsprotokoll"
 
 #: cred/templates/credaudit_list.html:7 staff/templates/staff_audit.html:23
 msgid "Action"
-msgstr "Action"
+msgstr "Aktion"
 
 #: cred/templates/credaudit_list.html:11 staff/templates/staff_audit.html:31
 msgid "Credential"
-msgstr "Identifiant"
+msgstr "Zugangsdaten"
 
 #: cred/templates/credaudit_list.html:13 staff/templates/staff_audit.html:33
 msgid "When"
-msgstr "Quand"
+msgstr "Wenn"
 
 #: cred/templates/credaudit_list.html:29
 msgid "More logs..."
-msgstr "Plus de logs..."
+msgstr "Mehr Logs anzeigen"
 
 #: ratticweb/templates/404.html:6
 msgid "Page not found"
-msgstr ""
+msgstr "Seite nicht gefunden"
 
 #: ratticweb/templates/404.html:7
 msgid ""
 "This is not the page you are looking for, contact your systems administrator"
 " if you believe you have recieved this in error."
-msgstr ""
+msgstr "Die angeforderte Seite konnte nicht gefunden werden. Solltest du diese Seite in Folge einer Fehlermeldung erhalten haben, kontaktiere bitte deinen System Administrator."
 
 #: ratticweb/templates/500.html:6
 msgid "Something went Splork!"
-msgstr ""
+msgstr "Da ist wohl was schief gelaufen!"
 
 #: ratticweb/templates/500.html:7
 msgid ""
 "Something went wrong and the server was unable to process this request. "
 "Check your servers error logs for more details."
-msgstr ""
+msgstr "Irgendetwas ist schief gelaufen und der Server konnte deine Anfrage nicht weiter verarbeiten. Bitte überprüfe die Error Logs des Servers für mehr Informationen."
 
 #: ratticweb/templates/500.html:8
 msgid "If you would like to report an issue with RatticDB please visit"
-msgstr ""
+msgstr "Wenn du ein Problem mit RatticDB melden möchtest, besuche bitte"
 
 #: ratticweb/templates/500.html:8
 msgid "Github Issues"
-msgstr ""
+msgstr "Github Probleme"
 
 #: ratticweb/templates/base.html:51
 msgid "Password management powered by"
-msgstr "Gestion de mots de passe alimenté par"
+msgstr "Passwort Management powered by"
 
 #: ratticweb/templates/base.html:51 ratticweb/templates/navbar.html:12
 msgid "RatticDB"
@@ -889,31 +891,31 @@ msgstr "RatticDB"
 
 #: ratticweb/templates/base.html:51
 msgid "built by"
-msgstr "construit par"
+msgstr "Erstellt von"
 
 #: ratticweb/templates/base.html:51
 msgid "and"
-msgstr "et"
+msgstr "und"
 
 #: ratticweb/templates/base.html:51
 msgid "Report an issue"
-msgstr "Soummettre un problème"
+msgstr "Problem melden"
 
 #: ratticweb/templates/base.html:51
 msgid "Contact Us"
-msgstr "Nous Contacter"
+msgstr "Kontakt"
 
 #: ratticweb/templates/home.html:9
 msgid "Your username and password didn't match. Please try again."
-msgstr "Votre nom d'utilisateur et mot de passe ne correspondent pas. Veuillez réessayer."
+msgstr "Benutzername und Passwort stimmen nicht überein. Bitte versuche es erneut."
 
 #: ratticweb/templates/home.html:13
 msgid "Welcome to Rattic"
-msgstr "Bienvenue sur Rattic"
+msgstr "Willkommen zu Rattic"
 
 #: ratticweb/templates/home.html:14
 msgid "RatticDB Logo"
-msgstr ""
+msgstr "RatticDB Logo"
 
 #: ratticweb/templates/home.html:15
 msgid "It does passwords."
@@ -922,40 +924,40 @@ msgstr "It does passwords."
 #: ratticweb/templates/navbar.html:16
 #: staff/templates/staff_groupdetail.html:22
 msgid "Passwords"
-msgstr "Mots de passe"
+msgstr "Passwörter"
 
 #: ratticweb/templates/navbar.html:20 ratticweb/templates/navbar.html.py:47
 msgid "Change Queue"
-msgstr "Liste de mots de passe à modifier"
+msgstr "Change Queue"
 
 #: ratticweb/templates/navbar.html:25 ratticweb/templates/navbar.html.py:51
 msgid "Staff Management"
-msgstr "Gestion du personnel"
+msgstr "Administration"
 
 #: ratticweb/templates/navbar.html:30 ratticweb/templates/navbar.html.py:64
 msgid "Help"
-msgstr "Aide"
+msgstr "Hilfe"
 
 #: ratticweb/templates/navbar.html:37
 msgid "Menu"
-msgstr ""
+msgstr "Menü"
 
 #: ratticweb/templates/navbar.html:44
 msgid "All Passwords"
-msgstr ""
+msgstr "Alle Passwörter"
 
 #: ratticweb/templates/navbar.html:55 ratticweb/templates/sidebar.html:9
 msgid "Logout"
-msgstr "Déconnexion"
+msgstr "Abmelden"
 
 #: ratticweb/templates/sidebar.html:6
 msgid "You"
-msgstr "Vous"
+msgstr "Du"
 
 #: ratticweb/templates/sidebar.html:7
 #, python-format
 msgid "Welcome %(username)s."
-msgstr ""
+msgstr "Willkommen %(username)s."
 
 #: ratticweb/templates/sidebar.html:8
 msgid "Profile"
@@ -963,59 +965,59 @@ msgstr "Profil"
 
 #: ratticweb/templates/sidebar.html:15
 msgid "Add Favourite Tags on the "
-msgstr "Ajouter vos tags favoris dans votre "
+msgstr "Favorisierte Tags auf der"
 
 #: ratticweb/templates/sidebar.html:16
 msgid "profile"
-msgstr "profil"
+msgstr "Profil"
 
 #: ratticweb/templates/sidebar.html:16
 msgid "page to see them here."
-msgstr "pour les faire apparaitre ici."
+msgstr "Seite hinzufügen, um sie hier zu sehen."
 
 #: ratticweb/templates/sidebar.html:22
 msgid "If you are a member of any groups, you will see them listed here. "
-msgstr ""
+msgstr "Wenn du Mitglied einer Gruppe bist, ist diese hier aufgelistet."
 
 #: ratticweb/templates/sidebar.html:31
 msgid "Forgotten password?"
-msgstr ""
+msgstr "Passwort vergessen?"
 
 #: ratticweb/templates/sidebar.html:36
 msgid "Google Sign-in"
-msgstr ""
+msgstr "Google Sign-in"
 
 #: staff/models.py:47
 msgid "Passwords do not match"
-msgstr "Les mots de passe ne sont pas identiques"
+msgstr "Passwörter stimmen nicht überein"
 
 #: staff/models.py:83
 msgid "Could not read keepass file, the password you gave may not be correct."
-msgstr "Impossible de lire le fichier KeePass, le mot de passe fourni est peut être incorrect."
+msgstr "Kann KeePass Datei nicht lesen. Möglicherweise stimmt das Passwort nicht."
 
 #: staff/models.py:88
 msgid "That file does not appear to be a valid KeePass file."
-msgstr ""
+msgstr "Dies scheint keine valide KeePass Datei zu sein."
 
 #: staff/templates/staff_audit.html:10
 #, python-format
 msgid "Audit Logs for password &apos;%(cred_title)s&apos;"
-msgstr ""
+msgstr "Audit Logs für Passwort &apos;%(cred_title)s&apos;"
 
 #: staff/templates/staff_audit.html:13
 #, python-format
 msgid "Audit Logs for user &apos;%(username)s&apos;"
-msgstr ""
+msgstr "Audit Logs für Benutzer &apos;%(username)s&apos;"
 
 #: staff/templates/staff_audit.html:16
 #, python-format
 msgid "Audit Logs going back %(item)s days ago"
-msgstr ""
+msgstr "Audit Logs gehen %(item)s Tage zurück"
 
 #: staff/templates/staff_changeadvice.html:6
 #, python-format
 msgid "Changes for user: %(username)s"
-msgstr ""
+msgstr "Änderungen für Benutzer: %(username)s"
 
 #: staff/templates/staff_changeadvice.html:7
 msgid ""
@@ -1025,94 +1027,94 @@ msgid ""
 "you add all these passwords to the change queue. To do this press the\n"
 "&quot;Add to Change Queue&quot; button, if you don't want to change some\n"
 "of the passwords, simply uncheck them first."
-msgstr "Vous être en train de désactiver un compte, ou supprimer des groupes\nd'un utilisateur. RatticDB a analysé les logs d'audit pour vous assister. Voici la liste\ndes mots de passe que cet utilisateur connaît et dont l'accès a été supprimé. \nIl est recommandé de les ajouter à la liste de mots de passe à modifier. Pour ce faire,\ncliquez sur le bouton \"ajouter à liste de mots de passe à modifier\". Si vous ne voulez\n pas ajouter certains mots de passe à la liste, veuillez les décocher."
+msgstr "Wir haben festgestellt, dass du einen Benutzeraccount deaktivierst oder eine Gruppe eines Benutzers entfernst. Um dir zu helfen, hat RatticDB die Überprüfungslogs analysiert, um zu prüfen, welche Passwörter dem Benutzer bekannt sind und keinen Zugriff mehr auf diese hat. Wir empfehlen, dass du alle Passwörter ändern lässt. Um dies zu tun bitte drücke den &quot;Zur Change Queue hinzufügen&quot; Knopf. Wenn du einige der Passwörter nicht ändern willst, dann entferne einfach die Markierung."
 
 #: staff/templates/staff_groupdetail.html:7
 msgid "Delete Group"
-msgstr ""
+msgstr "Gruppe löschen"
 
 #: staff/templates/staff_groupdetail.html:8
 msgid "Deleting this group will delete every password underneath it."
-msgstr "Supprimer ce groupe supprimera tous les mots de passe inclus."
+msgstr "Mit dem Löschen dieser Gruppe werden alle Passwörter in ihr ebenfalls gelöscht."
 
 #: staff/templates/staff_groupdetail.html:21
 #: staff/templates/staff_home.html:20
 msgid "Users"
-msgstr "Utilisateurs"
+msgstr "Benutzer"
 
 #: staff/templates/staff_groupdetail.html:26
 msgid "Delete forever"
-msgstr "Supprimer définitivement"
+msgstr "Für immer löschen"
 
 #: staff/templates/staff_groupedit.html:6
 msgid "Create Group"
-msgstr ""
+msgstr "Gruppe erstellen"
 
 #: staff/templates/staff_groupedit.html:6
 msgid "Edit Group"
-msgstr ""
+msgstr "Gruppe bearbeiten"
 
 #: staff/templates/staff_home.html:5
 msgid "Staff"
-msgstr "Administrateurs"
+msgstr "Staff"
 
 #: staff/templates/staff_home.html:8
 msgid "Staff Manage"
-msgstr "Gérer le Personnel"
+msgstr "Administrationsübersicht"
 
 #: staff/templates/staff_home.html:12
 msgid "Add User"
-msgstr "Ajouter Utilisateur"
+msgstr "Benutzer hinzufügen"
 
 #: staff/templates/staff_home.html:13
 msgid "Add Group"
-msgstr "Ajouter Groupe"
+msgstr "Gruppe hinzufügen"
 
 #: staff/templates/staff_home.html:15
 msgid "Import Keepass"
-msgstr "Importer depuis Keepass"
+msgstr "KeePass importieren"
 
 #: staff/templates/staff_home.html:16
 msgid "View Trash"
-msgstr "Voir le contenu de la corbeille"
+msgstr "Zeige Papierkorb"
 
 #: staff/templates/staff_home.html:17
 msgid "Audit One Week"
-msgstr "Auditer une semaine"
+msgstr "Audit in einer Woche"
 
 #: staff/templates/staff_home.html:24
 msgid "email"
-msgstr "adresse email"
+msgstr "E-Mail"
 
 #: staff/templates/staff_home.html:42
 msgid "Access Groups"
-msgstr "Accéder aux groupes"
+msgstr "Zugriffsgruppen"
 
 #: staff/templates/staff_import_overview.html:6
 msgid "Import Overview"
-msgstr ""
+msgstr "Übersicht über importierte Inhalte"
 
 #: staff/templates/staff_import_overview.html:19
 msgid "Import"
-msgstr ""
+msgstr "Importieren"
 
 #: staff/templates/staff_import_overview.html:20
 msgid "Skip"
-msgstr ""
+msgstr "Überspringen"
 
 #: staff/templates/staff_import_process.html:10
 msgid "Password Import"
-msgstr ""
+msgstr "Passwort importieren"
 
 #: staff/templates/staff_keepassimport.html:16
 msgid "Keepass Import"
-msgstr "Importer depuis Keepass"
+msgstr "KeePass importieren"
 
 #: staff/templates/staff_keepassimport.html:17
 msgid ""
 "We recommend that you import your keepass data into a\n"
 "seperate group, then adjust the group on each password as required."
-msgstr "Il est recommandé d'importer vos données KeePass dans un groupe \ndistinct, et de définir le groupe sur chaque mot de passe au besoin."
+msgstr "Wir empfehlen dir, dass du deine KeePass Daten in eine separate Gruppe importierst und dann die Passwörter, wie benötigt, an die Gruppen anpasst."
 
 #: staff/templates/staff_userdetail.html:8
 msgid ""
@@ -1120,20 +1122,20 @@ msgid ""
 "    Deleting this user will remove any associated auditlogs, maybe deactivate\n"
 "    their account instead?\n"
 "  "
-msgstr "\nSupprimer cet utilisateur effacera les logs d'audit associés. Peut être devriez vous\ndésactiver leur compte?"
+msgstr "\nDas Löschen dieses Benutzers wird alle verknüpften Audit Logs löschen. Vielleicht sollten\nwir diesen eher deaktivieren?"
 
 #: staff/templates/staff_userdetail.html:19
 msgid "Confirm Delete"
-msgstr "Confirmer la suppression"
+msgstr "Löschen bestätigen"
 
 #: staff/templates/staff_userdetail.html:23
 msgid "Disable Two Factor"
-msgstr ""
+msgstr "Zwei-Factor deaktivieren"
 
 #: staff/templates/staff_useredit.html:6
 msgid "Create User"
-msgstr ""
+msgstr "Benutzer erstellen"
 
 #: staff/templates/staff_useredit.html:6
 msgid "Edit User"
-msgstr ""
+msgstr "Benutzer bearbeiten"
