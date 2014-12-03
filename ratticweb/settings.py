@@ -342,14 +342,19 @@ if LDAP_ENABLED:
     AUTH_LDAP_SERVER_URI = config.get('ldap', 'uri')
     AUTH_LDAP_BIND_DN = confget('ldap', 'binddn', '')
     AUTH_LDAP_BIND_PASSWORD = confget('ldap', 'bindpw', '')
-    AUTH_LDAP_USER_FLAGS_BY_GROUP['is_staff'] = confget('ldap', 'staff', '')
+
+    if config.has_option('ldap', 'staff'):
+        AUTH_LDAP_USER_FLAGS_BY_GROUP['is_staff'] = config.get('ldap', 'staff')
 
     # Searching for things
     AUTH_LDAP_USER_SEARCH = LDAPSearch(config.get('ldap', 'userbase'), ldap.SCOPE_SUBTREE, config.get('ldap', 'userfilter'))
-    AUTH_LDAP_GROUP_SEARCH = LDAPSearch(config.get('ldap', 'groupbase'), ldap.SCOPE_SUBTREE, config.get('ldap', 'groupfilter'))
 
-    # Groups type
-    AUTH_LDAP_GROUP_TYPE = getattr(__import__('django_auth_ldap').config, config.get('ldap', 'grouptype'))()
+    # Groups lookup and mirroring
+    if config.has_option('ldap', 'groupfilter'):
+        AUTH_LDAP_GROUP_SEARCH = LDAPSearch(config.get('ldap', 'groupbase'), ldap.SCOPE_SUBTREE, config.get('ldap', 'groupfilter'))
+        AUTH_LDAP_GROUP_TYPE = getattr(__import__('django_auth_ldap').config, config.get('ldap', 'grouptype'))()
+    else:
+        AUTH_LDAP_MIRROR_GROUPS = False
 
     # Booleans
     AUTH_LDAP_ALLOW_PASSWORD_CHANGE = confgetbool('ldap', 'pwchange', False)
