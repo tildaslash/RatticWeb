@@ -7,6 +7,10 @@ from django.db import models
 
 class Migration(SchemaMigration):
 
+    depends_on = (
+        ("cred", "0006_auto__del_category__add_tag__chg_field_cred_category"),
+    )
+
     def forwards(self, orm):
         # Adding M2M table for field favourite_tags on 'UserProfile'
         db.create_table('account_userprofile_favourite_tags', (
