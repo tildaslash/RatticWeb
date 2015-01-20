@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# bato <francoisconil@gmail.com>, 2014
+# Daniel Hall <daniel@danielhall.me>, 2014
+# bato <francoisconil@gmail.com>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: RatticDB\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-28 20:57+1100\n"
-"PO-Revision-Date: 2014-11-18 06:18+0000\n"
+"POT-Creation-Date: 2014-11-18 23:50+1100\n"
+"PO-Revision-Date: 2015-01-13 10:57+0000\n"
 "Last-Translator: bato <francoisconil@gmail.com>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/ratticdb/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -103,7 +104,7 @@ msgstr "Plus d'infos"
 
 #: account/templates/account_newapikey.html:4
 #: account/templates/account_newapikey.html:7
-#: account/templates/account_profile.html:37
+#: account/templates/account_profile.html:47
 #: account/templates/account_viewapikey.html:4
 #: account/templates/account_viewapikey.html:7
 msgid "New API Key"
@@ -141,7 +142,7 @@ msgstr "Activé"
 #: account/templates/account_profile.html:15
 #: account/templates/account_tfa_disable.html:12
 msgid "Disable"
-msgstr ""
+msgstr "Désactiver"
 
 #: account/templates/account_profile.html:16
 msgid "Backup Codes Left"
@@ -153,7 +154,7 @@ msgstr ""
 
 #: account/templates/account_profile.html:21
 msgid "Disabled"
-msgstr ""
+msgstr "Désactivé"
 
 #: account/templates/account_profile.html:21
 msgid "Enable now"
@@ -173,45 +174,49 @@ msgstr "Groupes"
 msgid "Save Changes"
 msgstr "Enregistrer les modifications"
 
-#: account/templates/account_profile.html:31
+#: account/templates/account_profile.html:35
 msgid "Change password"
 msgstr "Modifier mot de passe"
 
-#: account/templates/account_profile.html:33
+#: account/templates/account_profile.html:37
+msgid "Set Password"
+msgstr ""
+
+#: account/templates/account_profile.html:43
 msgid "API Keys"
 msgstr "Clés API"
 
-#: account/templates/account_profile.html:41
+#: account/templates/account_profile.html:51
 msgid "Key Name"
 msgstr "Nom de la clé"
 
-#: account/templates/account_profile.html:42
+#: account/templates/account_profile.html:52
 msgid "Date generated"
 msgstr "Date de création"
 
-#: account/templates/account_profile.html:57
+#: account/templates/account_profile.html:67
 msgid "No API Keys available yet"
 msgstr "Pas de clés API disponibles pour l'instant"
 
-#: account/templates/account_profile.html:61
+#: account/templates/account_profile.html:71
 msgid "Current Sessions"
 msgstr "Sessions en cours"
 
-#: account/templates/account_profile.html:66
+#: account/templates/account_profile.html:76
 msgid "Device"
 msgstr "Appareil"
 
-#: account/templates/account_profile.html:67
+#: account/templates/account_profile.html:77
 msgid "IP Address"
 msgstr "Adresse IP"
 
-#: account/templates/account_profile.html:68
+#: account/templates/account_profile.html:78
 msgid "Last Activity"
 msgstr ""
 
-#: account/templates/account_profile.html:79
+#: account/templates/account_profile.html:89
 msgid "(This Session)"
-msgstr ""
+msgstr "(Cette session)"
 
 #: account/templates/account_tfa_backup_tokens.html:5
 msgid "Backup Tokens"
@@ -236,7 +241,7 @@ msgstr ""
 
 #: account/templates/account_tfa_backup_tokens.html:25
 msgid "Back to Account Profile"
-msgstr ""
+msgstr "Retour au Profil"
 
 #: account/templates/account_tfa_backup_tokens.html:26
 msgid "Generate Tokens"
@@ -448,7 +453,7 @@ msgstr "\nVotre identifiant de connexion, pour rappel:  %(user.username)s\n\nMer
 msgid ""
 "File size must be under %(maximumsize)s. Current file size is "
 "%(currentsize)s."
-msgstr ""
+msgstr "La taille du fichier doit être inférieure à %(maximumsize)s. Votre fichier fait actuellement %(currentsize)s."
 
 #: cred/forms.py:34
 msgid "Please enter a valid HTTP/HTTPS URL"
@@ -476,7 +481,7 @@ msgstr "Seules les coordonnées ont été consultées"
 
 #: cred/models.py:185
 msgid "Exported"
-msgstr ""
+msgstr "Exporté"
 
 #: cred/models.py:186
 msgid "Deleted"
@@ -640,11 +645,11 @@ msgstr "Mot de Passe"
 
 #: cred/templates/cred_detail.html:64
 msgid "Attachment"
-msgstr ""
+msgstr "Pièce Jointe"
 
 #: cred/templates/cred_detail.html:64
 msgid "Download"
-msgstr ""
+msgstr "Télécharger"
 
 #: cred/templates/cred_detail.html:67 cred/templates/cred_list.html:67
 #: cred/templates/cred_list.html.py:69
@@ -806,7 +811,7 @@ msgid "Type your Query"
 msgstr "Entrez votre requête"
 
 #: cred/templates/cred_search.html:10 ratticweb/templates/navbar.html:71
-#: ratticweb/templates/navbar.html.py:77
+#: ratticweb/templates/navbar.html.py:97
 msgid "Search"
 msgstr "Rechercher"
 
@@ -850,6 +855,18 @@ msgstr "Quand"
 #: cred/templates/credaudit_list.html:29
 msgid "More logs..."
 msgstr "Plus de logs..."
+
+#: ratticweb/settings.py:56
+msgid "English"
+msgstr ""
+
+#: ratticweb/settings.py:57
+msgid "French"
+msgstr ""
+
+#: ratticweb/settings.py:58
+msgid "German"
+msgstr ""
 
 #: ratticweb/templates/404.html:6
 msgid "Page not found"
