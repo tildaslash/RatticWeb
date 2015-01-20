@@ -1,0 +1,32 @@
+---
+- name: Install and configure a RatticDB server
+  hosts: rattic
+  vars:
+    # RatticDB Settings
+    rattic_release: "v1.2.2"
+    rattic_urlroot: "/"
+
+    # Database Settings
+    db_platform: mysql
+    db_name: rattic
+    db_user: rattic
+    db_pass: allthepass
+
+  roles:
+    - common
+
+    - role: mysql_db
+      database: "{{ db_name }}"
+      user: "{{ db_user }}"
+      password: "{{ db_pass }}"
+      when: db_platform == "mysql"
+
+    - role: ratticdb
+      release: "{{ rattic_release }}"
+      urlroot: "{{ rattic_urlroot }}"
+      db_platform: "{{ db_platform }}"
+      db_name: "{{ db_name }}"
+      db_user: "{{ db_user }}"
+      db_pass: "{{ db_pass }}"
+      secret: "erl;oi3q4jt;34jf3qof"
+

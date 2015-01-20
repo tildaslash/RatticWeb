@@ -1,0 +1,40 @@
+---
+- name: Create directory for RatticDB
+  file:
+    dest: /opt/apps
+    state: directory
+
+- name: Clone code repo from GitHub
+  git:
+    repo: "{{ ratticweb_git_repo }}"
+    dest: /opt/apps/RatticWeb
+    force: no
+    version: "{{ release }}"
+    accept_hostkey: yes
+  when: release != 'vagrant'
+
+- name: Link code to Vagrant mounted directory
+  file:
+    path: /opt/apps/RatticWeb
+    src: /vagrant
+    state: link
+  when: release == 'vagrant'
+
+- name: Clone wiki repo from GitHub
+  git:
+    repo: "{{ ratticweb_wiki_git_repo }}"
+    dest: /opt/apps/RatticWeb.wiki
+    force: no
+    version: "{{ release }}"
+    accept_hostkey: yes
+  when: release != 'vagrant'
+
+- name: Clone wiki repo from GitHub
+  git:
+    repo: "{{ ratticweb_wiki_git_repo }}"
+    dest: /opt/apps/RatticWeb.wiki
+    force: no
+    version: master
+    accept_hostkey: yes
+  when: release == 'vagrant'
+

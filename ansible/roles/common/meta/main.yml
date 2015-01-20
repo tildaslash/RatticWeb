@@ -1,0 +1,5 @@
+---
+dependencies:
+  - centos_update_ca_certs
+  - disable_iptables
+  - epel

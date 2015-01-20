@@ -1,0 +1,3 @@
+dependencies:
+ - configure_selinux
+ - apache

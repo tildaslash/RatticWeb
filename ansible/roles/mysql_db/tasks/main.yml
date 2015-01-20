@@ -1,0 +1,14 @@
+---
+- name: Install the tools Ansible needs to manage mysql
+  yum: name=MySQL-python state=installed
+
+- name: Create the MySQL database
+  mysql_db: db={{ database }} encoding=utf8 state=present
+
+- name: Create a user with access to the DB
+  mysql_user:
+    name: "{{ user }}"
+    password: "{{ password }}"
+    priv: "{{ database }}.*:ALL"
+    state: present
+

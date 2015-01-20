@@ -1,0 +1,6 @@
+---
+- name: Install SELinux Management Tools
+  yum: name=libselinux-python state=installed
+
+- name: Disable SELinux (TODO don't disable, configure it properly instead)
+  selinux: state=disabled

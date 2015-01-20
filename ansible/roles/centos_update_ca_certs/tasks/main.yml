@@ -1,0 +1,7 @@
+---
+# This updates to the latest ca-certifictes package so that we can connect
+# to servers with newer SSL certificates, such as the one hosting EPEL.
+
+- name: Update CA Certificate Bundle
+  yum: name=ca-certificates state=latest
+

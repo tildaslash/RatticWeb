@@ -1,0 +1,66 @@
+---
+- name: Install dependencies
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    # Apps needed for the install
+    - git
+
+    # Apache modules
+    - mod_wsgi
+
+    # RatticDB Dependencies
+    - python-virtualenv
+    - openldap-devel
+    - gcc
+    - python-devel
+    - libxml2-devel
+    - libxslt-devel
+
+# Checkout the code
+- include: code.yml
+
+# Setup a database
+- include: mysql.yml
+  when: db_platform == "mysql"
+
+- name: Configure RatticDB
+  template:
+    src: local.cfg.j2
+    dest: /etc/ratticweb.cfg
+    owner: root
+    group: root
+    mode: 0640
+
+- name: Install pip modules
+  pip:
+    requirements: "{{ rattic_pip_requirements }}"
+    virtualenv: /opt/apps/RatticWeb.venv
+  register: pip
+
+- name: Generate static files
+  django_manage:
+    command: collectstatic
+    virtualenv: /opt/apps/RatticWeb.venv
+    app_path: /opt/apps/RatticWeb
+
+- name: Create Initial DB
+  django_manage:
+    command: syncdb
+    virtualenv: /opt/apps/RatticWeb.venv
+    app_path: /opt/apps/RatticWeb
+
+- name: Run any DB migrations
+  django_manage:
+    command: migrate
+    virtualenv: /opt/apps/RatticWeb.venv
+    app_path: /opt/apps/RatticWeb
+
+- name: Configure Apache
+  template:
+    src: httpd.conf.j2
+    dest: /etc/httpd/conf.d/rattic.conf
+  notify:
+    - reload apache
+

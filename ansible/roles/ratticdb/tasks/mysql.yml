@@ -1,0 +1,8 @@
+---
+- name: Find the right requirements file
+  set_fact:
+    rattic_pip_requirements: /opt/apps/RatticWeb/requirements-mysql.txt
+
+- name: Install the MySQL Development libraries
+  yum: name=mysql-devel state=installed
+
