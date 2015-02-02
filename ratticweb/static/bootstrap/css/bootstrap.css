@@ -109,6 +109,7 @@ select,
 textarea {
   margin: 0;
   font-size: 100%;
+  font-family: monospace;
   vertical-align: middle;
 }
 button,
