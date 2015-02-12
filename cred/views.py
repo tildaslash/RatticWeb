@@ -251,6 +251,26 @@ def downloadsshkey(request, cred_id):
 
 
 @login_required
+def ssh_key_fingerprint(request, cred_id):
+    # Get the credential
+    cred = get_object_or_404(Cred, pk=cred_id)
+
+    # Check user has perms
+    if not cred.is_accessible_by(request.user):
+        raise Http404
+
+    # Make sure there is an ssh_key
+    if cred.ssh_key is None:
+        raise Http404
+
+    fingerprint = cred.ssh_key_fingerprint()
+    response = HttpResponse()
+    response.write(fingerprint)
+    response['Content-Length'] = response.tell()
+    return response
+
+
+@login_required
 def add(request):
     if request.method == 'POST':
         form = CredForm(request.user, request.POST, request.FILES)

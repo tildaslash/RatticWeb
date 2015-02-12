@@ -13,6 +13,7 @@ urlpatterns = patterns('cred.views',
 
     # Single cred views
     url(r'^detail/(?P<cred_id>\d+)/$', 'detail'),
+    url(r'^detail/(?P<cred_id>\d+)/fingerprint/$', 'ssh_key_fingerprint'),
     url(r'^detail/(?P<cred_id>\d+)/download/$', 'downloadattachment'),
     url(r'^detail/(?P<cred_id>\d+)/ssh_key/$', 'downloadsshkey'),
     url(r'^edit/(?P<cred_id>\d+)/$', 'edit'),

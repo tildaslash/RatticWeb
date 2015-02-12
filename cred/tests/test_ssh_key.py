@@ -46,6 +46,14 @@ class CredSSHKeyTest(TestCase):
         with open(os.path.join(ssh_keys, "1.pem"), 'r') as fp:
             self.assertEqual(fp.read(), cred.ssh_key.read())
 
+    def test_cred_fingerprint_url(self):
+        with open(os.path.join(ssh_keys, "1.pem")) as fle:
+            cred = Cred.objects.create(ssh_key=File(fle), group=self.data.cred.group)
+        cred.save()
+        resp = self.data.norm.get(reverse('cred.views.ssh_key_fingerprint', args=(cred.id, )))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.content, open(os.path.join(ssh_keys, "1.fingerprint")).read().strip())
+
     def test_cred_fingerprint(self):
         group = Group.objects.create(name="group")
         with open(os.path.join(ssh_keys, "1.pem")) as fle:
