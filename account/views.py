@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.core.urlresolvers import reverse
 from account.models import ApiKey, ApiKeyForm
 from models import UserProfileForm, LDAPPassChangeForm
@@ -8,12 +8,14 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.contrib.auth.decorators import login_required
 from django.template.response import TemplateResponse
 from django.utils.timezone import now
+from django.contrib.auth import login
 from django.contrib.auth.views import password_change
 from django.contrib.auth.forms import SetPasswordForm
 
 from user_sessions.views import SessionDeleteView
 from two_factor.utils import default_device
 from two_factor.views import DisableView, BackupTokensView, SetupView, LoginView
+import uuid
 
 
 @login_required
@@ -149,3 +151,32 @@ class RatticTFASetupView(SetupView):
 
 class RatticTFALoginView(LoginView):
     template_name = 'account_tfa_login.html'
+
+
+class RatticTFAGenerateApiKey(LoginView):
+    def get(self, request, *args, **kwargs):
+        res = HttpResponse()
+        res.set_cookie("csrftoken", request.META['CSRF_COOKIE'])
+        res.status_code=405
+        return res
+
+    def render(self, form=None, **kwargs):
+        if self.steps.current == 'token':
+            device = self.get_device()
+            device.generate_challenge()
+            res = HttpResponse(device.persistent_id)
+            res.status_code = 400
+            return res
+
+    def done(self, form_list, **kwargs):
+        login(self.request, self.get_user())
+
+        newkey = ApiKey(user=self.request.user, active=True)
+        form = ApiKeyForm({"name": uuid.uuid1()}, instance=newkey)
+        if form.is_valid():
+            form.save()
+
+        res = HttpResponse(newkey.key)
+        res.status_code = 200
+        return res
+
