@@ -250,14 +250,9 @@ def downloadsshkey(request, cred_id):
     return downloadattachment(request, cred_id, typ="ssh_key")
 
 
-@login_required
 def ssh_key_fingerprint(request, cred_id):
     # Get the credential
     cred = get_object_or_404(Cred, pk=cred_id)
-
-    # Check user has perms
-    if not cred.is_accessible_by(request.user):
-        raise Http404
 
     # Make sure there is an ssh_key
     if cred.ssh_key is None:
