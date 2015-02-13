@@ -1,11 +1,15 @@
-from tastypie import fields
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.core.files.base import File
+from django.http import HttpResponse
+
+from tastypie import fields, http
 from tastypie.authentication import SessionAuthentication, MultiAuthentication
-from account.authentication import MultiApiKeyAuthentication
 from tastypie.validation import FormValidation
 from tastypie.resources import ModelResource
 from tastypie.authorization import Authorization
 from tastypie.exceptions import Unauthorized
 
+from account.authentication import MultiApiKeyAuthentication
 from cred.models import Cred, Tag, CredAudit
 from cred.forms import TagForm
 
@@ -16,6 +20,10 @@ class CredAuthorization(Authorization):
         return object_list.filter(is_deleted=False, latest=None)
 
     def read_detail(self, object_list, bundle):
+        # Check user has perms
+        if not bundle.obj.is_owned_by(bundle.request.user):
+            return False
+
         # This audit should go somewhere else, is there a detail list function we can override?
         CredAudit(audittype=CredAudit.CREDPASSVIEW, cred=bundle.obj, user=bundle.request.user).save()
         return True
@@ -31,7 +39,12 @@ class CredAuthorization(Authorization):
         raise Unauthorized("Not yet implemented.")
 
     def update_detail(self, object_list, bundle):
-        raise Unauthorized("Not yet implemented.")
+        # Check user has perms
+        if not bundle.obj.is_owned_by(bundle.request.user):
+            return False
+
+        CredAudit(audittype=CredAudit.CREDCHANGE, cred=bundle.obj, user=bundle.request.user).save()
+        return True
 
     def delete_list(self, object_list, bundle):
         # Sorry user, no deletes for you!
@@ -82,20 +95,50 @@ class CredResource(ModelResource):
         # Add a value indicating if something is on the change queue
         bundle.data['on_changeq'] = bundle.obj.on_changeq()
 
-        # The attachment field is irrelevant, hide it
-        del bundle.data['attachment']
-
         # Unless you are viewing the details for a cred, hide the password
         if self.get_resource_uri(bundle) != bundle.request.path:
             del bundle.data['password']
 
+        # Expand the ssh key
+        if bundle.obj.ssh_key:
+            bundle.data['ssh_key'] = bundle.obj.ssh_key.read()
+        else:
+            del bundle.data['ssh_key']
+
         return bundle
+
+    def post_detail(self, request, **kwargs):
+        if 'ssh_key' not in request.FILES:
+            res = HttpResponse("Please upload an ssh_key file")
+            res.status_code = 500
+            return res
+
+        basic_bundle = self.build_bundle(request=request)
+
+        try:
+            obj = self.cached_obj_get(bundle=basic_bundle, **self.remove_api_resource_names(kwargs))
+        except ObjectDoesNotExist:
+            return http.HttpNotFound()
+        except MultipleObjectsReturned:
+            return http.HttpMultipleChoices("More than one resource is found at this URI.")
+
+        ssh_key = request.FILES['ssh_key']
+        obj.ssh_key = File(ssh_key)
+        obj.save()
+
+        if not self._meta.always_return_data:
+            return http.HttpAccepted()
+        else:
+            bundle = self.build_bundle(obj=obj, request=request)
+            bundle = self.full_dehydrate(bundle)
+            bundle = self.alter_detail_data_to_serialize(request, bundle)
+            return self.create_response(request, bundle, response_class=http.HttpAccepted)
 
     class Meta:
         queryset = Cred.objects.filter(is_deleted=False, latest=None)
         always_return_data = True
         resource_name = 'cred'
-        excludes = ['username', 'is_deleted']
+        excludes = ['username', 'is_deleted', 'attachment']
         authentication = MultiAuthentication(SessionAuthentication(), MultiApiKeyAuthentication())
         authorization = CredAuthorization()
         filtering = {
