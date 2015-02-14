@@ -2,6 +2,8 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.forms import ModelForm, SelectMultiple, Select, PasswordInput
 
+import paramiko
+from ssh_key import SSHKey
 from models import Cred, Tag, Group
 from widgets import CredAttachmentInput, CredIconChooser
 
@@ -43,6 +45,16 @@ class CredForm(ModelForm):
 
         # Call save upstream to save the object
         super(CredForm, self).save(*args, **kwargs)
+
+    def clean_ssh_key(self):
+        if self.cleaned_data.get("ssh_key") is not None:
+            got = self.cleaned_data['ssh_key'].read()
+            self.cleaned_data['ssh_key'].seek(0)
+            try:
+                SSHKey(got, self.cleaned_data['password']).key_obj
+            except paramiko.ssh_exception.SSHException as error:
+                raise forms.ValidationError(error)
+        return self.cleaned_data['ssh_key']
 
     class Meta:
         model = Cred

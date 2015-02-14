@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
-from ratticweb.tests.helper import TestData
+from ratticweb.tests.helper import TestData, a_temp_file
 from cred.models import Cred
 
 import json
@@ -44,3 +44,11 @@ class ApiTest(TestCase):
         data = json.loads(res.content)
         with open(os.path.join(ssh_keys, "1.pem")) as fle:
             self.assertEqual(data['ssh_key'], fle.read())
+
+    def test_it_complains_if_given_something_that_isnt_an_ssh_key(self):
+        with a_temp_file() as filename:
+            with open(filename, 'w') as fle:
+                fle.write("blah")
+            res = self.data.norm.post(self.detail_url, {"ssh_key": open(filename)})
+        self.assertEqual(res.status_code, 500)
+        self.assertEqual(res.content, "not a valid RSA private key file")

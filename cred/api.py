@@ -12,6 +12,9 @@ from tastypie.exceptions import Unauthorized
 from account.authentication import MultiApiKeyAuthentication
 from cred.models import Cred, Tag, CredAudit
 from cred.forms import TagForm
+from cred.ssh_key import SSHKey
+
+import paramiko
 
 
 class CredAuthorization(Authorization):
@@ -123,6 +126,15 @@ class CredResource(ModelResource):
             return http.HttpMultipleChoices("More than one resource is found at this URI.")
 
         ssh_key = request.FILES['ssh_key']
+        got = ssh_key.read()
+        ssh_key.seek(0)
+        try:
+            SSHKey(got, obj.password).key_obj
+        except paramiko.ssh_exception.SSHException as error:
+            res = HttpResponse(error)
+            res.status_code = 500
+            return res
+
         obj.ssh_key = File(ssh_key)
         obj.save()
 
