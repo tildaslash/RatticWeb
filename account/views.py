@@ -17,11 +17,7 @@ from user_sessions.views import SessionDeleteView
 from two_factor.utils import default_device
 from two_factor.views import DisableView, BackupTokensView, SetupView, LoginView
 from datetime import timedelta
-import logging
 import uuid
-
-
-log = logging.getLogger("rattic.account.views")
 
 
 @login_required
@@ -176,12 +172,7 @@ class RatticTFAGenerateApiKey(LoginView):
 
     def done(self, form_list, **kwargs):
         login(self.request, self.get_user())
-
-        try:
-            for key in ApiKey.expired(user=self.request.user).all():
-                key.delete()
-        except Exception as error:
-            log.error("Failed to delete expired key: %s", error)
+        ApiKey.delete_expired(user=self.request.user)
 
         newkey = ApiKey(user=self.request.user, active=True, expires=timezone.now() + timedelta(minutes=5))
         form = ApiKeyForm({"name": uuid.uuid1()}, instance=newkey)

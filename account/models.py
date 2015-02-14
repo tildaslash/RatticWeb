@@ -94,8 +94,13 @@ class ApiKey(models.Model):
     expires = models.DateTimeField(default=now)
 
     @classmethod
-    def expired(self, user):
+    def expired(kls, user):
         return ApiKey.objects.filter(user=user, expires__gt=F("created")).filter(expires__lt=timezone.now())
+
+    @classmethod
+    def delete_expired(kls, user):
+        for gone in kls.expired(user):
+            gone.delete()
 
     def __unicode__(self):
         return u"%s for %s" % (self.key, self.user)
