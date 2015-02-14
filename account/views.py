@@ -34,6 +34,9 @@ def rattic_change_password(request, *args, **kwargs):
 
 @login_required
 def profile(request):
+    # Delete our expired keys
+    ApiKey.delete_expired(user=request.user)
+
     # Get a list of the users API Keys
     keys = ApiKey.objects.filter(user=request.user)
     try:
