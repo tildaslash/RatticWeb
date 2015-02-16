@@ -11,6 +11,8 @@ from ratticweb.util import DictDiffer, field_file_compare
 from fields import SizedFileField
 from storage import CredAttachmentStorage
 
+from cred.validators import URIValidator
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=64, unique=True)
@@ -73,7 +75,7 @@ class Cred(models.Model):
 
     # User changable fields
     title = models.CharField(max_length=64, db_index=True)
-    url = models.URLField(blank=True, null=True, db_index=True)
+    url = models.CharField(blank=True, null=True, db_index=True, validators=[URIValidator()], max_length=1024)
     username = models.CharField(max_length=250, blank=True, null=True, db_index=True)
     password = models.CharField(max_length=250, blank=True, null=True)
     descriptionmarkdown = models.BooleanField(default=False, verbose_name=_('Markdown Description'))

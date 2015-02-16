@@ -8,6 +8,7 @@ def base_template_reqs(request):
         'pageurl': request.path,
         'LDAP_ENABLED': settings.LDAP_ENABLED,
         'GOAUTH2_ENABLED': settings.GOAUTH2_ENABLED,
+        'USE_LDAP_GROUPS': settings.USE_LDAP_GROUPS,
         'EXPORT_ENABLED': not settings.RATTIC_DISABLE_EXPORT,
         'TEMPLATE_DEBUG': settings.TEMPLATE_DEBUG,
         'ALLOWPWCHANGE': not (settings.LDAP_ENABLED

@@ -14,7 +14,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="rattic_url_root" content="{% url_root %}" />
-  {% if user.is_staff and not LDAP_ENABLED %}
+  {% if user.is_staff and USE_LDAP_GROUPS %}
     <meta name="rattic_user_staff" content="true" />
   {% else %}
     <meta name="rattic_user_staff" content="false" />

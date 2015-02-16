@@ -12,7 +12,6 @@
 </div>
 {% endif %}
 <h1>{% trans "User" %}: {{ viewuser.username }}</h1>
-{% if not LDAP_ENABLED %}
     <div class="btn-group">
     {% if delete %}
         <form action="{% url "staff.views.userdelete" viewuser.id %}" method="post">{% csrf_token %}

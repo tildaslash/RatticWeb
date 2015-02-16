@@ -8,7 +8,7 @@
 <div class="alert alert-error">{% blocktrans %}Deleting this group will delete every password underneath it.{% endblocktrans %}</div>
 {% else %}
 <h1>{% trans "Group" %} {{ group.name }}</h1>
-{% if not LDAP_ENABLED %}
+{% if not USE_LDAP_GROUPS %}
 <div class="btn-group">
     <a class="btn" href="{% url "staff.views.groupedit" group.id %}">{% trans "Edit" %}</a>
     <a class="btn btn-danger" href="{% url "staff.views.groupdelete" group.id %}">{% trans "Delete" %}</a> 

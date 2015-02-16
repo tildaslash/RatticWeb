@@ -19,7 +19,7 @@ class RatticGroupAuthorization(Authorization):
         return True
 
     def create_list(self, object_list, bundle):
-        if settings.LDAP_ENABLED:
+        if settings.USE_LDAP_GROUPS:
             raise Unauthorized("Please create groups in your LDAP server")
 
         if bundle.request.user.is_staff:
