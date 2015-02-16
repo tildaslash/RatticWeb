@@ -42,4 +42,3 @@ if not settings.LDAP_ENABLED:
         url(r'^useradd/$', NewUser.as_view(), name="user_add"),
 
     )
-
