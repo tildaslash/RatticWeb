@@ -10,7 +10,6 @@ from django.conf import settings
 from ratticweb.util import DictDiffer, field_file_compare
 from fields import SizedFileField
 from storage import CredAttachmentStorage
-from django_extensions.db.fields.encrypted import EncryptedCharField
 
 from cred.validators import URIValidator
 
@@ -78,7 +77,7 @@ class Cred(models.Model):
     title = models.CharField(max_length=64, db_index=True)
     url = models.CharField(blank=True, null=True, db_index=True, validators=[URIValidator()], max_length=1024)
     username = models.CharField(max_length=250, blank=True, null=True, db_index=True)
-    password = EncryptedCharField(max_length=512, blank=True, null=True)
+    password = models.CharField(max_length=250, blank=True, null=True)
     descriptionmarkdown = models.BooleanField(default=False, verbose_name=_('Markdown Description'))
     description = models.TextField(blank=True, null=True)
     group = models.ForeignKey(Group)
