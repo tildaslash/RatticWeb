@@ -328,9 +328,11 @@ CELERY_TIMEZONE = TIME_ZONE
 
 # [ldap]
 LDAP_ENABLED = 'ldap' in config.sections()
-USE_LDAP_GROUPS = confgetbool('ldap', 'useldapgroups', False)
 
 if LDAP_ENABLED:
+    # Are we using LDAP groups or local groups? Default to using LDAP groups
+    USE_LDAP_GROUPS = confgetbool('ldap', 'useldapgroups', True)
+
     # Below settings are common to both using local and LDAP groups
     LOGGING['loggers']['django_auth_ldap']['level'] = confget('ldap', 'loglevel', 'WARNING')
     AUTH_LDAP_SERVER_URI = config.get('ldap', 'uri')
@@ -369,6 +371,9 @@ if LDAP_ENABLED:
             'account.authentication.ActiveDirectoryBackend',
             'django.contrib.auth.backends.ModelBackend',
         )
+else:
+    # if there is no LDAP section, we aren't using LDAP groups
+    USE_LDAP_GROUPS = False
 
 # [goauth2]
 GOAUTH2_ENABLED = 'goauth2' in config.sections()

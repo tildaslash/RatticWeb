@@ -25,7 +25,7 @@ urlpatterns = patterns('staff.views',
 )
 
 # URLs we remove if using LDAP groups
-if not settings.USE_LDAP_GROUPS:
+if settings.LDAP_ENABLED and not settings.USE_LDAP_GROUPS:
     urlpatterns += patterns('staff.views',
         # Group Management
         url(r'^groupadd/$', 'groupadd'),
