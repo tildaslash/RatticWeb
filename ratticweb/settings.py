@@ -331,7 +331,7 @@ LDAP_ENABLED = 'ldap' in config.sections()
 USE_LDAP_GROUPS = confgetbool('ldap', 'useldapgroups', False)
 
 if LDAP_ENABLED:
-    #Below settings are common to both using local and LDAP groups
+    # Below settings are common to both using local and LDAP groups
     LOGGING['loggers']['django_auth_ldap']['level'] = confget('ldap', 'loglevel', 'WARNING')
     AUTH_LDAP_SERVER_URI = config.get('ldap', 'uri')
 
@@ -346,14 +346,14 @@ if LDAP_ENABLED:
         ldap.OPT_REFERRALS: confgetbool('ldap', 'referrals', False),
     }
 
-    #Settings that differ between using local groups and LDAP groups
+    # Settings that differ between using local groups and LDAP groups
     if USE_LDAP_GROUPS:
-        #LDAP Backend
+        # LDAP Backend
         AUTHENTICATION_BACKENDS = (
             'django_auth_ldap.backend.LDAPBackend',
             'django.contrib.auth.backends.ModelBackend',
         )
-        #Settings needed when using LDAP groups
+        # Settings needed when using LDAP groups
         AUTH_LDAP_BIND_DN = confget('ldap', 'binddn', '')
         AUTH_LDAP_BIND_PASSWORD = confget('ldap', 'bindpw', '')
         AUTH_LDAP_USER_FLAGS_BY_GROUP['is_staff'] = confget('ldap', 'staff', '')
@@ -364,7 +364,7 @@ if LDAP_ENABLED:
         # Groups type
         AUTH_LDAP_GROUP_TYPE = getattr(__import__('django_auth_ldap').config, config.get('ldap', 'grouptype'))()
     else:
-        #We must use different auth backend when using local groups
+        # We must use different auth backend when using local groups
         AUTHENTICATION_BACKENDS = (
             'account.authentication.ActiveDirectoryBackend',
             'django.contrib.auth.backends.ModelBackend',
