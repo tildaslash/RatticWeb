@@ -11,8 +11,6 @@ from ratticweb.util import DictDiffer, field_file_compare
 from fields import SizedFileField
 from storage import CredAttachmentStorage
 
-from cred.validators import URIValidator
-
 
 class Tag(models.Model):
     name = models.CharField(max_length=64, unique=True)
