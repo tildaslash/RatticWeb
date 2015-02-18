@@ -242,7 +242,6 @@ CRED_ICON_CLEAR = 'rattic/img/clear.gif'
 CRED_ICON_DEFAULT = 'Key.png'
 
 # django-auth-ldap
-AUTH_LDAP_USER_ATTR_MAP = {"email": "mail", "first_name": "givenName", "last_name": "sn"}
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {}
 
 # celery
@@ -336,6 +335,17 @@ if LDAP_ENABLED:
     AUTH_LDAP_BIND_DN = confget('ldap', 'binddn', '')
 
     AUTH_LDAP_BIND_PASSWORD = confget('ldap', 'bindpw', '')
+
+    # User attributes
+    LDAP_USER_ATTR_EMAIL = confget('ldap', 'useremail', 'mail')
+    LDAP_USER_ATTR_FIRSTNAME = confget('ldap', 'userfirstname', '')
+    LDAP_USER_ATTR_LASTNAME = confget('ldap', 'userlastname', '')
+
+    AUTH_LDAP_USER_ATTR_MAP = {"email": "mail"}
+    if LDAP_USER_ATTR_FIRSTNAME:
+        AUTH_LDAP_USER_ATTR_MAP["first_name"] = LDAP_USER_ATTR_FIRSTNAME
+    if LDAP_USER_ATTR_LASTNAME:
+        AUTH_LDAP_USER_ATTR_MAP["last_name"] = LDAP_USER_ATTR_LASTNAME
 
     # Are we using LDAP groups or local groups? Default to using LDAP groups
     USE_LDAP_GROUPS = confgetbool('ldap', 'useldapgroups', True)
