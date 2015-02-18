@@ -242,9 +242,8 @@ CRED_ICON_CLEAR = 'rattic/img/clear.gif'
 CRED_ICON_DEFAULT = 'Key.png'
 
 # django-auth-ldap
-AUTH_LDAP_USER_ATTR_MAP = {"email": "mail", }
+AUTH_LDAP_USER_ATTR_MAP = {"email": "mail", "first_name": "givenName", "last_name": "sn"}
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {}
-AUTH_LDAP_MIRROR_GROUPS = True
 
 # celery
 BROKER_URL = 'django://'
@@ -330,49 +329,60 @@ CELERY_TIMEZONE = TIME_ZONE
 LDAP_ENABLED = 'ldap' in config.sections()
 
 if LDAP_ENABLED:
+
+    LOGGING['loggers']['django_auth_ldap']['level'] = confget('ldap', 'loglevel', 'WARNING')
+
+    # Needed if anonymous queries are not allowed
+    AUTH_LDAP_BIND_DN = confget('ldap', 'binddn', '')
+
+    AUTH_LDAP_BIND_PASSWORD = confget('ldap', 'bindpw', '')
+
     # Are we using LDAP groups or local groups? Default to using LDAP groups
     USE_LDAP_GROUPS = confgetbool('ldap', 'useldapgroups', True)
 
-    # Below settings are common to both using local and LDAP groups
-    LOGGING['loggers']['django_auth_ldap']['level'] = confget('ldap', 'loglevel', 'WARNING')
+    # If we are not using LDAP groups, then do not update the user model's group membership
+    AUTH_LDAP_MIRROR_GROUPS = USE_LDAP_GROUPS
+
     AUTH_LDAP_SERVER_URI = config.get('ldap', 'uri')
 
-    AUTH_LDAP_DOMAIN = config.get('ldap', 'domain')
-    AUTH_LDAP_USER_SEARCH = LDAPSearch(config.get('ldap', 'userbase'), ldap.SCOPE_SUBTREE,
-                                       config.get('ldap', 'userfilter'))
+    AUTH_LDAP_USER_BASE = config.get('ldap', 'userbase')
+
+    # Defaults to AUTH_LDAP_USER_BASE because it must be defined
+    AUTH_LDAP_GROUP_BASE = confget('ldap', 'groupbase', AUTH_LDAP_USER_BASE)
+
+    AUTH_LDAP_USER_FILTER = config.get('ldap', 'userfilter')
+
+    # Defaults to a bogus filter so that searching yields no errors in the log
+    AUTH_LDAP_GROUP_FILTER = confget('ldap', 'groupfilter', '(objectClass=_fake)')
+
+    AUTH_LDAP_USER_SEARCH = LDAPSearch(AUTH_LDAP_USER_BASE, ldap.SCOPE_SUBTREE,
+                                       AUTH_LDAP_USER_FILTER)
+
+    AUTH_LDAP_GROUP_SEARCH = LDAPSearch(AUTH_LDAP_GROUP_BASE, ldap.SCOPE_SUBTREE,
+                                        AUTH_LDAP_GROUP_FILTER)
+
+    # Defaults to PosixGroupType because it must match a pre-defined list of selections
+    AUTH_LDAP_GROUP_TYPE = getattr(__import__('django_auth_ldap').config, confget('ldap', 'grouptype', 'PosixGroupType'))()
+
     # Booleans
     AUTH_LDAP_ALLOW_PASSWORD_CHANGE = confgetbool('ldap', 'pwchange', False)
+
     AUTH_LDAP_START_TLS = confgetbool('ldap', 'starttls', False)
+
     AUTH_LDAP_GLOBAL_OPTIONS = {
         ldap.OPT_X_TLS_REQUIRE_CERT: confgetbool('ldap', 'requirecert', True),
         ldap.OPT_REFERRALS: confgetbool('ldap', 'referrals', False),
     }
 
-    # Settings that differ between using local groups and LDAP groups
-    if USE_LDAP_GROUPS:
-        # LDAP Backend
-        AUTHENTICATION_BACKENDS = (
-            'django_auth_ldap.backend.LDAPBackend',
-            'django.contrib.auth.backends.ModelBackend',
-        )
-        # Settings needed when using LDAP groups
-        AUTH_LDAP_BIND_DN = confget('ldap', 'binddn', '')
-        AUTH_LDAP_BIND_PASSWORD = confget('ldap', 'bindpw', '')
-        AUTH_LDAP_USER_FLAGS_BY_GROUP['is_staff'] = confget('ldap', 'staff', '')
+    # Determines which LDAP users are staff
+    AUTH_LDAP_USER_FLAGS_BY_GROUP['is_staff'] = confget('ldap', 'staff', '')
 
-        # Searching for things, AUTH_LDAP_USER_SEARCH
-        AUTH_LDAP_GROUP_SEARCH = LDAPSearch(config.get('ldap', 'groupbase'), ldap.SCOPE_SUBTREE,
-                                            config.get('ldap', 'groupfilter'))
-        # Groups type
-        AUTH_LDAP_GROUP_TYPE = getattr(__import__('django_auth_ldap').config, config.get('ldap', 'grouptype'))()
-    else:
-        # We must use different auth backend when using local groups
-        AUTHENTICATION_BACKENDS = (
-            'account.authentication.ActiveDirectoryBackend',
-            'django.contrib.auth.backends.ModelBackend',
-        )
+    AUTHENTICATION_BACKENDS = (
+        'django_auth_ldap.backend.LDAPBackend',
+        'django.contrib.auth.backends.ModelBackend',
+    )
 else:
-    # if there is no LDAP section, we aren't using LDAP groups
+    # No LDAP section means no LDAP groups
     USE_LDAP_GROUPS = False
 
 # [goauth2]
