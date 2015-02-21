@@ -194,7 +194,7 @@ def detail(request, cred_id):
     cred = get_object_or_404(Cred, pk=cred_id)
 
     # Check user has perms as owner or viewer
-    if not cred.is_accessible_by(request.user):
+    if not cred.is_visible_by(request.user):
         raise Http404
 
     CredAudit(audittype=CredAudit.CREDVIEW, cred=cred, user=request.user).save()
@@ -227,7 +227,7 @@ def downloadattachment(request, cred_id):
     cred = get_object_or_404(Cred, pk=cred_id)
 
     # Check user has perms
-    if not cred.is_accessible_by(request.user):
+    if not cred.is_visible_by(request.user):
         raise Http404
 
     # Make sure there is an attachment
@@ -271,7 +271,7 @@ def edit(request, cred_id):
     next = request.GET.get('next', None)
 
     # Check user has perms
-    if not cred.is_accessible_by(request.user):
+    if not cred.is_visible_by(request.user):
         raise Http404
 
     if request.method == 'POST':
@@ -328,7 +328,7 @@ def delete(request, cred_id):
         lastchange = _("Unknown (Logs deleted)")
 
     # Check user has perms (user must be member of the password owner group)
-    if not cred.is_accessible_by(request.user) or not cred.group in request.user.groups.all():
+    if not cred.is_owned_by(request.user):
         raise Http404
     if request.method == 'POST':
         CredAudit(audittype=CredAudit.CREDDELETE, cred=cred, user=request.user).save()
@@ -385,7 +385,7 @@ def tagdelete(request, tag_id):
 def addtoqueue(request, cred_id):
     cred = get_object_or_404(Cred, pk=cred_id)
     # Check user has perms (user must be member of the password owner group)
-    if not cred.is_accessible_by(request.user) or not cred.group in request.user.groups.all():
+    if not cred.is_owned_by(request.user):
         raise Http404
     CredChangeQ.objects.add_to_changeq(cred)
     CredAudit(audittype=CredAudit.CREDSCHEDCHANGE, cred=cred, user=request.user).save()
@@ -396,7 +396,7 @@ def addtoqueue(request, cred_id):
 def bulkdelete(request):
     todel = Cred.objects.filter(id__in=request.POST.getlist('credcheck'))
     for c in todel:
-        if c.is_accessible_by(request.user) and c.group in request.user.groups.all() and c.latest is None:
+        if c.is_owned_by(request.user) and c.latest is None:
             CredAudit(audittype=CredAudit.CREDDELETE, cred=c, user=request.user).save()
             c.delete()
 
@@ -408,7 +408,7 @@ def bulkdelete(request):
 def bulkundelete(request):
     toundel = Cred.objects.filter(id__in=request.POST.getlist('credcheck'))
     for c in toundel:
-        if c.is_accessible_by(request.user) and c.group in request.user.groups.all():
+        if c.is_owned_by(request.user):
             CredAudit(audittype=CredAudit.CREDADD, cred=c, user=request.user).save()
             c.is_deleted = False
             c.save()
@@ -421,7 +421,7 @@ def bulkundelete(request):
 def bulkaddtoqueue(request):
     tochange = Cred.objects.filter(id__in=request.POST.getlist('credcheck'))
     for c in tochange:
-        if c.is_accessible_by(request.user) and c.group in request.user.groups.all() and c.latest is None:
+        if c.is_owned_by(request.user) and c.latest is None:
             CredAudit(audittype=CredAudit.CREDSCHEDCHANGE, cred=c, user=request.user).save()
             CredChangeQ.objects.add_to_changeq(c)
 
@@ -434,7 +434,7 @@ def bulktagcred(request):
     tochange = Cred.objects.filter(id__in=request.POST.getlist('credcheck'))
     tag = get_object_or_404(Tag, pk=request.POST.get('tag'))
     for c in tochange:
-        if c.is_accessible_by(request.user) and c.group in request.user.groups.all() and c.latest is None:
+        if c.is_owned_by(request.user) and c.latest is None:
             CredAudit(audittype=CredAudit.CREDMETACHANGE, cred=c, user=request.user).save()
             c.tags.add(tag)
 

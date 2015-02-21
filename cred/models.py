@@ -152,12 +152,27 @@ class Cred(models.Model):
     def is_latest(self):
         return self.latest is None
 
-    def is_accessible_by(self, user):
-        # Staff can see anything
+    def is_owned_by(self, user):
+        # Staff can do anything
         if user.is_staff:
             return True
 
         # If its the latest and in your group you can see it
+        if not self.is_deleted and self.latest is None and self.group in user.groups.all():
+            return True
+
+        # If the latest is in your group you can see it
+        if not self.is_deleted and self.latest is not None and self.latest.group in user.groups.all():
+            return True
+
+        return False
+
+    def is_visible_by(self, user):
+        # Staff can see anything
+        if user.is_staff:
+            return True
+
+        # If its the latest and (in your group or it belongs to a viewer group you also belong to) you can see it
         if not self.is_deleted and self.latest is None and (self.group in user.groups.all() or any([g in user.groups.all() for g in self.groups.all()])):
             return True
 

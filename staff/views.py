@@ -352,7 +352,7 @@ def credundelete(request, cred_id):
         lastchange = _("Unknown (Logs deleted)")
 
     # Check user has perms
-    if not cred.is_accessible_by(request.user) or not cred.group in request.user.groups.all():
+    if not cred.is_owned_by(request.user):
         raise Http404
     if request.method == 'POST':
         CredAudit(audittype=CredAudit.CREDADD, cred=cred, user=request.user).save()
