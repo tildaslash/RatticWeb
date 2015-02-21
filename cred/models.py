@@ -19,7 +19,7 @@ class Tag(models.Model):
         return self.name
 
     def visible_count(self, user):
-        return Cred.objects.accessible(user).filter(tags=self).count()
+        return Cred.objects.visible(user).filter(tags=self).count()
 
 
 class CredIconAdmin(admin.ModelAdmin):
@@ -27,7 +27,7 @@ class CredIconAdmin(admin.ModelAdmin):
 
 
 class SearchManager(models.Manager):
-    def accessible(self, user, historical=False, deleted=False):
+    def visible(self, user, historical=False, deleted=False):
         usergroups = user.groups.all()
         qs = super(SearchManager, self).get_query_set()
 
@@ -229,7 +229,7 @@ class CredChangeQManager(models.Manager):
         return self.get_or_create(cred=cred)
 
     def for_user(self, user):
-        return self.filter(cred__in=Cred.objects.accessible(user))
+        return self.filter(cred__in=Cred.objects.visible(user))
 
 
 class CredChangeQ(models.Model):

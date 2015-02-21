@@ -72,7 +72,7 @@ class TagAuthorization(Authorization):
 class CredResource(ModelResource):
     def get_object_list(self, request):
         # Only show latest, not deleted and accessible credentials
-        return Cred.objects.accessible(request.user, historical=True, deleted=True)
+        return Cred.objects.visible(request.user, historical=True, deleted=True)
 
     def dehydrate(self, bundle):
         # Workaround for this tastypie issue:
@@ -107,7 +107,7 @@ class CredResource(ModelResource):
 class TagResource(ModelResource):
     # When showing a tag, show all the creds under it, that we are allowed to see
     creds = fields.ToManyField(CredResource,
-        attribute=lambda bundle: Cred.objects.accessible(bundle.request.user).filter(tags=bundle.obj),
+        attribute=lambda bundle: Cred.objects.visible(bundle.request.user).filter(tags=bundle.obj),
         null=True,
     )
 

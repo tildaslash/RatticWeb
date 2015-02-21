@@ -8,7 +8,7 @@ from models import Cred, CredChangeQ, Tag
 
 # TODO: Move this to a ModelManager
 def cred_search(user, cfilter='special', value='all', sortdir='ascending', sort='title', groups=[]):
-    cred_list = Cred.objects.accessible(user)
+    cred_list = Cred.objects.visible(user)
     search_object = None
 
     # Tag based searching
@@ -33,7 +33,7 @@ def cred_search(user, cfilter='special', value='all', sortdir='ascending', sort=
     # Search for the history of a cred
     elif cfilter == 'history':
         cred = get_object_or_404(Cred, pk=value)
-        cred_list = Cred.objects.accessible(user, historical=True).filter(Q(latest=value) | Q(id=value))
+        cred_list = Cred.objects.visible(user, historical=True).filter(Q(latest=value) | Q(id=value))
         search_object = cred
 
     # Change Advice
@@ -55,7 +55,7 @@ def cred_search(user, cfilter='special', value='all', sortdir='ascending', sort=
 
     # Trash can
     elif cfilter == 'special' and value == 'trash':
-        cred_list = Cred.objects.accessible(user, deleted=True).filter(is_deleted=True)
+        cred_list = Cred.objects.visible(user, deleted=True).filter(is_deleted=True)
 
     # Change Queue
     elif cfilter == 'special' and value == 'changeq':
