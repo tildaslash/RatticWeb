@@ -22,7 +22,7 @@ def cred_search(user, cfilter='special', value='all', sortdir='ascending', sort=
         group = get_object_or_404(Group, pk=value)
         if group not in user.groups.all():
             raise Http404
-        cred_list = cred_list.filter(group=group)
+        cred_list = cred_list.filter(Q(group=group) | Q(groups=group))
         search_object = group
 
     # Standard search, substring in title

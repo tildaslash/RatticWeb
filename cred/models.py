@@ -38,7 +38,9 @@ class SearchManager(models.Manager):
             qs = qs.filter(latest=None)
 
         qs = qs.filter(Q(group__in=usergroups)
-                     | Q(latest__group__in=usergroups))
+                     | Q(latest__group__in=usergroups)
+                     | Q(groups__in=usergroups)
+                     | Q(latest__groups__in=usergroups)).distinct()
 
         return qs
 
@@ -66,7 +68,7 @@ class SearchManager(models.Manager):
 
 
 class Cred(models.Model):
-    METADATA = ('description', 'descriptionmarkdown', 'group', 'tags', 'iconname', 'latest', 'id', 'modified', 'attachment_name')
+    METADATA = ('description', 'descriptionmarkdown', 'group', 'groups', 'tags', 'iconname', 'latest', 'id', 'modified', 'attachment_name')
     SORTABLES = ('title', 'username', 'group', 'id', 'modified')
     APP_SET = ('is_deleted', 'latest', 'modified', 'attachment_name')
     objects = SearchManager()
@@ -79,6 +81,7 @@ class Cred(models.Model):
     descriptionmarkdown = models.BooleanField(default=False, verbose_name=_('Markdown Description'))
     description = models.TextField(blank=True, null=True)
     group = models.ForeignKey(Group)
+    groups = models.ManyToManyField(Group, related_name="child_creds", blank=True, null=True, default=None)
     tags = models.ManyToManyField(Tag, related_name='child_creds', blank=True, null=True, default=None)
     iconname = models.CharField(default='Key.png', max_length=64, verbose_name='Icon')
     attachment = SizedFileField(storage=CredAttachmentStorage(), max_upload_size=settings.RATTIC_MAX_ATTACHMENT_SIZE, null=True, blank=True, upload_to='not required')
@@ -107,6 +110,10 @@ class Cred(models.Model):
             # Add the tags to the old copy now that it exists
             for t in self.tags.all():
                 old.tags.add(t)
+
+            # Add the groups
+            for g in self.groups.all():
+                old.groups.add(g)
 
             # Lets see what was changed
             oldcred = model_to_dict(old)
@@ -151,11 +158,11 @@ class Cred(models.Model):
             return True
 
         # If its the latest and in your group you can see it
-        if not self.is_deleted and self.latest is None and self.group in user.groups.all():
+        if not self.is_deleted and self.latest is None and (self.group in user.groups.all() or any([g in user.groups.all() for g in self.groups.all()])):
             return True
 
         # If the latest is in your group you can see it
-        if not self.is_deleted and self.latest is not None and self.latest.group in user.groups.all():
+        if not self.is_deleted and self.latest is not None and (self.latest.group in user.groups.all() or any([g in user.groups.all() for g in self.latest.groups.all()])):
             return True
 
         return False
