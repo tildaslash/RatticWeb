@@ -206,11 +206,11 @@ def detail(request, cred_id):
         credlogs = None
         morelink = None
 
-    #User is not in the password owner group, show a read-only UI
-    if not cred.group in request.user.groups.all():
-        readonly = True
-    else:
+    # User is not in the password owner group, show a read-only UI
+    if cred.group in request.user.groups.all():
         readonly = False
+    else:
+        readonly = True
 
     return render(request, 'cred_detail.html', {
         'cred': cred,
