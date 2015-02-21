@@ -79,6 +79,7 @@ def list(request, cfilter='special', value='all', sortdir='ascending', sort='tit
         'sort': unicode(sort).lower(),
         'sortdir': unicode(sortdir).lower(),
         'page': unicode(page).lower(),
+        'groups': request.user.groups,
 
         # Default buttons
         'buttons': {
@@ -215,7 +216,8 @@ def detail(request, cred_id):
         'cred': cred,
         'credlogs': credlogs,
         'morelink': morelink,
-        'readonly': readonly
+        'readonly': readonly,
+        'groups': request.user.groups,
     })
 
 
@@ -276,7 +278,7 @@ def edit(request, cred_id):
         form = CredForm(request.user, request.POST, request.FILES, instance=cred)
 
         # Password change possible only for owner group
-        if form.is_valid() and cred.group in usergroups:
+        if form.is_valid() and cred.group in request.user.groups.all():
             # Assume metedata change
             chgtype = CredAudit.CREDMETACHANGE
 
