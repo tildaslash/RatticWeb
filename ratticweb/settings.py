@@ -272,13 +272,6 @@ if confget('ratticweb', 'ssl_header', False):
 # Setup the loglevel
 LOGGING['loggers']['django.request']['level'] = config.get('ratticweb', 'loglevel')
 
-try:
-    PASSWORD_EXPIRY = timedelta(days=int(config.get('ratticweb', 'passwordexpirydays')))
-except NoOptionError:
-    PASSWORD_EXPIRY = False
-except ValueError:
-    PASSWORD_EXPIRY = False
-
 # [filepaths]
 HELP_SYSTEM_FILES = confget('filepaths', 'help', False)
 MEDIA_ROOT = confget('filepaths', 'media', '')
@@ -397,3 +390,14 @@ if GOAUTH2_ENABLED:
     ]
 
     SESSION_SERIALIZER='django.contrib.sessions.serializers.PickleSerializer'
+
+# Passwords expiry settings
+if GOAUTH2_ENABLED:
+    PASSWORD_EXPIRY = False
+else:
+    try:
+        PASSWORD_EXPIRY = timedelta(days=int(config.get('ratticweb', 'passwordexpirydays')))
+    except NoOptionError:
+        PASSWORD_EXPIRY = False
+    except ValueError:
+        PASSWORD_EXPIRY = False
