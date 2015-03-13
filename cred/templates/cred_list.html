@@ -64,10 +64,13 @@
       </th>
       <th>
         {% if sort == 'group' %}
-          <a href="{% url 'cred.views.list' filter value revsortdir 'group' page %}">{% trans "Group" %} {% if sortdir == 'ascending' %}<i class='icon-chevron-up'></i>{% else %}<i class='icon-chevron-down'></i>{% endif %}</a>
+          <a href="{% url 'cred.views.list' filter value revsortdir 'group' page %}">{% trans "Owner Group" %} {% if sortdir == 'ascending' %}<i class='icon-chevron-up'></i>{% else %}<i class='icon-chevron-down'></i>{% endif %}</a>
         {% else %}
-          <a href="{% url 'cred.views.list' filter value sortdir 'group' page %}">{% trans "Group" %}</a>
+          <a href="{% url 'cred.views.list' filter value sortdir 'group' page %}">{% trans "Owner Group" %}</a>
         {% endif %}
+      </th>
+      <th>
+        {% trans "Viewer Groups" %}
       </th>
       <th>{% trans "Tags" %}</th>
     </tr>
@@ -78,7 +81,14 @@
       <td class="credcheck"><input type="checkbox" name="credcheck" value="{{ c.id }}" class="list-checktarget cred-list-check" /></td>
       <td>{% cred_icon c.iconname %} <a href="{% url "cred.views.detail" c.id %}">{{ c.title|default:"(No Title)" }}</a></td>
       <td>{{ c.username }}</td>
-      <td><a href="{% url "cred.views.list" "group" c.group.id %}">{{ c.group.name }}</a></td>
+      <td>{% if c.group in groups.all %}<a href="{% url "cred.views.list" "group" c.group.id %}">{{ c.group.name }}</a>{% else %}{{ c.group.name }}{% endif %}</td>
+      <td>
+        {% for g in c.groups.all %}
+            {% if g in groups.all %}
+                <a href="{% url "cred.views.list" "group" g.id %}">{{ g.name }}</a>
+            {% else %}{{ g.name }}{% endif %}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      </td>
       <td>{% for t in c.tags.all %}{% if not forloop.first %}, {% endif %}<a href="{% url "cred.views.list" "tag" t.id %}">{{ t.name }}</a>{% endfor %}</td>
     </tr>
     {% endfor %}

@@ -19,7 +19,7 @@ class Tag(models.Model):
         return self.name
 
     def visible_count(self, user):
-        return Cred.objects.accessible(user).filter(tags=self).count()
+        return Cred.objects.visible(user).filter(tags=self).count()
 
 
 class CredIconAdmin(admin.ModelAdmin):
@@ -27,7 +27,7 @@ class CredIconAdmin(admin.ModelAdmin):
 
 
 class SearchManager(models.Manager):
-    def accessible(self, user, historical=False, deleted=False):
+    def visible(self, user, historical=False, deleted=False):
         usergroups = user.groups.all()
         qs = super(SearchManager, self).get_query_set()
 
@@ -38,7 +38,9 @@ class SearchManager(models.Manager):
             qs = qs.filter(latest=None)
 
         qs = qs.filter(Q(group__in=usergroups)
-                     | Q(latest__group__in=usergroups))
+                     | Q(latest__group__in=usergroups)
+                     | Q(groups__in=usergroups)
+                     | Q(latest__groups__in=usergroups)).distinct()
 
         return qs
 
@@ -66,7 +68,7 @@ class SearchManager(models.Manager):
 
 
 class Cred(models.Model):
-    METADATA = ('description', 'descriptionmarkdown', 'group', 'tags', 'iconname', 'latest', 'id', 'modified', 'attachment_name')
+    METADATA = ('description', 'descriptionmarkdown', 'group', 'groups', 'tags', 'iconname', 'latest', 'id', 'modified', 'attachment_name')
     SORTABLES = ('title', 'username', 'group', 'id', 'modified')
     APP_SET = ('is_deleted', 'latest', 'modified', 'attachment_name')
     objects = SearchManager()
@@ -79,6 +81,7 @@ class Cred(models.Model):
     descriptionmarkdown = models.BooleanField(default=False, verbose_name=_('Markdown Description'))
     description = models.TextField(blank=True, null=True)
     group = models.ForeignKey(Group)
+    groups = models.ManyToManyField(Group, related_name="child_creds", blank=True, null=True, default=None)
     tags = models.ManyToManyField(Tag, related_name='child_creds', blank=True, null=True, default=None)
     iconname = models.CharField(default='Key.png', max_length=64, verbose_name='Icon')
     attachment = SizedFileField(storage=CredAttachmentStorage(), max_upload_size=settings.RATTIC_MAX_ATTACHMENT_SIZE, null=True, blank=True, upload_to='not required')
@@ -107,6 +110,10 @@ class Cred(models.Model):
             # Add the tags to the old copy now that it exists
             for t in self.tags.all():
                 old.tags.add(t)
+
+            # Add the groups
+            for g in self.groups.all():
+                old.groups.add(g)
 
             # Lets see what was changed
             oldcred = model_to_dict(old)
@@ -145,8 +152,8 @@ class Cred(models.Model):
     def is_latest(self):
         return self.latest is None
 
-    def is_accessible_by(self, user):
-        # Staff can see anything
+    def is_owned_by(self, user):
+        # Staff can do anything
         if user.is_staff:
             return True
 
@@ -156,6 +163,21 @@ class Cred(models.Model):
 
         # If the latest is in your group you can see it
         if not self.is_deleted and self.latest is not None and self.latest.group in user.groups.all():
+            return True
+
+        return False
+
+    def is_visible_by(self, user):
+        # Staff can see anything
+        if user.is_staff:
+            return True
+
+        # If its the latest and (in your group or it belongs to a viewer group you also belong to) you can see it
+        if not self.is_deleted and self.latest is None and (self.group in user.groups.all() or any([g in user.groups.all() for g in self.groups.all()])):
+            return True
+
+        # If the latest is in your group you can see it
+        if not self.is_deleted and self.latest is not None and (self.latest.group in user.groups.all() or any([g in user.groups.all() for g in self.latest.groups.all()])):
             return True
 
         return False
@@ -207,7 +229,7 @@ class CredChangeQManager(models.Manager):
         return self.get_or_create(cred=cred)
 
     def for_user(self, user):
-        return self.filter(cred__in=Cred.objects.accessible(user))
+        return self.filter(cred__in=Cred.objects.visible(user))
 
 
 class CredChangeQ(models.Model):
