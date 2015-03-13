@@ -30,6 +30,9 @@ class CredForm(ModelForm):
         # Limit the group options to groups that the user is in
         self.fields['group'].queryset = Group.objects.filter(user=requser)
 
+        self.fields['group'].label = _('Owner Group')
+        self.fields['groups'].label = _('Viewers Groups')
+
         # Make the URL invalid message a bit more clear
         self.fields['url'].error_messages['invalid'] = _("Please enter a valid HTTP/HTTPS URL")
 
@@ -49,6 +52,7 @@ class CredForm(ModelForm):
             # Use chosen for the tag field
             'tags': SelectMultiple(attrs={'class': 'rattic-tag-selector'}),
             'group': Select(attrs={'class': 'rattic-group-selector'}),
+            'groups': SelectMultiple(attrs={'class': 'rattic-group-selector'}),
             'password': PasswordInput(render_value=True, attrs={'class': 'btn-password-generator btn-password-visibility'}),
             'attachment': CredAttachmentInput,
             'iconname': CredIconChooser,

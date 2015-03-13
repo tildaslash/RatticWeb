@@ -21,10 +21,10 @@
 {% if not cred.is_latest %}
 <div class="alert alert-info"><strong>{% trans "Hey there!" %}</strong> {% blocktrans %}This credential is an historical version.{% endblocktrans %} <a href="{% url 'cred.views.detail' cred.latest.id %}">{% trans "Click here" %}</a> {% blocktrans %}to see the latest version.{% endblocktrans %}</div>
 {% endif %}
-{% if cred.on_changeq %}
+{% if cred.on_changeq and not readonly %}
 <div class="alert alert-warning"><strong>{% trans "Change Required" %}</strong> {% blocktrans %}This credential is on the change queue and should have its password changed as soon as possible.{% endblocktrans %} {% trans "Why not" %} <a href="{% url 'cred.views.edit' cred.id %}">{% trans "do it now" %}</a>{% trans "?" %}</div>
 {% endif %}
-{% if cred.is_latest %}
+{% if cred.is_latest and not readonly %}
 <div class="btn-group">
     <a class="btn" href="{% url 'cred.views.edit' cred.id %}">{% trans "Edit" %}</a>
     <a class="btn" href="{% url 'cred.views.list' 'history' cred.id 'ascending' 'id' %}">{% trans "History" %}</a>
@@ -64,7 +64,16 @@
 <tr><th>{% trans "Attachment" %}</th><td><a class="btn btn-mini" href="{% url "cred.views.downloadattachment" cred.id %}">{% trans "Download" %} {{ cred.attachment_name }}</a></td></tr>
 {% endif %}
 
-<tr><th>{% trans "Group" %}</th><td><a href="{% url 'cred.views.list' 'group' cred.group.id %}">{{ cred.group.name }}</a></td></tr>
+<tr><th>{% trans "Owner Group" %}</th><td>{% if cred.group in groups.all %}<a href="{% url 'cred.views.list' 'group' cred.group.id %}">{{ cred.group.name }}</a>{% else %}{{ cred.group.name }}{% endif %}</td></tr>
+<tr><th>{% trans "Viewer Groups" %}</th>
+    <td>
+        {% for g in cred.groups.all %}
+            {% if g in groups.all %}
+                <a href="{% url 'cred.views.list' 'group' g.id %}">{{ g.name }}</a>
+            {% else %}{{ g.name }}{% endif %}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </td>
+ </tr>
 <tr><th>{% trans "Tags" %}</th><td>{% for t in cred.tags.all %}<a href="{% url 'cred.views.list' 'tag' t.id %}">{{ t.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</td></tr>
 <tr><th>{% trans "Last Changed" %}</th><td>{{ cred.modified }}</td></tr>
 <tr><th>{% trans "Created" %}</th><td>{{ cred.created }}</td></tr>
