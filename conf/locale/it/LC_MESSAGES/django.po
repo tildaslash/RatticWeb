@@ -467,7 +467,7 @@ msgid ""
 msgstr ""
 "\n"
 "Ricevi questa email perchè hai richiesto un reset della password per il tuo "
-"account su %(site_name).\n"
+"account su %(site_name)s.\n"
 "\n"
 "Vai alla pagina seguente ed imposta la nuova password:\n"
 
@@ -482,11 +482,11 @@ msgid ""
 "The %(site_name)s team.\n"
 msgstr ""
 "\n"
-"Il tuo username, se lo hai perso: %(user.username)\n"
+"Il tuo username, se lo hai perso: %(user.username)s\n"
 "\n"
 "Grazie per usare il nostro sito!\n"
 "\n"
-"%(site_name) team."
+"%(site_name)s team.\n"
 
 #: cred/fields.py:25
 #, python-format
@@ -494,8 +494,8 @@ msgid ""
 "File size must be under %(maximumsize)s. Current file size is "
 "%(currentsize)s."
 msgstr ""
-"Le dimensioni del file devono essere %(maximumsize). Le dimensioni di questo "
-"file %(currentsize)."
+"Le dimensioni del file devono essere %(maximumsize)s. Le dimensioni di questo "
+"file %(currentsize)s."
 
 #: cred/forms.py:34
 msgid "Please enter a valid HTTP/HTTPS URL"
@@ -544,22 +544,22 @@ msgstr "Tutte le password"
 #: cred/views.py:106
 #, python-format
 msgid "Passwords tagged with %(tagname)s"
-msgstr "Password taggate con %(tagname)"
+msgstr "Password taggate con %(tagname)s"
 
 #: cred/views.py:110
 #, python-format
 msgid "Passwords in group %(groupname)s"
-msgstr "Password in gruppo %(groupname)"
+msgstr "Password in gruppo %(groupname)s"
 
 #: cred/views.py:114
 #, python-format
 msgid "Passwords for search \"%(searchstring)s\""
-msgstr "Password per la ricerca \"%(searchstring)\""
+msgstr "Password per la ricerca \"%(searchstring)s\""
 
 #: cred/views.py:118
 #, python-format
 msgid "Versions of: \"%(credtitle)s\""
-msgstr "Versione di: \"%(credtitle)\""
+msgstr "Versione di: \"%(credtitle)s\""
 
 #: cred/views.py:126
 msgid ""
@@ -574,7 +574,7 @@ msgstr ""
 #: cred/views.py:129
 #, python-format
 msgid "Changes required for \"%(username)s\""
-msgstr "Modifiche richieste per \"%(username)\""
+msgstr "Modifiche richieste per \"%(username)s\""
 
 #: cred/views.py:140
 msgid "Passwords in the trash"
@@ -1031,7 +1031,7 @@ msgstr "Tu"
 #: ratticweb/templates/sidebar.html:7
 #, python-format
 msgid "Welcome %(username)s."
-msgstr "Benvenuto %(username)"
+msgstr "Benvenuto %(username)s"
 
 #: ratticweb/templates/sidebar.html:8
 msgid "Profile"
@@ -1078,22 +1078,22 @@ msgstr "Questo file non sembra un file KeePass valido."
 #: staff/templates/staff_audit.html:10
 #, python-format
 msgid "Audit Logs for password &apos;%(cred_title)s&apos;"
-msgstr "Log Audit per la password &apos;%(cred_title)&apos;"
+msgstr "Log Audit per la password &apos;%(cred_title)s&apos;"
 
 #: staff/templates/staff_audit.html:13
 #, python-format
 msgid "Audit Logs for user &apos;%(username)s&apos;"
-msgstr "Log Audit per l'utente &apos;%(username)&apos;"
+msgstr "Log Audit per l'utente &apos;%(username)s&apos;"
 
 #: staff/templates/staff_audit.html:16
 #, python-format
 msgid "Audit Logs going back %(item)s days ago"
-msgstr "Log Audit risalenti a %(item) giorni fa."
+msgstr "Log Audit risalenti a %(item)s giorni fa."
 
 #: staff/templates/staff_changeadvice.html:6
 #, python-format
 msgid "Changes for user: %(username)s"
-msgstr "Modifiche per l'utente: %(username)"
+msgstr "Modifiche per l'utente: %(username)s"
 
 #: staff/templates/staff_changeadvice.html:7
 msgid ""
@@ -1215,6 +1215,7 @@ msgstr ""
 "\n"
 "Eliminare questo utente cancellerà ogni audit log, forse disattivarlo\n"
 "è preferibile?\n"
+"  "
 
 #: staff/templates/staff_userdetail.html:19
 msgid "Confirm Delete"
