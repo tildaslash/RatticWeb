@@ -11,11 +11,17 @@ from django.utils.timezone import now
 from django.contrib.auth import login
 from django.contrib.auth.views import password_change
 from django.contrib.auth.forms import SetPasswordForm
+from django.utils import timezone
 
 from user_sessions.views import SessionDeleteView
 from two_factor.utils import default_device
 from two_factor.views import DisableView, BackupTokensView, SetupView, LoginView
+from datetime import timedelta
+import logging
 import uuid
+
+
+log = logging.getLogger("rattic.account.views")
 
 
 @login_required
@@ -171,7 +177,13 @@ class RatticTFAGenerateApiKey(LoginView):
     def done(self, form_list, **kwargs):
         login(self.request, self.get_user())
 
-        newkey = ApiKey(user=self.request.user, active=True)
+        try:
+            for key in ApiKey.expired(user=self.request.user).all():
+                key.delete()
+        except Exception as error:
+            log.error("Failed to delete expired key: %s", error)
+
+        newkey = ApiKey(user=self.request.user, active=True, expires=timezone.now() + timedelta(minutes=5))
         form = ApiKeyForm({"name": uuid.uuid1()}, instance=newkey)
         if form.is_valid():
             form.save()
@@ -179,4 +191,3 @@ class RatticTFAGenerateApiKey(LoginView):
         res = HttpResponse(newkey.key)
         res.status_code = 200
         return res
-
