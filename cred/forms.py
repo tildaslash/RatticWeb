@@ -20,10 +20,8 @@ class TagForm(ModelForm):
 class CredForm(ModelForm):
     def __init__(self, requser, *args, **kwargs):
         # Check if a new attachment was uploaded
-        if len(args) > 0 and args[1].get('attachment', None) is not None:
-            self.changed_attachment = True
-        else:
-            self.changed_attachment = False
+        self.changed_ssh_key = len(args) > 0 and args[1].get('ssh_key', None) is not None
+        self.changed_attachment = len(args) > 0 and args[1].get('attachment', None) is not None
 
         super(CredForm, self).__init__(*args, **kwargs)
 
@@ -40,6 +38,8 @@ class CredForm(ModelForm):
         # Get the filename from the file object
         if self.changed_attachment:
             self.instance.attachment_name = self.cleaned_data['attachment'].name
+        if self.changed_ssh_key:
+            self.instance.ssh_key_name = self.cleaned_data['ssh_key'].name
 
         # Call save upstream to save the object
         super(CredForm, self).save(*args, **kwargs)
@@ -54,6 +54,7 @@ class CredForm(ModelForm):
             'group': Select(attrs={'class': 'rattic-group-selector'}),
             'groups': SelectMultiple(attrs={'class': 'rattic-group-selector'}),
             'password': PasswordInput(render_value=True, attrs={'class': 'btn-password-generator btn-password-visibility'}),
+            'ssh_key': CredAttachmentInput,
             'attachment': CredAttachmentInput,
             'iconname': CredIconChooser,
         }

@@ -21,6 +21,7 @@ class CredAttachmentTest(TestCase):
         form = resp.context['form']
         post = form.initial
         del post['url']
+        del post['ssh_key']
 
         # Open a test file and upload it
         with open('docs/keepass/test2.kdb', 'r') as fp:

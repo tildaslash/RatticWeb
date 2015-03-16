@@ -63,6 +63,9 @@
 {% if cred.attachment %}
 <tr><th>{% trans "Attachment" %}</th><td><a class="btn btn-mini" href="{% url "cred.views.downloadattachment" cred.id %}">{% trans "Download" %} {{ cred.attachment_name }}</a></td></tr>
 {% endif %}
+{% if cred.ssh_key %}
+<tr><th>{% trans "SSH Key" %}</th><td><a class="btn btn-mini" href="{% url "cred.views.downloadsshkey" cred.id %}">{% trans "Download" %} {{ cred.ssh_key_fingerprint }}</a></td></tr>
+{% endif %}
 
 <tr><th>{% trans "Owner Group" %}</th><td>{% if cred.group in groups.all %}<a href="{% url 'cred.views.list' 'group' cred.group.id %}">{{ cred.group.name }}</a>{% else %}{{ cred.group.name }}{% endif %}</td></tr>
 <tr><th>{% trans "Viewer Groups" %}</th>
