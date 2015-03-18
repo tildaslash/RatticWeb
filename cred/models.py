@@ -8,6 +8,7 @@ from django.utils.timezone import now
 from django.conf import settings
 
 from ratticweb.util import DictDiffer, field_file_compare
+from ssh_key import SSHKey
 from fields import SizedFileField
 from storage import CredAttachmentStorage
 
@@ -68,9 +69,9 @@ class SearchManager(models.Manager):
 
 
 class Cred(models.Model):
-    METADATA = ('description', 'descriptionmarkdown', 'group', 'groups', 'tags', 'iconname', 'latest', 'id', 'modified', 'attachment_name')
+    METADATA = ('description', 'descriptionmarkdown', 'group', 'groups', 'tags', 'iconname', 'latest', 'id', 'modified', 'attachment_name', 'ssh_key_name')
     SORTABLES = ('title', 'username', 'group', 'id', 'modified')
-    APP_SET = ('is_deleted', 'latest', 'modified', 'attachment_name')
+    APP_SET = ('is_deleted', 'latest', 'modified', 'attachment_name', 'ssh_key_name')
     objects = SearchManager()
 
     # User changable fields
@@ -84,6 +85,7 @@ class Cred(models.Model):
     groups = models.ManyToManyField(Group, related_name="child_creds", blank=True, null=True, default=None)
     tags = models.ManyToManyField(Tag, related_name='child_creds', blank=True, null=True, default=None)
     iconname = models.CharField(default='Key.png', max_length=64, verbose_name='Icon')
+    ssh_key = SizedFileField(storage=CredAttachmentStorage(), max_upload_size=settings.RATTIC_MAX_ATTACHMENT_SIZE, null=True, blank=True, upload_to='not required')
     attachment = SizedFileField(storage=CredAttachmentStorage(), max_upload_size=settings.RATTIC_MAX_ATTACHMENT_SIZE, null=True, blank=True, upload_to='not required')
 
     # Application controlled fields
@@ -91,6 +93,8 @@ class Cred(models.Model):
     latest = models.ForeignKey('Cred', related_name='history', blank=True, null=True, db_index=True)
     modified = models.DateTimeField(db_index=True)
     created = models.DateTimeField(auto_now_add=True)
+
+    ssh_key_name = models.CharField(max_length=64, null=True, blank=True)
     attachment_name = models.CharField(max_length=64, null=True, blank=True)
 
     def save(self, *args, **kwargs):
@@ -123,8 +127,9 @@ class Cred(models.Model):
             # Ohhhkaaay, so the attachment field looks like its changed every
             # time, so we do a deep comparison, if the files match we remove
             # it from the list of changed fields.
-            if field_file_compare(oldcred['attachment'], newcred['attachment']):
-                diff = diff - set(('attachment', ))
+            for field in ('attachment', 'ssh_key'):
+                if field_file_compare(oldcred[field], newcred[field]):
+                    diff = diff - set((field, ))
 
             # Check if some non-metadata was changed
             chg = diff - set(Cred.METADATA)
@@ -181,6 +186,9 @@ class Cred(models.Model):
             return True
 
         return False
+
+    def ssh_key_fingerprint(self):
+        return SSHKey(self.ssh_key.read(), self.password).fingerprint()
 
     def __unicode__(self):
         return self.title.encode('utf-8')

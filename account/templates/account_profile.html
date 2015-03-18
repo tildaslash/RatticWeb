@@ -50,6 +50,7 @@
       <th>&nbsp;</th>
       <th>{% trans "Key Name" %}</th>
       <th>{% trans "Date generated" %}</th>
+      <th>{% trans "Expiry date" %}</th>
     </tr>
   </thead>
   <tbody>
@@ -62,6 +63,11 @@
         </td>
         <td>{{ key.name }}</td>
         <td>{{ key.created }}</td>
+	{% if key.has_expiry %}
+	  <td>{{ key.expires }}</td>
+	{% else %}
+	  <td>Never</td>
+	{% endif %}
       </tr>
     {% empty %}
       <tr><td colspan="3">{% blocktrans %}No API Keys available yet{% endblocktrans %}</td></tr>

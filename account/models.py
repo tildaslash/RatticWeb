@@ -11,8 +11,11 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
+from django.db.models import F
+from django.utils import timezone
 
 from tastypie.compat import AUTH_USER_MODEL
+from datetime import timedelta
 
 from cred.models import Tag
 
@@ -88,6 +91,16 @@ class ApiKey(models.Model):
     name = models.CharField(max_length=128)
     active = models.BooleanField(default=True)
     created = models.DateTimeField(default=now)
+    expires = models.DateTimeField(default=now)
+
+    @classmethod
+    def expired(kls, user):
+        return ApiKey.objects.filter(user=user, expires__gt=F("created")).filter(expires__lt=timezone.now())
+
+    @classmethod
+    def delete_expired(kls, user):
+        for gone in kls.expired(user):
+            gone.delete()
 
     def __unicode__(self):
         return u"%s for %s" % (self.key, self.user)
@@ -104,11 +117,20 @@ class ApiKey(models.Model):
         # Hmac that beast.
         return hmac.new(new_uuid.bytes, digestmod=sha1).hexdigest()
 
+    @property
+    def has_expiry(self):
+        return self.expires > self.created
+
 
 class ApiKeyForm(ModelForm):
     class Meta:
         model = ApiKey
-        exclude = ('user', 'key', 'active', 'created',)
+        exclude = ('user', 'key', 'active', 'created', 'expires')
+
+    def save(self):
+        if self.instance.expires < self.instance.created + timedelta(minutes=1):
+            self.instance.expires = self.instance.created
+        return super(ApiKeyForm, self).save()
 
 
 admin.site.register(UserProfile)

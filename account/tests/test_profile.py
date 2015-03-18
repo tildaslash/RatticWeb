@@ -4,7 +4,6 @@ from django.utils.unittest import skipIf
 from django.utils.timezone import now
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from django.core.management import call_command
 from django.conf import settings
 
 from datetime import timedelta
@@ -142,54 +141,3 @@ class AccountViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         user = User.objects.get(username=self.username)
         self.assertTrue(user.check_password('newpassword'))
-
-
-class AccountCommandTests(TestCase):
-    def test_command_demosetup(self):
-        args=[]
-        opts={}
-        call_command('demosetup', *args, **opts)
-        u = User.objects.get(username='admin')
-        self.assertTrue(u.check_password('rattic'))
-        self.assertTrue(u.is_staff)
-
-
-class AccountMiddlewareTests(TestCase):
-    def setUp(self):
-        self.unorm = User(username='norm', email='norm@example.com')
-        self.unorm.set_password('password')
-        self.normpass = 'password'
-        self.unorm.save()
-
-    def test_login(self):
-        c = Client()
-        resp = c.post(reverse('login'), {
-            'auth-username': 'norm',
-            'auth-password': 'password',
-            'rattic_tfa_login_view-current_step': 'auth',
-        })
-        self.assertRedirects(resp, reverse('cred.views.list'), status_code=302, target_status_code=200)
-        self.assertTemplateNotUsed(resp, 'account_tfa_login.html')
-
-    def test_login_wrongpass(self):
-        c = Client()
-        resp = c.post(reverse('login'), {
-            'auth-username': 'norm',
-            'auth-password': 'wrongpassword',
-            'rattic_tfa_login_view-current_step': 'auth',
-        }, follow=False)
-        self.assertEqual(resp.status_code, 200)
-        self.assertTemplateUsed(resp, 'account_tfa_login.html')
-
-    @skipIf(settings.LDAP_ENABLED, 'Test does not apply on LDAP')
-    def test_login_disabled(self):
-        self.unorm.is_active = False
-        self.unorm.save()
-        c = Client()
-        resp = c.post(reverse('login'), {
-            'auth-username': 'norm',
-            'auth-password': 'wrongpassword',
-            'rattic_tfa_login_view-current_step': 'auth',
-        }, follow=False)
-        self.assertEqual(resp.status_code, 200)
-        self.assertTemplateUsed(resp, 'account_tfa_login.html')

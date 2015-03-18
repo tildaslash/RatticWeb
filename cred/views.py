@@ -222,7 +222,7 @@ def detail(request, cred_id):
 
 
 @login_required
-def downloadattachment(request, cred_id):
+def downloadattachment(request, cred_id, typ="attachment"):
     # Get the credential
     cred = get_object_or_404(Cred, pk=cred_id)
 
@@ -231,7 +231,7 @@ def downloadattachment(request, cred_id):
         raise Http404
 
     # Make sure there is an attachment
-    if cred.attachment is None:
+    if getattr(cred, typ) is None:
         raise Http404
 
     # Write the audit log, as a password view
@@ -240,8 +240,27 @@ def downloadattachment(request, cred_id):
     # Send the result back in a way that prevents the browser from executing it,
     # forces a download, and names it the same as when it was uploaded.
     response = HttpResponse(mimetype='application/octet-stream')
-    response.write(cred.attachment.read())
-    response['Content-Disposition'] = 'attachment; filename="%s"' % cred.attachment_name
+    response.write(getattr(cred, typ).read())
+    response['Content-Disposition'] = 'attachment; filename="%s"' % getattr(cred, "%s_name" % typ)
+    response['Content-Length'] = response.tell()
+    return response
+
+
+def downloadsshkey(request, cred_id):
+    return downloadattachment(request, cred_id, typ="ssh_key")
+
+
+def ssh_key_fingerprint(request, cred_id):
+    # Get the credential
+    cred = get_object_or_404(Cred, pk=cred_id)
+
+    # Make sure there is an ssh_key
+    if cred.ssh_key is None:
+        raise Http404
+
+    fingerprint = cred.ssh_key_fingerprint()
+    response = HttpResponse()
+    response.write(fingerprint)
     response['Content-Length'] = response.tell()
     return response
 

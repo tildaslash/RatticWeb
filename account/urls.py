@@ -4,6 +4,7 @@ from django.conf import settings
 from views import profile, newapikey, deleteapikey, RatticSessionDeleteView
 from views import RatticTFADisableView, RatticTFABackupTokensView
 from views import RatticTFASetupView, RatticTFALoginView
+from views import RatticTFAGenerateApiKey
 
 from two_factor.views import QRGeneratorView
 
@@ -20,6 +21,8 @@ urlpatterns = patterns('',
 
     # Two Factor Views
     url(r'^login/$', RatticTFALoginView.as_view(), name='login'),
+    url(r'^generate_api_key$', RatticTFAGenerateApiKey.as_view(), name="generate_api_key"),
+
     url(r'^two_factor/disable/$', RatticTFADisableView.as_view(), name='tfa_disable'),
     url(r'^two_factor/backup/$', RatticTFABackupTokensView.as_view(), name='tfa_backup'),
     url(r'^two_factor/setup/$', RatticTFASetupView.as_view(), name='tfa_setup'),
