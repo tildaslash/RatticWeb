@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.http import Http404
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext as _
@@ -251,18 +252,31 @@ def downloadsshkey(request, cred_id):
 
 
 def ssh_key_fingerprint(request, cred_id):
-    # Get the credential
-    cred = get_object_or_404(Cred, pk=cred_id)
+    def functionality(req):
+        """Getting the fingerprint itself"""
+        # Get the credential
+        cred = get_object_or_404(Cred, pk=cred_id)
 
-    # Make sure there is an ssh_key
-    if cred.ssh_key is None:
-        raise Http404
+        if not settings.LOGINLESS_SSH_FINGERPRINTS:
+            # Check user has perms
+            if not cred.is_visible_by(request.user):
+                raise Http404
 
-    fingerprint = cred.ssh_key_fingerprint()
-    response = HttpResponse()
-    response.write(fingerprint)
-    response['Content-Length'] = response.tell()
-    return response
+        # Make sure there is an ssh_key
+        if cred.ssh_key is None:
+            raise Http404
+
+        fingerprint = cred.ssh_key_fingerprint()
+        response = HttpResponse()
+        response.write(fingerprint)
+        response['Content-Length'] = response.tell()
+        return response
+
+    # Only require a login depending on the settings
+    if settings.LOGINLESS_SSH_FINGERPRINTS:
+        return functionality(request)
+    else:
+        return login_required(functionality)(request)
 
 
 @login_required
