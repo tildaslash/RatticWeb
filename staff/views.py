@@ -31,7 +31,7 @@ def home(request):
 @rattic_staff_required
 def userdetail(request, uid):
     user = get_object_or_404(User, pk=uid)
-    if settings.LDAP_ENABLED:
+    if settings.LDAP_ENABLED and settings.USE_LDAP_GROUPS:
         from django_auth_ldap.backend import LDAPBackend
         popuser = LDAPBackend().populate_user(user.username)
         if popuser is None:

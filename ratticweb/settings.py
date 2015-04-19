@@ -40,6 +40,7 @@ def confgetbool(section, var, default):
     except NoOptionError:
         return default
 
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
@@ -242,15 +243,13 @@ CRED_ICON_CLEAR = 'rattic/img/clear.gif'
 CRED_ICON_DEFAULT = 'Key.png'
 
 # django-auth-ldap
-AUTH_LDAP_USER_ATTR_MAP = {"email": "mail", }
 AUTH_LDAP_USER_FLAGS_BY_GROUP = {}
-AUTH_LDAP_MIRROR_GROUPS=True
 
 # celery
 BROKER_URL = 'django://'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_ACCEPT_CONTENT = ['json']
-CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 
 ###############################
 # External environment config #
@@ -323,40 +322,69 @@ CELERY_TIMEZONE = TIME_ZONE
 LDAP_ENABLED = 'ldap' in config.sections()
 
 if LDAP_ENABLED:
-    # Add LDAP to the auth modules
-    AUTHENTICATION_BACKENDS = (
-        'django_auth_ldap.backend.LDAPBackend',
-        'django.contrib.auth.backends.ModelBackend',
-    )
 
-    # Setup the LDAP Logging
     LOGGING['loggers']['django_auth_ldap']['level'] = confget('ldap', 'loglevel', 'WARNING')
 
-    # Get config options for LDAP
-    AUTH_LDAP_SERVER_URI = config.get('ldap', 'uri')
+    # Needed if anonymous queries are not allowed
     AUTH_LDAP_BIND_DN = confget('ldap', 'binddn', '')
+
     AUTH_LDAP_BIND_PASSWORD = confget('ldap', 'bindpw', '')
 
-    if config.has_option('ldap', 'staff'):
-        AUTH_LDAP_USER_FLAGS_BY_GROUP['is_staff'] = config.get('ldap', 'staff')
+    # User attributes
+    AUTH_LDAP_USER_ATTR_MAP = {"email": "mail"}
+    if config.has_option('ldap', 'userfirstname'):
+        AUTH_LDAP_USER_ATTR_MAP["first_name"] = config.get('ldap', 'userfirstname')
+    if config.has_option('ldap', 'userfirstname'):
+        AUTH_LDAP_USER_ATTR_MAP["last_name"] = config.get('ldap', 'userlastname')
 
-    # Searching for things
-    AUTH_LDAP_USER_SEARCH = LDAPSearch(config.get('ldap', 'userbase'), ldap.SCOPE_SUBTREE, config.get('ldap', 'userfilter'))
+    # Are we using LDAP groups or local groups? Default to using LDAP groups
+    USE_LDAP_GROUPS = confgetbool('ldap', 'useldapgroups', True)
 
-    # Groups lookup and mirroring
-    if config.has_option('ldap', 'groupfilter'):
-        AUTH_LDAP_GROUP_SEARCH = LDAPSearch(config.get('ldap', 'groupbase'), ldap.SCOPE_SUBTREE, config.get('ldap', 'groupfilter'))
-        AUTH_LDAP_GROUP_TYPE = getattr(__import__('django_auth_ldap').config, config.get('ldap', 'grouptype'))()
-    else:
-        AUTH_LDAP_MIRROR_GROUPS = False
+    # If we are not using LDAP groups, then do not update the user model's group membership
+    AUTH_LDAP_MIRROR_GROUPS = USE_LDAP_GROUPS
+
+    AUTH_LDAP_SERVER_URI = config.get('ldap', 'uri')
+
+    AUTH_LDAP_USER_BASE = config.get('ldap', 'userbase')
+
+    # Defaults to AUTH_LDAP_USER_BASE because it must be defined
+    AUTH_LDAP_GROUP_BASE = confget('ldap', 'groupbase', AUTH_LDAP_USER_BASE)
+
+    AUTH_LDAP_USER_FILTER = config.get('ldap', 'userfilter')
+
+    # Defaults to a bogus filter so that searching yields no errors in the log
+    AUTH_LDAP_GROUP_FILTER = confget('ldap', 'groupfilter', '(objectClass=_fake)')
+
+    AUTH_LDAP_USER_SEARCH = LDAPSearch(AUTH_LDAP_USER_BASE, ldap.SCOPE_SUBTREE,
+                                       AUTH_LDAP_USER_FILTER)
+
+    AUTH_LDAP_GROUP_SEARCH = LDAPSearch(AUTH_LDAP_GROUP_BASE, ldap.SCOPE_SUBTREE,
+                                        AUTH_LDAP_GROUP_FILTER)
+
+    # Defaults to PosixGroupType because it must match a pre-defined list of selections
+    AUTH_LDAP_GROUP_TYPE = getattr(__import__('django_auth_ldap').config, confget('ldap', 'grouptype', 'PosixGroupType'))()
 
     # Booleans
     AUTH_LDAP_ALLOW_PASSWORD_CHANGE = confgetbool('ldap', 'pwchange', False)
+
     AUTH_LDAP_START_TLS = confgetbool('ldap', 'starttls', False)
+
     AUTH_LDAP_GLOBAL_OPTIONS = {
         ldap.OPT_X_TLS_REQUIRE_CERT: confgetbool('ldap', 'requirecert', True),
         ldap.OPT_REFERRALS: confgetbool('ldap', 'referrals', False),
     }
+
+    # Determines which LDAP users are staff, if not defined, privilege can be set manually
+    if config.has_option('ldap', 'staff'):
+        AUTH_LDAP_USER_FLAGS_BY_GROUP['is_staff'] = confget('ldap', 'staff', '')
+
+    AUTHENTICATION_BACKENDS = (
+        'django_auth_ldap.backend.LDAPBackend',
+        'django.contrib.auth.backends.ModelBackend',
+    )
+else:
+    # No LDAP section means no LDAP groups
+    USE_LDAP_GROUPS = False
 
 # [goauth2]
 GOAUTH2_ENABLED = 'goauth2' in config.sections()
