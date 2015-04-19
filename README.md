@@ -5,18 +5,6 @@ Build Status: [![Build Status](https://travis-ci.org/tildaslash/RatticWeb.png?br
 
 RatticWeb is the website part of the Rattic password management solution, which allows you to easily manage your users and passwords.
 
-To quickly get a RatticDB demo running do the following:
-* Install VirtualBox from https://www.virtualbox.org/
-* Install Vagrant from http://www.vagrantup.com/
-* Install Ansible from http://ansible.com/ or from pip, apt or yum (we need 1.4+)
-* Check out this repo
-* Run ```vagrant up``` in the root of this repo
-* Wait for vagrant to deploy the machine
-* Browse to https://localhost:8443/
-* Login with Username: admin Password: rattic
-* ...
-* Profit!
-
 If you decide to use RatticWeb you should take the following into account:
 * The webpage should be served over HTTPS only, apart from a redirect from normal HTTP.
 * The filesystem in which the database is stored should be protected with encryption.
