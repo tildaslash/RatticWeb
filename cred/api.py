@@ -24,7 +24,7 @@ class CredAuthorization(Authorization):
 
     def read_detail(self, object_list, bundle):
         # Check user has perms
-        if not bundle.obj.is_owned_by(bundle.request.user):
+        if not bundle.obj.is_visible_by(bundle.request.user):
             return False
 
         # This audit should go somewhere else, is there a detail list function we can override?
