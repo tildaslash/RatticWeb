@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-18 23:50+1100\n"
+"POT-Creation-Date: 2015-05-17 09:20+1000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,12 +17,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: account/models.py:27
+#: account/models.py:30
 msgid "Old password"
 msgstr ""
 
-#: account/models.py:35
+#: account/models.py:38
 msgid "Incorrect password"
+msgstr ""
+
+#: account/models.py:56
+msgid "Items per page"
+msgstr ""
+
+#: account/models.py:57
+msgid "Favourite tags"
 msgstr ""
 
 #: account/templates/account_changepass.html:4
@@ -69,12 +77,12 @@ msgstr ""
 #: account/templates/account_viewapikey.html:17
 #: cred/templates/cred_taglist.html:9
 #: staff/templates/staff_groupdetail.html:20
-#: staff/templates/staff_home.html:44
+#: staff/templates/staff_home.html:47
 msgid "Name"
 msgstr ""
 
 #: account/templates/account_deleteapikey.html:14
-#: cred/templates/cred_detail.html:70
+#: cred/templates/cred_detail.html:82
 msgid "Created"
 msgstr ""
 
@@ -91,7 +99,7 @@ msgstr ""
 msgid "Your LDAP server returned the following error:"
 msgstr ""
 
-#: account/templates/account_ldaperror.html:8
+#: account/templates/account_ldaperror.html:8 cred/models.py:83
 #: cred/templates/cred_part_passgenmodal.html:9
 msgid "Description"
 msgstr ""
@@ -117,9 +125,9 @@ msgstr ""
 msgid "Your Account"
 msgstr ""
 
-#: account/templates/account_profile.html:10
+#: account/templates/account_profile.html:10 cred/models.py:80
 #: cred/templates/cred_detail.html:44 ratticweb/templates/sidebar.html:28
-#: staff/templates/staff_home.html:23
+#: staff/templates/staff_home.html:26
 msgid "Username"
 msgstr ""
 
@@ -162,7 +170,7 @@ msgstr ""
 msgid "Last Password Change"
 msgstr ""
 
-#: account/templates/account_profile.html:25
+#: account/templates/account_profile.html:25 cred/models.py:85
 #: ratticweb/templates/sidebar.html:18
 #: staff/templates/staff_userdetail.html:33
 msgid "Groups"
@@ -192,27 +200,31 @@ msgstr ""
 msgid "Date generated"
 msgstr ""
 
-#: account/templates/account_profile.html:67
+#: account/templates/account_profile.html:53
+msgid "Expiry date"
+msgstr ""
+
+#: account/templates/account_profile.html:73
 msgid "No API Keys available yet"
 msgstr ""
 
-#: account/templates/account_profile.html:71
+#: account/templates/account_profile.html:77
 msgid "Current Sessions"
 msgstr ""
 
-#: account/templates/account_profile.html:76
+#: account/templates/account_profile.html:82
 msgid "Device"
 msgstr ""
 
-#: account/templates/account_profile.html:77
+#: account/templates/account_profile.html:83
 msgid "IP Address"
 msgstr ""
 
-#: account/templates/account_profile.html:78
+#: account/templates/account_profile.html:84
 msgid "Last Activity"
 msgstr ""
 
-#: account/templates/account_profile.html:89
+#: account/templates/account_profile.html:95
 msgid "(This Session)"
 msgstr ""
 
@@ -455,91 +467,140 @@ msgid ""
 "%(currentsize)s."
 msgstr ""
 
+#: cred/forms.py:33 cred/templates/cred_detail.html:70
+#: cred/templates/cred_list.html:67 cred/templates/cred_list.html.py:69
+msgid "Owner Group"
+msgstr ""
+
 #: cred/forms.py:34
+msgid "Viewers Groups"
+msgstr ""
+
+#: cred/forms.py:37
 msgid "Please enter a valid HTTP/HTTPS URL"
 msgstr ""
 
-#: cred/models.py:79
+#: cred/models.py:78 cred/templates/cred_list.html:53
+#: cred/templates/cred_list.html.py:55
+#: staff/templates/staff_changeadvice.html:19
+#: staff/templates/staff_import_overview.html:11
+msgid "Title"
+msgstr ""
+
+#: cred/models.py:79 cred/templates/cred_detail.html:42
+msgid "URL"
+msgstr ""
+
+#: cred/models.py:81 cred/templates/cred_detail.html:54
+#: ratticweb/templates/sidebar.html:29
+msgid "Password"
+msgstr ""
+
+#: cred/models.py:82
 msgid "Markdown Description"
 msgstr ""
 
-#: cred/models.py:181
+#: cred/models.py:84 staff/templates/staff_changeadvice.html:21
+#: staff/templates/staff_groupdetail.html:10
+msgid "Group"
+msgstr ""
+
+#: cred/models.py:86 cred/templates/cred_detail.html:80
+#: cred/templates/cred_list.html:75 ratticweb/templates/navbar.html:41
+#: ratticweb/templates/sidebar.html:10
+#: staff/templates/staff_changeadvice.html:22
+msgid "Tags"
+msgstr ""
+
+#: cred/models.py:87
+msgid "Icon"
+msgstr ""
+
+#: cred/models.py:88
+msgid "SSH key"
+msgstr ""
+
+#: cred/models.py:89 cred/templates/cred_detail.html:64
+msgid "Attachment"
+msgstr ""
+
+#: cred/models.py:211
 msgid "Added"
 msgstr ""
 
-#: cred/models.py:182
+#: cred/models.py:212
 msgid "Changed"
 msgstr ""
 
-#: cred/models.py:183
+#: cred/models.py:213
 msgid "Only Metadata Changed"
 msgstr ""
 
-#: cred/models.py:184
+#: cred/models.py:214
 msgid "Only Details Viewed"
 msgstr ""
 
-#: cred/models.py:185
+#: cred/models.py:215
 msgid "Exported"
 msgstr ""
 
-#: cred/models.py:186
+#: cred/models.py:216
 msgid "Deleted"
 msgstr ""
 
-#: cred/models.py:187
+#: cred/models.py:217
 msgid "Scheduled For Change"
 msgstr ""
 
-#: cred/models.py:188
+#: cred/models.py:218
 msgid "Password Viewed"
 msgstr ""
 
-#: cred/views.py:75
+#: cred/views.py:76
 msgid "All passwords"
 msgstr ""
 
-#: cred/views.py:106
+#: cred/views.py:108
 #, python-format
 msgid "Passwords tagged with %(tagname)s"
 msgstr ""
 
-#: cred/views.py:110
+#: cred/views.py:112
 #, python-format
 msgid "Passwords in group %(groupname)s"
 msgstr ""
 
-#: cred/views.py:114
+#: cred/views.py:116
 #, python-format
 msgid "Passwords for search \"%(searchstring)s\""
 msgstr ""
 
-#: cred/views.py:118
+#: cred/views.py:120
 #, python-format
 msgid "Versions of: \"%(credtitle)s\""
 msgstr ""
 
-#: cred/views.py:126
+#: cred/views.py:128
 msgid ""
 "That user is now disabled. Here is a list of passwords that they have viewed "
 "that have not since been changed. You probably want to add them all to the "
 "change queue."
 msgstr ""
 
-#: cred/views.py:129
+#: cred/views.py:131
 #, python-format
 msgid "Changes required for \"%(username)s\""
 msgstr ""
 
-#: cred/views.py:140
+#: cred/views.py:142
 msgid "Passwords in the trash"
 msgstr ""
 
-#: cred/views.py:148
+#: cred/views.py:150
 msgid "Passwords on the Change Queue"
 msgstr ""
 
-#: cred/views.py:318 staff/views.py:352
+#: cred/views.py:361 staff/views.py:352
 msgid "Unknown (Logs deleted)"
 msgstr ""
 
@@ -602,8 +663,8 @@ msgstr ""
 
 #: cred/templates/cred_detail.html:29
 #: staff/templates/staff_groupdetail.html:13
-#: staff/templates/staff_home.html:26 staff/templates/staff_home.html.py:35
-#: staff/templates/staff_home.html:44 staff/templates/staff_home.html.py:49
+#: staff/templates/staff_home.html:29 staff/templates/staff_home.html.py:38
+#: staff/templates/staff_home.html:47 staff/templates/staff_home.html.py:52
 #: staff/templates/staff_userdetail.html:22
 msgid "Edit"
 msgstr ""
@@ -612,11 +673,11 @@ msgstr ""
 msgid "History"
 msgstr ""
 
-#: cred/templates/cred_detail.html:31 cred/templates/cred_detail.html.py:87
+#: cred/templates/cred_detail.html:31 cred/templates/cred_detail.html.py:99
 #: cred/templates/cred_list.html:31 cred/templates/cred_taglist.html:18
 #: staff/templates/staff_groupdetail.html:14
-#: staff/templates/staff_home.html:27 staff/templates/staff_home.html.py:36
-#: staff/templates/staff_home.html:44 staff/templates/staff_home.html.py:50
+#: staff/templates/staff_home.html:30 staff/templates/staff_home.html.py:39
+#: staff/templates/staff_home.html:47 staff/templates/staff_home.html.py:53
 #: staff/templates/staff_userdetail.html:24
 msgid "Delete"
 msgstr ""
@@ -626,49 +687,32 @@ msgstr ""
 msgid "Add to Change Queue"
 msgstr ""
 
-#: cred/templates/cred_detail.html:36 cred/templates/cred_detail.html.py:92
+#: cred/templates/cred_detail.html:36 cred/templates/cred_detail.html:104
 #: cred/templates/cred_list.html:34
 msgid "Undelete"
-msgstr ""
-
-#: cred/templates/cred_detail.html:42
-msgid "URL"
 msgstr ""
 
 #: cred/templates/cred_detail.html:48 cred/templates/cred_detail.html.py:59
 msgid "Copy"
 msgstr ""
 
-#: cred/templates/cred_detail.html:54 ratticweb/templates/sidebar.html:29
-msgid "Password"
-msgstr ""
-
-#: cred/templates/cred_detail.html:64
-msgid "Attachment"
-msgstr ""
-
-#: cred/templates/cred_detail.html:64
+#: cred/templates/cred_detail.html:64 cred/templates/cred_detail.html.py:67
 msgid "Download"
 msgstr ""
 
-#: cred/templates/cred_detail.html:67 cred/templates/cred_list.html:67
-#: cred/templates/cred_list.html.py:69
-#: staff/templates/staff_changeadvice.html:21
-#: staff/templates/staff_groupdetail.html:10
-msgid "Group"
+#: cred/templates/cred_detail.html:67
+msgid "SSH Key"
 msgstr ""
 
-#: cred/templates/cred_detail.html:68 cred/templates/cred_list.html:72
-#: ratticweb/templates/navbar.html:41 ratticweb/templates/sidebar.html:10
-#: staff/templates/staff_changeadvice.html:22
-msgid "Tags"
+#: cred/templates/cred_detail.html:71 cred/templates/cred_list.html:73
+msgid "Viewer Groups"
 msgstr ""
 
-#: cred/templates/cred_detail.html:69
+#: cred/templates/cred_detail.html:81
 msgid "Last Changed"
 msgstr ""
 
-#: cred/templates/cred_detail.html:75
+#: cred/templates/cred_detail.html:87
 msgid "Description:"
 msgstr ""
 
@@ -700,12 +744,6 @@ msgstr ""
 msgid "Download Keepass"
 msgstr ""
 
-#: cred/templates/cred_list.html:53 cred/templates/cred_list.html.py:55
-#: staff/templates/staff_changeadvice.html:19
-#: staff/templates/staff_import_overview.html:11
-msgid "Title"
-msgstr ""
-
 #: cred/templates/cred_list.html:60 cred/templates/cred_list.html.py:62
 #: cred/templates/credaudit_list.html:9 staff/templates/staff_audit.html:28
 #: staff/templates/staff_changeadvice.html:20
@@ -714,17 +752,17 @@ msgstr ""
 msgid "User"
 msgstr ""
 
-#: cred/templates/cred_list.html:92 cred/templates/cred_list.html.py:94
+#: cred/templates/cred_list.html:102 cred/templates/cred_list.html.py:104
 #: staff/templates/staff_audit.html:53 staff/templates/staff_audit.html:55
 msgid "Prev"
 msgstr ""
 
-#: cred/templates/cred_list.html:104 cred/templates/cred_list.html.py:106
+#: cred/templates/cred_list.html:114 cred/templates/cred_list.html.py:116
 #: staff/templates/staff_audit.html:65 staff/templates/staff_audit.html:67
 msgid "Next"
 msgstr ""
 
-#: cred/templates/cred_list.html:114
+#: cred/templates/cred_list.html:124
 msgid "Matched Tags"
 msgstr ""
 
@@ -856,16 +894,20 @@ msgstr ""
 msgid "More logs..."
 msgstr ""
 
-#: ratticweb/settings.py:56
+#: ratticweb/settings.py:57
 msgid "English"
 msgstr ""
 
-#: ratticweb/settings.py:57
+#: ratticweb/settings.py:58
 msgid "French"
 msgstr ""
 
-#: ratticweb/settings.py:58
+#: ratticweb/settings.py:59
 msgid "German"
+msgstr ""
+
+#: ratticweb/settings.py:60
+msgid "Italian"
 msgstr ""
 
 #: ratticweb/templates/404.html:6
@@ -1053,7 +1095,7 @@ msgid "Deleting this group will delete every password underneath it."
 msgstr ""
 
 #: staff/templates/staff_groupdetail.html:21
-#: staff/templates/staff_home.html:20
+#: staff/templates/staff_home.html:23
 msgid "Users"
 msgstr ""
 
@@ -1081,27 +1123,27 @@ msgstr ""
 msgid "Add User"
 msgstr ""
 
-#: staff/templates/staff_home.html:13
+#: staff/templates/staff_home.html:16
 msgid "Add Group"
 msgstr ""
 
-#: staff/templates/staff_home.html:15
+#: staff/templates/staff_home.html:18
 msgid "Import Keepass"
 msgstr ""
 
-#: staff/templates/staff_home.html:16
+#: staff/templates/staff_home.html:19
 msgid "View Trash"
 msgstr ""
 
-#: staff/templates/staff_home.html:17
+#: staff/templates/staff_home.html:20
 msgid "Audit One Week"
 msgstr ""
 
-#: staff/templates/staff_home.html:24
+#: staff/templates/staff_home.html:27
 msgid "email"
 msgstr ""
 
-#: staff/templates/staff_home.html:42
+#: staff/templates/staff_home.html:45
 msgid "Access Groups"
 msgstr ""
 

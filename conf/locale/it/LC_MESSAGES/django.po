@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-18 23:50+1100\n"
+"POT-Creation-Date: 2015-05-17 09:20+1000\n"
 "PO-Revision-Date: 2015-03-12 17:29+0100\n"
 "Last-Translator: \n"
 "Language-Team: Daniele Scasciafratte <mte90net@gmail.com>\n"
@@ -17,13 +17,22 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: account/models.py:27
+#: account/models.py:30
 msgid "Old password"
 msgstr "Vecchia password"
 
-#: account/models.py:35
+#: account/models.py:38
 msgid "Incorrect password"
 msgstr "Password sbagliata"
+
+#: account/models.py:56
+msgid "Items per page"
+msgstr ""
+
+#: account/models.py:57
+#, fuzzy
+msgid "Favourite tags"
+msgstr "Aggiunti i tuoi tag preferito sul"
 
 #: account/templates/account_changepass.html:4
 #: account/templates/password_reset_confirm.html:4
@@ -69,12 +78,12 @@ msgstr "Premi il pulsante di verifica se vuoi eliminare questa chiave"
 #: account/templates/account_viewapikey.html:17
 #: cred/templates/cred_taglist.html:9
 #: staff/templates/staff_groupdetail.html:20
-#: staff/templates/staff_home.html:44
+#: staff/templates/staff_home.html:47
 msgid "Name"
 msgstr "Nome"
 
 #: account/templates/account_deleteapikey.html:14
-#: cred/templates/cred_detail.html:70
+#: cred/templates/cred_detail.html:82
 msgid "Created"
 msgstr "Creato"
 
@@ -91,7 +100,7 @@ msgstr "Errore LDAP"
 msgid "Your LDAP server returned the following error:"
 msgstr "Il tuo server LDAP a generato questo errore:"
 
-#: account/templates/account_ldaperror.html:8
+#: account/templates/account_ldaperror.html:8 cred/models.py:83
 #: cred/templates/cred_part_passgenmodal.html:9
 msgid "Description"
 msgstr "Descrizione"
@@ -117,9 +126,9 @@ msgstr "Crea"
 msgid "Your Account"
 msgstr "Il tuo account"
 
-#: account/templates/account_profile.html:10
+#: account/templates/account_profile.html:10 cred/models.py:80
 #: cred/templates/cred_detail.html:44 ratticweb/templates/sidebar.html:28
-#: staff/templates/staff_home.html:23
+#: staff/templates/staff_home.html:26
 msgid "Username"
 msgstr "Nome utente"
 
@@ -162,7 +171,7 @@ msgstr "Abilita adesso"
 msgid "Last Password Change"
 msgstr "Ultimo Modifica Password"
 
-#: account/templates/account_profile.html:25
+#: account/templates/account_profile.html:25 cred/models.py:85
 #: ratticweb/templates/sidebar.html:18
 #: staff/templates/staff_userdetail.html:33
 msgid "Groups"
@@ -192,27 +201,31 @@ msgstr "Nome Chiave"
 msgid "Date generated"
 msgstr "Data creazione"
 
-#: account/templates/account_profile.html:67
+#: account/templates/account_profile.html:53
+msgid "Expiry date"
+msgstr ""
+
+#: account/templates/account_profile.html:73
 msgid "No API Keys available yet"
 msgstr "Nessuna Chiave API disponibile"
 
-#: account/templates/account_profile.html:71
+#: account/templates/account_profile.html:77
 msgid "Current Sessions"
 msgstr "Sessione Corrente"
 
-#: account/templates/account_profile.html:76
+#: account/templates/account_profile.html:82
 msgid "Device"
 msgstr "Dispositivo"
 
-#: account/templates/account_profile.html:77
+#: account/templates/account_profile.html:83
 msgid "IP Address"
 msgstr "Indirizzo IP"
 
-#: account/templates/account_profile.html:78
+#: account/templates/account_profile.html:84
 msgid "Last Activity"
 msgstr "Ultima Attività"
 
-#: account/templates/account_profile.html:89
+#: account/templates/account_profile.html:95
 msgid "(This Session)"
 msgstr "(Questa Sessione)"
 
@@ -440,8 +453,8 @@ msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used. Please request a new password reset."
 msgstr ""
-"Il link per il reset della password è sbagliato, probabilmente perchè è stato "
-"già usato. Richiedi un nuovo reset della password."
+"Il link per il reset della password è sbagliato, probabilmente perchè è "
+"stato già usato. Richiedi un nuovo reset della password."
 
 #: account/templates/password_reset_done.html:5
 msgid "Password reset successful"
@@ -494,97 +507,149 @@ msgid ""
 "File size must be under %(maximumsize)s. Current file size is "
 "%(currentsize)s."
 msgstr ""
-"Le dimensioni del file devono essere %(maximumsize)s. Le dimensioni di questo "
-"file %(currentsize)s."
+"Le dimensioni del file devono essere %(maximumsize)s. Le dimensioni di "
+"questo file %(currentsize)s."
+
+#: cred/forms.py:33 cred/templates/cred_detail.html:70
+#: cred/templates/cred_list.html:67 cred/templates/cred_list.html.py:69
+#, fuzzy
+msgid "Owner Group"
+msgstr "Gruppo"
 
 #: cred/forms.py:34
+#, fuzzy
+msgid "Viewers Groups"
+msgstr "Gruppi d'accesso"
+
+#: cred/forms.py:37
 msgid "Please enter a valid HTTP/HTTPS URL"
 msgstr "Inserisci un indirizzo HTTP/HTTPS valido"
 
-#: cred/models.py:79
+#: cred/models.py:78 cred/templates/cred_list.html:53
+#: cred/templates/cred_list.html.py:55
+#: staff/templates/staff_changeadvice.html:19
+#: staff/templates/staff_import_overview.html:11
+msgid "Title"
+msgstr "Titolo"
+
+#: cred/models.py:79 cred/templates/cred_detail.html:42
+msgid "URL"
+msgstr "URL"
+
+#: cred/models.py:81 cred/templates/cred_detail.html:54
+#: ratticweb/templates/sidebar.html:29
+msgid "Password"
+msgstr "Password"
+
+#: cred/models.py:82
 msgid "Markdown Description"
 msgstr "Descrizione in Markdown"
 
-#: cred/models.py:181
+#: cred/models.py:84 staff/templates/staff_changeadvice.html:21
+#: staff/templates/staff_groupdetail.html:10
+msgid "Group"
+msgstr "Gruppo"
+
+#: cred/models.py:86 cred/templates/cred_detail.html:80
+#: cred/templates/cred_list.html:75 ratticweb/templates/navbar.html:41
+#: ratticweb/templates/sidebar.html:10
+#: staff/templates/staff_changeadvice.html:22
+msgid "Tags"
+msgstr "Tags"
+
+#: cred/models.py:87
+#, fuzzy
+msgid "Icon"
+msgstr "Icone"
+
+#: cred/models.py:88
+msgid "SSH key"
+msgstr ""
+
+#: cred/models.py:89 cred/templates/cred_detail.html:64
+msgid "Attachment"
+msgstr "Allegato"
+
+#: cred/models.py:211
 msgid "Added"
 msgstr "Aggiunto"
 
-#: cred/models.py:182
+#: cred/models.py:212
 msgid "Changed"
 msgstr "Cambiato"
 
-#: cred/models.py:183
+#: cred/models.py:213
 msgid "Only Metadata Changed"
 msgstr "Solo i Metadata modificati"
 
-#: cred/models.py:184
+#: cred/models.py:214
 msgid "Only Details Viewed"
 msgstr "Vista dei soli dettagli"
 
-#: cred/models.py:185
+#: cred/models.py:215
 msgid "Exported"
 msgstr "Esportati"
 
-#: cred/models.py:186
+#: cred/models.py:216
 msgid "Deleted"
 msgstr "Eliminato"
 
-#: cred/models.py:187
+#: cred/models.py:217
 msgid "Scheduled For Change"
 msgstr "Schedula per la modifica"
 
-#: cred/models.py:188
+#: cred/models.py:218
 msgid "Password Viewed"
 msgstr "Password viste"
 
-#: cred/views.py:75
+#: cred/views.py:76
 msgid "All passwords"
 msgstr "Tutte le password"
 
-#: cred/views.py:106
+#: cred/views.py:108
 #, python-format
 msgid "Passwords tagged with %(tagname)s"
 msgstr "Password taggate con %(tagname)s"
 
-#: cred/views.py:110
+#: cred/views.py:112
 #, python-format
 msgid "Passwords in group %(groupname)s"
 msgstr "Password in gruppo %(groupname)s"
 
-#: cred/views.py:114
+#: cred/views.py:116
 #, python-format
 msgid "Passwords for search \"%(searchstring)s\""
 msgstr "Password per la ricerca \"%(searchstring)s\""
 
-#: cred/views.py:118
+#: cred/views.py:120
 #, python-format
 msgid "Versions of: \"%(credtitle)s\""
 msgstr "Versione di: \"%(credtitle)s\""
 
-#: cred/views.py:126
+#: cred/views.py:128
 msgid ""
 "That user is now disabled. Here is a list of passwords that they have viewed "
 "that have not since been changed. You probably want to add them all to the "
 "change queue."
 msgstr ""
 "Questo utente è stato disabilitato. Qui c'è la lista delle password che ha "
-"visto che non ha modificato. Probabilmente vorrai aggiungerle tutte alla coda "
-"di modifica."
+"visto che non ha modificato. Probabilmente vorrai aggiungerle tutte alla "
+"coda di modifica."
 
-#: cred/views.py:129
+#: cred/views.py:131
 #, python-format
 msgid "Changes required for \"%(username)s\""
 msgstr "Modifiche richieste per \"%(username)s\""
 
-#: cred/views.py:140
+#: cred/views.py:142
 msgid "Passwords in the trash"
 msgstr "Password nel cestino"
 
-#: cred/views.py:148
+#: cred/views.py:150
 msgid "Passwords on the Change Queue"
 msgstr "Password nella Coda di Modifica"
 
-#: cred/views.py:318 staff/views.py:352
+#: cred/views.py:361 staff/views.py:352
 msgid "Unknown (Logs deleted)"
 msgstr "Sconosciuti (Log Eliminati)"
 
@@ -597,8 +662,8 @@ msgid ""
 "You are about to delete this password. A staff member will be required if "
 "you want to undelete it."
 msgstr ""
-"Stai per eliminare questa password. Un membro dello staff è richiesto se"
-"si vuole annullare l'eliminazione."
+"Stai per eliminare questa password. Un membro dello staff è richiesto sesi "
+"vuole annullare l'eliminazione."
 
 #: cred/templates/cred_detail.html:19
 msgid ""
@@ -609,10 +674,10 @@ msgid ""
 "removed."
 msgstr ""
 "Questi credenziali sono state cancellate e si trovano nel cestino. Sono solo "
-"visibili allo staff. Puoi cambiarle se desideri, lo storico verrà aggiornato. "
-"Clicca il pulsante per annullare per ripristinarle. Se clicchi il pulsante "
-"Elimina Permanentemente la password e il suo storico ed i log saranno "
-"cancellati."
+"visibili allo staff. Puoi cambiarle se desideri, lo storico verrà "
+"aggiornato. Clicca il pulsante per annullare per ripristinarle. Se clicchi "
+"il pulsante Elimina Permanentemente la password e il suo storico ed i log "
+"saranno cancellati."
 
 #: cred/templates/cred_detail.html:22
 msgid "Hey there!"
@@ -656,8 +721,8 @@ msgstr "?"
 
 #: cred/templates/cred_detail.html:29
 #: staff/templates/staff_groupdetail.html:13
-#: staff/templates/staff_home.html:26 staff/templates/staff_home.html.py:35
-#: staff/templates/staff_home.html:44 staff/templates/staff_home.html.py:49
+#: staff/templates/staff_home.html:29 staff/templates/staff_home.html.py:38
+#: staff/templates/staff_home.html:47 staff/templates/staff_home.html.py:52
 #: staff/templates/staff_userdetail.html:22
 msgid "Edit"
 msgstr "Modifica"
@@ -666,11 +731,11 @@ msgstr "Modifica"
 msgid "History"
 msgstr "Storico"
 
-#: cred/templates/cred_detail.html:31 cred/templates/cred_detail.html.py:87
+#: cred/templates/cred_detail.html:31 cred/templates/cred_detail.html.py:99
 #: cred/templates/cred_list.html:31 cred/templates/cred_taglist.html:18
 #: staff/templates/staff_groupdetail.html:14
-#: staff/templates/staff_home.html:27 staff/templates/staff_home.html.py:36
-#: staff/templates/staff_home.html:44 staff/templates/staff_home.html.py:50
+#: staff/templates/staff_home.html:30 staff/templates/staff_home.html.py:39
+#: staff/templates/staff_home.html:47 staff/templates/staff_home.html.py:53
 #: staff/templates/staff_userdetail.html:24
 msgid "Delete"
 msgstr "Elimina"
@@ -680,49 +745,33 @@ msgstr "Elimina"
 msgid "Add to Change Queue"
 msgstr "Aggiungi alla Coda di Modifica"
 
-#: cred/templates/cred_detail.html:36 cred/templates/cred_detail.html.py:92
+#: cred/templates/cred_detail.html:36 cred/templates/cred_detail.html:104
 #: cred/templates/cred_list.html:34
 msgid "Undelete"
 msgstr "Annulla"
-
-#: cred/templates/cred_detail.html:42
-msgid "URL"
-msgstr "URL"
 
 #: cred/templates/cred_detail.html:48 cred/templates/cred_detail.html.py:59
 msgid "Copy"
 msgstr "Copia"
 
-#: cred/templates/cred_detail.html:54 ratticweb/templates/sidebar.html:29
-msgid "Password"
-msgstr "Password"
-
-#: cred/templates/cred_detail.html:64
-msgid "Attachment"
-msgstr "Allegato"
-
-#: cred/templates/cred_detail.html:64
+#: cred/templates/cred_detail.html:64 cred/templates/cred_detail.html.py:67
 msgid "Download"
 msgstr "Scarica"
 
-#: cred/templates/cred_detail.html:67 cred/templates/cred_list.html:67
-#: cred/templates/cred_list.html.py:69
-#: staff/templates/staff_changeadvice.html:21
-#: staff/templates/staff_groupdetail.html:10
-msgid "Group"
-msgstr "Gruppo"
+#: cred/templates/cred_detail.html:67
+msgid "SSH Key"
+msgstr ""
 
-#: cred/templates/cred_detail.html:68 cred/templates/cred_list.html:72
-#: ratticweb/templates/navbar.html:41 ratticweb/templates/sidebar.html:10
-#: staff/templates/staff_changeadvice.html:22
-msgid "Tags"
-msgstr "Tags"
+#: cred/templates/cred_detail.html:71 cred/templates/cred_list.html:73
+#, fuzzy
+msgid "Viewer Groups"
+msgstr "Elimina Gruppo"
 
-#: cred/templates/cred_detail.html:69
+#: cred/templates/cred_detail.html:81
 msgid "Last Changed"
 msgstr "Ultime modifiche"
 
-#: cred/templates/cred_detail.html:75
+#: cred/templates/cred_detail.html:87
 msgid "Description:"
 msgstr "Descrizione:"
 
@@ -754,12 +803,6 @@ msgstr "Aggiungi un tag"
 msgid "Download Keepass"
 msgstr "Scarica il file Keepass"
 
-#: cred/templates/cred_list.html:53 cred/templates/cred_list.html.py:55
-#: staff/templates/staff_changeadvice.html:19
-#: staff/templates/staff_import_overview.html:11
-msgid "Title"
-msgstr "Titolo"
-
 #: cred/templates/cred_list.html:60 cred/templates/cred_list.html.py:62
 #: cred/templates/credaudit_list.html:9 staff/templates/staff_audit.html:28
 #: staff/templates/staff_changeadvice.html:20
@@ -768,17 +811,17 @@ msgstr "Titolo"
 msgid "User"
 msgstr "Utente"
 
-#: cred/templates/cred_list.html:92 cred/templates/cred_list.html.py:94
+#: cred/templates/cred_list.html:102 cred/templates/cred_list.html.py:104
 #: staff/templates/staff_audit.html:53 staff/templates/staff_audit.html:55
 msgid "Prev"
 msgstr "Precedente"
 
-#: cred/templates/cred_list.html:104 cred/templates/cred_list.html.py:106
+#: cred/templates/cred_list.html:114 cred/templates/cred_list.html.py:116
 #: staff/templates/staff_audit.html:65 staff/templates/staff_audit.html:67
 msgid "Next"
 msgstr "Successivo"
 
-#: cred/templates/cred_list.html:114
+#: cred/templates/cred_list.html:124
 msgid "Matched Tags"
 msgstr "Tag affini"
 
@@ -911,17 +954,21 @@ msgstr "Quando"
 msgid "More logs..."
 msgstr "Altri log... "
 
-#: ratticweb/settings.py:56
+#: ratticweb/settings.py:57
 msgid "English"
 msgstr "Inglese"
 
-#: ratticweb/settings.py:57
+#: ratticweb/settings.py:58
 msgid "French"
 msgstr "Francese"
 
-#: ratticweb/settings.py:58
+#: ratticweb/settings.py:59
 msgid "German"
 msgstr "Tedesco"
+
+#: ratticweb/settings.py:60
+msgid "Italian"
+msgstr ""
 
 #: ratticweb/templates/404.html:6
 msgid "Page not found"
@@ -1110,8 +1157,8 @@ msgstr ""
 "password \n"
 "che l'utente conosce ed a cui non ha più accesso. Ti consigliamo di "
 "aggiungere\n"
-"queste password nella coda di modifica. Per farlo premi il pulsante "
-"&quot;Aggiungi\n"
+"queste password nella coda di modifica. Per farlo premi il pulsante &quot;"
+"Aggiungi\n"
 "alla Coda di Modifica&quot;, se non vuoi cambiare alcune password togli il "
 "check."
 
@@ -1124,7 +1171,7 @@ msgid "Deleting this group will delete every password underneath it."
 msgstr "Eliminare questo gruppo cancellerà ogni password che contiene."
 
 #: staff/templates/staff_groupdetail.html:21
-#: staff/templates/staff_home.html:20
+#: staff/templates/staff_home.html:23
 msgid "Users"
 msgstr "Utenti"
 
@@ -1152,27 +1199,27 @@ msgstr "Gestione staff"
 msgid "Add User"
 msgstr "Aggiungi Utente"
 
-#: staff/templates/staff_home.html:13
+#: staff/templates/staff_home.html:16
 msgid "Add Group"
 msgstr "Aggiungi Gruppo"
 
-#: staff/templates/staff_home.html:15
+#: staff/templates/staff_home.html:18
 msgid "Import Keepass"
 msgstr "Importa Keepass"
 
-#: staff/templates/staff_home.html:16
+#: staff/templates/staff_home.html:19
 msgid "View Trash"
 msgstr "Vedi cestino"
 
-#: staff/templates/staff_home.html:17
+#: staff/templates/staff_home.html:20
 msgid "Audit One Week"
 msgstr "Audit della settimana"
 
-#: staff/templates/staff_home.html:24
+#: staff/templates/staff_home.html:27
 msgid "email"
 msgstr "email"
 
-#: staff/templates/staff_home.html:42
+#: staff/templates/staff_home.html:45
 msgid "Access Groups"
 msgstr "Gruppi d'accesso"
 
@@ -1232,4 +1279,3 @@ msgstr "Crea Utente"
 #: staff/templates/staff_useredit.html:6
 msgid "Edit User"
 msgstr "Modifica Utente"
-
