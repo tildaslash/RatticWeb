@@ -233,6 +233,7 @@ LOGIN_URL = RATTIC_ROOT_URL
 # django-user-sessions
 SESSION_ENGINE = 'user_sessions.backends.db'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = int(config.get('ratticweb', 'session_age'))
 
 # Icon configuration
 CRED_ICON_JSON = 'db/icons.json'
